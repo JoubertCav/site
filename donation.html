@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,6 +8,7 @@
   <title>Donation | Joubert Cavalcante</title>
   <link rel="stylesheet" href="assets/styles.css">
 </head>
+
 <body>
   <header class="site-header">
     <div class="wrap nav">
@@ -28,7 +30,8 @@
       <div class="wrap">
         <p class="eyebrow">Donation</p>
         <h1>Support open lecture notes and diagrams.</h1>
-        <p class="subtitle">Contributions help maintain free academic material, improve diagrams, and expand teaching resources.</p>
+        <p class="subtitle">Contributions help maintain free academic material, improve diagrams, and expand teaching
+          resources.</p>
       </div>
     </section>
 
@@ -38,14 +41,13 @@
         <div>
           <div class="section-copy">
             <h2>Ways to contribute</h2>
-            <p class="lead">Replace the placeholders below with your preferred donation links, Pix key, or institutional support information.</p>
           </div>
           <div class="donation-grid">
             <article class="donation-card">
               <span>01</span>
               <h3>Pix</h3>
-              <p>Add your Pix key here.</p>
-              <a href="#">Copy Pix key</a>
+              <button class="copy-button" type="button" data-copy-value="8994cad8-69ac-468c-adf2-5f455f87a76c">Copy Pix
+                key</button>
             </article>
             <article class="donation-card">
               <span>02</span>
@@ -65,7 +67,35 @@
     </section>
   </main>
 
-  <footer class="site-footer"><div class="wrap">&copy; 2026 Joubert Cavalcante.</div></footer>
+  <footer class="site-footer">
+    <div class="wrap">&copy; 2026 Joubert Cavalcante.</div>
+  </footer>
   <script src="assets/theme.js"></script>
+  <script>
+    document.querySelectorAll("[data-copy-value]").forEach(function (button) {
+      button.addEventListener("click", async function () {
+        const original = button.textContent;
+        try {
+          await navigator.clipboard.writeText(button.dataset.copyValue);
+          button.textContent = "Copied";
+        } catch (error) {
+          const input = document.createElement("input");
+          input.value = button.dataset.copyValue;
+          input.setAttribute("readonly", "");
+          input.style.position = "fixed";
+          input.style.opacity = "0";
+          document.body.appendChild(input);
+          input.select();
+          document.execCommand("copy");
+          input.remove();
+          button.textContent = "Copied";
+        }
+        window.setTimeout(function () {
+          button.textContent = original;
+        }, 1800);
+      });
+    });
+  </script>
 </body>
+
 </html>

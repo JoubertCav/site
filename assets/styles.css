@@ -663,7 +663,22 @@ p {
   border-bottom: 1px solid var(--line);
 }
 
-.donation-card a:hover {
+.copy-button {
+  display: inline-flex;
+  margin-top: 1rem;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.94rem;
+  font-weight: 650;
+}
+
+.donation-card a:hover,
+.copy-button:hover {
   color: var(--claret);
   border-color: var(--claret);
 }
