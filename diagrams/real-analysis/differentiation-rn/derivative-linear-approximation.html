@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive real analysis diagram for the derivative as linear approximation.">
+  <title>Derivative as Linear Approximation | Real Analysis Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  <style>
+    :root{
+      --bg:#f7f3ea;
+      --paper:#fffdf8;
+      --card:rgba(255,255,255,.74);
+      --text:#1d2830;
+      --muted:#6d7982;
+      --line:#ddd5c7;
+      --grid:rgba(29,40,48,.075);
+      --curve:#287a76;
+      --curveSoft:rgba(40,122,118,.12);
+      --model:#536f91;
+      --modelSoft:rgba(83,111,145,.13);
+      --bad:#c46a55;
+      --badSoft:rgba(196,106,85,.13);
+      --gold:#b58a3c;
+      --shadow:0 18px 44px rgba(38,48,58,.08);
+      --switch:#eee7da;
+      --thumb:#fffaf0;
+    }
+    body.dark{
+      --bg:#0d1318;
+      --paper:#121b22;
+      --card:rgba(18,27,34,.84);
+      --text:#edf4f6;
+      --muted:#aab7c0;
+      --line:#26333d;
+      --grid:rgba(237,244,246,.075);
+      --curve:#6ccbc3;
+      --curveSoft:rgba(108,203,195,.12);
+      --model:#9abce0;
+      --modelSoft:rgba(154,188,224,.13);
+      --bad:#ef9a82;
+      --badSoft:rgba(239,154,130,.14);
+      --gold:#e0bd70;
+      --shadow:0 22px 54px rgba(0,0,0,.28);
+      --switch:#1a242c;
+      --thumb:#17222b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(40,122,118,.07), transparent 25%),
+        linear-gradient(180deg,#fbf8f2,var(--bg));
+    }
+    body.dark{
+      background:
+        radial-gradient(circle at 0% 0%, rgba(108,203,195,.08), transparent 25%),
+        linear-gradient(180deg,#101920,var(--bg));
+    }
+    .wrap{max-width:1540px;margin:0 auto;padding:24px 18px 34px}
+    header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+    h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.1rem,4vw,3.4rem);letter-spacing:-.035em;line-height:1.05}
+    .subtitle{margin:.55rem 0 0;color:var(--muted);font-size:1.04rem;line-height:1.55;max-width:870px}
+    .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04);font-size:.92rem}
+    .theme{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04)}
+    .theme .label{font-size:.92rem;color:var(--muted);min-width:70px}
+    .switch{position:relative;width:70px;height:36px;border-radius:999px;background:var(--switch);border:1px solid var(--line)}
+    .switch:before,.switch:after{position:absolute;top:50%;transform:translateY(-50%);font-size:13px;opacity:.75}
+    .switch:before{content:"☀";left:10px}.switch:after{content:"☾";right:10px}
+    .knob{position:absolute;left:3px;top:3px;width:28px;height:28px;border-radius:50%;background:var(--thumb);border:1px solid var(--line);box-shadow:0 4px 12px rgba(0,0,0,.16);transition:left .25s ease;display:grid;place-items:center;font-size:13px}
+    body.dark .knob{left:37px}
+
+    .layout{display:grid;grid-template-columns:322px minmax(0,1fr);gap:18px;align-items:start}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+    aside{padding:18px;position:sticky;top:16px}
+    .head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px}
+    h2,h3{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.02em;margin:0}
+    .head p{margin:4px 0 0;color:var(--muted);font-size:.94rem;line-height:1.42}
+    .tag{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:var(--muted);font-size:.82rem;white-space:nowrap;background:rgba(127,127,127,.04)}
+    .eq,.note{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:12px 14px;margin-bottom:14px}
+    .eq{font-size:.91rem}
+    .note{color:var(--muted);font-size:.93rem;line-height:1.48;margin:14px 0 0}
+    .control{margin:14px 0 16px}
+    .control label{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;font-weight:650}
+    .control small{color:var(--muted);font-weight:500}
+    select{width:100%;background:var(--paper);color:var(--text);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.98rem}
+    input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:8px;border-radius:999px;border:1px solid var(--line);background:linear-gradient(90deg,var(--curve),var(--curve));background-repeat:no-repeat;background-size:50% 100%}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--curve);border:2px solid var(--paper);box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer}
+
+    main{display:grid;gap:18px}
+    .hero{padding:18px}
+    .heroTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+    .heroTop p{margin:4px 0 0;color:var(--muted);line-height:1.45;max-width:780px}
+    .status{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:.92rem;background:var(--curveSoft);color:var(--curve);white-space:nowrap}
+    .split{display:grid;grid-template-columns:minmax(0,1fr) 304px;gap:16px}
+    .svgBox{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:10px}
+    .plotSvg{display:block;width:100%;height:auto}
+    .metrics{display:grid;gap:10px}
+    .metric{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:14px}
+    .metric h4{font-family:Georgia,"Times New Roman",serif;margin:0 0 6px;font-size:1rem}
+    .metric p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.4}
+    .metric strong{display:block;margin-top:7px;color:var(--curve)}
+    .lower{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .panel{padding:18px}
+    .smallGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .mini{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:10px}
+    .mini h4{margin:0 0 8px;font-family:Georgia,"Times New Roman",serif;font-size:.98rem}
+    .mini p{margin:8px 0 0;color:var(--muted);font-size:.89rem;line-height:1.38}
+    .footer{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .footer div{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.92rem;line-height:1.42}
+    @media(max-width:1180px){.layout{grid-template-columns:1fr}aside{position:static}.split,.lower{grid-template-columns:1fr}}
+    @media(max-width:900px){.smallGrid,.footer{grid-template-columns:1fr}.wrap{padding:18px 14px 28px}}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Derivative as linear approximation</h1>
+        <p class="subtitle">The derivative is the unique linear part that makes the remaining error smaller than the input. This app shows the tangent line, secant slopes, normalized error, and why continuity alone is weaker.</p>
+      </div>
+      <div class="actions">
+        <div class="pill">affine tangent model</div>
+        <div class="pill">little-o error</div>
+        <div class="pill">continuity ≠ differentiability</div>
+        <div id="theme" class="theme" role="button" tabindex="0">
+          <span id="themeLabel" class="label">light mode</span>
+          <div class="switch"><div id="knob" class="knob">☀</div></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="card">
+        <div class="head">
+          <div>
+            <h2>Controls</h2>
+            <p>Try the true derivative and wrong slopes.</p>
+          </div>
+          <div class="tag">first order</div>
+        </div>
+
+        <div class="eq">
+          \[
+          f(a+h)=f(a)+L(h)+r(h),
+          \qquad
+          \frac{r(h)}{|h|}\to0.
+          \]
+          \[
+          L(h)=f'(a)h,\qquad A_a(x)=f(a)+f'(a)(x-a).
+          \]
+        </div>
+
+        <div class="control">
+          <label>Function <small id="fnLabel"></small></label>
+          <select id="functionSelect">
+            <option value="cubic">smooth: \(x^3-x\)</option>
+            <option value="sin">smooth: \(\sin x\)</option>
+            <option value="sqrt">one-sided: \(\sqrt{x}\)</option>
+            <option value="abs">corner: \(|x|\)</option>
+            <option value="cusp">cusp: \(|x|^{2/3}\)</option>
+            <option value="flat">flat but nonlinear: \(x^2\sin(1/x)\)</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label>Base point \(a\) <small id="aLabel"></small></label>
+          <input id="aSlider" type="range" min="-2" max="2" step="0.01" value="0.6">
+        </div>
+
+        <div class="control">
+          <label>Zoom radius \(\rho\) <small id="rhoLabel"></small></label>
+          <input id="rhoSlider" type="range" min="0.04" max="1.5" step="0.01" value="0.55">
+        </div>
+
+        <div class="control">
+          <label>Displacement \(h\) <small id="hLabel"></small></label>
+          <input id="hSlider" type="range" min="-1.2" max="1.2" step="0.01" value="0.35">
+        </div>
+
+        <div class="control">
+          <label>Candidate slope \(m\) <small id="mLabel"></small></label>
+          <input id="mSlider" type="range" min="-5" max="5" step="0.01" value="0.08">
+        </div>
+
+        <div class="control">
+          <label>Slope mode <small id="modeLabel"></small></label>
+          <select id="slopeMode">
+            <option value="true">use derivative slope</option>
+            <option value="candidate">use candidate slope</option>
+            <option value="secant">use current secant slope</option>
+          </select>
+        </div>
+
+        <div id="formula" class="note"></div>
+        <div id="comment" class="note"></div>
+      </aside>
+
+      <main>
+        <section class="card hero">
+          <div class="heroTop">
+            <div>
+              <h2>Main diagram</h2>
+              <p>Blue is the affine model. Teal means the model has smaller-than-linear error. Coral signals no stable first-order approximation.</p>
+            </div>
+            <div id="status" class="status">differentiable here</div>
+          </div>
+
+          <div class="split">
+            <div class="svgBox">
+              <svg id="mainSvg" class="plotSvg" viewBox="0 0 1220 800"></svg>
+            </div>
+            <div class="metrics">
+              <div class="metric">
+                <h4>Derivative slope</h4>
+                <p>The true first-order coefficient when it exists.</p>
+                <strong id="derMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Model used</h4>
+                <p>\(A_m(x)=f(a)+m(x-a)\).</p>
+                <strong id="modelMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Current error</h4>
+                <p>\(r_m(h)=f(a+h)-A_m(a+h)\).</p>
+                <strong id="errMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Normalized error</h4>
+                <p>\(|r_m(h)|/|h|\).</p>
+                <strong id="ratioMetric"></strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="lower">
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Two diagnostics</h3>
+                <p>Secant slopes and normalized error near \(h=0\).</p>
+              </div>
+              <div class="tag">limit tests</div>
+            </div>
+            <div class="svgBox">
+              <svg id="diagnosticSvg" class="plotSvg" viewBox="0 0 900 520"></svg>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>What the definition says</h3>
+                <p>Derivative = linear map + negligible remainder.</p>
+              </div>
+              <div class="tag">structure</div>
+            </div>
+            <div class="svgBox">
+              <svg id="structureSvg" class="plotSvg" viewBox="0 0 900 520"></svg>
+            </div>
+          </section>
+        </div>
+
+        <section class="card panel">
+          <div class="head">
+            <div>
+              <h3>Continuity versus differentiability</h3>
+              <p>Continuity controls vertical closeness. Differentiability controls the first-order shape.</p>
+            </div>
+            <div class="tag">contrast</div>
+          </div>
+          <div class="smallGrid">
+            <div class="mini">
+              <h4>Continuity only</h4>
+              <svg id="miniCont" class="plotSvg" viewBox="0 0 260 170"></svg>
+              <p>Function values approach, but slopes may not settle.</p>
+            </div>
+            <div class="mini">
+              <h4>Differentiability</h4>
+              <svg id="miniDiff" class="plotSvg" viewBox="0 0 260 170"></svg>
+              <p>The error after subtracting a line is smaller than linear.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="footer">
+          <div><strong>Derivative.</strong> The number \(f'(a)\) is the unique slope \(m\) such that \(f(a+h)-f(a)-mh=o(|h|)\).</div>
+          <div><strong>Affine model.</strong> The tangent approximation is \(A_a(x)=f(a)+f'(a)(x-a)\).</div>
+          <div><strong>Higher dimensions.</strong> Replace \(f'(a)h\) by a linear map \(Df(a)h\): \(f(a+h)=f(a)+Df(a)h+o(\|h\|)\).</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+<script>
+  const funcs = {
+    cubic:{
+      label:'differentiable',
+      formula:'\\[ f(x)=x^3-x,\\qquad f\\prime(a)=3a^2-1. \\]',
+      comment:'A smooth curve. The tangent line becomes the curve after zooming enough.',
+      domain:[-2.5,2.5], range:[-5,5], suggestedA:.6, suggestedH:.35,
+      f:x=>x*x*x-x,
+      d:x=>3*x*x-1,
+      diff:x=>true
+    },
+    sin:{
+      label:'differentiable',
+      formula:'\\[ f(x)=\\sin x,\\qquad f\\prime(a)=\\cos a. \\]',
+      comment:'The tangent line is the first-order piece; the remaining error is roughly quadratic.',
+      domain:[-3.2,3.2], range:[-1.6,1.6], suggestedA:.8, suggestedH:.35,
+      f:x=>Math.sin(x),
+      d:x=>Math.cos(x),
+      diff:x=>true
+    },
+    sqrt:{
+      label:'right differentiable at 0',
+      formula:'\\[ f(x)=\\sqrt{x},\\qquad x\\ge0. \\]',
+      comment:'At interior points the tangent works. At \(0\), the slope is not finite: the graph is continuous but not differentiable as a finite linear approximation.',
+      domain:[0,4], range:[-.2,2.2], suggestedA:.7, suggestedH:.35,
+      f:x=>x<0?NaN:Math.sqrt(x),
+      d:x=>x>0?1/(2*Math.sqrt(x)):Infinity,
+      diff:x=>x>0.04
+    },
+    abs:{
+      label:'not differentiable at 0',
+      formula:'\\[ f(x)=|x|. \\]',
+      comment:'At \(0\), left and right slopes disagree. Continuity is not enough.',
+      domain:[-2.2,2.2], range:[-.3,2.2], suggestedA:0, suggestedH:.35,
+      f:x=>Math.abs(x),
+      d:x=>x>0?1:(x<0?-1:NaN),
+      diff:x=>Math.abs(x)>0.04
+    },
+    cusp:{
+      label:'not differentiable at 0',
+      formula:'\\[ f(x)=|x|^{2/3}. \\]',
+      comment:'The cusp has no finite tangent slope at \(0\). The normalized error does not go to zero for any finite slope.',
+      domain:[-2.2,2.2], range:[-.25,1.9], suggestedA:0, suggestedH:.35,
+      f:x=>Math.pow(Math.abs(x),2/3),
+      d:x=>x===0?NaN:(2/3)*Math.sign(x)*Math.pow(Math.abs(x),-1/3),
+      diff:x=>Math.abs(x)>0.05
+    },
+    flat:{
+      label:'differentiable at 0',
+      formula:'\\[ f(0)=0,\\quad f(x)=x^2\\sin(1/x). \\]',
+      comment:'At \(0\), the derivative exists and equals \(0\), even though nearby slopes oscillate. The error is still \(o(|h|)\).',
+      domain:[-1.6,1.6], range:[-.45,.45], suggestedA:0, suggestedH:.25,
+      f:x=>Math.abs(x)<1e-8?0:x*x*Math.sin(1/x),
+      d:x=>Math.abs(x)<1e-8?0:2*x*Math.sin(1/x)-Math.cos(1/x),
+      diff:x=>true
+    }
+  };
+
+  const state = {
+    fn:'cubic',
+    a:.6,
+    rho:.55,
+    h:.35,
+    m:0.08,
+    mode:'true',
+    theme:localStorage.getItem('derivative-complete-theme') || 'light'
+  };
+
+  const el = {
+    theme:document.getElementById('theme'),
+    themeLabel:document.getElementById('themeLabel'),
+    knob:document.getElementById('knob'),
+    functionSelect:document.getElementById('functionSelect'),
+    aSlider:document.getElementById('aSlider'),
+    rhoSlider:document.getElementById('rhoSlider'),
+    hSlider:document.getElementById('hSlider'),
+    mSlider:document.getElementById('mSlider'),
+    slopeMode:document.getElementById('slopeMode'),
+    fnLabel:document.getElementById('fnLabel'),
+    aLabel:document.getElementById('aLabel'),
+    rhoLabel:document.getElementById('rhoLabel'),
+    hLabel:document.getElementById('hLabel'),
+    mLabel:document.getElementById('mLabel'),
+    modeLabel:document.getElementById('modeLabel'),
+    formula:document.getElementById('formula'),
+    comment:document.getElementById('comment'),
+    status:document.getElementById('status'),
+    mainSvg:document.getElementById('mainSvg'),
+    diagnosticSvg:document.getElementById('diagnosticSvg'),
+    structureSvg:document.getElementById('structureSvg'),
+    miniCont:document.getElementById('miniCont'),
+    miniDiff:document.getElementById('miniDiff'),
+    derMetric:document.getElementById('derMetric'),
+    modelMetric:document.getElementById('modelMetric'),
+    errMetric:document.getElementById('errMetric'),
+    ratioMetric:document.getElementById('ratioMetric')
+  };
+
+  const css=v=>getComputedStyle(document.body).getPropertyValue(v).trim();
+  const lin=(x,a,b,c,d)=>c+(x-a)*(d-c)/(b-a);
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const fmt=x=>{
+    if(!Number.isFinite(x)) return '∞';
+    return (x<0?'−':'')+Math.abs(x).toFixed(3);
+  };
+
+  function setTheme(t){
+    state.theme=t;
+    document.body.classList.toggle('dark', t==='dark');
+    localStorage.setItem('derivative-complete-theme', t);
+    el.themeLabel.textContent=t==='dark'?'dark mode':'light mode';
+    el.knob.textContent=t==='dark'?'☾':'☀';
+    render();
+  }
+
+  function fill(input){
+    const min=+input.min,max=+input.max,val=+input.value;
+    input.style.backgroundSize=((val-min)/(max-min)*100)+'% 100%';
+  }
+
+  function text(x,y,s,o={}){
+    return `<text x="${x}" y="${y}" fill="${o.fill||css('--text')}" font-size="${o.size||14}" font-family="${o.family||'Inter, sans-serif'}" font-weight="${o.weight||500}" text-anchor="${o.anchor||'start'}">${s}</text>`;
+  }
+
+  function path(points,X,Y){
+    return points.map((p,i)=>`${i?'L':'M'} ${X(p.x).toFixed(2)} ${Y(p.y).toFixed(2)}`).join(' ');
+  }
+
+  function secantSlope(fn,a,h){
+    const f0=fn.f(a), f1=fn.f(a+h);
+    if(Math.abs(h)<1e-8 || !Number.isFinite(f0) || !Number.isFinite(f1)) return NaN;
+    return (f1-f0)/h;
+  }
+
+  function trueSlope(fn,a){
+    if(fn.diff(a)) return fn.d(a);
+    return NaN;
+  }
+
+  function usedSlope(fn,a,h){
+    const d=trueSlope(fn,a);
+    if(state.mode==='true') return Number.isFinite(d)?d:0;
+    if(state.mode==='secant') {
+      const s=secantSlope(fn,a,h);
+      return Number.isFinite(s)?s:0;
+    }
+    return state.m;
+  }
+
+  function current(){
+    const fn=funcs[state.fn];
+    const a=clamp(state.a,fn.domain[0],fn.domain[1]);
+    const h=state.h;
+    const x=clamp(a+h,fn.domain[0],fn.domain[1]);
+    const hActual=x-a;
+    const m=usedSlope(fn,a,hActual);
+    const d=trueSlope(fn,a);
+    const fa=fn.f(a);
+    const fx=fn.f(x);
+    const A=fa+m*hActual;
+    const r=fx-A;
+    const ratio=Math.abs(hActual)<1e-8 ? 0 : Math.abs(r)/Math.abs(hActual);
+    const diff=fn.diff(a);
+    return {fn,a,h:hActual,x,m,d,fa,fx,A,r,ratio,diff};
+  }
+
+  function renderMain(){
+    const D=current(), fn=D.fn;
+    const W=1220,H=800;
+    const plot={x:70,y:70,w:850,h:585};
+    const map={x:980,y:130,w:150,h:420};
+
+    const xMin=Math.max(fn.domain[0], D.a-state.rho*2.3);
+    const xMax=Math.min(fn.domain[1], D.a+state.rho*2.3);
+    let yMin=Infinity,yMax=-Infinity;
+    const curve=[], tangent=[], trueTan=[], secant=[];
+    const sec=secantSlope(fn,D.a,D.h);
+    for(let i=0;i<=650;i++){
+      const x=xMin+(xMax-xMin)*i/650;
+      const y=fn.f(x);
+      const t=D.fa+D.m*(x-D.a);
+      const td=Number.isFinite(D.d)?D.fa+D.d*(x-D.a):NaN;
+      curve.push({x,y});
+      tangent.push({x,y:t});
+      if(Number.isFinite(td)) trueTan.push({x,y:td});
+      if(Number.isFinite(sec)) secant.push({x,y:D.fa+sec*(x-D.a)});
+      if(Number.isFinite(y)){yMin=Math.min(yMin,y,t);yMax=Math.max(yMax,y,t);}
+      if(Number.isFinite(td)){yMin=Math.min(yMin,td);yMax=Math.max(yMax,td);}
+    }
+    yMin=Math.min(yMin,D.fx,D.A,D.fa)-.18*(yMax-yMin+1e-6);
+    yMax=Math.max(yMax,D.fx,D.A,D.fa)+.18*(yMax-yMin+1e-6);
+
+    const X=x=>lin(x,xMin,xMax,plot.x,plot.x+plot.w);
+    const Y=y=>lin(y,yMin,yMax,plot.y+plot.h,plot.y);
+
+    let grid='';
+    for(let i=0;i<=6;i++){
+      const xx=xMin+(xMax-xMin)*i/6, yy=yMin+(yMax-yMin)*i/6;
+      grid+=`<line x1="${X(xx)}" y1="${plot.y}" x2="${X(xx)}" y2="${plot.y+plot.h}" stroke="${css('--grid')}"/>`;
+      grid+=`<line x1="${plot.x}" y1="${Y(yy)}" x2="${plot.x+plot.w}" y2="${Y(yy)}" stroke="${css('--grid')}"/>`;
+    }
+
+    const col=D.diff?css('--curve'):css('--bad');
+    const hLeft=Math.max(xMin,D.a-state.rho), hRight=Math.min(xMax,D.a+state.rho);
+    const safeX = v => clamp(v, plot.x+6, plot.x+plot.w-6);
+    const safeY = v => clamp(v, plot.y+6, plot.y+plot.h-6);
+
+    el.mainSvg.innerHTML=`
+      <rect x="0" y="0" width="${W}" height="${H}" rx="26" fill="${css('--paper')}"/>
+      ${text(plot.x,40,'local graph and affine model',{size:21,weight:700,family:'Georgia, serif'})}
+      ${text(map.x-10,88,'linear map h ↦ mh',{size:18,weight:700,family:'Georgia, serif'})}
+
+      <rect x="${plot.x}" y="${plot.y}" width="${plot.w}" height="${plot.h}" rx="22" fill="transparent" stroke="${css('--line')}"/>
+      ${grid}
+      <rect x="${X(hLeft)}" y="${plot.y}" width="${X(hRight)-X(hLeft)}" height="${plot.h}" rx="14" fill="${css('--modelSoft')}" stroke="${css('--model')}" stroke-dasharray="8 7"/>
+      <line x1="${plot.x}" y1="${Y(0)}" x2="${plot.x+plot.w}" y2="${Y(0)}" stroke="${css('--line')}"/>
+
+      ${trueTan.length ? `<path d="${path(trueTan,X,Y)}" fill="none" stroke="${css('--gold')}" stroke-width="2.3" stroke-dasharray="6 7" opacity=".85"/>` : ''}
+      ${secant.length && state.mode!=='secant' ? `<path d="${path(secant,X,Y)}" fill="none" stroke="${css('--bad')}" stroke-width="2" stroke-dasharray="4 7" opacity=".65"/>` : ''}
+      <path d="${path(tangent,X,Y)}" fill="none" stroke="${css('--model')}" stroke-width="3.2" stroke-dasharray="9 7"/>
+      <path d="${path(curve,X,Y)}" fill="none" stroke="${col}" stroke-width="3.2" stroke-linecap="round"/>
+
+      <line x1="${X(D.a)}" y1="${plot.y}" x2="${X(D.a)}" y2="${plot.y+plot.h}" stroke="${css('--gold')}" stroke-dasharray="6 6" stroke-width="2"/>
+      <line x1="${X(D.x)}" y1="${Y(D.fx)}" x2="${X(D.x)}" y2="${Y(D.A)}" stroke="${col}" stroke-width="4"/>
+      <line x1="${X(D.a)}" y1="${Y(D.fa)}" x2="${X(D.x)}" y2="${Y(D.fa)}" stroke="${css('--gold')}" stroke-width="2.3"/>
+      <line x1="${X(D.x)}" y1="${Y(D.fa)}" x2="${X(D.x)}" y2="${Y(D.A)}" stroke="${css('--model')}" stroke-width="2.3"/>
+      <circle cx="${X(D.a)}" cy="${Y(D.fa)}" r="7.5" fill="${css('--gold')}" stroke="${css('--paper')}" stroke-width="2.4"/>
+      <circle cx="${X(D.x)}" cy="${Y(D.fx)}" r="7.2" fill="${col}" stroke="${css('--paper')}" stroke-width="2.3"/>
+      <circle cx="${X(D.x)}" cy="${Y(D.A)}" r="6.6" fill="${css('--paper')}" stroke="${css('--model')}" stroke-width="2.3"/>
+
+      ${text(safeX(X(D.x)+12), safeY((Y(D.fx)+Y(D.A))/2-7), `rₘ(h)≈${fmt(D.r)}`,{size:14,fill:col,weight:700})}
+      ${text(X(D.a),plot.y+plot.h+24,'a',{size:14,fill:css('--gold'),weight:700,anchor:'middle'})}
+      ${text(X(D.x),plot.y+plot.h+24,'a+h',{size:14,fill:col,weight:700,anchor:'middle'})}
+
+      <rect x="${plot.x+16}" y="${plot.y+16}" width="380" height="42" rx="15" fill="${css('--paper')}" stroke="${css('--line')}"/>
+      <circle cx="${plot.x+34}" cy="${plot.y+42}" r="5" fill="${col}"/>
+      ${text(plot.x+46,plot.y+47,'function',{size:13,fill:css('--muted')})}
+      <circle cx="${plot.x+122}" cy="${plot.y+42}" r="5" fill="${css('--model')}"/>
+      ${text(plot.x+134,plot.y+47,'chosen affine line',{size:13,fill:css('--muted')})}
+      <circle cx="${plot.x+268}" cy="${plot.y+42}" r="5" fill="${css('--gold')}"/>
+      ${text(plot.x+280,plot.y+47,'true tangent',{size:13,fill:css('--muted')})}
+
+      <rect x="${map.x}" y="${map.y}" width="${map.w}" height="${map.h}" rx="24" fill="${css('--modelSoft')}" stroke="${css('--line')}"/>
+      <line x1="${map.x+map.w/2}" y1="${map.y+40}" x2="${map.x+map.w/2}" y2="${map.y+map.h-40}" stroke="${css('--muted')}" stroke-width="2"/>
+      <line x1="${map.x+28}" y1="${map.y+map.h/2}" x2="${map.x+map.w-28}" y2="${map.y+map.h/2}" stroke="${css('--muted')}" stroke-width="2"/>
+      <line x1="${map.x+map.w/2}" y1="${map.y+map.h/2}" x2="${map.x+map.w/2+clamp(55*D.h/state.rho,-58,58)}" y2="${map.y+map.h/2-clamp(70*D.m*D.h,-135,135)}" stroke="${css('--model')}" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="${map.x+map.w/2}" cy="${map.y+map.h/2}" r="7" fill="${css('--gold')}"/>
+      <circle cx="${map.x+map.w/2+clamp(55*D.h/state.rho,-58,58)}" cy="${map.y+map.h/2-clamp(70*D.m*D.h,-135,135)}" r="7" fill="${css('--model')}" stroke="${css('--paper')}" stroke-width="2.3"/>
+      ${text(map.x+map.w/2,map.y+map.h+32,`m h ≈ ${fmt(D.m*D.h)}`,{size:15,fill:css('--model'),weight:700,anchor:'middle'})}
+    `;
+
+    el.derMetric.textContent = Number.isFinite(D.d) ? `f′(a) ≈ ${fmt(D.d)}` : 'does not exist';
+    el.modelMetric.textContent = `m ≈ ${fmt(D.m)}`;
+    el.errMetric.textContent = `rₘ(h) ≈ ${fmt(D.r)}`;
+    el.ratioMetric.textContent = `≈ ${fmt(D.ratio)}`;
+    const ok = D.diff && (state.mode==='true' || Math.abs(D.m-D.d)<.08);
+    el.status.textContent = D.diff ? (ok?'linear approximation working':'wrong slope: error stays linear') : 'no derivative at this point';
+    el.status.style.color = ok ? css('--curve') : css('--bad');
+    el.status.style.background = ok ? css('--curveSoft') : css('--badSoft');
+  }
+
+  function renderDiagnostic(){
+    const D=current(), fn=D.fn;
+    const W=900,H=520;
+    const top={x:70,y:52,w:760,h:170};
+    const bottom={x:70,y:292,w:760,h:170};
+    const R=state.rho;
+    const hs=[];
+    for(let i=0;i<=300;i++){
+      const h=-R+2*R*i/300;
+      if(Math.abs(h)<R/200) continue;
+      const x=D.a+h;
+      if(x<fn.domain[0] || x>fn.domain[1]) continue;
+      const q=secantSlope(fn,D.a,h);
+      const m=D.m;
+      const r=fn.f(x)-D.fa-m*h;
+      hs.push({h,q,ratio:Math.abs(r)/Math.abs(h)});
+    }
+
+    let qMin=Infinity,qMax=-Infinity,eMax=0;
+    hs.forEach(p=>{
+      if(Number.isFinite(p.q)){qMin=Math.min(qMin,p.q);qMax=Math.max(qMax,p.q);}
+      if(Number.isFinite(p.ratio)) eMax=Math.max(eMax,p.ratio);
+    });
+    if(!Number.isFinite(qMin)){qMin=-1;qMax=1;}
+    if(Math.abs(qMax-qMin)<.2){qMax+=.5;qMin-=.5;}
+    qMin-=.12*(qMax-qMin); qMax+=.12*(qMax-qMin);
+    eMax=Math.max(eMax,.4)*1.15;
+
+    const X=h=>lin(h,-R,R,top.x,top.x+top.w);
+    const Yq=q=>lin(q,qMin,qMax,top.y+top.h,top.y);
+    const Ye=e=>lin(e,0,eMax,bottom.y+bottom.h,bottom.y);
+
+    let grid='';
+    for(let i=0;i<=5;i++){
+      const h=-R+2*R*i/5;
+      grid += `<line x1="${X(h)}" y1="${top.y}" x2="${X(h)}" y2="${top.y+top.h}" stroke="${css('--grid')}"/>`;
+      grid += `<line x1="${X(h)}" y1="${bottom.y}" x2="${X(h)}" y2="${bottom.y+bottom.h}" stroke="${css('--grid')}"/>`;
+    }
+
+    const qLeft=hs.filter(p=>p.h<0 && Number.isFinite(p.q));
+    const qRight=hs.filter(p=>p.h>0 && Number.isFinite(p.q));
+    const ePts=hs.filter(p=>Number.isFinite(p.ratio));
+    const col=D.diff?css('--curve'):css('--bad');
+    const wrongCol=(D.diff && Math.abs(D.m-D.d)>.08)?css('--bad'):col;
+
+    el.diagnosticSvg.innerHTML=`
+      <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+      ${text(top.x,30,'secant slopes  q(h) = [f(a+h)-f(a)]/h',{size:18,weight:700,family:'Georgia, serif'})}
+      ${text(bottom.x,270,'normalized error  |f(a+h)-f(a)-mh| / |h|',{size:18,weight:700,family:'Georgia, serif'})}
+
+      <rect x="${top.x}" y="${top.y}" width="${top.w}" height="${top.h}" rx="18" fill="transparent" stroke="${css('--line')}"/>
+      ${grid}
+      <line x1="${X(0)}" y1="${top.y}" x2="${X(0)}" y2="${top.y+top.h}" stroke="${css('--gold')}" stroke-dasharray="6 6" stroke-width="2"/>
+      ${Number.isFinite(D.d) ? `<line x1="${top.x}" y1="${Yq(D.d)}" x2="${top.x+top.w}" y2="${Yq(D.d)}" stroke="${css('--model')}" stroke-width="2.2" stroke-dasharray="8 7"/>` : ''}
+      ${qLeft.length ? `<path d="${path(qLeft.map(p=>({x:p.h,y:p.q})),X,Yq)}" fill="none" stroke="${css('--bad')}" stroke-width="2.5" opacity=".8"/>` : ''}
+      ${qRight.length ? `<path d="${path(qRight.map(p=>({x:p.h,y:p.q})),X,Yq)}" fill="none" stroke="${css('--curve')}" stroke-width="2.5" opacity=".9"/>` : ''}
+      ${Number.isFinite(D.d) ? text(top.x+10,Yq(D.d)-8,'f′(a)',{size:13,fill:css('--model'),weight:700}) : text(top.x+10,top.y+24,'no common secant limit',{size:13,fill:css('--bad'),weight:700})}
+
+      <rect x="${bottom.x}" y="${bottom.y}" width="${bottom.w}" height="${bottom.h}" rx="18" fill="transparent" stroke="${css('--line')}"/>
+      <line x1="${X(0)}" y1="${bottom.y}" x2="${X(0)}" y2="${bottom.y+bottom.h}" stroke="${css('--gold')}" stroke-dasharray="6 6" stroke-width="2"/>
+      <path d="${path(ePts.map(p=>({x:p.h,y:p.ratio})),X,Ye)}" fill="none" stroke="${wrongCol}" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="${X(D.h)}" cy="${Ye(Math.min(eMax,D.ratio))}" r="7.5" fill="${wrongCol}" stroke="${css('--paper')}" stroke-width="2.3"/>
+      ${text(X(0),bottom.y+bottom.h+24,'h=0',{size:13,fill:css('--gold'),weight:700,anchor:'middle'})}
+      ${text(bottom.x+bottom.w-8,500,(D.diff && Math.abs(D.m-D.d)<.08)?'true slope: error tends to 0':'wrong/no slope: error remains first-order',{size:14,fill:wrongCol,weight:700,anchor:'end'})}
+    `;
+  }
+
+  function renderStructure(){
+    const D=current();
+    const W=900,H=520;
+    const cx=450, top=80;
+    const col=D.diff?css('--curve'):css('--bad');
+    const ok = D.diff && (state.mode==='true' || Math.abs(D.m-D.d)<.08);
+
+    function box(x,y,w,h,label,sub,color){
+      return `
+        <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="22" fill="${color}22" stroke="${color}" stroke-width="1.8"/>
+        ${text(x+w/2,y+34,label,{size:18,fill:color,weight:700,anchor:'middle',family:'Georgia, serif'})}
+        ${text(x+w/2,y+62,sub,{size:13,fill:css('--muted'),anchor:'middle'})}
+      `;
+    }
+    function arrow(x1,y1,x2,y2,color){
+      const angle=Math.atan2(y2-y1,x2-x1);
+      const ax=x2-10*Math.cos(angle), ay=y2-10*Math.sin(angle);
+      const p1=`${ax-5*Math.cos(angle-Math.PI/2)},${ay-5*Math.sin(angle-Math.PI/2)}`;
+      const p2=`${x2},${y2}`;
+      const p3=`${ax-5*Math.cos(angle+Math.PI/2)},${ay-5*Math.sin(angle+Math.PI/2)}`;
+      return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="2.4"/><polygon points="${p1} ${p2} ${p3}" fill="${color}"/>`;
+    }
+
+    el.structureSvg.innerHTML=`
+      <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+      ${text(70,32,'definition as a decomposition',{size:20,weight:700,family:'Georgia, serif'})}
+
+      ${box(60,84,190,92,'input','h = x − a',css('--gold'))}
+      ${box(355,84,190,92,'linear part',`m h ≈ ${fmt(D.m*D.h)}`,css('--model'))}
+      ${box(650,84,190,92,'output','first-order change',css('--curve'))}
+      ${arrow(250,130,355,130,css('--model'))}
+      ${arrow(545,130,650,130,css('--curve'))}
+
+      <rect x="85" y="245" width="730" height="145" rx="28" fill="${ok?css('--curveSoft'):css('--badSoft')}" stroke="${ok?css('--curve'):css('--bad')}" stroke-width="1.8"/>
+      ${text(450,285,'f(a+h) − f(a) = m h + rₘ(h)',{size:23,weight:700,anchor:'middle',family:'Georgia, serif',fill:css('--text')})}
+      ${text(450,322,`current:  ${fmt(D.fx-D.fa)}  =  ${fmt(D.m*D.h)}  +  ${fmt(D.r)}`,{size:17,weight:700,anchor:'middle',fill:ok?css('--curve'):css('--bad')})}
+      ${text(450,356,ok?'the remainder is smaller than the input near zero':'the remainder is still linear-sized or worse',{size:15,anchor:'middle',fill:ok?css('--curve'):css('--bad'),weight:700})}
+
+      <line x1="170" y1="420" x2="730" y2="420" stroke="${css('--line')}" stroke-width="2"/>
+      <circle cx="260" cy="420" r="7" fill="${css('--gold')}"/>
+      ${text(260,450,'continuity: change → 0',{size:14,anchor:'middle',fill:css('--muted')})}
+      <circle cx="450" cy="420" r="7" fill="${css('--model')}"/>
+      ${text(450,450,'subtract a line',{size:14,anchor:'middle',fill:css('--muted')})}
+      <circle cx="650" cy="420" r="7" fill="${ok?css('--curve'):css('--bad')}"/>
+      ${text(650,450,'differentiability: remainder / |h| → 0',{size:14,anchor:'middle',fill:css('--muted')})}
+    `;
+  }
+
+  function renderMinis(){
+    const W=260,H=170;
+    const frame=(svg,title)=>`<rect x="0" y="0" width="${W}" height="${H}" rx="14" fill="${css('--paper')}"/><rect x="12" y="10" width="236" height="28" rx="12" fill="${css('--card')}" stroke="${css('--line')}"/>${text(24,29,title,{size:12,weight:700})}`+svg;
+
+    let X=x=>lin(x,-1,1,24,238), Y=y=>lin(y,0,1.1,150,48);
+    const absPts=[];
+    for(let i=0;i<140;i++){const x=-1+2*i/139;absPts.push(`${i?'L':'M'} ${X(x)} ${Y(Math.abs(x))}`);}
+    el.miniCont.innerHTML=frame(`
+      <line x1="20" y1="${Y(0)}" x2="240" y2="${Y(0)}" stroke="${css('--line')}"/>
+      <path d="${absPts.join(' ')}" fill="none" stroke="${css('--bad')}" stroke-width="2.8"/>
+      <circle cx="${X(0)}" cy="${Y(0)}" r="6.6" fill="${css('--bad')}" stroke="${css('--paper')}" stroke-width="2.2"/>
+      <path d="M ${X(-.5)} ${Y(.5)} L ${X(0)} ${Y(0)} L ${X(.5)} ${Y(.5)}" fill="none" stroke="${css('--model')}" stroke-width="2" stroke-dasharray="6 5"/>
+    `,'corner: |x|');
+
+    X=x=>lin(x,-1,1,24,238); Y=y=>lin(y,-.2,1,150,48);
+    const smoothPts=[];
+    for(let i=0;i<140;i++){const x=-1+2*i/139;smoothPts.push(`${i?'L':'M'} ${X(x)} ${Y(x*x)}`);}
+    el.miniDiff.innerHTML=frame(`
+      <line x1="20" y1="${Y(0)}" x2="240" y2="${Y(0)}" stroke="${css('--line')}"/>
+      <path d="${smoothPts.join(' ')}" fill="none" stroke="${css('--curve')}" stroke-width="2.8"/>
+      <line x1="${X(-.65)}" y1="${Y(0)}" x2="${X(.65)}" y2="${Y(0)}" stroke="${css('--model')}" stroke-dasharray="7 6" stroke-width="2.4"/>
+      <circle cx="${X(0)}" cy="${Y(0)}" r="6.6" fill="${css('--curve')}" stroke="${css('--paper')}" stroke-width="2.2"/>
+    `,'parabola: x²');
+  }
+
+  function update(){
+    const fn=funcs[state.fn];
+    el.fnLabel.textContent=fn.label;
+    el.aLabel.textContent=fmt(state.a);
+    el.rhoLabel.textContent=fmt(state.rho);
+    el.hLabel.textContent=fmt(state.h);
+    el.mLabel.textContent=fmt(state.m);
+    el.modeLabel.textContent=state.mode;
+    [el.aSlider,el.rhoSlider,el.hSlider,el.mSlider].forEach(fill);
+    el.formula.innerHTML=fn.formula;
+    el.comment.innerHTML=fn.comment;
+  }
+
+  function render(){
+    update();
+    renderMain();
+    renderDiagnostic();
+    renderStructure();
+    renderMinis();
+    if(window.MathJax) MathJax.typesetPromise().catch(()=>{});
+  }
+
+  function sync(){
+    const old=state.fn;
+    state.fn=el.functionSelect.value;
+    if(old !== state.fn){
+      state.a=funcs[state.fn].suggestedA;
+      state.h=funcs[state.fn].suggestedH;
+      const d=trueSlope(funcs[state.fn],state.a);
+      state.m=Number.isFinite(d)?d:0;
+      el.aSlider.value=state.a;
+      el.hSlider.value=state.h;
+      el.mSlider.value=state.m;
+    }
+    state.a=+el.aSlider.value;
+    state.rho=+el.rhoSlider.value;
+    state.h=+el.hSlider.value;
+    state.m=+el.mSlider.value;
+    state.mode=el.slopeMode.value;
+    render();
+  }
+
+  el.functionSelect.addEventListener('change',sync);
+  el.aSlider.addEventListener('input',sync);
+  el.rhoSlider.addEventListener('input',sync);
+  el.hSlider.addEventListener('input',sync);
+  el.mSlider.addEventListener('input',sync);
+  el.slopeMode.addEventListener('change',sync);
+
+  el.theme.addEventListener('click',()=>setTheme(state.theme==='dark'?'light':'dark'));
+  el.theme.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setTheme(state.theme==='dark'?'light':'dark')}});
+
+  el.functionSelect.value=state.fn;
+  el.aSlider.value=state.a;
+  el.rhoSlider.value=state.rho;
+  el.hSlider.value=state.h;
+  el.mSlider.value=state.m;
+  el.slopeMode.value=state.mode;
+  setTheme(state.theme);
+</script>
+</body>
+</html>

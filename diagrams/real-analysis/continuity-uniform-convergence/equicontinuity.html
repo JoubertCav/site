@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive real analysis diagram for equicontinuity.">
+  <title>Equicontinuity | Real Analysis Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  <style>
+    :root{
+      --bg:#f7f3ea;
+      --paper:#fffdf8;
+      --card:rgba(255,255,255,.74);
+      --text:#1d2830;
+      --muted:#6d7982;
+      --line:#ddd5c7;
+      --grid:rgba(29,40,48,.075);
+      --accent:#287a76;
+      --accentSoft:rgba(40,122,118,.12);
+      --limit:#536f91;
+      --limitSoft:rgba(83,111,145,.13);
+      --bad:#c46a55;
+      --badSoft:rgba(196,106,85,.13);
+      --gold:#b58a3c;
+      --shadow:0 18px 44px rgba(38,48,58,.08);
+      --switch:#eee7da;
+      --thumb:#fffaf0;
+    }
+    body.dark{
+      --bg:#0d1318;
+      --paper:#121b22;
+      --card:rgba(18,27,34,.84);
+      --text:#edf4f6;
+      --muted:#aab7c0;
+      --line:#26333d;
+      --grid:rgba(237,244,246,.075);
+      --accent:#6ccbc3;
+      --accentSoft:rgba(108,203,195,.12);
+      --limit:#9abce0;
+      --limitSoft:rgba(154,188,224,.13);
+      --bad:#ef9a82;
+      --badSoft:rgba(239,154,130,.14);
+      --gold:#e0bd70;
+      --shadow:0 22px 54px rgba(0,0,0,.28);
+      --switch:#1a242c;
+      --thumb:#17222b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(40,122,118,.07), transparent 25%),
+        linear-gradient(180deg,#fbf8f2,var(--bg));
+    }
+    body.dark{
+      background:
+        radial-gradient(circle at 0% 0%, rgba(108,203,195,.08), transparent 25%),
+        linear-gradient(180deg,#101920,var(--bg));
+    }
+    .wrap{max-width:1500px;margin:0 auto;padding:24px 18px 34px}
+    header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+    h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.1rem,4vw,3.4rem);letter-spacing:-.035em;line-height:1.05}
+    .subtitle{margin:.55rem 0 0;color:var(--muted);font-size:1.04rem;line-height:1.55;max-width:840px}
+    .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04);font-size:.92rem}
+    .theme{
+      display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;
+      padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04)
+    }
+    .theme .label{font-size:.92rem;color:var(--muted);min-width:70px}
+    .switch{position:relative;width:70px;height:36px;border-radius:999px;background:var(--switch);border:1px solid var(--line)}
+    .switch:before,.switch:after{position:absolute;top:50%;transform:translateY(-50%);font-size:13px;opacity:.75}
+    .switch:before{content:"☀";left:10px}.switch:after{content:"☾";right:10px}
+    .knob{position:absolute;left:3px;top:3px;width:28px;height:28px;border-radius:50%;background:var(--thumb);border:1px solid var(--line);box-shadow:0 4px 12px rgba(0,0,0,.16);transition:left .25s ease;display:grid;place-items:center;font-size:13px}
+    body.dark .knob{left:37px}
+
+    .layout{display:grid;grid-template-columns:318px minmax(0,1fr);gap:18px;align-items:start}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+    aside{padding:18px;position:sticky;top:16px}
+    .head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px}
+    h2,h3{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.02em;margin:0}
+    .head p{margin:4px 0 0;color:var(--muted);font-size:.94rem;line-height:1.42}
+    .tag{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:var(--muted);font-size:.82rem;white-space:nowrap;background:rgba(127,127,127,.04)}
+    .eq,.note{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:12px 14px;margin-bottom:14px}
+    .eq{font-size:.92rem}
+    .note{color:var(--muted);font-size:.93rem;line-height:1.48;margin:14px 0 0}
+    .control{margin:14px 0 16px}
+    .control label{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;font-weight:650}
+    .control small{color:var(--muted);font-weight:500}
+    select,button{width:100%;background:var(--paper);color:var(--text);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.98rem}
+    input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:8px;border-radius:999px;border:1px solid var(--line);background:linear-gradient(90deg,var(--accent),var(--accent));background-repeat:no-repeat;background-size:50% 100%}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--accent);border:2px solid var(--paper);box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer}
+
+    main{display:grid;gap:18px}
+    .hero{padding:18px}
+    .heroTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+    .heroTop p{margin:4px 0 0;color:var(--muted);line-height:1.45;max-width:760px}
+    .status{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:.92rem;background:var(--accentSoft);color:var(--accent);white-space:nowrap}
+    .split{display:grid;grid-template-columns:minmax(0,1fr) 302px;gap:16px}
+    .svgBox{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:10px}
+    .plotSvg{display:block;width:100%;height:auto}
+    .metrics{display:grid;gap:10px}
+    .metric{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:14px}
+    .metric h4{font-family:Georgia,"Times New Roman",serif;margin:0 0 6px;font-size:1rem}
+    .metric p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.4}
+    .metric strong{display:block;margin-top:7px;color:var(--accent)}
+    .lower{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .panel{padding:18px}
+    .smallGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .mini{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:10px}
+    .mini h4{margin:0 0 8px;font-family:Georgia,"Times New Roman",serif;font-size:.98rem}
+    .mini p{margin:8px 0 0;color:var(--muted);font-size:.89rem;line-height:1.38}
+    .footer{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .footer div{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.92rem;line-height:1.42}
+    @media(max-width:1180px){.layout{grid-template-columns:1fr}aside{position:static}.split,.lower{grid-template-columns:1fr}}
+    @media(max-width:900px){.smallGrid,.footer{grid-template-columns:1fr}.wrap{padding:18px 14px 28px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Equicontinuity</h1>
+        <p class="subtitle">One \(\delta\) must control every function in the family. Visually: inside one horizontal window, no curve in the family may move vertically by more than \(\varepsilon\).</p>
+      </div>
+      <div class="actions">
+        <div class="pill">uniform control over a family</div>
+        <div class="pill">Arzelà–Ascoli intuition</div>
+        <div id="theme" class="theme" role="button" tabindex="0">
+          <span id="themeLabel" class="label">light mode</span>
+          <div class="switch"><div id="knob" class="knob">☀</div></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="card">
+        <div class="head">
+          <div>
+            <h2>Controls</h2>
+            <p>Test one common \(\delta\) for the whole family.</p>
+          </div>
+          <div class="tag">family test</div>
+        </div>
+
+        <div class="eq">
+          \[
+          \forall\varepsilon>0\ \exists\delta>0:
+          |x-y|<\delta
+          \Rightarrow |f(x)-f(y)|<\varepsilon
+          \quad \forall f\in\mathcal F
+          \]
+        </div>
+
+        <div class="control">
+          <label>Family <small id="familyLabel"></small></label>
+          <select id="family">
+            <option value="lipschitz">bounded slopes: \(a\sin x+b\)</option>
+            <option value="translations">translations: \(\sin(x+t)\)</option>
+            <option value="oscillatory">oscillatory: \(\sin(kx)\)</option>
+            <option value="spikes">spikes: moving triangular peaks</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label>Visible functions \(m\) <small id="mLabel"></small></label>
+          <input id="mSlider" type="range" min="4" max="24" step="1" value="12">
+        </div>
+
+        <div class="control">
+          <label>\(\varepsilon\) <small id="epsLabel"></small></label>
+          <input id="epsSlider" type="range" min="0.05" max="1.0" step="0.01" value="0.28">
+        </div>
+
+        <div class="control">
+          <label>candidate \(\delta\) <small id="deltaLabel"></small></label>
+          <input id="deltaSlider" type="range" min="0.02" max="1.2" step="0.01" value="0.22">
+        </div>
+
+        <div class="control">
+          <label>center \(x_0\) <small id="xLabel"></small></label>
+          <input id="xSlider" type="range" min="0" max="1" step="0.01" value="0.45">
+        </div>
+
+        <div id="formula" class="note"></div>
+        <div id="comment" class="note"></div>
+      </aside>
+
+      <main>
+        <section class="card hero">
+          <div class="heroTop">
+            <div>
+              <h2>Main diagram</h2>
+              <p>Teal curves obey the common window. Coral curves violate it. The same \(\delta\) is tested against every function.</p>
+            </div>
+            <div id="status" class="status">equicontinuous family</div>
+          </div>
+
+          <div class="split">
+            <div class="svgBox">
+              <svg id="mainSvg" class="plotSvg" viewBox="0 0 1220 780"></svg>
+            </div>
+            <div class="metrics">
+              <div class="metric">
+                <h4>Family status</h4>
+                <p>What happens for the full family.</p>
+                <strong id="typeMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Current modulus</h4>
+                <p>\(\omega_{\mathcal F}(\delta)\) for the visible family.</p>
+                <strong id="omegaMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Worst function</h4>
+                <p>The curve that moves the most.</p>
+                <strong id="worstMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Window test</h4>
+                <p>Whether \(\omega_{\mathcal F}(\delta)<\varepsilon\).</p>
+                <strong id="bandMetric"></strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="lower">
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Modulus of continuity</h3>
+                <p>Equicontinuity means this curve tends to \(0\) as \(\delta\downarrow0\).</p>
+              </div>
+              <div class="tag">\(\omega_{\mathcal F}\)</div>
+            </div>
+            <div class="svgBox">
+              <svg id="modulusSvg" class="plotSvg" viewBox="0 0 900 420"></svg>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Compactness in function spaces</h3>
+                <p>The Arzelà–Ascoli picture.</p>
+              </div>
+              <div class="tag">precompactness</div>
+            </div>
+            <div class="smallGrid">
+              <div class="mini">
+                <h4>Equicontinuous + bounded</h4>
+                <svg id="miniGood" class="plotSvg" viewBox="0 0 260 170"></svg>
+                <p>Graphs cannot oscillate too fast; subsequences can settle.</p>
+              </div>
+              <div class="mini">
+                <h4>No equicontinuity</h4>
+                <svg id="miniBad" class="plotSvg" viewBox="0 0 260 170"></svg>
+                <p>Rapid oscillations or spikes prevent compactness in sup norm.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <section class="footer">
+          <div><strong>Equicontinuity.</strong> One \(\delta\) works for all \(x,y\) and all \(f\in\mathcal F\).</div>
+          <div><strong>Modulus.</strong> \(\omega_{\mathcal F}(\delta)=\sup_{f\in\mathcal F,\ |x-y|\le\delta}|f(x)-f(y)|\).</div>
+          <div><strong>Arzelà–Ascoli.</strong> On compact \(K\), boundedness plus equicontinuity gives relative compactness in \(C(K)\).</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const families = {
+      lipschitz:{
+        label:'equicontinuous',
+        formula:'\\[\\mathcal F=\\{a\\sin x+b:\\ 0.45\\le a\\le1,\\ |b|\\le0.35\\}.\\]',
+        comment:'All slopes are uniformly bounded. One small horizontal window controls every curve.',
+        domain:[0,2*Math.PI], range:[-1.55,1.55], fullStatus:'equicontinuous',
+        f:(x,i,m)=> {
+          const a = 0.45 + 0.55*(i/(Math.max(1,m-1)));
+          const b = -0.32 + 0.64*((i*7)%m)/(Math.max(1,m-1));
+          return a*Math.sin(x)+b;
+        }
+      },
+      translations:{
+        label:'equicontinuous',
+        formula:'\\[\\mathcal F=\\{\\sin(x+t):\\ 0\\le t\\le 2\\pi\\}.\\]',
+        comment:'The family shifts horizontally, but all members have the same slope bound.',
+        domain:[0,2*Math.PI], range:[-1.25,1.25], fullStatus:'equicontinuous',
+        f:(x,i,m)=> Math.sin(x + 2*Math.PI*i/Math.max(1,m))
+      },
+      oscillatory:{
+        label:'not equicontinuous',
+        formula:'\\[\\mathcal F=\\{\\sin(kx): k\\in\\mathbb N\\}.\\]',
+        comment:'For large \(k\), tiny horizontal changes can create large vertical changes. No common \(\delta\) survives the full family.',
+        domain:[0,2*Math.PI], range:[-1.25,1.25], fullStatus:'not equicontinuous',
+        f:(x,i,m)=> Math.sin((i+1)*x)
+      },
+      spikes:{
+        label:'not equicontinuous',
+        formula:'\\[f_k(x)=\\max(0,1-k|x-1/k|),\\quad 0\\le x\\le1.\\]',
+        comment:'Each spike is continuous, but the family has arbitrarily steep peaks.',
+        domain:[0,1], range:[-0.12,1.15], fullStatus:'not equicontinuous',
+        f:(x,i,m)=> {
+          const k=i+1;
+          return Math.max(0,1-k*Math.abs(x-1/k));
+        }
+      }
+    };
+
+    const state = {
+      family:'lipschitz',
+      m:12,
+      eps:.28,
+      delta:.22,
+      xT:.45,
+      theme:localStorage.getItem('equicontinuity-theme') || 'light'
+    };
+
+    const el = {
+      theme:document.getElementById('theme'),
+      themeLabel:document.getElementById('themeLabel'),
+      knob:document.getElementById('knob'),
+      family:document.getElementById('family'),
+      mSlider:document.getElementById('mSlider'),
+      epsSlider:document.getElementById('epsSlider'),
+      deltaSlider:document.getElementById('deltaSlider'),
+      xSlider:document.getElementById('xSlider'),
+      familyLabel:document.getElementById('familyLabel'),
+      mLabel:document.getElementById('mLabel'),
+      epsLabel:document.getElementById('epsLabel'),
+      deltaLabel:document.getElementById('deltaLabel'),
+      xLabel:document.getElementById('xLabel'),
+      formula:document.getElementById('formula'),
+      comment:document.getElementById('comment'),
+      status:document.getElementById('status'),
+      mainSvg:document.getElementById('mainSvg'),
+      modulusSvg:document.getElementById('modulusSvg'),
+      miniGood:document.getElementById('miniGood'),
+      miniBad:document.getElementById('miniBad'),
+      typeMetric:document.getElementById('typeMetric'),
+      omegaMetric:document.getElementById('omegaMetric'),
+      worstMetric:document.getElementById('worstMetric'),
+      bandMetric:document.getElementById('bandMetric')
+    };
+
+    const css=v=>getComputedStyle(document.body).getPropertyValue(v).trim();
+    const lin=(x,a,b,c,d)=>c+(x-a)*(d-c)/(b-a);
+    const fmt=x=>(x<0?'−':'')+Math.abs(x).toFixed(2);
+
+    function setTheme(t){
+      state.theme=t;
+      document.body.classList.toggle('dark', t==='dark');
+      localStorage.setItem('equicontinuity-theme', t);
+      el.themeLabel.textContent=t==='dark'?'dark mode':'light mode';
+      el.knob.textContent=t==='dark'?'☾':'☀';
+      render();
+    }
+
+    function fill(input){
+      const min=+input.min,max=+input.max,val=+input.value;
+      input.style.backgroundSize=((val-min)/(max-min)*100)+'% 100%';
+    }
+
+    function text(x,y,s,o={}){
+      return `<text x="${x}" y="${y}" fill="${o.fill||css('--text')}" font-size="${o.size||14}" font-family="${o.family||'Inter, sans-serif'}" font-weight="${o.weight||500}" text-anchor="${o.anchor||'start'}">${s}</text>`;
+    }
+
+    function path(points,X,Y){
+      return points.map((p,i)=>`${i?'L':'M'} ${X(p.x).toFixed(2)} ${Y(p.y).toFixed(2)}`).join(' ');
+    }
+
+    function x0(){
+      const fam=families[state.family], [a,b]=fam.domain;
+      return a+(b-a)*state.xT;
+    }
+
+    function localOscillationAtCenter(){
+      const fam=families[state.family], [a,b]=fam.domain;
+      const c=x0(), left=Math.max(a,c-state.delta), right=Math.min(b,c+state.delta);
+      let max=-1, wi=0, wx=c;
+      for(let i=0;i<state.m;i++){
+        const base=fam.f(c,i,state.m);
+        for(let j=0;j<=100;j++){
+          const y=left+(right-left)*j/100;
+          const d=Math.abs(fam.f(y,i,state.m)-base);
+          if(d>max){max=d;wi=i;wx=y;}
+        }
+      }
+      return {omega:max, wi, wx, center:c, inside:max<state.eps};
+    }
+
+    function globalModulus(delta){
+      const fam=families[state.family], [a,b]=fam.domain;
+      let max=0;
+      for(let i=0;i<state.m;i++){
+        const N=140;
+        for(let j=0;j<=N;j++){
+          const x=a+(b-a)*j/N;
+          const lo=Math.max(a,x-delta), hi=Math.min(b,x+delta);
+          const fx=fam.f(x,i,state.m);
+          for(let k=0;k<=12;k++){
+            const y=lo+(hi-lo)*k/12;
+            max=Math.max(max, Math.abs(fam.f(y,i,state.m)-fx));
+          }
+        }
+      }
+      return max;
+    }
+
+    function renderMain(){
+      const fam=families[state.family], [a,b]=fam.domain, [y0,y1]=fam.range;
+      const loc=localOscillationAtCenter();
+      const W=1220,H=780;
+      const top={x:72,y:76,w:850,h:475};
+      const bottom={x:72,y:610,w:850,h:90};
+      const gauge={x:1012,y:124,w:118,h:520};
+      const X=x=>lin(x,a,b,top.x,top.x+top.w);
+      const Y=y=>lin(y,y0,y1,top.y+top.h,top.y);
+      const XB=x=>lin(x,a,b,bottom.x,bottom.x+bottom.w);
+      const maxGauge=Math.max(1.05,state.eps,loc.omega)*1.08;
+      const YG=v=>lin(v,0,maxGauge,gauge.y+gauge.h,gauge.y);
+      const YB=v=>lin(v,0,maxGauge,bottom.y+bottom.h,bottom.y);
+
+      let grid='';
+      for(let i=0;i<=6;i++){
+        const xx=a+(b-a)*i/6, yy=y0+(y1-y0)*i/6;
+        grid+=`<line x1="${X(xx)}" y1="${top.y}" x2="${X(xx)}" y2="${top.y+top.h}" stroke="${css('--grid')}"/>`;
+        grid+=`<line x1="${top.x}" y1="${Y(yy)}" x2="${top.x+top.w}" y2="${Y(yy)}" stroke="${css('--grid')}"/>`;
+      }
+
+      const left=Math.max(a,loc.center-state.delta), right=Math.min(b,loc.center+state.delta);
+      let curves='', windowBars='', oscillationLine='';
+      for(let i=0;i<state.m;i++){
+        const pts=[];
+        for(let j=0;j<=360;j++){
+          const x=a+(b-a)*j/360;
+          pts.push({x,y:fam.f(x,i,state.m)});
+        }
+        const base=fam.f(loc.center,i,state.m);
+        let localMax=0;
+        for(let j=0;j<=120;j++){
+          const y=left+(right-left)*j/120;
+          localMax=Math.max(localMax, Math.abs(fam.f(y,i,state.m)-base));
+        }
+        const good=localMax<state.eps;
+        const col=good?css('--accent'):css('--bad');
+        const opacity= i===loc.wi ? 1 : .42;
+        curves += `<path d="${path(pts,X,Y)}" fill="none" stroke="${col}" stroke-width="${i===loc.wi?3.2:2}" opacity="${opacity}" stroke-linecap="round"/>`;
+
+        const upper=base+state.eps, lower=base-state.eps;
+        if(i===loc.wi){
+          windowBars += `<rect x="${X(left)}" y="${Y(upper)}" width="${X(right)-X(left)}" height="${Y(lower)-Y(upper)}" fill="${good?css('--accentSoft'):css('--badSoft')}" stroke="${col}" stroke-width="1.4" rx="10"/>`;
+          oscillationLine += `<line x1="${X(loc.center)}" y1="${Y(base)}" x2="${X(loc.wx)}" y2="${Y(fam.f(loc.wx,i,state.m))}" stroke="${col}" stroke-width="4"/>
+                              <circle cx="${X(loc.center)}" cy="${Y(base)}" r="7" fill="${col}" stroke="${css('--paper')}" stroke-width="2.3"/>
+                              <circle cx="${X(loc.wx)}" cy="${Y(fam.f(loc.wx,i,state.m))}" r="7" fill="${col}" stroke="${css('--paper')}" stroke-width="2.3"/>`;
+        }
+      }
+
+      const col=loc.inside?css('--accent'):css('--bad');
+      const omegaPath=[];
+      for(let j=0;j<=180;j++){
+        const x=a+(b-a)*j/180;
+        let max=0;
+        for(let i=0;i<state.m;i++){
+          const base=fam.f(x,i,state.m);
+          const lo=Math.max(a,x-state.delta), hi=Math.min(b,x+state.delta);
+          for(let k=0;k<=10;k++){
+            const y=lo+(hi-lo)*k/10;
+            max=Math.max(max, Math.abs(fam.f(y,i,state.m)-base));
+          }
+        }
+        omegaPath.push({x,y:max});
+      }
+
+      el.mainSvg.innerHTML=`
+        <rect x="0" y="0" width="${W}" height="${H}" rx="26" fill="${css('--paper')}"/>
+        ${text(top.x,42,'common δ-window tested on the family',{size:21,weight:700,family:'Georgia, serif'})}
+        ${text(bottom.x,590,'local worst oscillation along the domain',{size:18,weight:700,family:'Georgia, serif'})}
+        ${text(gauge.x-8,82,'window test',{size:18,weight:700,family:'Georgia, serif'})}
+
+        <rect x="${top.x}" y="${top.y}" width="${top.w}" height="${top.h}" rx="22" fill="transparent" stroke="${css('--line')}"/>
+        ${grid}
+        <line x1="${top.x}" y1="${Y(0)}" x2="${top.x+top.w}" y2="${Y(0)}" stroke="${css('--line')}"/>
+        <rect x="${X(left)}" y="${top.y}" width="${X(right)-X(left)}" height="${top.h}" fill="${css('--limitSoft')}" stroke="${css('--limit')}" stroke-width="1.4" stroke-dasharray="8 7" rx="14"/>
+        ${windowBars}
+        ${curves}
+        ${oscillationLine}
+        <line x1="${X(loc.center)}" y1="${top.y}" x2="${X(loc.center)}" y2="${top.y+top.h}" stroke="${css('--gold')}" stroke-width="2" stroke-dasharray="6 6"/>
+        ${text(X(loc.center),top.y+top.h+24,'x₀',{size:14,fill:css('--gold'),weight:700,anchor:'middle'})}
+        ${text(top.x+16,top.y+28,'same δ for every curve',{size:14,fill:css('--limit'),weight:700})}
+        ${text(top.x+top.w-10,top.y+top.h+24,'x',{size:13,fill:css('--muted'),anchor:'end'})}
+
+        <rect x="${bottom.x}" y="${bottom.y}" width="${bottom.w}" height="${bottom.h}" rx="18" fill="transparent" stroke="${css('--line')}"/>
+        <line x1="${bottom.x}" y1="${YB(state.eps)}" x2="${bottom.x+bottom.w}" y2="${YB(state.eps)}" stroke="${css('--limit')}" stroke-dasharray="8 7" stroke-width="2"/>
+        <path d="${path(omegaPath,XB,YB)}" fill="none" stroke="${col}" stroke-width="3"/>
+        ${text(bottom.x+10,YB(state.eps)-9,'ε',{size:14,fill:css('--limit'),weight:700})}
+
+        <rect x="${gauge.x}" y="${gauge.y}" width="${gauge.w}" height="${gauge.h}" rx="24" fill="${loc.inside?css('--accentSoft'):css('--badSoft')}" stroke="${css('--line')}"/>
+        <line x1="${gauge.x+gauge.w/2}" y1="${gauge.y+24}" x2="${gauge.x+gauge.w/2}" y2="${gauge.y+gauge.h-24}" stroke="${css('--muted')}" stroke-width="2"/>
+        <rect x="${gauge.x+gauge.w/2-20}" y="${YG(loc.omega)}" width="40" height="${YG(0)-YG(loc.omega)}" rx="18" fill="${loc.inside?css('--accentSoft'):css('--badSoft')}" stroke="${col}" stroke-width="1.6"/>
+        <line x1="${gauge.x+18}" y1="${YG(state.eps)}" x2="${gauge.x+gauge.w-18}" y2="${YG(state.eps)}" stroke="${css('--limit')}" stroke-width="2.2" stroke-dasharray="7 6"/>
+        <circle cx="${gauge.x+gauge.w/2}" cy="${YG(loc.omega)}" r="8" fill="${col}" stroke="${css('--paper')}" stroke-width="2.4"/>
+        ${text(gauge.x+gauge.w/2,YG(state.eps)-12,'ε',{size:14,fill:css('--limit'),weight:700,anchor:'middle'})}
+        ${text(gauge.x+gauge.w/2,YG(loc.omega)-12,'ω',{size:14,fill:col,weight:700,anchor:'middle'})}
+        ${text(gauge.x+gauge.w/2,gauge.y+gauge.h+34, loc.inside?'ω < ε':'ω ≥ ε',{size:15,fill:col,weight:700,anchor:'middle'})}
+      `;
+
+      el.typeMetric.textContent=fam.fullStatus;
+      el.omegaMetric.textContent=`ω(δ) ≈ ${loc.omega.toFixed(3)}`;
+      el.worstMetric.textContent=`function #${loc.wi+1}`;
+      el.bandMetric.textContent=loc.inside?'common δ works here':'common δ fails here';
+      el.status.textContent=fam.fullStatus;
+      el.status.style.color=fam.fullStatus==='equicontinuous'?css('--accent'):css('--bad');
+      el.status.style.background=fam.fullStatus==='equicontinuous'?css('--accentSoft'):css('--badSoft');
+    }
+
+    function renderModulus(){
+      const W=900,H=420, plot={x:70,y:54,w:760,h:292};
+      const dMax=1.2;
+      const vals=[];
+      for(let j=0;j<=80;j++){
+        const d=0.005+dMax*j/80;
+        vals.push({x:d,y:globalModulus(d)});
+      }
+      const maxY=Math.max(1.05,state.eps,...vals.map(v=>v.y))*1.08;
+      const X=d=>lin(d,0,dMax,plot.x,plot.x+plot.w);
+      const Y=v=>lin(v,0,maxY,plot.y+plot.h,plot.y);
+      let grid='';
+      for(let i=0;i<=5;i++){
+        const yy=maxY*i/5;
+        grid+=`<line x1="${plot.x}" y1="${Y(yy)}" x2="${plot.x+plot.w}" y2="${Y(yy)}" stroke="${css('--grid')}"/>`;
+      }
+      const curr=globalModulus(state.delta);
+      const col=curr<state.eps?css('--accent'):css('--bad');
+
+      el.modulusSvg.innerHTML=`
+        <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+        ${text(plot.x,30,'modulus  ω𝓕(δ)',{size:20,weight:700,family:'Georgia, serif'})}
+        <rect x="${plot.x}" y="${plot.y}" width="${plot.w}" height="${plot.h}" rx="20" fill="transparent" stroke="${css('--line')}"/>
+        ${grid}
+        <line x1="${plot.x}" y1="${Y(state.eps)}" x2="${plot.x+plot.w}" y2="${Y(state.eps)}" stroke="${css('--limit')}" stroke-dasharray="8 7" stroke-width="2"/>
+        <path d="${path(vals,X,Y)}" fill="none" stroke="${col}" stroke-width="3" stroke-linecap="round"/>
+        <line x1="${X(state.delta)}" y1="${plot.y}" x2="${X(state.delta)}" y2="${plot.y+plot.h}" stroke="${css('--gold')}" stroke-width="2" stroke-dasharray="6 6"/>
+        <circle cx="${X(state.delta)}" cy="${Y(curr)}" r="7.5" fill="${col}" stroke="${css('--paper')}" stroke-width="2.3"/>
+        ${text(plot.x+10,Y(state.eps)-9,'ε',{size:14,fill:css('--limit'),weight:700})}
+        ${text(X(state.delta)+10,Y(curr)-10,`δ=${state.delta.toFixed(2)}`,{size:14,fill:col,weight:700})}
+        ${text(plot.x+plot.w-8,plot.y+plot.h+24,'δ',{size:13,fill:css('--muted'),anchor:'end'})}
+        ${text(plot.x+plot.w-8,392,families[state.family].fullStatus==='equicontinuous'?'equicontinuity: ω𝓕(δ) → 0':'failure: no common δ works for the full family',{size:14,fill:families[state.family].fullStatus==='equicontinuous'?css('--accent'):css('--bad'),weight:700,anchor:'end'})}
+      `;
+    }
+
+    function renderMinis(){
+      const W=260,H=170;
+      const frame=(svg,title)=>`<rect x="0" y="0" width="${W}" height="${H}" rx="14" fill="${css('--paper')}"/><rect x="12" y="10" width="236" height="28" rx="12" fill="${css('--card')}" stroke="${css('--line')}"/>${text(24,29,title,{size:12,weight:700})}`+svg;
+
+      let X=x=>lin(x,0,1,24,238), Y=y=>lin(y,-1.2,1.2,150,48);
+      let good='';
+      for(let i=0;i<7;i++){
+        const pts=[];
+        for(let j=0;j<110;j++){
+          const x=j/109;
+          pts.push(`${j?'L':'M'} ${X(x)} ${Y(Math.sin(2*Math.PI*(x+i/8))*.75)}`);
+        }
+        good += `<path d="${pts.join(' ')}" fill="none" stroke="${css('--accent')}" stroke-width="1.9" opacity=".55"/>`;
+      }
+      el.miniGood.innerHTML=frame(`
+        <line x1="20" y1="${Y(0)}" x2="240" y2="${Y(0)}" stroke="${css('--line')}"/>
+        ${good}
+        <rect x="${X(.42)}" y="48" width="${X(.58)-X(.42)}" height="102" fill="${css('--limitSoft')}" stroke="${css('--limit')}" stroke-dasharray="6 5"/>
+      `,'controlled family');
+
+      X=x=>lin(x,0,1,24,238); Y=y=>lin(y,-1.2,1.2,150,48);
+      let bad='';
+      for(let i=2;i<=8;i++){
+        const pts=[];
+        for(let j=0;j<160;j++){
+          const x=j/159;
+          pts.push(`${j?'L':'M'} ${X(x)} ${Y(Math.sin(i*2*Math.PI*x)*.8)}`);
+        }
+        bad += `<path d="${pts.join(' ')}" fill="none" stroke="${css('--bad')}" stroke-width="1.5" opacity=".45"/>`;
+      }
+      el.miniBad.innerHTML=frame(`
+        <line x1="20" y1="${Y(0)}" x2="240" y2="${Y(0)}" stroke="${css('--line')}"/>
+        ${bad}
+        <rect x="${X(.42)}" y="48" width="${X(.58)-X(.42)}" height="102" fill="${css('--badSoft')}" stroke="${css('--bad')}" stroke-dasharray="6 5"/>
+      `,'uncontrolled family');
+    }
+
+    function update(){
+      const fam=families[state.family];
+      el.familyLabel.textContent=fam.label;
+      el.mLabel.textContent=state.m;
+      el.epsLabel.textContent=state.eps.toFixed(2);
+      el.deltaLabel.textContent=state.delta.toFixed(2);
+      el.xLabel.textContent=fmt(x0());
+      [el.mSlider,el.epsSlider,el.deltaSlider,el.xSlider].forEach(fill);
+      el.formula.innerHTML=fam.formula;
+      el.comment.innerHTML=fam.comment;
+    }
+
+    function render(){
+      update();
+      renderMain();
+      renderModulus();
+      renderMinis();
+      if(window.MathJax) MathJax.typesetPromise().catch(()=>{});
+    }
+
+    function sync(){
+      state.family=el.family.value;
+      state.m=+el.mSlider.value;
+      state.eps=+el.epsSlider.value;
+      state.delta=+el.deltaSlider.value;
+      state.xT=+el.xSlider.value;
+      render();
+    }
+
+    el.family.addEventListener('change',sync);
+    el.mSlider.addEventListener('input',sync);
+    el.epsSlider.addEventListener('input',sync);
+    el.deltaSlider.addEventListener('input',sync);
+    el.xSlider.addEventListener('input',sync);
+
+    el.theme.addEventListener('click',()=>setTheme(state.theme==='dark'?'light':'dark'));
+    el.theme.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setTheme(state.theme==='dark'?'light':'dark')}});
+
+    el.family.value=state.family;
+    el.mSlider.value=state.m;
+    el.epsSlider.value=state.eps;
+    el.deltaSlider.value=state.delta;
+    el.xSlider.value=state.xT;
+    setTheme(state.theme);
+  </script>
+</body>
+</html>

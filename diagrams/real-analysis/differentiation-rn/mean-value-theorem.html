@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive real analysis diagram for the mean value theorem.">
+  <title>Mean Value Theorem | Real Analysis Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  <style>
+    :root{
+      --bg:#f7f3ea;
+      --paper:#fffdf8;
+      --card:rgba(255,255,255,.74);
+      --text:#1d2830;
+      --muted:#6d7982;
+      --line:#ddd5c7;
+      --grid:rgba(29,40,48,.075);
+      --curve:#287a76;
+      --curveSoft:rgba(40,122,118,.12);
+      --secant:#536f91;
+      --secantSoft:rgba(83,111,145,.13);
+      --tangent:#b58a3c;
+      --bad:#c46a55;
+      --badSoft:rgba(196,106,85,.13);
+      --shadow:0 18px 44px rgba(38,48,58,.08);
+      --switch:#eee7da;
+      --thumb:#fffaf0;
+    }
+    body.dark{
+      --bg:#0d1318;
+      --paper:#121b22;
+      --card:rgba(18,27,34,.84);
+      --text:#edf4f6;
+      --muted:#aab7c0;
+      --line:#26333d;
+      --grid:rgba(237,244,246,.075);
+      --curve:#6ccbc3;
+      --curveSoft:rgba(108,203,195,.12);
+      --secant:#9abce0;
+      --secantSoft:rgba(154,188,224,.13);
+      --tangent:#e0bd70;
+      --bad:#ef9a82;
+      --badSoft:rgba(239,154,130,.14);
+      --shadow:0 22px 54px rgba(0,0,0,.28);
+      --switch:#1a242c;
+      --thumb:#17222b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at 0% 0%,rgba(40,122,118,.07),transparent 25%),linear-gradient(180deg,#fbf8f2,var(--bg));
+    }
+    body.dark{background:radial-gradient(circle at 0% 0%,rgba(108,203,195,.08),transparent 25%),linear-gradient(180deg,#101920,var(--bg))}
+    .wrap{max-width:1540px;margin:0 auto;padding:24px 18px 34px}
+    header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+    h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.1rem,4vw,3.4rem);letter-spacing:-.035em;line-height:1.05}
+    .subtitle{margin:.55rem 0 0;color:var(--muted);font-size:1.04rem;line-height:1.55;max-width:870px}
+    .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04);font-size:.92rem}
+    .theme{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04)}
+    .theme .label{font-size:.92rem;color:var(--muted);min-width:70px}
+    .switch{position:relative;width:70px;height:36px;border-radius:999px;background:var(--switch);border:1px solid var(--line)}
+    .switch:before,.switch:after{position:absolute;top:50%;transform:translateY(-50%);font-size:13px;opacity:.75}
+    .switch:before{content:"☀";left:10px}.switch:after{content:"☾";right:10px}
+    .knob{position:absolute;left:3px;top:3px;width:28px;height:28px;border-radius:50%;background:var(--thumb);border:1px solid var(--line);box-shadow:0 4px 12px rgba(0,0,0,.16);transition:left .25s ease;display:grid;place-items:center;font-size:13px}
+    body.dark .knob{left:37px}
+
+    .layout{display:grid;grid-template-columns:322px minmax(0,1fr);gap:18px;align-items:start}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+    aside{padding:18px;position:sticky;top:16px}
+    .head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px}
+    h2,h3{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.02em;margin:0}
+    .head p{margin:4px 0 0;color:var(--muted);font-size:.94rem;line-height:1.42}
+    .tag{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:var(--muted);font-size:.82rem;white-space:nowrap;background:rgba(127,127,127,.04)}
+    .eq,.note{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:12px 14px;margin-bottom:14px}
+    .eq{font-size:.91rem}
+    .note{color:var(--muted);font-size:.93rem;line-height:1.48;margin:14px 0 0}
+    .control{margin:14px 0 16px}
+    .control label{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;font-weight:650}
+    .control small{color:var(--muted);font-weight:500}
+    select{width:100%;background:var(--paper);color:var(--text);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.98rem}
+    input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:8px;border-radius:999px;border:1px solid var(--line);background:linear-gradient(90deg,var(--curve),var(--curve));background-repeat:no-repeat;background-size:50% 100%}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--curve);border:2px solid var(--paper);box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer}
+
+    main{display:grid;gap:18px}
+    .hero{padding:18px}
+    .heroTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+    .heroTop p{margin:4px 0 0;color:var(--muted);line-height:1.45;max-width:780px}
+    .status{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:.92rem;background:var(--curveSoft);color:var(--curve);white-space:nowrap}
+    .split{display:grid;grid-template-columns:minmax(0,1fr) 304px;gap:16px}
+    .svgBox{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:10px}
+    .plotSvg{display:block;width:100%;height:auto}
+    .metrics{display:grid;gap:10px}
+    .metric{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:14px}
+    .metric h4{font-family:Georgia,"Times New Roman",serif;margin:0 0 6px;font-size:1rem}
+    .metric p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.4}
+    .metric strong{display:block;margin-top:7px;color:var(--curve)}
+    .lower{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .panel{padding:18px}
+    .smallGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .mini{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:10px}
+    .mini h4{margin:0 0 8px;font-family:Georgia,"Times New Roman",serif;font-size:.98rem}
+    .mini p{margin:8px 0 0;color:var(--muted);font-size:.89rem;line-height:1.38}
+    .footer{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .footer div{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.92rem;line-height:1.42}
+    @media(max-width:1180px){.layout{grid-template-columns:1fr}aside{position:static}.split,.lower{grid-template-columns:1fr}}
+    @media(max-width:900px){.smallGrid,.footer{grid-template-columns:1fr}.wrap{padding:18px 14px 28px}}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Mean value theorem</h1>
+        <p class="subtitle">The average slope on an interval is realized by an instantaneous slope inside. Rolle's theorem is the horizontal-secant case; monotonicity and error bounds are its main consequences.</p>
+      </div>
+      <div class="actions">
+        <div class="pill">secant slope</div>
+        <div class="pill">tangent parallelism</div>
+        <div class="pill">monotonicity and bounds</div>
+        <div id="theme" class="theme" role="button" tabindex="0">
+          <span id="themeLabel" class="label">light mode</span>
+          <div class="switch"><div id="knob" class="knob">☀</div></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="card">
+        <div class="head">
+          <div>
+            <h2>Controls</h2>
+            <p>Move the interval and watch the tangent match the secant.</p>
+          </div>
+          <div class="tag">MVT geometry</div>
+        </div>
+
+        <div class="eq">
+          \[
+          \exists c\in(a,b):
+          \quad
+          f'(c)=\frac{f(b)-f(a)}{b-a}.
+          \]
+        </div>
+
+        <div class="control">
+          <label>Function <small id="fnLabel"></small></label>
+          <select id="functionSelect">
+            <option value="cubic">\(f(x)=x^3-x\)</option>
+            <option value="sin">\(f(x)=\sin x\)</option>
+            <option value="exp">\(f(x)=e^{0.55x}\)</option>
+            <option value="rolle">Rolle: \(f(x)=1-x^2\)</option>
+            <option value="abs">fails differentiability: \(|x|\)</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label>Left endpoint \(a\) <small id="aLabel"></small></label>
+          <input id="aSlider" type="range" min="-2.5" max="2.2" step="0.01" value="-1.1">
+        </div>
+
+        <div class="control">
+          <label>Right endpoint \(b\) <small id="bLabel"></small></label>
+          <input id="bSlider" type="range" min="-2.2" max="2.5" step="0.01" value="1.4">
+        </div>
+
+        <div class="control">
+          <label>Error point \(x\) <small id="xLabel"></small></label>
+          <input id="xSlider" type="range" min="0" max="1" step="0.01" value="0.72">
+        </div>
+
+        <div class="control">
+          <label>Derivative bound \(M\) <small id="mLabel"></small></label>
+          <input id="mSlider" type="range" min="0.2" max="8" step="0.05" value="3.0">
+        </div>
+
+        <div id="formula" class="note"></div>
+        <div id="comment" class="note"></div>
+      </aside>
+
+      <main>
+        <section class="card hero">
+          <div class="heroTop">
+            <div>
+              <h2>Main diagram</h2>
+              <p>Blue is the secant line. Gold is the tangent at \(c\). The theorem says these slopes match under the usual hypotheses.</p>
+            </div>
+            <div id="status" class="status">MVT applies</div>
+          </div>
+
+          <div class="split">
+            <div class="svgBox">
+              <svg id="mainSvg" class="plotSvg" viewBox="0 0 1220 800"></svg>
+            </div>
+            <div class="metrics">
+              <div class="metric">
+                <h4>Secant slope</h4>
+                <p>Average rate of change.</p>
+                <strong id="secMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>MVT point</h4>
+                <p>Interior point with matching derivative.</p>
+                <strong id="cMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Rolle test</h4>
+                <p>When endpoint heights match.</p>
+                <strong id="rolleMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Bound test</h4>
+                <p>\(|f(x)-f(a)|\le M|x-a|\).</p>
+                <strong id="boundMetric"></strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="lower">
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Derivative and monotonicity</h3>
+                <p>If \(f'\ge0\) on an interval, then \(f\) is increasing there.</p>
+              </div>
+              <div class="tag">sign of \(f'\)</div>
+            </div>
+            <div class="svgBox">
+              <svg id="derivativeSvg" class="plotSvg" viewBox="0 0 900 520"></svg>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Error bound</h3>
+                <p>MVT turns derivative bounds into Lipschitz bounds.</p>
+              </div>
+              <div class="tag">control</div>
+            </div>
+            <div class="svgBox">
+              <svg id="boundSvg" class="plotSvg" viewBox="0 0 900 520"></svg>
+            </div>
+          </section>
+        </div>
+
+        <section class="card panel">
+          <div class="head">
+            <div>
+              <h3>Failure modes</h3>
+              <p>Each hypothesis has a geometric role.</p>
+            </div>
+            <div class="tag">why assumptions matter</div>
+          </div>
+          <div class="smallGrid">
+            <div class="mini">
+              <h4>Rolle's theorem</h4>
+              <svg id="miniRolle" class="plotSvg" viewBox="0 0 260 170"></svg>
+              <p>Equal endpoints force a horizontal tangent.</p>
+            </div>
+            <div class="mini">
+              <h4>Corner</h4>
+              <svg id="miniCorner" class="plotSvg" viewBox="0 0 260 170"></svg>
+              <p>Continuity without differentiability can break the conclusion.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="footer">
+          <div><strong>Rolle.</strong> If \(f(a)=f(b)\), then some \(c\in(a,b)\) satisfies \(f'(c)=0\).</div>
+          <div><strong>MVT.</strong> The secant slope is realized by a tangent slope inside the interval.</div>
+          <div><strong>Bounds.</strong> If \(|f'|\le M\), then \(|f(x)-f(y)|\le M|x-y|\).</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+<script>
+  const funcs = {
+    cubic:{
+      label:'smooth',
+      formula:'\\[ f(x)=x^3-x,\\qquad f\\prime(x)=3x^2-1. \\]',
+      comment:'A standard mean-value picture: the secant slope is attained by at least one tangent inside the interval.',
+      domain:[-2.5,2.5], range:[-5,5], suggestedA:-1.1, suggestedB:1.4,
+      f:x=>x*x*x-x,
+      d:x=>3*x*x-1,
+      smooth:true
+    },
+    sin:{
+      label:'smooth',
+      formula:'\\[ f(x)=\\sin x,\qquad f\\prime(x)=\\cos x. \\]',
+      comment:'The theorem finds a point where the cosine equals the average sine slope over the interval.',
+      domain:[-3.2,3.2], range:[-1.35,1.35], suggestedA:-1.2, suggestedB:2.2,
+      f:x=>Math.sin(x),
+      d:x=>Math.cos(x),
+      smooth:true
+    },
+    exp:{
+      label:'smooth increasing',
+      formula:'\\[ f(x)=e^{0.55x},\qquad f\\prime(x)=0.55e^{0.55x}. \\]',
+      comment:'Since the derivative is positive everywhere, the monotonicity test shows the function is increasing.',
+      domain:[-2.5,2.5], range:[0,4.2], suggestedA:-1.7, suggestedB:1.2,
+      f:x=>Math.exp(.55*x),
+      d:x=>.55*Math.exp(.55*x),
+      smooth:true
+    },
+    rolle:{
+      label:'Rolle case',
+      formula:'\\[ f(x)=1-x^2,\qquad f(-t)=f(t). \\]',
+      comment:'When endpoint heights are equal, the secant is horizontal and MVT becomes Rolle’s theorem.',
+      domain:[-2.2,2.2], range:[-3.7,1.3], suggestedA:-1.2, suggestedB:1.2,
+      f:x=>1-x*x,
+      d:x=>-2*x,
+      smooth:true
+    },
+    abs:{
+      label:'corner',
+      formula:'\\[ f(x)=|x|. \\]',
+      comment:'The function is continuous but not differentiable at \(0\). If the interval crosses the corner, MVT hypotheses fail.',
+      domain:[-2.2,2.2], range:[-.3,2.2], suggestedA:-1, suggestedB:1,
+      f:x=>Math.abs(x),
+      d:x=> x>0?1:(x<0?-1:NaN),
+      smooth:false
+    }
+  };
+
+  const state = {
+    fn:'cubic',
+    a:-1.1,
+    b:1.4,
+    xT:.72,
+    M:3,
+    theme:localStorage.getItem('mvt-theme') || 'light'
+  };
+
+  const el = {
+    theme:document.getElementById('theme'),
+    themeLabel:document.getElementById('themeLabel'),
+    knob:document.getElementById('knob'),
+    functionSelect:document.getElementById('functionSelect'),
+    aSlider:document.getElementById('aSlider'),
+    bSlider:document.getElementById('bSlider'),
+    xSlider:document.getElementById('xSlider'),
+    mSlider:document.getElementById('mSlider'),
+    fnLabel:document.getElementById('fnLabel'),
+    aLabel:document.getElementById('aLabel'),
+    bLabel:document.getElementById('bLabel'),
+    xLabel:document.getElementById('xLabel'),
+    mLabel:document.getElementById('mLabel'),
+    formula:document.getElementById('formula'),
+    comment:document.getElementById('comment'),
+    status:document.getElementById('status'),
+    mainSvg:document.getElementById('mainSvg'),
+    derivativeSvg:document.getElementById('derivativeSvg'),
+    boundSvg:document.getElementById('boundSvg'),
+    miniRolle:document.getElementById('miniRolle'),
+    miniCorner:document.getElementById('miniCorner'),
+    secMetric:document.getElementById('secMetric'),
+    cMetric:document.getElementById('cMetric'),
+    rolleMetric:document.getElementById('rolleMetric'),
+    boundMetric:document.getElementById('boundMetric')
+  };
+
+  const css=v=>getComputedStyle(document.body).getPropertyValue(v).trim();
+  const lin=(x,a,b,c,d)=>c+(x-a)*(d-c)/(b-a);
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const fmt=x=>{
+    if(!Number.isFinite(x)) return '—';
+    return (x<0?'−':'')+Math.abs(x).toFixed(3);
+  };
+
+  function setTheme(t){
+    state.theme=t;
+    document.body.classList.toggle('dark',t==='dark');
+    localStorage.setItem('mvt-theme',t);
+    el.themeLabel.textContent=t==='dark'?'dark mode':'light mode';
+    el.knob.textContent=t==='dark'?'☾':'☀';
+    render();
+  }
+
+  function fill(input){
+    const min=+input.min,max=+input.max,val=+input.value;
+    input.style.backgroundSize=((val-min)/(max-min)*100)+'% 100%';
+  }
+
+  function text(x,y,s,o={}){
+    return `<text x="${x}" y="${y}" fill="${o.fill||css('--text')}" font-size="${o.size||14}" font-family="${o.family||'Inter, sans-serif'}" font-weight="${o.weight||500}" text-anchor="${o.anchor||'start'}">${s}</text>`;
+  }
+
+  function path(points,X,Y){
+    return points.map((p,i)=>`${i?'L':'M'} ${X(p.x).toFixed(2)} ${Y(p.y).toFixed(2)}`).join(' ');
+  }
+
+  function interval(){
+    const fn=funcs[state.fn];
+    let a=clamp(state.a,fn.domain[0],fn.domain[1]);
+    let b=clamp(state.b,fn.domain[0],fn.domain[1]);
+    if(a>b){ const t=a; a=b; b=t; }
+    if(b-a<.15){ b=Math.min(fn.domain[1],a+.15); }
+    return {a,b};
+  }
+
+  function secSlope(fn,a,b){
+    return (fn.f(b)-fn.f(a))/(b-a);
+  }
+
+  function mvtPoint(fn,a,b,slope){
+    if(!fn.smooth && a<0 && b>0) return NaN;
+    let best=a+(b-a)/2, bestVal=Infinity;
+    const N=1200;
+    let prevX=a, prev=fn.d(a)-slope;
+    const roots=[];
+    for(let i=1;i<=N;i++){
+      const x=a+(b-a)*i/N;
+      const val=fn.d(x)-slope;
+      if(Number.isFinite(val) && Math.abs(val)<bestVal){bestVal=Math.abs(val); best=x;}
+      if(Number.isFinite(prev) && Number.isFinite(val) && prev*val<=0){
+        let lo=prevX, hi=x, flo=prev;
+        for(let k=0;k<30;k++){
+          const mid=(lo+hi)/2, fm=fn.d(mid)-slope;
+          if(flo*fm<=0){hi=mid;} else {lo=mid; flo=fm;}
+        }
+        roots.push((lo+hi)/2);
+      }
+      prevX=x; prev=val;
+    }
+    return roots.length?roots[Math.floor((roots.length-1)/2)]:best;
+  }
+
+  function derivativeBound(fn,a,b){
+    let mx=0;
+    for(let i=0;i<=900;i++){
+      const x=a+(b-a)*i/900;
+      const d=Math.abs(fn.d(x));
+      if(Number.isFinite(d)) mx=Math.max(mx,d);
+    }
+    return mx;
+  }
+
+  function renderMain(){
+    const fn=funcs[state.fn], I=interval(), a=I.a, b=I.b;
+    const slope=secSlope(fn,a,b), c=mvtPoint(fn,a,b,slope);
+    const x=a+(b-a)*state.xT;
+    const W=1220,H=800;
+    const plot={x:70,y:72,w:850,h:585};
+    const gauge={x:980,y:128,w:150,h:420};
+
+    let xMin=Math.max(fn.domain[0],a-(b-a)*.28);
+    let xMax=Math.min(fn.domain[1],b+(b-a)*.28);
+    if(xMax-xMin<1){xMin=fn.domain[0];xMax=fn.domain[1];}
+    let yMin=Infinity,yMax=-Infinity;
+    const curve=[], secant=[], tangent=[];
+    const fa=fn.f(a), fb=fn.f(b), fc=Number.isFinite(c)?fn.f(c):NaN;
+    for(let i=0;i<=620;i++){
+      const xx=xMin+(xMax-xMin)*i/620;
+      const yy=fn.f(xx);
+      const ss=fa+slope*(xx-a);
+      curve.push({x:xx,y:yy});
+      secant.push({x:xx,y:ss});
+      yMin=Math.min(yMin,yy,ss);
+      yMax=Math.max(yMax,yy,ss);
+      if(Number.isFinite(c)){
+        const tt=fc+slope*(xx-c);
+        tangent.push({x:xx,y:tt});
+        yMin=Math.min(yMin,tt); yMax=Math.max(yMax,tt);
+      }
+    }
+    yMin-=.16*(yMax-yMin+1e-6); yMax+=.16*(yMax-yMin+1e-6);
+    const X=xx=>lin(xx,xMin,xMax,plot.x,plot.x+plot.w);
+    const Y=yy=>lin(yy,yMin,yMax,plot.y+plot.h,plot.y);
+
+    let grid='';
+    for(let i=0;i<=6;i++){
+      const xx=xMin+(xMax-xMin)*i/6, yy=yMin+(yMax-yMin)*i/6;
+      grid+=`<line x1="${X(xx)}" y1="${plot.y}" x2="${X(xx)}" y2="${plot.y+plot.h}" stroke="${css('--grid')}"/>`;
+      grid+=`<line x1="${plot.x}" y1="${Y(yy)}" x2="${plot.x+plot.w}" y2="${Y(yy)}" stroke="${css('--grid')}"/>`;
+    }
+
+    const ok=fn.smooth || !(a<0 && b>0);
+    const col=ok?css('--curve'):css('--bad');
+    const isRolle=Math.abs(fa-fb)<0.03;
+    const actualM=derivativeBound(fn,a,b);
+    const fx=fn.f(x), diff=Math.abs(fx-fa), bound=state.M*Math.abs(x-a);
+    const boundOk=diff<=bound+.001;
+
+    el.mainSvg.innerHTML=`
+      <rect x="0" y="0" width="${W}" height="${H}" rx="26" fill="${css('--paper')}"/>
+      ${text(plot.x,40,'secant slope realized as tangent slope',{size:21,weight:700,family:'Georgia, serif'})}
+      ${text(gauge.x-4,88,'slope match',{size:18,weight:700,family:'Georgia, serif'})}
+
+      <rect x="${plot.x}" y="${plot.y}" width="${plot.w}" height="${plot.h}" rx="22" fill="transparent" stroke="${css('--line')}"/>
+      ${grid}
+      <rect x="${X(a)}" y="${plot.y}" width="${X(b)-X(a)}" height="${plot.h}" rx="14" fill="${css('--secantSoft')}" stroke="${css('--secant')}" stroke-dasharray="8 7"/>
+      <line x1="${plot.x}" y1="${Y(0)}" x2="${plot.x+plot.w}" y2="${Y(0)}" stroke="${css('--line')}"/>
+      <path d="${path(secant,X,Y)}" fill="none" stroke="${css('--secant')}" stroke-width="3" stroke-dasharray="9 7"/>
+      ${tangent.length?`<path d="${path(tangent,X,Y)}" fill="none" stroke="${css('--tangent')}" stroke-width="3.2"/>`:''}
+      <path d="${path(curve,X,Y)}" fill="none" stroke="${col}" stroke-width="3.2" stroke-linecap="round"/>
+
+      <circle cx="${X(a)}" cy="${Y(fa)}" r="7.2" fill="${css('--secant')}" stroke="${css('--paper')}" stroke-width="2.3"/>
+      <circle cx="${X(b)}" cy="${Y(fb)}" r="7.2" fill="${css('--secant')}" stroke="${css('--paper')}" stroke-width="2.3"/>
+      <line x1="${X(a)}" y1="${Y(fa)}" x2="${X(b)}" y2="${Y(fb)}" stroke="${css('--secant')}" stroke-width="3.2"/>
+      ${Number.isFinite(c)?`<circle cx="${X(c)}" cy="${Y(fc)}" r="8" fill="${css('--tangent')}" stroke="${css('--paper')}" stroke-width="2.5"/>
+      <line x1="${X(c)}" y1="${plot.y}" x2="${X(c)}" y2="${plot.y+plot.h}" stroke="${css('--tangent')}" stroke-dasharray="6 6" stroke-width="2"/>`:''}
+      <circle cx="${X(x)}" cy="${Y(fx)}" r="6.5" fill="${boundOk?css('--curve'):css('--bad')}" stroke="${css('--paper')}" stroke-width="2.2"/>
+
+      ${text(X(a),plot.y+plot.h+24,'a',{size:14,fill:css('--secant'),weight:700,anchor:'middle'})}
+      ${text(X(b),plot.y+plot.h+24,'b',{size:14,fill:css('--secant'),weight:700,anchor:'middle'})}
+      ${Number.isFinite(c)?text(X(c),plot.y+plot.h+24,'c',{size:14,fill:css('--tangent'),weight:700,anchor:'middle'}):''}
+
+      <rect x="${plot.x+16}" y="${plot.y+16}" width="348" height="42" rx="15" fill="${css('--paper')}" stroke="${css('--line')}"/>
+      <circle cx="${plot.x+34}" cy="${plot.y+42}" r="5" fill="${col}"/>
+      ${text(plot.x+46,plot.y+47,'function',{size:13,fill:css('--muted')})}
+      <circle cx="${plot.x+122}" cy="${plot.y+42}" r="5" fill="${css('--secant')}"/>
+      ${text(plot.x+134,plot.y+47,'secant',{size:13,fill:css('--muted')})}
+      <circle cx="${plot.x+214}" cy="${plot.y+42}" r="5" fill="${css('--tangent')}"/>
+      ${text(plot.x+226,plot.y+47,'parallel tangent',{size:13,fill:css('--muted')})}
+
+      <rect x="${gauge.x}" y="${gauge.y}" width="${gauge.w}" height="${gauge.h}" rx="24" fill="${ok?css('--curveSoft'):css('--badSoft')}" stroke="${css('--line')}"/>
+      <line x1="${gauge.x+gauge.w/2}" y1="${gauge.y+50}" x2="${gauge.x+gauge.w/2}" y2="${gauge.y+gauge.h-50}" stroke="${css('--muted')}" stroke-width="2"/>
+      <line x1="${gauge.x+30}" y1="${gauge.y+gauge.h/2}" x2="${gauge.x+gauge.w-30}" y2="${gauge.y+gauge.h/2}" stroke="${css('--muted')}" stroke-width="2"/>
+      <line x1="${gauge.x+gauge.w/2-45}" y1="${gauge.y+gauge.h/2+clamp(60*slope,-130,130)}" x2="${gauge.x+gauge.w/2+45}" y2="${gauge.y+gauge.h/2-clamp(60*slope,-130,130)}" stroke="${css('--secant')}" stroke-width="4" stroke-linecap="round"/>
+      <line x1="${gauge.x+gauge.w/2-45}" y1="${gauge.y+gauge.h/2+clamp(60*slope,-130,130)+24}" x2="${gauge.x+gauge.w/2+45}" y2="${gauge.y+gauge.h/2-clamp(60*slope,-130,130)+24}" stroke="${css('--tangent')}" stroke-width="4" stroke-linecap="round"/>
+      ${text(gauge.x+gauge.w/2,gauge.y+gauge.h+32,ok?'parallel slopes':'hypothesis fails',{size:15,fill:ok?css('--curve'):css('--bad'),weight:700,anchor:'middle'})}
+    `;
+
+    el.secMetric.textContent=`≈ ${fmt(slope)}`;
+    el.cMetric.textContent=Number.isFinite(c)?`c≈${fmt(c)}, f′(c)≈${fmt(fn.d(c))}`:'not guaranteed';
+    el.rolleMetric.textContent=isRolle?'Rolle case: f′(c)=0':'not a Rolle interval';
+    el.boundMetric.textContent=`actual sup |f′|≈${fmt(actualM)}; chosen M=${fmt(state.M)}`;
+    el.status.textContent=ok?'MVT applies':'MVT hypotheses fail';
+    el.status.style.color=ok?css('--curve'):css('--bad');
+    el.status.style.background=ok?css('--curveSoft'):css('--badSoft');
+  }
+
+  function renderDerivative(){
+    const fn=funcs[state.fn], I=interval(), a=I.a, b=I.b;
+    const W=900,H=520, top={x:70,y:58,w:760,h:190}, bot={x:70,y:305,w:760,h:135};
+    const xMin=fn.domain[0], xMax=fn.domain[1];
+    let dMin=Infinity,dMax=-Infinity;
+    const dpts=[], signRects=[];
+    for(let i=0;i<=520;i++){
+      const x=xMin+(xMax-xMin)*i/520;
+      const d=fn.d(x);
+      if(Number.isFinite(d)){dpts.push({x,y:d}); dMin=Math.min(dMin,d); dMax=Math.max(dMax,d);}
+    }
+    if(!Number.isFinite(dMin)){dMin=-1;dMax=1;}
+    if(Math.abs(dMax-dMin)<.2){dMax+=.4;dMin-=.4;}
+    dMin-=.15*(dMax-dMin); dMax+=.15*(dMax-dMin);
+    const X=x=>lin(x,xMin,xMax,top.x,top.x+top.w);
+    const Y=d=>lin(d,dMin,dMax,top.y+top.h,top.y);
+
+    const fpts=[];
+    let yMin=Infinity,yMax=-Infinity;
+    for(let i=0;i<=520;i++){
+      const x=xMin+(xMax-xMin)*i/520, y=fn.f(x);
+      fpts.push({x,y}); yMin=Math.min(yMin,y); yMax=Math.max(yMax,y);
+    }
+    yMin-=.1*(yMax-yMin+1e-6); yMax+=.1*(yMax-yMin+1e-6);
+    const Yf=y=>lin(y,yMin,yMax,bot.y+bot.h,bot.y);
+
+    // sign shading based on derivative
+    let shade='';
+    for(let i=0;i<90;i++){
+      const x1=xMin+(xMax-xMin)*i/90, x2=xMin+(xMax-xMin)*(i+1)/90;
+      const mid=(x1+x2)/2, d=fn.d(mid);
+      if(Number.isFinite(d)){
+        shade += `<rect x="${X(x1)}" y="${top.y}" width="${X(x2)-X(x1)+1}" height="${top.h}" fill="${d>=0?css('--curveSoft'):css('--badSoft')}" opacity=".42"/>`;
+      }
+    }
+
+    el.derivativeSvg.innerHTML=`
+      <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+      ${text(top.x,32,'derivative sign controls monotonicity',{size:20,weight:700,family:'Georgia, serif'})}
+      <rect x="${top.x}" y="${top.y}" width="${top.w}" height="${top.h}" rx="18" fill="transparent" stroke="${css('--line')}"/>
+      ${shade}
+      <line x1="${top.x}" y1="${Y(0)}" x2="${top.x+top.w}" y2="${Y(0)}" stroke="${css('--line')}" stroke-width="2"/>
+      ${dpts.length?`<path d="${path(dpts,X,Y)}" fill="none" stroke="${css('--secant')}" stroke-width="3"/>`:''}
+      <rect x="${X(a)}" y="${top.y}" width="${X(b)-X(a)}" height="${top.h}" rx="10" fill="transparent" stroke="${css('--tangent')}" stroke-dasharray="7 6" stroke-width="2"/>
+      ${text(top.x+12,top.y+24,'green: f′ ≥ 0',{size:13,fill:css('--curve'),weight:700})}
+      ${text(top.x+132,top.y+24,'coral: f′ < 0',{size:13,fill:css('--bad'),weight:700})}
+
+      <rect x="${bot.x}" y="${bot.y}" width="${bot.w}" height="${bot.h}" rx="18" fill="transparent" stroke="${css('--line')}"/>
+      <path d="${path(fpts,X,Yf)}" fill="none" stroke="${css('--curve')}" stroke-width="3"/>
+      <rect x="${X(a)}" y="${bot.y}" width="${X(b)-X(a)}" height="${bot.h}" rx="10" fill="${css('--secantSoft')}" stroke="${css('--secant')}" stroke-dasharray="7 6"/>
+      ${text(bot.x+bot.w-8,bot.y+bot.h+26,'same interval on f',{size:13,fill:css('--muted'),anchor:'end'})}
+    `;
+  }
+
+  function renderBound(){
+    const fn=funcs[state.fn], I=interval(), a=I.a, b=I.b;
+    const x=a+(b-a)*state.xT, fa=fn.f(a), fx=fn.f(x);
+    const W=900,H=520, plot={x:72,y:72,w:760,h:330};
+    const xMin=Math.min(a,x)-Math.abs(x-a)*.35-.1, xMax=Math.max(a,x)+Math.abs(x-a)*.35+.1;
+    const safeMin=Math.max(fn.domain[0],xMin), safeMax=Math.min(fn.domain[1],xMax);
+    let yMin=Infinity,yMax=-Infinity;
+    const fpts=[], upper=[], lower=[];
+    for(let i=0;i<=480;i++){
+      const xx=safeMin+(safeMax-safeMin)*i/480;
+      const y=fn.f(xx);
+      const u=fa+state.M*Math.abs(xx-a);
+      const l=fa-state.M*Math.abs(xx-a);
+      fpts.push({x:xx,y}); upper.push({x:xx,y:u}); lower.push({x:xx,y:l});
+      yMin=Math.min(yMin,y,u,l); yMax=Math.max(yMax,y,u,l);
+    }
+    yMin-=.1*(yMax-yMin+1e-6); yMax+=.1*(yMax-yMin+1e-6);
+    const X=xx=>lin(xx,safeMin,safeMax,plot.x,plot.x+plot.w);
+    const Y=y=>lin(y,yMin,yMax,plot.y+plot.h,plot.y);
+    const diff=Math.abs(fx-fa), bound=state.M*Math.abs(x-a), ok=diff<=bound+.001;
+    const col=ok?css('--curve'):css('--bad');
+
+    el.boundSvg.innerHTML=`
+      <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+      ${text(plot.x,34,'MVT error bound: |f(x)-f(a)| ≤ M|x-a|',{size:20,weight:700,family:'Georgia, serif'})}
+      <rect x="${plot.x}" y="${plot.y}" width="${plot.w}" height="${plot.h}" rx="20" fill="transparent" stroke="${css('--line')}"/>
+      <path d="${path(upper,X,Y)}" fill="none" stroke="${css('--secant')}" stroke-width="2.5" stroke-dasharray="8 7"/>
+      <path d="${path(lower,X,Y)}" fill="none" stroke="${css('--secant')}" stroke-width="2.5" stroke-dasharray="8 7"/>
+      <path d="${path(fpts,X,Y)}" fill="none" stroke="${col}" stroke-width="3.2"/>
+      <line x1="${X(a)}" y1="${Y(fa)}" x2="${X(x)}" y2="${Y(fx)}" stroke="${col}" stroke-width="4"/>
+      <circle cx="${X(a)}" cy="${Y(fa)}" r="7" fill="${css('--tangent')}" stroke="${css('--paper')}" stroke-width="2.3"/>
+      <circle cx="${X(x)}" cy="${Y(fx)}" r="7" fill="${col}" stroke="${css('--paper')}" stroke-width="2.3"/>
+      <line x1="${X(x)}" y1="${Y(fa)}" x2="${X(x)}" y2="${Y(fx)}" stroke="${col}" stroke-width="3"/>
+      ${text(X(x)+10,(Y(fa)+Y(fx))/2-7,`|Δf|≈${fmt(diff)}`,{size:14,fill:col,weight:700})}
+      ${text(plot.x+16,plot.y+26,`M|x-a|≈${fmt(bound)}`,{size:14,fill:css('--secant'),weight:700})}
+      ${text(plot.x+plot.w-8,plot.y+plot.h+34,ok?'bound contains the graph':'chosen M is too small',{size:15,fill:col,weight:700,anchor:'end'})}
+    `;
+  }
+
+  function renderMinis(){
+    const W=260,H=170;
+    const frame=(svg,title)=>`<rect x="0" y="0" width="${W}" height="${H}" rx="14" fill="${css('--paper')}"/><rect x="12" y="10" width="236" height="28" rx="12" fill="${css('--card')}" stroke="${css('--line')}"/>${text(24,29,title,{size:12,weight:700})}`+svg;
+
+    let X=x=>lin(x,-1.5,1.5,24,238), Y=y=>lin(y,-1.3,1.2,150,48);
+    const pts=[];
+    for(let i=0;i<140;i++){const x=-1.5+3*i/139; pts.push(`${i?'L':'M'} ${X(x)} ${Y(1-x*x)}`);}
+    el.miniRolle.innerHTML=frame(`
+      <line x1="20" y1="${Y(0)}" x2="240" y2="${Y(0)}" stroke="${css('--line')}"/>
+      <path d="${pts.join(' ')}" fill="none" stroke="${css('--curve')}" stroke-width="2.8"/>
+      <line x1="${X(-1)}" y1="${Y(0)}" x2="${X(1)}" y2="${Y(0)}" stroke="${css('--secant')}" stroke-width="2.5"/>
+      <line x1="${X(-.45)}" y1="${Y(1)}" x2="${X(.45)}" y2="${Y(1)}" stroke="${css('--tangent')}" stroke-width="2.8"/>
+      <circle cx="${X(0)}" cy="${Y(1)}" r="6" fill="${css('--tangent')}" stroke="${css('--paper')}" stroke-width="2"/>
+    `,'Rolle');
+
+    X=x=>lin(x,-1,1,24,238); Y=y=>lin(y,0,1.15,150,48);
+    const absPts=[];
+    for(let i=0;i<140;i++){const x=-1+2*i/139; absPts.push(`${i?'L':'M'} ${X(x)} ${Y(Math.abs(x))}`);}
+    el.miniCorner.innerHTML=frame(`
+      <line x1="20" y1="${Y(0)}" x2="240" y2="${Y(0)}" stroke="${css('--line')}"/>
+      <path d="${absPts.join(' ')}" fill="none" stroke="${css('--bad')}" stroke-width="2.8"/>
+      <line x1="${X(-1)}" y1="${Y(1)}" x2="${X(1)}" y2="${Y(1)}" stroke="${css('--secant')}" stroke-width="2.4"/>
+      <circle cx="${X(0)}" cy="${Y(0)}" r="6" fill="${css('--bad')}" stroke="${css('--paper')}" stroke-width="2"/>
+      ${text(132,70,'no tangent',{size:12,fill:css('--bad'),weight:700,anchor:'middle'})}
+    `,'corner');
+  }
+
+  function update(){
+    const fn=funcs[state.fn], I=interval();
+    el.fnLabel.textContent=fn.label;
+    el.aLabel.textContent=fmt(I.a);
+    el.bLabel.textContent=fmt(I.b);
+    el.xLabel.textContent=fmt(I.a+(I.b-I.a)*state.xT);
+    el.mLabel.textContent=fmt(state.M);
+    [el.aSlider,el.bSlider,el.xSlider,el.mSlider].forEach(fill);
+    el.formula.innerHTML=fn.formula;
+    el.comment.innerHTML=fn.comment;
+  }
+
+  function render(){
+    update();
+    renderMain();
+    renderDerivative();
+    renderBound();
+    renderMinis();
+    if(window.MathJax) MathJax.typesetPromise().catch(()=>{});
+  }
+
+  function sync(){
+    const old=state.fn;
+    state.fn=el.functionSelect.value;
+    if(old!==state.fn){
+      const fn=funcs[state.fn];
+      state.a=fn.suggestedA; state.b=fn.suggestedB;
+      el.aSlider.value=state.a; el.bSlider.value=state.b;
+    }
+    state.a=+el.aSlider.value;
+    state.b=+el.bSlider.value;
+    state.xT=+el.xSlider.value;
+    state.M=+el.mSlider.value;
+    render();
+  }
+
+  el.functionSelect.addEventListener('change',sync);
+  el.aSlider.addEventListener('input',sync);
+  el.bSlider.addEventListener('input',sync);
+  el.xSlider.addEventListener('input',sync);
+  el.mSlider.addEventListener('input',sync);
+
+  el.theme.addEventListener('click',()=>setTheme(state.theme==='dark'?'light':'dark'));
+  el.theme.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setTheme(state.theme==='dark'?'light':'dark')}});
+
+  el.functionSelect.value=state.fn;
+  el.aSlider.value=state.a;
+  el.bSlider.value=state.b;
+  el.xSlider.value=state.xT;
+  el.mSlider.value=state.M;
+  setTheme(state.theme);
+</script>
+</body>
+</html>

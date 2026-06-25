@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for topological continuity.">
+<title>Topological Continuity | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+  :root{
+    --bg:#f4f0e8;
+    --bg2:#ebe5da;
+    --card:#fffdf8;
+    --card2:#f8f4ec;
+    --text:#202522;
+    --muted:#66706b;
+    --soft:#8a948e;
+    --line:rgba(42,50,45,.13);
+    --grid:rgba(42,50,45,.075);
+    --accent:#4f9188;
+    --accent-2:#a87855;
+    --shadow:0 24px 70px rgba(60,48,30,.12);
+    --smallshadow:0 10px 30px rgba(60,48,30,.08);
+    --radius:24px;
+  }
+  html[data-theme="dark"]{
+    --bg:#0e1517;
+    --bg2:#101b1e;
+    --card:#131d20;
+    --card2:#10191b;
+    --text:#edf2ef;
+    --muted:#a8b5b0;
+    --soft:#7f8d88;
+    --line:rgba(236,244,241,.12);
+    --grid:rgba(236,244,241,.07);
+    --accent:#74c7bd;
+    --accent-2:#d3a071;
+    --shadow:0 24px 70px rgba(0,0,0,.32);
+    --smallshadow:0 10px 30px rgba(0,0,0,.20);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    color:var(--text);
+    background:
+      radial-gradient(900px 520px at 10% -20%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 60%),
+      linear-gradient(180deg,var(--bg),var(--bg2));
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    min-height:100vh;
+  }
+  .app{max-width:1440px;margin:0 auto;padding:28px 26px 42px}
+  header{
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+    padding:20px 24px;margin-bottom:18px;border:1px solid var(--line);
+    background:color-mix(in srgb, var(--card) 84%, transparent);
+    border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter: blur(10px);
+  }
+  .eyebrow{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);font-weight:750;margin-bottom:6px}
+  h1{font-family: Georgia, "Times New Roman", serif;font-size:clamp(30px,4vw,54px);line-height:1.02;margin:0;font-weight:650;letter-spacing:-.04em}
+  .subtitle{margin:10px 0 0;color:var(--muted);font-size:16px;max-width:850px;line-height:1.5}
+  .top-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+  .theme-btn,.pill{
+    border:1px solid var(--line);background:var(--card2);color:var(--text);border-radius:999px;
+    padding:10px 14px;font-size:13px;box-shadow:var(--smallshadow)
+  }
+  .theme-btn{cursor:pointer;font-weight:700}
+  .pill{color:var(--accent);font-weight:750}
+  .hero{
+    display:grid;grid-template-columns:1.18fr .82fr;gap:18px;margin-bottom:18px
+  }
+  .card{
+    background:color-mix(in srgb, var(--card) 92%, transparent);
+    border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--smallshadow)
+  }
+  .definition{padding:22px 24px}
+  .def-title{font-size:13px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;font-weight:800;margin-bottom:12px}
+  .formula{
+    font-family: Georgia, "Times New Roman", serif;font-size:clamp(17px,2.1vw,24px);line-height:1.65;
+    background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 7%,transparent),transparent);
+    border:1px solid var(--line);border-radius:18px;padding:16px 18px;color:var(--text)
+  }
+  .formula .accent{color:var(--accent);font-weight:700}
+  .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .mini{padding:16px;border-radius:18px;background:var(--card);border:1px solid var(--line)}
+  .mini b{display:block;font-family:Georgia,serif;font-size:18px;margin-bottom:6px}
+  .mini span{font-size:13px;color:var(--muted);line-height:1.45;display:block}
+  .layout{display:grid;grid-template-columns:330px 1fr;gap:18px;align-items:start}
+  aside{padding:18px;position:sticky;top:18px}
+  .panel-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .panel-title h2{font-family:Georgia,serif;font-size:20px;margin:0;letter-spacing:-.02em}
+  .status-dot{height:9px;width:9px;background:var(--accent);border-radius:50%;box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 12%, transparent)}
+  .control{padding:14px 0;border-top:1px solid var(--line)}
+  .control:first-of-type{border-top:0}
+  label{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted);margin-bottom:8px}
+  label strong{color:var(--text);font-size:14px;font-weight:750}
+  select,input[type="range"]{width:100%}
+  select{
+    appearance:none;border:1px solid var(--line);background:var(--card2);color:var(--text);border-radius:14px;
+    padding:11px 12px;font:inherit;outline:none
+  }
+  input[type="range"]{accent-color:var(--accent)}
+  .seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .seg button{
+    border:1px solid var(--line);background:var(--card2);color:var(--muted);border-radius:14px;padding:10px;cursor:pointer;font-weight:750
+  }
+  .seg button.active{background:color-mix(in srgb,var(--accent) 12%,var(--card));color:var(--accent);border-color:color-mix(in srgb,var(--accent) 38%,var(--line))}
+  .hint-box{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:18px;background:color-mix(in srgb,var(--accent) 6%,var(--card));font-size:13px;color:var(--muted);line-height:1.55}
+  .hint-box b{color:var(--accent);display:block;margin-bottom:4px}
+  .workspace{display:grid;gap:18px}
+  .diagram-card{padding:20px 20px 18px}
+  .diagram-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
+  .diagram-head h2{font-family:Georgia,serif;font-size:26px;line-height:1.08;margin:0;letter-spacing:-.035em}
+  .diagram-head p{margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.45}
+  .map-chip{border:1px solid color-mix(in srgb,var(--accent) 42%,var(--line));background:color-mix(in srgb,var(--accent) 8%,transparent);color:var(--accent);font-size:13px;border-radius:999px;padding:8px 12px;font-weight:800;white-space:nowrap}
+  .dual{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .plotbox{border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,var(--card2),var(--card));overflow:hidden;min-width:0}
+  .plot-title{padding:13px 15px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .plot-title b{font-family:Georgia,serif;font-size:18px;letter-spacing:-.02em}
+  .plot-title span{font-size:12px;color:var(--muted)}
+  .plot-canvas{display:block;width:100%;height:auto;aspect-ratio:1.18/1;background:transparent}
+  .arrow-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin:13px 4px 0;color:var(--muted);font-size:13px}
+  .arrow-row:before,.arrow-row:after{content:"";height:1px;background:var(--line)}
+  .arrow-core{font-family:Georgia,serif;color:var(--accent);font-size:18px;white-space:nowrap}
+  .lower{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
+  .info{padding:20px}
+  .info h3{font-family:Georgia,serif;font-size:22px;margin:0 0 12px;letter-spacing:-.025em}
+  .logic-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .logic-card{border:1px solid var(--line);border-radius:18px;padding:15px;background:var(--card2)}
+  .logic-card .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:800;margin-bottom:8px}
+  .logic-card .math{font-family:Georgia,serif;font-size:20px;line-height:1.45}
+  .logic-card p{font-size:13px;line-height:1.5;color:var(--muted);margin:8px 0 0}
+  .notice{padding:20px;background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 8%,var(--card)),var(--card));}
+  .notice ul{margin:0;padding-left:18px;color:var(--muted);font-size:14px;line-height:1.65}
+  .notice li+li{margin-top:8px}
+  .exam{padding:20px}
+  .exam-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .exam-item{border:1px solid var(--line);border-radius:18px;background:var(--card2);padding:14px;min-height:120px}
+  .exam-item b{display:block;font-family:Georgia,serif;font-size:18px;margin-bottom:8px}
+  .exam-item div{font-family:Georgia,serif;font-size:16px;line-height:1.55;color:var(--text)}
+  .small-note{font-size:12px;color:var(--soft);line-height:1.5;margin-top:10px}
+  .toggle-line{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:13px;margin-top:10px}
+  .toggle-line input{accent-color:var(--accent)}
+  @media(max-width:1080px){.hero,.layout,.lower{grid-template-columns:1fr} aside{position:relative;top:0}.dual{grid-template-columns:1fr}.exam-grid{grid-template-columns:1fr}.app{padding:18px}.mini-grid{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}.top-actions{width:100%;justify-content:space-between}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div>
+      <div class="eyebrow">R<sup>n</sup> topology · continuity as a pullback test</div>
+      <h1>Topological continuity</h1>
+      <p class="subtitle">Open sets live in the target. Continuity asks whether their inverse images remain open in the domain. The diagram below makes this “backward” condition visible in ℝ², the geometric model for ℝⁿ.</p>
+    </div>
+    <div class="top-actions">
+      <div class="pill" id="globalStatus">continuous map</div>
+      <button class="theme-btn" id="themeBtn">Dark mode</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="card definition">
+      <div class="def-title">minimal definition</div>
+      <div class="formula">
+        <span class="accent">f : X ⊂ ℝⁿ → Y ⊂ ℝᵐ</span> is continuous<br>
+        ⇔ for every open V ⊂ Y,<br>
+        <span class="accent">f⁻¹(V)</span> is open in X.<br>
+        Equivalently: closed sets pull back to closed sets.
+      </div>
+    </div>
+    <div class="mini-grid">
+      <div class="mini card"><b>Metric form</b><span>For each a ∈ X: x → a ⇒ f(x) → f(a). In Euclidean spaces this is equivalent to the open-set test.</span></div>
+      <div class="mini card"><b>Homeomorphism</b><span>A bijection h with h and h⁻¹ continuous. It preserves the whole topology: opens, closeds, boundaries, convergence.</span></div>
+      <div class="mini card"><b>Preimage first</b><span>Continuity does not say images of open sets are open. That stronger behavior comes from the inverse map.</span></div>
+      <div class="mini card"><b>Relative topology</b><span>“Open in X” means U = X ∩ O, with O open in ℝⁿ.</span></div>
+    </div>
+  </section>
+
+  <main class="layout">
+    <aside class="card">
+      <div class="panel-title"><h2>Controls</h2><span class="status-dot"></span></div>
+
+      <div class="control">
+        <label><strong>Map</strong><span id="mapStatus">homeomorphism</span></label>
+        <select id="mapSelect">
+          <option value="shear">homeomorphism: nonlinear shear</option>
+          <option value="linear">homeomorphism: rotation-dilation</option>
+          <option value="fold">continuous fold: not injective</option>
+          <option value="collapse">continuous collapse: not open</option>
+          <option value="spike">discontinuous point spike</option>
+        </select>
+      </div>
+
+      <div class="control">
+        <label><strong>Target set</strong><span id="setStatus">open disk</span></label>
+        <select id="setKind">
+          <option value="openDisk">open ball B<sub>r</sub>(c)</option>
+          <option value="closedDisk">closed ball B&#772;<sub>r</sub>(c)</option>
+          <option value="openSquare">open box</option>
+          <option value="closedSquare">closed box</option>
+        </select>
+      </div>
+
+      <div class="control">
+        <label><strong>Target center c<sub>1</sub></strong><span id="cxVal">0.40</span></label>
+        <input type="range" id="cx" min="-1.4" max="1.4" step="0.02" value="0.40">
+      </div>
+      <div class="control">
+        <label><strong>Target center c<sub>2</sub></strong><span id="cyVal">0.10</span></label>
+        <input type="range" id="cy" min="-1.4" max="1.4" step="0.02" value="0.10">
+      </div>
+      <div class="control">
+        <label><strong>Radius r</strong><span id="rVal">0.78</span></label>
+        <input type="range" id="radius" min="0.20" max="1.45" step="0.01" value="0.78">
+      </div>
+      <div class="control">
+        <label><strong>Deformation α</strong><span id="alphaVal">0.72</span></label>
+        <input type="range" id="alpha" min="0.00" max="1.25" step="0.01" value="0.72">
+      </div>
+      <div class="control">
+        <label><strong>Resolution</strong><span id="resVal">130</span></label>
+        <input type="range" id="resolution" min="70" max="190" step="10" value="130">
+      </div>
+
+      <div class="control">
+        <div class="seg">
+          <button id="diagnosticBtn" class="active">diagnostic set</button>
+          <button id="centerBtn">centered set</button>
+        </div>
+        <label class="toggle-line"><input type="checkbox" id="showBall" checked> show image of a source ball</label>
+      </div>
+
+      <div class="hint-box" id="interpretationBox">
+        <b>Interpretation</b>
+        The target open set is pulled backward by the map. The highlighted region in the domain is the preimage.
+      </div>
+    </aside>
+
+    <section class="workspace">
+      <section class="card diagram-card">
+        <div class="diagram-head">
+          <div>
+            <h2>The preimage test in ℝⁿ</h2>
+            <p>Right: choose an open or closed set in the target. Left: see exactly which domain points land inside it.</p>
+          </div>
+          <div class="map-chip" id="mapChip">f is a homeomorphism</div>
+        </div>
+        <div class="dual">
+          <div class="plotbox">
+            <div class="plot-title"><b>Domain X ⊂ ℝ²</b><span>highlight: f⁻¹(A)</span></div>
+            <canvas class="plot-canvas" id="domainCanvas" width="640" height="540"></canvas>
+          </div>
+          <div class="plotbox">
+            <div class="plot-title"><b>Target Y ⊂ ℝ²</b><span>chosen set A</span></div>
+            <canvas class="plot-canvas" id="targetCanvas" width="640" height="540"></canvas>
+          </div>
+        </div>
+        <div class="arrow-row"><div class="arrow-core">x ∈ f⁻¹(A) ⇔ f(x) ∈ A</div></div>
+      </section>
+
+      <section class="lower">
+        <section class="card info">
+          <h3>Logical reading</h3>
+          <div class="logic-grid">
+            <div class="logic-card">
+              <div class="k">open preimage criterion</div>
+              <div class="math">V open in Y<br>⇒ f⁻¹(V) open in X</div>
+              <p>Continuity is a statement about how target neighborhoods pull back to domain neighborhoods.</p>
+            </div>
+            <div class="logic-card">
+              <div class="k">closed preimage criterion</div>
+              <div class="math">C closed in Y<br>⇒ f⁻¹(C) closed in X</div>
+              <p>Equivalent because complements commute with preimages: f⁻¹(Y ∖ C) = X ∖ f⁻¹(C).</p>
+            </div>
+            <div class="logic-card">
+              <div class="k">metric equivalence</div>
+              <div class="math">∀ε > 0 ∃δ > 0:<br>∥x − a∥ < δ ⇒ ∥f(x) − f(a)∥ < ε</div>
+              <p>In ℝⁿ, this pointwise condition is equivalent to the topological one.</p>
+            </div>
+            <div class="logic-card">
+              <div class="k">homeomorphism</div>
+              <div class="math">h bijective, h continuous,<br>h⁻¹ continuous</div>
+              <p>Then U is open in X iff h(U) is open in Y. The topology is unchanged, only redrawn.</p>
+            </div>
+          </div>
+        </section>
+        <section class="card notice">
+          <h3>What to notice</h3>
+          <ul id="noticeList">
+            <li>The continuity test goes backward: target open set V, domain preimage f⁻¹(V).</li>
+            <li>A non-injective continuous map may still pass every preimage test.</li>
+            <li>Images of open sets can fail to be open unless the inverse map is continuous.</li>
+            <li>A discontinuity is exposed by one open set whose preimage is not open.</li>
+          </ul>
+        </section>
+      </section>
+
+      <section class="card exam">
+        <h3>Compact exam summary</h3>
+        <div class="exam-grid">
+          <div class="exam-item"><b>Continuity</b><div>f : X → Y continuous<br>⇔ for all V ⊂ Y open,<br>f⁻¹(V) open in X.</div></div>
+          <div class="exam-item"><b>Closed sets</b><div>f continuous<br>⇔ for all C ⊂ Y closed,<br>f⁻¹(C) closed in X.</div></div>
+          <div class="exam-item"><b>Homeomorphism</b><div>h : X → Y homeomorphism<br>⇔ h bijective and both<br>h, h⁻¹ continuous.</div></div>
+        </div>
+        <div class="small-note">The drawings use ℝ² because it is visible. The definitions are the same in ℝⁿ with Euclidean open balls, or in metric spaces with metric balls.</div>
+      </section>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  const root = document.documentElement;
+  const $ = id => document.getElementById(id);
+  const domainCanvas = $('domainCanvas');
+  const targetCanvas = $('targetCanvas');
+  const dctx = domainCanvas.getContext('2d');
+  const tctx = targetCanvas.getContext('2d');
+
+  const controls = ['mapSelect','setKind','cx','cy','radius','alpha','resolution','showBall'].map($);
+  const range = 2.55;
+  const margin = 46;
+  let mode = 'diagnostic';
+
+  function css(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function hexToRgb(hex){
+    hex = hex.replace('#','');
+    if(hex.length===3) hex = hex.split('').map(x=>x+x).join('');
+    const n = parseInt(hex,16);
+    return {r:(n>>16)&255,g:(n>>8)&255,b:n&255};
+  }
+  function rgba(hex,a){ const c=hexToRgb(hex); return `rgba(${c.r},${c.g},${c.b},${a})`; }
+  function colors(){ return {text:css('--text'), muted:css('--muted'), soft:css('--soft'), line:css('--line'), grid:css('--grid'), accent:css('--accent'), accent2:css('--accent-2'), card:css('--card')}; }
+
+  function worldToPx(canvas,x,y){
+    const W=canvas.width, H=canvas.height;
+    const sX=(W-2*margin)/(2*range), sY=(H-2*margin)/(2*range);
+    return [margin+(x+range)*sX, H-margin-(y+range)*sY];
+  }
+  function pxRect(canvas,x,y,dx,dy){
+    const p1=worldToPx(canvas,x,y), p2=worldToPx(canvas,x+dx,y+dy);
+    return [Math.min(p1[0],p2[0]), Math.min(p1[1],p2[1]), Math.abs(p2[0]-p1[0])+1, Math.abs(p2[1]-p1[1])+1];
+  }
+
+  function state(){
+    return {
+      map: $('mapSelect').value,
+      kind: $('setKind').value,
+      cx:+$('cx').value,
+      cy:+$('cy').value,
+      r:+$('radius').value,
+      alpha:+$('alpha').value,
+      res:+$('resolution').value,
+      showBall:$('showBall').checked
+    };
+  }
+
+  function mapPoint(x,y,s){
+    const a=s.alpha;
+    if(s.map==='shear') return [x + a*Math.sin(1.15*y), y];
+    if(s.map==='linear'){
+      const theta = a*1.9;
+      const scale = 0.78 + 0.30*a;
+      return [scale*(Math.cos(theta)*x - Math.sin(theta)*y), scale*(Math.sin(theta)*x + Math.cos(theta)*y)];
+    }
+    if(s.map==='fold') return [x*x - 0.78 - 0.22*a, y];
+    if(s.map==='collapse') return [x, 0.0];
+    if(s.map==='spike'){
+      if(Math.hypot(x,y)<1e-7) return [0,0];
+      return [1,0];
+    }
+    return [x,y];
+  }
+
+  function mapMeta(s){
+    const data = {
+      shear:{formula:`f(x,y)=(x+${s.alpha.toFixed(2)}\u00b7sin(1.15y), y)`, cont:true, homeo:true, label:'homeomorphism'},
+      linear:{formula:`f(x,y)=\u03bb R_\u03b8(x,y)`, cont:true, homeo:true, label:'homeomorphism'},
+      fold:{formula:`f(x,y)=(x²-${(0.78+0.22*s.alpha).toFixed(2)}, y)`, cont:true, homeo:false, label:'continuous, not injective'},
+      collapse:{formula:`f(x,y)=(x,0)`, cont:true, homeo:false, label:'continuous, not open'},
+      spike:{formula:`f(0,0)=(0,0),  f(x,y)=(1,0) otherwise`, cont:false, homeo:false, label:'discontinuous'}
+    };
+    return data[s.map];
+  }
+
+  function isOpenKind(kind){ return kind==='openDisk' || kind==='openSquare'; }
+  function kindName(kind){
+    return ({openDisk:'open ball',closedDisk:'closed ball',openSquare:'open box',closedSquare:'closed box'})[kind];
+  }
+  function inTarget(u,v,s){
+    const dx=u-s.cx, dy=v-s.cy;
+    const open = isOpenKind(s.kind);
+    if(s.kind.includes('Disk')){
+      const val = Math.hypot(dx,dy);
+      return open ? val < s.r : val <= s.r;
+    }
+    const val = Math.max(Math.abs(dx), Math.abs(dy));
+    return open ? val < s.r : val <= s.r;
+  }
+
+  function drawBase(ctx, canvas, title){
+    const c=colors();
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='transparent';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.lineWidth=1;
+    ctx.strokeStyle=c.grid;
+    for(let v=-2; v<=2; v+=0.5){
+      let [x1,y1]=worldToPx(canvas,-range,v), [x2,y2]=worldToPx(canvas,range,v);
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+      [x1,y1]=worldToPx(canvas,v,-range); [x2,y2]=worldToPx(canvas,v,range);
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+    }
+    ctx.strokeStyle=rgba(c.text,.34); ctx.lineWidth=1.2;
+    let p1=worldToPx(canvas,-range,0), p2=worldToPx(canvas,range,0);
+    ctx.beginPath(); ctx.moveTo(p1[0],p1[1]); ctx.lineTo(p2[0],p2[1]); ctx.stroke();
+    p1=worldToPx(canvas,0,-range); p2=worldToPx(canvas,0,range);
+    ctx.beginPath(); ctx.moveTo(p1[0],p1[1]); ctx.lineTo(p2[0],p2[1]); ctx.stroke();
+    ctx.fillStyle=c.muted;
+    ctx.font='12px Inter, system-ui, sans-serif';
+    ctx.fillText(title, margin, 24);
+    ctx.fillText('0', worldToPx(canvas,0,0)[0]+5, worldToPx(canvas,0,0)[1]-6);
+  }
+
+  function drawTargetSet(ctx, canvas, s){
+    const c=colors();
+    const open = isOpenKind(s.kind);
+    ctx.save();
+    ctx.fillStyle=rgba(c.accent,.16);
+    ctx.strokeStyle=rgba(c.accent,.85);
+    ctx.lineWidth=2;
+    ctx.setLineDash(open?[7,7]:[]);
+    if(s.kind.includes('Disk')){
+      const center=worldToPx(canvas,s.cx,s.cy);
+      const edge=worldToPx(canvas,s.cx+s.r,s.cy);
+      const rad=Math.abs(edge[0]-center[0]);
+      ctx.beginPath(); ctx.arc(center[0],center[1],rad,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    } else {
+      const a=worldToPx(canvas,s.cx-s.r,s.cy+s.r);
+      const b=worldToPx(canvas,s.cx+s.r,s.cy-s.r);
+      ctx.beginPath(); ctx.rect(a[0],a[1],b[0]-a[0],b[1]-a[1]); ctx.fill(); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    const cc=worldToPx(canvas,s.cx,s.cy);
+    ctx.fillStyle=c.accent;
+    ctx.beginPath(); ctx.arc(cc[0],cc[1],4,0,Math.PI*2); ctx.fill();
+    ctx.font='12px Inter, system-ui, sans-serif';
+    ctx.fillText(open?'open target set A':'closed target set A', cc[0]+8, cc[1]-8);
+    ctx.restore();
+  }
+
+  function drawPreimage(ctx, canvas, s){
+    const c=colors();
+    const N=s.res, dx=2*range/N, dy=2*range/N;
+    ctx.save();
+    ctx.fillStyle=rgba(c.accent,.20);
+    for(let i=0;i<N;i++){
+      const x=-range+(i+0.5)*dx;
+      for(let j=0;j<N;j++){
+        const y=-range+(j+0.5)*dy;
+        const q=mapPoint(x,y,s);
+        if(inTarget(q[0],q[1],s)){
+          const r=pxRect(canvas,x-dx/2,y-dy/2,dx,dy);
+          ctx.fillRect(r[0],r[1],r[2],r[3]);
+        }
+      }
+    }
+    ctx.restore();
+    if(s.map==='spike' && inTarget(0,0,s)){
+      const p=worldToPx(canvas,0,0);
+      ctx.fillStyle=c.accent;
+      ctx.beginPath(); ctx.arc(p[0],p[1],5,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle=rgba(c.accent,.55); ctx.lineWidth=2; ctx.setLineDash([4,5]);
+      ctx.beginPath(); ctx.arc(p[0],p[1],18,0,Math.PI*2); ctx.stroke(); ctx.setLineDash([]);
+    }
+  }
+
+  function drawWarpedGrid(ctx, canvas, s){
+    if(s.map==='spike') return;
+    const c=colors();
+    ctx.save();
+    ctx.strokeStyle=rgba(c.text,.15);
+    ctx.lineWidth=1;
+    const lines=[];
+    for(let v=-2; v<=2.001; v+=0.5){
+      const a=[]; for(let t=-2.2; t<=2.201; t+=0.055) a.push(mapPoint(t,v,s)); lines.push(a);
+      const b=[]; for(let t=-2.2; t<=2.201; t+=0.055) b.push(mapPoint(v,t,s)); lines.push(b);
+    }
+    for(const line of lines){
+      ctx.beginPath();
+      let first=true;
+      for(const [u,v] of line){
+        if(u<-range*1.4 || u>range*1.4 || v<-range*1.4 || v>range*1.4){ first=true; continue; }
+        const p=worldToPx(canvas,u,v);
+        if(first){ctx.moveTo(p[0],p[1]); first=false;} else ctx.lineTo(p[0],p[1]);
+      }
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawSourceBall(ctx, canvas){
+    const c=colors();
+    const p={x:-0.55,y:0.72,r:0.55};
+    const cen=worldToPx(canvas,p.x,p.y), edge=worldToPx(canvas,p.x+p.r,p.y);
+    ctx.save();
+    ctx.fillStyle=rgba(c.accent2,.10); ctx.strokeStyle=rgba(c.accent2,.82); ctx.lineWidth=2; ctx.setLineDash([6,6]);
+    ctx.beginPath(); ctx.arc(cen[0],cen[1],Math.abs(edge[0]-cen[0]),0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.setLineDash([]); ctx.fillStyle=c.accent2; ctx.font='12px Inter, system-ui, sans-serif'; ctx.fillText('source open ball U', cen[0]+10, cen[1]-14);
+    ctx.restore();
+  }
+
+  function drawImageOfSourceBall(ctx, canvas, s){
+    if(s.map==='spike') return;
+    const c=colors();
+    const p={x:-0.55,y:0.72,r:0.55};
+    ctx.save();
+    ctx.fillStyle=rgba(c.accent2,.22);
+    const N=95;
+    for(let i=0;i<N;i++){
+      for(let j=0;j<N;j++){
+        const x=p.x-p.r + 2*p.r*(i+.5)/N;
+        const y=p.y-p.r + 2*p.r*(j+.5)/N;
+        if(Math.hypot(x-p.x,y-p.y)<=p.r){
+          const q=mapPoint(x,y,s);
+          const pix=worldToPx(canvas,q[0],q[1]);
+          ctx.fillRect(pix[0]-1.7,pix[1]-1.7,3.4,3.4);
+        }
+      }
+    }
+    ctx.fillStyle=c.accent2; ctx.font='12px Inter, system-ui, sans-serif';
+    const q=mapPoint(p.x,p.y,s), pix=worldToPx(canvas,q[0],q[1]);
+    ctx.fillText('image f(U)', pix[0]+10, pix[1]-12);
+    ctx.restore();
+  }
+
+  function drawLegend(ctx, canvas, s, side){
+    const c=colors();
+    ctx.save();
+    ctx.font='12px Inter, system-ui, sans-serif';
+    ctx.fillStyle=c.muted;
+    const y=canvas.height-18;
+    if(side==='domain'){
+      ctx.fillText('teal = points whose images land in A', margin, y);
+    } else {
+      ctx.fillText('thin grid = image of a coordinate grid under f', margin, y);
+    }
+    ctx.restore();
+  }
+
+  function setDiagnostic(){
+    const m=$('mapSelect').value;
+    $('setKind').value='openDisk';
+    if(m==='spike') { $('cx').value=0; $('cy').value=0; $('radius').value=0.42; }
+    else if(m==='fold') { $('cx').value=-0.80; $('cy').value=0.15; $('radius').value=0.66; }
+    else if(m==='collapse') { $('cx').value=0.20; $('cy').value=0; $('radius').value=0.58; }
+    else { $('cx').value=0.40; $('cy').value=0.10; $('radius').value=0.78; }
+  }
+  function setCentered(){ $('cx').value=0; $('cy').value=0; $('radius').value=0.85; }
+
+  function updateText(s){
+    const meta=mapMeta(s);
+    $('cxVal').textContent=s.cx.toFixed(2);
+    $('cyVal').textContent=s.cy.toFixed(2);
+    $('rVal').textContent=s.r.toFixed(2);
+    $('alphaVal').textContent=s.alpha.toFixed(2);
+    $('resVal').textContent=s.res;
+    $('setStatus').textContent=kindName(s.kind);
+    $('mapStatus').textContent=meta.label;
+    $('mapChip').textContent = meta.homeo ? 'f is a homeomorphism' : (meta.cont ? 'f is continuous, not a homeomorphism' : 'f is not continuous');
+    $('globalStatus').textContent = meta.cont ? 'continuous map' : 'discontinuous map';
+
+    let interp='';
+    if(meta.cont && isOpenKind(s.kind)) interp = `Because this map is continuous, the highlighted preimage of the open set is open in the domain. Formula: ${meta.formula}.`;
+    if(meta.cont && !isOpenKind(s.kind)) interp = `Because this map is continuous, the highlighted preimage of the closed set is closed in the domain. Formula: ${meta.formula}.`;
+    if(meta.homeo) interp += ' Since the inverse is also continuous, open sets are preserved in both directions.';
+    if(s.map==='fold') interp += ' The fold passes the preimage test but is not injective: two domain points can have the same image.';
+    if(s.map==='collapse') interp += ' The collapse passes the preimage test, but an open ball can map to a line segment, not to an open set.';
+    if(s.map==='spike') interp = 'This map fails continuity. The diagnostic open ball around f(0,0) has preimage {0}, a single point, which is not open in \u211d².';
+    $('interpretationBox').innerHTML = `<b>Interpretation</b>${interp}`;
+  }
+
+  function render(){
+    const s=state();
+    const c=colors();
+    drawBase(dctx,domainCanvas,'domain coordinates');
+    drawBase(tctx,targetCanvas,'target coordinates');
+
+    drawPreimage(dctx,domainCanvas,s);
+    if(s.showBall) drawSourceBall(dctx,domainCanvas);
+    drawWarpedGrid(tctx,targetCanvas,s);
+    if(s.showBall) drawImageOfSourceBall(tctx,targetCanvas,s);
+    drawTargetSet(tctx,targetCanvas,s);
+    drawLegend(dctx,domainCanvas,s,'domain');
+    drawLegend(tctx,targetCanvas,s,'target');
+
+    // Points: origin and its image for diagnostic visibility.
+    const p=worldToPx(domainCanvas,0,0), q=mapPoint(0,0,s), qp=worldToPx(targetCanvas,q[0],q[1]);
+    dctx.fillStyle=c.text; dctx.beginPath(); dctx.arc(p[0],p[1],3.6,0,Math.PI*2); dctx.fill();
+    tctx.fillStyle=c.text; tctx.beginPath(); tctx.arc(qp[0],qp[1],3.6,0,Math.PI*2); tctx.fill();
+    tctx.font='12px Inter, system-ui, sans-serif'; tctx.fillStyle=c.muted; tctx.fillText('f(0)', qp[0]+8, qp[1]+14);
+
+    updateText(s);
+  }
+
+  controls.forEach(el=>el.addEventListener('input',()=>{ mode='custom'; $('diagnosticBtn').classList.remove('active'); $('centerBtn').classList.remove('active'); render(); }));
+  $('mapSelect').addEventListener('change',()=>{ mode='diagnostic'; setDiagnostic(); $('diagnosticBtn').classList.add('active'); $('centerBtn').classList.remove('active'); render(); });
+  $('diagnosticBtn').addEventListener('click',()=>{ mode='diagnostic'; setDiagnostic(); $('diagnosticBtn').classList.add('active'); $('centerBtn').classList.remove('active'); render(); });
+  $('centerBtn').addEventListener('click',()=>{ mode='centered'; setCentered(); $('centerBtn').classList.add('active'); $('diagnosticBtn').classList.remove('active'); render(); });
+  $('themeBtn').addEventListener('click',()=>{
+    const dark = root.getAttribute('data-theme')==='dark';
+    root.setAttribute('data-theme', dark?'light':'dark');
+    $('themeBtn').textContent = dark?'Dark mode':'Light mode';
+    render();
+  });
+
+  // Keep the canvas backing store stable but visually responsive.
+  function fitCanvases(){ render(); }
+  window.addEventListener('resize', fitCanvases);
+  setDiagnostic();
+  render();
+})();
+</script>
+</body>
+</html>

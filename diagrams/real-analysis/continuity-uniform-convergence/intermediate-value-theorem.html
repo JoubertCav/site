@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive real analysis diagram for the intermediate value theorem.">
+  <title>Intermediate Value Theorem | Real Analysis Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)'], ['$', '$']], displayMath: [['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    :root{
+      --bg:#f5f1e9;
+      --paper:#fffdf8;
+      --paper2:#f9f4ea;
+      --ink:#182323;
+      --muted:#68716e;
+      --line:#d9d2c4;
+      --grid:rgba(40,52,50,.10);
+      --accent:#4e918b;
+      --accent-strong:#2e736e;
+      --warm:#b7795f;
+      --blue:#6d7fa8;
+      --bad:#be625c;
+      --ok:#4e918b;
+      --shadow:0 22px 70px rgba(43,34,20,.10);
+      --radius:24px;
+    }
+    [data-theme="dark"]{
+      --bg:#0d1416;
+      --paper:#121b1e;
+      --paper2:#0f1719;
+      --ink:#eaf0ed;
+      --muted:#a3aca8;
+      --line:#2a383a;
+      --grid:rgba(235,246,241,.075);
+      --accent:#83c4bd;
+      --accent-strong:#9ed9d3;
+      --warm:#e0a080;
+      --blue:#aeb8dc;
+      --bad:#e4877d;
+      --ok:#83c4bd;
+      --shadow:0 24px 80px rgba(0,0,0,.33);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 16% -5%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 34rem),
+        radial-gradient(circle at 88% 8%, color-mix(in srgb, var(--warm) 10%, transparent), transparent 30rem),
+        var(--bg);
+      font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+      line-height:1.45;
+    }
+    button,input,select{font:inherit;color:inherit}
+    .wrap{width:min(1440px, calc(100% - 34px));margin:0 auto;padding:26px 0 38px}
+    header{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start;margin-bottom:18px}
+    .hero{
+      background:linear-gradient(145deg, color-mix(in srgb, var(--paper) 96%, transparent), color-mix(in srgb, var(--paper2) 94%, transparent));
+      border:1px solid var(--line);
+      border-radius:30px;
+      box-shadow:var(--shadow);
+      padding:28px 30px;
+    }
+    h1{margin:0;font-size:clamp(2rem,4.3vw,4.8rem);line-height:.94;letter-spacing:-.06em;font-weight:760}
+    .subtitle{margin:.9rem 0 0;max-width:880px;color:var(--muted);font-size:clamp(1rem,1.45vw,1.22rem)}
+    .theme{
+      border:1px solid var(--line);background:var(--paper);box-shadow:var(--shadow);border-radius:999px;
+      display:flex;gap:10px;align-items:center;padding:10px 14px;cursor:pointer;white-space:nowrap
+    }
+    .theme .orb{width:18px;height:18px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 6px color-mix(in srgb, var(--accent) 16%, transparent)}
+    .layout{display:grid;grid-template-columns:355px minmax(0,1fr);gap:18px;align-items:start}
+    .card{background:color-mix(in srgb, var(--paper) 97%, transparent);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+    .pad{padding:22px}
+    .panel-title{margin:0 0 13px;font-weight:760;font-size:1.04rem;letter-spacing:-.02em;display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .pill{font-family:ui-sans-serif, system-ui, sans-serif;font-size:.76rem;letter-spacing:.01em;border:1px solid color-mix(in srgb, var(--accent) 40%, var(--line));border-radius:999px;padding:5px 10px;color:var(--accent-strong);background:color-mix(in srgb, var(--accent) 9%, transparent);white-space:nowrap}
+    .controls{display:grid;gap:14px}
+    .control{border-top:1px solid color-mix(in srgb, var(--line) 70%, transparent);padding-top:14px}
+    .control:first-child{border-top:0;padding-top:0}
+    label{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:7px;font-size:.96rem}
+    label span:last-child{font-family:ui-sans-serif, system-ui, sans-serif;color:var(--muted);font-size:.8rem;font-variant-numeric:tabular-nums}
+    select{
+      width:100%;border:1px solid var(--line);border-radius:15px;background:var(--paper2);padding:10px 12px;outline:none
+    }
+    input[type="range"]{width:100%;accent-color:var(--accent);cursor:pointer}
+    .mini-status{margin-top:14px;border:1px solid color-mix(in srgb, var(--accent) 24%, var(--line));border-radius:18px;background:color-mix(in srgb, var(--accent) 5%, var(--paper));padding:14px;color:var(--muted);font-size:.95rem}
+    .mini-status strong{display:block;color:var(--accent-strong);margin-bottom:4px;font-size:.88rem;letter-spacing:.02em;font-family:ui-sans-serif, system-ui, sans-serif;text-transform:uppercase}
+    .main{display:grid;gap:18px}
+    .defs{display:grid;grid-template-columns:1.08fr .92fr;gap:18px}
+    .eq{padding:20px 22px;border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);box-shadow:var(--shadow)}
+    .eq h2,.eq h3{margin:0 0 10px;font-size:1.02rem;letter-spacing:-.02em}
+    .math{overflow-x:auto;color:var(--ink);font-size:1.02rem;padding-bottom:2px}
+    .muted{color:var(--muted)}
+    .viz-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:22px 22px 0}
+    .viz-head h2{margin:0;font-size:1.42rem;letter-spacing:-.04em;line-height:1.05}
+    .viz-head p{margin:.45rem 0 0;color:var(--muted);max-width:720px}
+    .status-pill{font-family:ui-sans-serif, system-ui, sans-serif;border-radius:999px;padding:8px 12px;border:1px solid var(--line);white-space:nowrap;color:var(--muted);background:var(--paper2);font-size:.84rem}
+    .status-pill.ok{border-color:color-mix(in srgb, var(--ok) 48%, var(--line));color:var(--ok);background:color-mix(in srgb, var(--ok) 10%, var(--paper))}
+    .status-pill.bad{border-color:color-mix(in srgb, var(--bad) 48%, var(--line));color:var(--bad);background:color-mix(in srgb, var(--bad) 10%, var(--paper))}
+    .canvas-wrap{padding:0 16px 12px}
+    .diagram-svg{width:100%;height:auto;display:block}
+    .legend{display:flex;flex-wrap:wrap;gap:10px 18px;padding:0 22px 20px;color:var(--muted);font-family:ui-sans-serif, system-ui, sans-serif;font-size:.82rem}
+    .legend span{display:inline-flex;align-items:center;gap:7px}
+    .sw{width:16px;height:3px;border-radius:999px;background:var(--accent);display:inline-block}
+    .sw.target{background:var(--warm)} .sw.domain{background:var(--blue)} .sw.bad{background:var(--bad)}
+    .bottom{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
+    .notice{display:grid;gap:12px}
+    .notice-box{padding:15px;border-radius:18px;border:1px solid color-mix(in srgb, var(--accent) 28%, var(--line));background:color-mix(in srgb, var(--accent) 5%, var(--paper))}
+    .notice-box strong{display:block;color:var(--accent-strong);margin-bottom:4px}
+    .summary{margin:0;padding-left:1.15rem;color:var(--muted)}
+    .summary li{margin:.42rem 0}
+    .mono{font-family:ui-sans-serif, system-ui, sans-serif;font-size:.83rem;letter-spacing:.01em;color:var(--muted)}
+    .callout{font-size:1rem;color:var(--muted)}
+    .formula-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+    .formula-chip{border:1px solid var(--line);border-radius:16px;background:var(--paper2);padding:11px 12px;color:var(--muted)}
+    @media (max-width:1050px){.layout,.defs,.bottom{grid-template-columns:1fr}header{grid-template-columns:1fr}.theme{width:max-content}.wrap{width:min(100% - 24px, 900px)}}
+    @media (max-width:640px){.hero{padding:22px}.pad{padding:18px}.viz-head{display:block}.status-pill{display:inline-block;margin-top:10px}.formula-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body data-theme="light">
+  <div class="wrap">
+    <header>
+      <section class="hero">
+        <h1>Intermediate Value Theorem</h1>
+        <p class="subtitle">A continuous function on one connected interval cannot skip an intermediate height. Visually: a curve joining two endpoint heights must cross every horizontal level between them.</p>
+      </section>
+      <button class="theme" id="themeBtn" type="button" aria-label="Toggle dark mode"><span class="orb"></span><span id="themeText">Dark mode</span></button>
+    </header>
+
+    <div class="layout">
+      <aside class="card pad">
+        <h2 class="panel-title">Controls <span class="pill" id="modeTag">theorem case</span></h2>
+        <div class="controls">
+          <div class="control">
+            <label><span>Scene</span><span id="sceneLabel">continuous + connected</span></label>
+            <select id="scene">
+              <option value="ivt">continuous on a connected interval</option>
+              <option value="jump">jump discontinuity: continuity fails</option>
+              <option value="gap">two intervals: connectedness fails</option>
+              <option value="outside">continuous, but level outside endpoint band</option>
+            </select>
+          </div>
+          <div class="control">
+            <label><span>Target height</span><span>y₀ = <b id="targetVal">0.00</b></span></label>
+            <input id="target" type="range" min="-1.6" max="1.6" step="0.01" value="0" />
+          </div>
+          <div class="control">
+            <label><span>Curve bending</span><span>α = <b id="bendVal">0.35</b></span></label>
+            <input id="bend" type="range" min="0" max="0.7" step="0.01" value="0.35" />
+          </div>
+          <div class="control" id="gapControl">
+            <label><span>Domain gap</span><span>g = <b id="gapVal">0.46</b></span></label>
+            <input id="gap" type="range" min="0.12" max="0.85" step="0.01" value="0.46" />
+          </div>
+          <div class="mini-status" id="miniStatus">
+            <strong>Visual reading</strong>
+            <span>Move the horizontal level. In the theorem case, every intermediate level is forced to meet the curve.</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <section class="defs">
+          <div class="eq">
+            <h2>Symbolic core</h2>
+            <div class="math">
+              \[
+              f:[a,b]\to\mathbb R \text{ continuous},\qquad
+              y_0 \in [f(a),f(b)]
+              \Longrightarrow
+              \exists c\in[a,b]: f(c)=y_0 .
+              \]
+            </div>
+          </div>
+          <div class="eq">
+            <h2>Sign-change form</h2>
+            <div class="math">
+              \[
+              f(a)f(b)<0
+              \Longrightarrow
+              0\in(f(a),f(b))
+              \Longrightarrow
+              \exists c: f(c)=0 .
+              \]
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="viz-head">
+            <div>
+              <h2>What the theorem is saying</h2>
+              <p id="headline">The domain is one unbroken interval; the graph is unbroken; therefore the image has no missing height between the endpoint heights.</p>
+            </div>
+            <div class="status-pill ok" id="statusPill">crossing guaranteed</div>
+          </div>
+          <div class="canvas-wrap">
+            <svg id="mainSvg" class="diagram-svg" viewBox="0 0 1040 620" role="img" aria-label="Graphical visualization of the Intermediate Value Theorem"></svg>
+          </div>
+          <div class="legend">
+            <span><i class="sw domain"></i> connected domain interval</span>
+            <span><i class="sw"></i> continuous graph</span>
+            <span><i class="sw target"></i> target height \(y_0\)</span>
+            <span><i class="sw bad"></i> missing height / broken hypothesis</span>
+          </div>
+        </section>
+
+        <section class="bottom">
+          <div class="card pad">
+            <h2 class="panel-title">Connectedness lens <span class="pill">topological reason</span></h2>
+            <svg id="mapSvg" class="diagram-svg" viewBox="0 0 760 430" role="img" aria-label="Topological explanation of IVT via connectedness"></svg>
+          </div>
+          <div class="card pad notice">
+            <div>
+              <h2 class="panel-title">What to notice</h2>
+              <div class="notice-box" id="noticeBox">
+                <strong>No gap in the domain + no jump in the function</strong>
+                The image of the interval is again an interval, so every height between endpoint values is included.
+              </div>
+            </div>
+            <div>
+              <h2 class="panel-title">Exam summary</h2>
+              <ol class="summary">
+                <li>Check the hypotheses: compact interval is not essential for IVT; connected interval and continuity are.</li>
+                <li>To prove a root, show \(f(a)\) and \(f(b)\) have opposite signs.</li>
+                <li>The topological statement is: continuous images of connected sets are connected.</li>
+                <li>In \(\mathbb R\), connected sets are intervals. Therefore the image contains all intermediate values.</li>
+              </ol>
+            </div>
+            <div class="formula-row">
+              <div class="formula-chip"><span class="mono">geometry</span><br/>unbroken interval \(\to\) unbroken set of heights</div>
+              <div class="formula-chip"><span class="mono">failure</span><br/>a jump or a hole can remove the crossing</div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const root = document.body;
+  const themeBtn = $('themeBtn'), themeText = $('themeText');
+  const scene = $('scene'), target = $('target'), bend = $('bend'), gap = $('gap');
+  const targetVal = $('targetVal'), bendVal = $('bendVal'), gapVal = $('gapVal');
+  const gapControl = $('gapControl'), sceneLabel = $('sceneLabel'), modeTag = $('modeTag');
+  const statusPill = $('statusPill'), headline = $('headline'), miniStatus = $('miniStatus'), noticeBox = $('noticeBox');
+  const mainSvg = $('mainSvg'), mapSvg = $('mapSvg');
+
+  themeBtn.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    themeText.textContent = next === 'dark' ? 'Light mode' : 'Dark mode';
+    draw();
+  });
+
+  [scene,target,bend,gap].forEach(el => el.addEventListener('input', draw));
+
+  const css = name => getComputedStyle(root).getPropertyValue(name).trim();
+  const NS = 'http://www.w3.org/2000/svg';
+  const clamp = (x,a,b) => Math.max(a, Math.min(b,x));
+  const fmt = x => (Math.abs(x) < 0.005 ? 0 : x).toFixed(2);
+
+  function el(name, attrs={}, text=''){
+    const node = document.createElementNS(NS, name);
+    for(const [k,v] of Object.entries(attrs)) node.setAttribute(k,v);
+    if(text) node.textContent = text;
+    return node;
+  }
+  function clear(svg){ while(svg.firstChild) svg.removeChild(svg.firstChild); }
+  function line(svg,x1,y1,x2,y2,attrs={}){ svg.appendChild(el('line', {x1,y1,x2,y2,...attrs})); }
+  function rect(svg,x,y,width,height,attrs={}){ svg.appendChild(el('rect',{x,y,width,height,...attrs})); }
+  function circle(svg,cx,cy,r,attrs={}){ svg.appendChild(el('circle',{cx,cy,r,...attrs})); }
+  function text(svg,x,y,str,attrs={}){ svg.appendChild(el('text',{x,y,...attrs},str)); }
+  function path(svg,d,attrs={}){ svg.appendChild(el('path',{d,...attrs})); }
+
+  const xMin=-2.35, xMax=2.35, yMin=-2.25, yMax=2.25;
+  const W=1040,H=620, P={l:70,r:35,t:44,b:84};
+  const pw = W-P.l-P.r, ph = H-P.t-P.b;
+  const X = x => P.l + (x-xMin)/(xMax-xMin)*pw;
+  const Y = y => P.t + (yMax-y)/(yMax-yMin)*ph;
+
+  function getState(){
+    let sc = scene.value;
+    if(sc === 'outside') target.value = clamp(parseFloat(target.value), 1.05, 1.6);
+    return {
+      scene: sc,
+      t: parseFloat(target.value),
+      bend: parseFloat(bend.value),
+      gap: parseFloat(gap.value),
+      a:-2,
+      b:2
+    };
+  }
+
+  function f(x,s){
+    if(s.scene === 'jump'){
+      return 0.55*x + (x < 0 ? -0.62 : 0.62) + 0.10*Math.sin(2*x) + 0.07*s.bend*(x*x-1);
+    }
+    if(s.scene === 'gap'){
+      return x + 0.14*Math.sin(2.2*x) + 0.10*s.bend*(x*x-1);
+    }
+    return 0.58*x + s.bend*Math.sin(2.35*x) + 0.10*s.bend*(x*x-1);
+  }
+
+  function pieces(s){
+    if(s.scene === 'gap') return [[s.a, -s.gap], [s.gap, s.b]];
+    return [[s.a,s.b]];
+  }
+
+  function samplePiece(p,s,n=190){
+    const pts=[];
+    for(let i=0;i<=n;i++){
+      const x = p[0] + (p[1]-p[0])*i/n;
+      pts.push([x,f(x,s)]);
+    }
+    return pts;
+  }
+
+  function pathFromPoints(pts){
+    return pts.map((p,i)=>`${i?'L':'M'} ${X(p[0]).toFixed(2)} ${Y(p[1]).toFixed(2)}`).join(' ');
+  }
+
+  function rootsFor(s){
+    const t=s.t, out=[];
+    for(const pc of pieces(s)){
+      const n=420;
+      let x0=pc[0], g0=f(x0,s)-t;
+      for(let i=1;i<=n;i++){
+        const x1=pc[0]+(pc[1]-pc[0])*i/n;
+        const g1=f(x1,s)-t;
+        if(Math.abs(g1)<1e-4){ out.push(x1); }
+        if(g0*g1<0){
+          let lo=x0, hi=x1, flo=g0;
+          for(let k=0;k<38;k++){
+            const mid=(lo+hi)/2, fm=f(mid,s)-t;
+            if(flo*fm<=0){hi=mid;}else{lo=mid;flo=fm;}
+          }
+          out.push((lo+hi)/2);
+        }
+        x0=x1; g0=g1;
+      }
+    }
+    return [...new Set(out.map(v=>+v.toFixed(4)))];
+  }
+
+  function approxImageRanges(s){
+    const ranges=[];
+    for(const pc of pieces(s)){
+      let lo=Infinity, hi=-Infinity;
+      for(const [x,y] of samplePiece(pc,s,480)){lo=Math.min(lo,y);hi=Math.max(hi,y)}
+      ranges.push([lo,hi]);
+    }
+    return ranges;
+  }
+
+  function inEndpointBand(s){
+    const fa=f(s.a,s), fb=f(s.b,s);
+    return s.t >= Math.min(fa,fb)-1e-9 && s.t <= Math.max(fa,fb)+1e-9;
+  }
+
+  function status(s,roots){
+    const band=inEndpointBand(s);
+    if(s.scene === 'ivt'){
+      if(band) return {kind:'ok', tag:'crossing guaranteed', title:'IVT applies', msg:'The target height lies between the endpoint heights. Since the interval and the graph are unbroken, some c must satisfy f(c)=y₀.'};
+      return {kind:'neutral', tag:'IVT silent', title:'No guarantee', msg:'The target height is not between f(a) and f(b). The graph may cross it, but IVT does not force it.'};
+    }
+    if(s.scene === 'outside') return {kind:'neutral', tag:'outside endpoint band', title:'IVT is silent', msg:'Continuity is present, but the selected height is outside the endpoint band. No intermediate-value conclusion follows.'};
+    if(s.scene === 'jump') return {kind:'bad', tag:'continuity fails', title:'The graph jumps over a height', msg:'The domain is connected, but the function is not continuous. Endpoint signs can differ while the target height is missing.'};
+    return {kind:'bad', tag:'connectedness fails', title:'The domain has a hole', msg:'The formula is continuous on each piece, but the domain is not one interval. The missing x-values can remove the required crossing.'};
+  }
+
+  function drawGrid(svg){
+    const grid=css('--grid'), muted=css('--muted'), ink=css('--ink');
+    for(let x=-2; x<=2; x+=0.5){
+      line(svg,X(x),Y(yMin),X(x),Y(yMax),{stroke:grid,'stroke-width':1});
+    }
+    for(let y=-2; y<=2; y+=0.5){
+      line(svg,X(xMin),Y(y),X(xMax),Y(y),{stroke:grid,'stroke-width':1});
+    }
+    line(svg,X(xMin),Y(0),X(xMax),Y(0),{stroke:css('--line'),'stroke-width':1.3});
+    line(svg,X(0),Y(yMin),X(0),Y(yMax),{stroke:css('--line'),'stroke-width':1.3});
+    text(svg,X(xMax)-14,Y(0)-10,'x',{fill:muted,'font-size':17,'font-family':'ui-sans-serif, system-ui'});
+    text(svg,X(0)+9,Y(yMax)+18,'y',{fill:muted,'font-size':17,'font-family':'ui-sans-serif, system-ui'});
+  }
+
+  function drawMain(){
+    const s=getState();
+    clear(mainSvg);
+    const accent=css('--accent'), accentStrong=css('--accent-strong'), warm=css('--warm'), blue=css('--blue'), bad=css('--bad'), muted=css('--muted'), lineC=css('--line'), paper2=css('--paper2'), ink=css('--ink');
+    const roots=rootsFor(s);
+    const st=status(s,roots);
+    statusPill.className='status-pill ' + (st.kind === 'ok' ? 'ok' : st.kind === 'bad' ? 'bad' : '');
+    statusPill.textContent = st.tag;
+    headline.textContent = st.msg;
+    sceneLabel.textContent = scene.options[scene.selectedIndex].textContent.replace(':','');
+    modeTag.textContent = st.title;
+    targetVal.textContent = fmt(s.t); bendVal.textContent = fmt(s.bend); gapVal.textContent = fmt(s.gap);
+    gapControl.style.display = s.scene === 'gap' ? 'block' : 'none';
+    miniStatus.innerHTML = `<strong>${st.title}</strong><span>${st.msg}</span>`;
+    noticeBox.innerHTML = noticeHtml(s,roots,st);
+
+    rect(mainSvg,0,0,W,H,{fill:'transparent'});
+    drawGrid(mainSvg);
+
+    // Endpoint band between f(a), f(b)
+    const fa=f(s.a,s), fb=f(s.b,s);
+    const ylo=Math.min(fa,fb), yhi=Math.max(fa,fb);
+    rect(mainSvg,X(xMin),Y(yhi),X(xMax)-X(xMin),Math.max(2,Y(ylo)-Y(yhi)),{fill:accent,opacity:.075,rx:14});
+    line(mainSvg,X(xMin),Y(fa),X(s.a),Y(fa),{stroke:accent,'stroke-width':1.2,'stroke-dasharray':'5 7',opacity:.85});
+    line(mainSvg,X(xMin),Y(fb),X(s.b),Y(fb),{stroke:accent,'stroke-width':1.2,'stroke-dasharray':'5 7',opacity:.85});
+    text(mainSvg,X(xMin)+8,Y(fa)-7,'f(a)',{fill:accentStrong,'font-size':14,'font-family':'ui-sans-serif, system-ui'});
+    text(mainSvg,X(xMin)+8,Y(fb)-7,'f(b)',{fill:accentStrong,'font-size':14,'font-family':'ui-sans-serif, system-ui'});
+
+    // Target line
+    const targetInside = s.t>=yMin && s.t<=yMax;
+    if(targetInside){
+      line(mainSvg,X(xMin),Y(s.t),X(xMax),Y(s.t),{stroke:warm,'stroke-width':2.4,'stroke-dasharray':'10 8'});
+      rect(mainSvg,X(xMax)-126,Y(s.t)-16,112,27,{rx:13,fill:css('--paper'),stroke:warm,'stroke-width':1,opacity:.96});
+      text(mainSvg,X(xMax)-112,Y(s.t)+4,`target y₀ = ${fmt(s.t)}`,{fill:warm,'font-size':14,'font-family':'ui-sans-serif, system-ui'});
+    }
+
+    // Broken/missing gap visuals
+    if(s.scene === 'gap'){
+      rect(mainSvg,X(-s.gap),Y(yMax),X(s.gap)-X(-s.gap),Y(yMin)-Y(yMax),{fill:bad,opacity:.065});
+      line(mainSvg,X(-s.gap),Y(yMin),X(-s.gap),Y(yMax),{stroke:bad,'stroke-width':1.4,'stroke-dasharray':'6 7',opacity:.75});
+      line(mainSvg,X(s.gap),Y(yMin),X(s.gap),Y(yMax),{stroke:bad,'stroke-width':1.4,'stroke-dasharray':'6 7',opacity:.75});
+      text(mainSvg,X(0)-50,Y(yMin)-8,'domain hole',{fill:bad,'font-size':14,'font-family':'ui-sans-serif, system-ui'});
+    }
+    if(s.scene === 'jump'){
+      rect(mainSvg,X(-.08),Y(.62),X(.08)-X(-.08),Y(-.62)-Y(.62),{fill:bad,opacity:.075,rx:10});
+      text(mainSvg,X(.12),Y(0)+5,'jump skips heights',{fill:bad,'font-size':14,'font-family':'ui-sans-serif, system-ui'});
+    }
+
+    // Draw domain bar
+    const barY=Y(yMin)+39;
+    line(mainSvg,X(s.a),barY,X(s.b),barY,{stroke:lineC,'stroke-width':7,'stroke-linecap':'round',opacity:.42});
+    for(const pc of pieces(s)){
+      line(mainSvg,X(pc[0]),barY,X(pc[1]),barY,{stroke:blue,'stroke-width':10,'stroke-linecap':'round'});
+      circle(mainSvg,X(pc[0]),barY,5,{fill:blue}); circle(mainSvg,X(pc[1]),barY,5,{fill:blue});
+    }
+    text(mainSvg,X(s.a)-10,barY+30,'a',{fill:muted,'font-size':15,'font-family':'ui-sans-serif, system-ui'});
+    text(mainSvg,X(s.b)-4,barY+30,'b',{fill:muted,'font-size':15,'font-family':'ui-sans-serif, system-ui'});
+    text(mainSvg,X(s.a)+6,barY-16,'domain',{fill:blue,'font-size':14,'font-family':'ui-sans-serif, system-ui'});
+
+    // Curve paths
+    for(const pc of pieces(s)){
+      path(mainSvg,pathFromPoints(samplePiece(pc,s,220)),{fill:'none',stroke:ink,'stroke-width':3.1,'stroke-linecap':'round','stroke-linejoin':'round'});
+    }
+
+    // Jump open endpoints around zero
+    if(s.scene === 'jump'){
+      const left = 0.55*0 -0.62 + 0.10*Math.sin(0) + 0.07*s.bend*(-1);
+      const right = 0.55*0 +0.62 + 0.10*Math.sin(0) + 0.07*s.bend*(-1);
+      circle(mainSvg,X(0),Y(left),8,{fill:css('--paper'),stroke:ink,'stroke-width':2.5});
+      circle(mainSvg,X(0),Y(right),8,{fill:ink,stroke:ink,'stroke-width':2});
+      line(mainSvg,X(0),Y(left),X(0),Y(right),{stroke:bad,'stroke-width':2,'stroke-dasharray':'5 7',opacity:.75});
+    }
+
+    // Endpoint dots
+    circle(mainSvg,X(s.a),Y(fa),7,{fill:accent,stroke:css('--paper'),'stroke-width':3});
+    circle(mainSvg,X(s.b),Y(fb),7,{fill:accent,stroke:css('--paper'),'stroke-width':3});
+    text(mainSvg,X(s.a)-26,Y(fa)-14,'(a,f(a))',{fill:accentStrong,'font-size':13,'font-family':'ui-sans-serif, system-ui'});
+    text(mainSvg,X(s.b)-56,Y(fb)-14,'(b,f(b))',{fill:accentStrong,'font-size':13,'font-family':'ui-sans-serif, system-ui'});
+
+    // Roots markers
+    if(roots.length){
+      roots.slice(0,5).forEach((r,i)=>{
+        line(mainSvg,X(r),Y(s.t),X(r),barY,{stroke:warm,'stroke-width':1.8,'stroke-dasharray':'4 5',opacity:.92});
+        circle(mainSvg,X(r),Y(s.t),8,{fill:warm,stroke:css('--paper'),'stroke-width':3});
+        circle(mainSvg,X(r),barY,5,{fill:warm});
+        if(i===0){
+          text(mainSvg,X(r)+12,Y(s.t)-12,'c with f(c)=y₀',{fill:warm,'font-size':14,'font-family':'ui-sans-serif, system-ui'});
+        }
+      });
+    } else {
+      const labelX = X(0.28), labelY = Y(s.t)-20;
+      if(s.scene !== 'outside'){
+        text(mainSvg,labelX,labelY,'no point of the domain hits this height',{fill:bad,'font-size':14,'font-family':'ui-sans-serif, system-ui'});
+      }
+    }
+
+    // Big visual slogan inside plot
+    const slogan = s.scene === 'ivt'
+      ? 'unbroken x-interval  +  unbroken graph  ⇒  no missing y-height'
+      : s.scene === 'jump'
+        ? 'endpoint signs are not enough: continuity is broken'
+        : s.scene === 'gap'
+          ? 'continuity on pieces is not enough: the domain is broken'
+          : 'continuity alone does not force levels outside the endpoint band';
+    rect(mainSvg,X(xMin)+12,Y(yMax)+12,600,34,{rx:17,fill:paper2,stroke:lineC,opacity:.92});
+    text(mainSvg,X(xMin)+30,Y(yMax)+34,slogan,{fill:muted,'font-size':15,'font-family':'ui-sans-serif, system-ui'});
+
+    drawMap(s, roots, st);
+    if(window.MathJax?.typesetPromise) MathJax.typesetPromise();
+  }
+
+  function noticeHtml(s,roots,st){
+    if(s.scene === 'ivt'){
+      return `<strong>The theorem is a no-skipping statement</strong>The horizontal line is an intermediate height. Because the curve is continuous on one interval, the orange line must touch the graph somewhere.`;
+    }
+    if(s.scene === 'jump'){
+      return `<strong>Continuity is doing real work</strong>The endpoint values can lie on opposite sides of the target, but a jump can skip the target height entirely.`;
+    }
+    if(s.scene === 'gap'){
+      return `<strong>Connectedness is the hidden hypothesis</strong>The formula may be continuous on each component, but a missing piece of the domain can remove the crossing point.`;
+    }
+    return `<strong>IVT gives existence, not everything</strong>For levels outside the endpoint band, continuity gives no guarantee. The curve might hit the level, but it is not forced by IVT.`;
+  }
+
+  function drawMap(s,roots,st){
+    clear(mapSvg);
+    const accent=css('--accent'), accentStrong=css('--accent-strong'), warm=css('--warm'), blue=css('--blue'), bad=css('--bad'), muted=css('--muted'), lineC=css('--line'), paper2=css('--paper2'), ink=css('--ink');
+    const Wm=760,Hm=430;
+    rect(mapSvg,0,0,Wm,Hm,{fill:'transparent'});
+    text(mapSvg,35,40,'domain',{'font-size':16,fill:muted,'font-family':'ui-sans-serif, system-ui'});
+    text(mapSvg,455,40,'image',{'font-size':16,fill:muted,'font-family':'ui-sans-serif, system-ui'});
+    text(mapSvg,325,40,'continuous map f',{'font-size':14,fill:accentStrong,'font-family':'ui-sans-serif, system-ui'});
+    path(mapSvg,'M 282 116 C 340 74, 390 74, 448 116',{fill:'none',stroke:accent,'stroke-width':2.1,'stroke-dasharray':'6 7'});
+    path(mapSvg,'M 282 238 C 340 196, 390 196, 448 238',{fill:'none',stroke:accent,'stroke-width':2.1,'stroke-dasharray':'6 7'});
+    path(mapSvg,'M 282 340 C 340 306, 390 306, 448 340',{fill:'none',stroke:accent,'stroke-width':2.1,'stroke-dasharray':'6 7'});
+
+    // Domain line
+    line(mapSvg,60,120,260,120,{stroke:lineC,'stroke-width':9,'stroke-linecap':'round',opacity:.36});
+    if(s.scene === 'gap'){
+      line(mapSvg,60,120,135,120,{stroke:blue,'stroke-width':14,'stroke-linecap':'round'});
+      line(mapSvg,185,120,260,120,{stroke:blue,'stroke-width':14,'stroke-linecap':'round'});
+      rect(mapSvg,142,102,36,36,{rx:10,fill:bad,opacity:.15,stroke:bad,'stroke-width':1});
+      text(mapSvg,130,89,'hole',{fill:bad,'font-size':13,'font-family':'ui-sans-serif, system-ui'});
+    } else {
+      line(mapSvg,60,120,260,120,{stroke:blue,'stroke-width':14,'stroke-linecap':'round'});
+    }
+    text(mapSvg,54,151, s.scene === 'gap' ? 'two pieces' : 'one interval [a,b]', {fill:blue,'font-size':14,'font-family':'ui-sans-serif, system-ui'});
+
+    // Image axis and ranges
+    line(mapSvg,505,68,505,365,{stroke:lineC,'stroke-width':3,'stroke-linecap':'round'});
+    const ranges=approxImageRanges(s);
+    const allLo=Math.min(...ranges.map(r=>r[0]), -1.7), allHi=Math.max(...ranges.map(r=>r[1]), 1.7);
+    const Mtop=75, Mbot=360;
+    const MY = y => Mbot - (y - allLo)/(allHi-allLo)*(Mbot-Mtop);
+    // endpoint band in image
+    const fa=f(s.a,s), fb=f(s.b,s), ylo=Math.min(fa,fb), yhi=Math.max(fa,fb);
+    rect(mapSvg,486,MY(yhi),38,Math.max(2,MY(ylo)-MY(yhi)),{rx:10,fill:accent,opacity:.10});
+    line(mapSvg,468,MY(s.t),545,MY(s.t),{stroke:warm,'stroke-width':2.2,'stroke-dasharray':'7 6'});
+    text(mapSvg,554,MY(s.t)+5,'y₀',{fill:warm,'font-size':14,'font-family':'ui-sans-serif, system-ui'});
+
+    if(s.scene === 'ivt' || s.scene === 'outside'){
+      const lo=Math.min(...ranges.map(r=>r[0])), hi=Math.max(...ranges.map(r=>r[1]));
+      line(mapSvg,505,MY(lo),505,MY(hi),{stroke:accent,'stroke-width':18,'stroke-linecap':'round'});
+      text(mapSvg,535,(MY(lo)+MY(hi))/2,'one interval of heights',{fill:accentStrong,'font-size':14,'font-family':'ui-sans-serif, system-ui'});
+    } else if(s.scene === 'jump'){
+      ranges.forEach((r,i)=>line(mapSvg,505,MY(r[0]),505,MY(r[1]),{stroke:accent,'stroke-width':18,'stroke-linecap':'round'}));
+      const leftR=ranges[0];
+      rect(mapSvg,489,MY(0.55),33,Math.max(18,MY(-0.55)-MY(0.55)),{rx:9,fill:bad,opacity:.16,stroke:bad,'stroke-width':1});
+      text(mapSvg,535,MY(0.02),'missing heights',{fill:bad,'font-size':14,'font-family':'ui-sans-serif, system-ui'});
+    } else {
+      ranges.forEach(r=>line(mapSvg,505,MY(r[0]),505,MY(r[1]),{stroke:accent,'stroke-width':18,'stroke-linecap':'round'}));
+      rect(mapSvg,489,MY(s.gap*.75),33,Math.max(18,MY(-s.gap*.75)-MY(s.gap*.75)),{rx:9,fill:bad,opacity:.16,stroke:bad,'stroke-width':1});
+      text(mapSvg,535,MY(0.02),'missing image gap',{fill:bad,'font-size':14,'font-family':'ui-sans-serif, system-ui'});
+    }
+
+    // Lower conclusion row
+    rect(mapSvg,35,285,690,94,{rx:22,fill:paper2,stroke:lineC});
+    const conclusion = s.scene === 'ivt'
+      ? 'Topological reason: connected set  →  connected image. In R, connected means interval.'
+      : s.scene === 'jump'
+        ? 'A discontinuous map need not preserve connectedness. The image can split.'
+        : s.scene === 'gap'
+          ? 'A continuous map preserves connectedness, but the domain is not connected.'
+          : 'The image is connected, but IVT only forces heights between the endpoint values.';
+    text(mapSvg,60,323,conclusion,{fill:ink,'font-size':17,'font-family':'ui-serif, Georgia'});
+    const formula = s.scene === 'gap'
+      ? 'D = [-2,-g] ∪ [g,2] is not connected.'
+      : s.scene === 'jump'
+        ? 'f has a jump, so continuity fails.'
+        : 'f([a,b]) is an interval.';
+    text(mapSvg,60,352,formula,{fill:muted,'font-size':14,'font-family':'ui-sans-serif, system-ui'});
+  }
+
+  function draw(){ drawMain(); }
+  draw();
+})();
+</script>
+</body>
+</html>

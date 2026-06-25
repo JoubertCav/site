@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive real analysis diagram for the extreme value theorem.">
+  <title>Extreme Value Theorem | Real Analysis Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(','\\)'], ['$', '$']],
+        displayMath: [['\\[','\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    :root{
+      --bg:#f5f1e8;
+      --bg2:#fbf8f1;
+      --panel:rgba(255,255,255,.76);
+      --panel-2:#fffdfa;
+      --text:#1c2730;
+      --muted:#6b7981;
+      --line:#d9d1c4;
+      --line-2:#e9e2d7;
+      --accent:#2d7a76;
+      --accent-soft:rgba(45,122,118,.10);
+      --accent-2:#d56e57;
+      --accent-3:#5f7f9d;
+      --ok:#246c56;
+      --warn:#a55a51;
+      --shadow:0 18px 40px rgba(42,51,60,.08);
+      --shadow-soft:0 10px 24px rgba(42,51,60,.05);
+      --grid:rgba(28,39,48,.08);
+      --badge:#f0ebe0;
+      --switch-track:#ebe5d8;
+      --switch-thumb:#ffffff;
+    }
+    body.dark{
+      --bg:#0d1318;
+      --bg2:#101920;
+      --panel:rgba(17,25,32,.84);
+      --panel-2:#121b22;
+      --text:#edf3f6;
+      --muted:#aab7c0;
+      --line:#26323b;
+      --line-2:#1f2b34;
+      --accent:#6ecdc3;
+      --accent-soft:rgba(110,205,195,.10);
+      --accent-2:#ee9b85;
+      --accent-3:#95bada;
+      --ok:#77d5ad;
+      --warn:#e18d87;
+      --shadow:0 22px 54px rgba(0,0,0,.28);
+      --shadow-soft:0 10px 26px rgba(0,0,0,.18);
+      --grid:rgba(237,243,246,.08);
+      --badge:#162129;
+      --switch-track:#1a242c;
+      --switch-thumb:#15202a;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(45,122,118,.06), transparent 24%),
+        radial-gradient(circle at 100% 0%, rgba(95,127,157,.06), transparent 22%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      transition:background .28s ease, color .28s ease;
+    }
+    .wrap{max-width:1520px; margin:0 auto; padding:24px 18px 34px;}
+    .topbar{
+      display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:18px; flex-wrap:wrap;
+    }
+    .headline h1{
+      margin:0;
+      font-family:Georgia, "Times New Roman", serif;
+      font-size:clamp(2.2rem, 4vw, 3.45rem);
+      line-height:1.05;
+      letter-spacing:-.03em;
+      font-weight:700;
+    }
+    .headline p{
+      margin:.6rem 0 0;
+      max-width:760px;
+      color:var(--muted);
+      font-size:1.03rem;
+      line-height:1.55;
+    }
+    .top-actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .chip{
+      border:1px solid var(--line);
+      background:var(--panel);
+      padding:10px 14px;
+      border-radius:999px;
+      box-shadow:var(--shadow-soft);
+      color:var(--text);
+      font-size:.93rem;
+      backdrop-filter:blur(10px);
+    }
+    .theme-toggle{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 10px;
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:999px;
+      box-shadow:var(--shadow-soft);
+      user-select:none;
+      cursor:pointer;
+    }
+    .theme-toggle span.label{font-size:.93rem; color:var(--muted); min-width:72px}
+    .switch{
+      position:relative;
+      width:72px;
+      height:38px;
+      border-radius:999px;
+      background:var(--switch-track);
+      border:1px solid var(--line);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,.05);
+      transition:all .25s ease;
+      overflow:hidden;
+      flex:0 0 auto;
+    }
+    .switch .icon{
+      position:absolute;
+      top:50%; transform:translateY(-50%);
+      font-size:14px;
+      z-index:1;
+      opacity:.8;
+      transition:opacity .25s ease;
+    }
+    .switch .sun{left:10px}
+    .switch .moon{right:10px}
+    .thumb{
+      position:absolute;
+      top:3px; left:3px;
+      width:30px; height:30px;
+      border-radius:50%;
+      background:var(--switch-thumb);
+      border:1px solid var(--line-2);
+      box-shadow:0 4px 12px rgba(0,0,0,.16);
+      transition:left .28s cubic-bezier(.3,.9,.2,1), background .25s ease;
+      display:grid; place-items:center;
+      font-size:14px;
+    }
+    body.dark .thumb{left:37px}
+
+    .layout{
+      display:grid;
+      grid-template-columns:320px minmax(0,1fr);
+      gap:18px;
+      align-items:start;
+    }
+    .card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(14px);
+    }
+    .sidebar{padding:18px; position:sticky; top:16px}
+    .section-head{
+      display:flex; justify-content:space-between; gap:10px; align-items:flex-start; margin-bottom:14px;
+    }
+    .section-head h2,.section-head h3{margin:0; font-family:Georgia, "Times New Roman", serif; letter-spacing:-.02em}
+    .section-head p{margin:4px 0 0; color:var(--muted); font-size:.94rem; line-height:1.44}
+    .mini-chip{
+      padding:7px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      font-size:.82rem;
+      background:var(--badge);
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .eqbox,.note-box,.summary-box{
+      background:var(--panel-2);
+      border:1px solid var(--line-2);
+      border-radius:20px;
+    }
+    .eqbox{padding:16px 14px; margin-bottom:14px}
+    .note-box{padding:13px 14px; color:var(--muted); font-size:.93rem; line-height:1.5; margin-top:14px}
+    .summary-box{padding:12px 13px; margin-top:14px; font-size:.93rem; line-height:1.46}
+    .control-group{margin:14px 0 16px}
+    .control-group label{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px; font-weight:600}
+    .control-group small{color:var(--muted); font-weight:500}
+    select,input[type="range"]{width:100%}
+    select{
+      background:var(--panel-2);
+      color:var(--text);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px 13px;
+      font-size:.98rem;
+      outline:none;
+    }
+    input[type="range"]{
+      -webkit-appearance:none; appearance:none;
+      height:8px; border-radius:999px; border:1px solid var(--line);
+      background:linear-gradient(90deg,var(--accent),var(--accent)); background-repeat:no-repeat; background-size:50% 100%;
+    }
+    input[type="range"]::-webkit-slider-thumb{
+      -webkit-appearance:none; appearance:none; width:20px; height:20px; border-radius:50%;
+      background:var(--accent); border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,.18); cursor:pointer;
+    }
+    body.dark input[type="range"]::-webkit-slider-thumb{border-color:#0d1318}
+
+    .main{display:grid; gap:18px}
+    .hero{padding:18px}
+    .hero-top{
+      display:flex; justify-content:space-between; gap:12px; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap;
+    }
+    .hero-top p{margin:4px 0 0; color:var(--muted); line-height:1.45; max-width:680px}
+    .status{
+      padding:8px 12px; border-radius:999px; border:1px solid var(--line);
+      background:rgba(36,108,86,.08); color:var(--ok); font-size:.92rem; white-space:nowrap;
+    }
+    .svg-shell{padding:10px; border-radius:24px; border:1px solid var(--line-2); background:var(--panel-2)}
+    svg.diagram, svg.mini-svg{display:block; width:100%; height:auto}
+
+    .two-col{
+      display:grid; grid-template-columns: minmax(0,1fr) 270px; gap:16px; align-items:start;
+    }
+    .metrics{
+      display:grid; gap:10px;
+    }
+    .metric-card{
+      padding:14px; border-radius:18px; background:var(--panel-2); border:1px solid var(--line-2);
+    }
+    .metric-card h4{margin:0 0 6px; font-family:Georgia, "Times New Roman", serif; font-size:1rem}
+    .metric-card p{margin:0; color:var(--muted); font-size:.91rem; line-height:1.42}
+    .metric-card .value{display:block; margin-top:7px; color:var(--accent); font-weight:700}
+
+    .failure-panel{padding:18px}
+    .failure-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+    .failure-card{
+      border:1px solid var(--line-2); border-radius:20px; background:var(--panel-2); padding:10px;
+    }
+    .failure-card h4{margin:0 0 8px; font-size:.98rem; font-family:Georgia, "Times New Roman", serif}
+    .failure-card p{margin:8px 0 0; color:var(--muted); line-height:1.4; font-size:.9rem}
+    .footer-strip{
+      display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+    }
+    .strip-box{
+      padding:12px 13px; border:1px solid var(--line-2); border-radius:16px; background:var(--panel-2); font-size:.93rem; line-height:1.45;
+    }
+    .subtle{color:var(--muted)}
+
+    @media (max-width: 1160px){
+      .layout{grid-template-columns:1fr}
+      .sidebar{position:static}
+      .two-col{grid-template-columns:1fr}
+    }
+    @media (max-width: 900px){
+      .failure-grid,.footer-strip{grid-template-columns:1fr}
+      .wrap{padding:18px 14px 28px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="headline">
+        <h1>Extreme value theorem</h1>
+        <p>The point is visual: a compact domain forces a continuous graph to actually hit its highest and lowest levels.</p>
+      </div>
+      <div class="top-actions">
+        <div class="chip">diagram first</div>
+        <div id="themeToggle" class="theme-toggle" role="button" aria-label="Toggle dark and light mode" tabindex="0">
+          <span class="label" id="themeLabel">light mode</span>
+          <div class="switch">
+            <span class="icon sun">☀</span>
+            <span class="icon moon">☾</span>
+            <div class="thumb" id="themeThumb">☀</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layout">
+      <aside class="card sidebar">
+        <div class="section-head">
+          <div>
+            <h2>Controls</h2>
+            <p>Move the compact interval and reshape the function.</p>
+          </div>
+          <div class="mini-chip">\(K\subset\mathbb R\)</div>
+        </div>
+
+        <div class="eqbox">
+          \[
+          K\text{ compact},\ f:K\to\mathbb R\text{ continuous}
+          \]
+          \[
+          \Longrightarrow\ \exists x_{\min},x_{\max}\in K:
+          f(x_{\min})=\min_K f,\quad f(x_{\max})=\max_K f
+          \]
+        </div>
+
+        <div class="control-group">
+          <label for="funcSelect">Function family <small id="funcLabel"></small></label>
+          <select id="funcSelect">
+            <option value="quad">smooth bowl</option>
+            <option value="wave">wavy polynomial</option>
+            <option value="cubic">cubic shape</option>
+            <option value="bump">double-well</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="leftSlider">Left endpoint \(a\) <small id="leftVal"></small></label>
+          <input id="leftSlider" type="range" min="-4.5" max="2.0" step="0.1" value="-2.2" />
+        </div>
+        <div class="control-group">
+          <label for="rightSlider">Right endpoint \(b\) <small id="rightVal"></small></label>
+          <input id="rightSlider" type="range" min="-1.0" max="4.8" step="0.1" value="2.8" />
+        </div>
+        <div class="control-group">
+          <label for="ampSlider">Amplitude <small id="ampVal"></small></label>
+          <input id="ampSlider" type="range" min="0.55" max="1.8" step="0.05" value="1.0" />
+        </div>
+        <div class="control-group">
+          <label for="tiltSlider">Tilt <small id="tiltVal"></small></label>
+          <input id="tiltSlider" type="range" min="-2.0" max="2.0" step="0.05" value="0.2" />
+        </div>
+        <div class="control-group">
+          <label for="sampleSlider">Sample points <small id="sampleVal"></small></label>
+          <input id="sampleSlider" type="range" min="10" max="56" step="1" value="28" />
+        </div>
+
+        <div id="compactMessage" class="note-box"></div>
+        <div class="summary-box">
+          <strong>Visual proof.</strong>
+          Compact \(K\) ⇒ compact image \(f(K)\). In \(\mathbb R\), compact means the image interval contains its endpoints, so the extrema are attained.
+        </div>
+      </aside>
+
+      <main class="main">
+        <section class="card hero">
+          <div class="hero-top">
+            <div>
+              <h2 style="margin:0; font-family:Georgia, 'Times New Roman', serif; letter-spacing:-.02em">One theorem, one diagram</h2>
+              <p>Read the picture from left to right: <strong>compact domain</strong> → <strong>continuous graph</strong> → <strong>image interval with attained endpoints</strong>.</p>
+            </div>
+            <div id="heroStatus" class="status">extrema attained</div>
+          </div>
+
+          <div class="two-col">
+            <div class="svg-shell">
+              <svg id="mainSvg" class="diagram" viewBox="0 0 1180 700" aria-label="Main extreme value theorem diagram"></svg>
+            </div>
+            <div class="metrics">
+              <div class="metric-card">
+                <h4>Compact domain</h4>
+                <p>Closed and bounded interval.</p>
+                <span class="value" id="intervalBadge"></span>
+              </div>
+              <div class="metric-card">
+                <h4>Attained image</h4>
+                <p>The endpoint heights are hit by the graph.</p>
+                <span class="value" id="rangeBadge"></span>
+              </div>
+              <div class="metric-card">
+                <h4>Witness points</h4>
+                <p>The colored points in the domain are sent to the colored endpoints in the image.</p>
+                <span class="value" id="witnessBadge"></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card failure-panel">
+          <div class="section-head">
+            <div>
+              <h3>When the picture breaks</h3>
+              <p>Minimal text, three failure diagrams.</p>
+            </div>
+            <div class="mini-chip">remove a hypothesis</div>
+          </div>
+          <div class="failure-grid">
+            <div class="failure-card">
+              <h4>Open interval</h4>
+              <svg id="miniOpen" class="mini-svg" viewBox="0 0 260 180"></svg>
+              <p>Endpoints missing ⇒ bounds exist but are not reached.</p>
+            </div>
+            <div class="failure-card">
+              <h4>Unbounded domain</h4>
+              <svg id="miniUnbounded" class="mini-svg" viewBox="0 0 260 180"></svg>
+              <p>One side escapes to infinity ⇒ no global maximum.</p>
+            </div>
+            <div class="failure-card">
+              <h4>Discontinuous map</h4>
+              <svg id="miniDiscontinuous" class="mini-svg" viewBox="0 0 260 180"></svg>
+              <p>Jump at the endpoint ⇒ supremum may fail to be attained.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="footer-strip">
+          <div class="strip-box"><strong>Statement.</strong> Continuous \(f:K\to\mathbb R\) with compact \(K\subset\mathbb R^n\) attains both \(\min_K f\) and \(\max_K f\).</div>
+          <div class="strip-box"><strong>Heine–Borel.</strong> In \(\mathbb R^n\), compact = closed + bounded. That is why those are the practical hypotheses.</div>
+          <div class="strip-box"><strong>Optimization.</strong> A continuous objective on a compact feasible set always has a global minimizer and maximizer.</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      func:'quad',
+      a:-2.2,
+      b:2.8,
+      amp:1.0,
+      tilt:0.2,
+      samples:28,
+      theme:localStorage.getItem('evt-diagram-theme') || 'light'
+    };
+
+    const els = {
+      themeToggle: document.getElementById('themeToggle'),
+      themeLabel: document.getElementById('themeLabel'),
+      themeThumb: document.getElementById('themeThumb'),
+      funcSelect: document.getElementById('funcSelect'),
+      leftSlider: document.getElementById('leftSlider'),
+      rightSlider: document.getElementById('rightSlider'),
+      ampSlider: document.getElementById('ampSlider'),
+      tiltSlider: document.getElementById('tiltSlider'),
+      sampleSlider: document.getElementById('sampleSlider'),
+      funcLabel: document.getElementById('funcLabel'),
+      leftVal: document.getElementById('leftVal'),
+      rightVal: document.getElementById('rightVal'),
+      ampVal: document.getElementById('ampVal'),
+      tiltVal: document.getElementById('tiltVal'),
+      sampleVal: document.getElementById('sampleVal'),
+      mainSvg: document.getElementById('mainSvg'),
+      miniOpen: document.getElementById('miniOpen'),
+      miniUnbounded: document.getElementById('miniUnbounded'),
+      miniDiscontinuous: document.getElementById('miniDiscontinuous'),
+      compactMessage: document.getElementById('compactMessage'),
+      intervalBadge: document.getElementById('intervalBadge'),
+      rangeBadge: document.getElementById('rangeBadge'),
+      witnessBadge: document.getElementById('witnessBadge'),
+      heroStatus: document.getElementById('heroStatus')
+    };
+
+    const css = name => getComputedStyle(document.body).getPropertyValue(name).trim();
+    const fmt = x => (x < 0 ? '−' : '') + Math.abs(x).toFixed(2);
+    const mapLinear = (x,a,b,c,d) => c + (x-a)*(d-c)/(b-a);
+
+    function updateSliderFill(input){
+      const min=parseFloat(input.min), max=parseFloat(input.max), val=parseFloat(input.value);
+      const pct=((val-min)/(max-min))*100;
+      input.style.backgroundSize = pct + '% 100%';
+    }
+
+    function setTheme(theme){
+      state.theme = theme;
+      document.body.classList.toggle('dark', theme === 'dark');
+      localStorage.setItem('evt-diagram-theme', theme);
+      els.themeLabel.textContent = theme === 'dark' ? 'dark mode' : 'light mode';
+      els.themeThumb.textContent = theme === 'dark' ? '☾' : '☀';
+      renderAll();
+    }
+
+    function baseFunction(x){
+      const A = state.amp, t = state.tilt;
+      switch(state.func){
+        case 'quad': return A*(0.34*Math.pow(x-0.55,2) - 1.18) + 0.20*t*x;
+        case 'wave': return A*(0.68*Math.sin(1.35*x) + 0.11*x*x - 0.72) + 0.18*t*x;
+        case 'cubic': return A*(0.11*(x+2.2)*(x-0.2)*(x-2.0) - 0.45) + 0.15*t*x;
+        case 'bump': return A*(0.095*Math.pow(x*x-3.4,2) - 1.1 + 0.06*Math.sin(2.1*x)) + 0.12*t*x;
+        default: return x;
+      }
+    }
+
+    function sampleRange(a,b,n){
+      const arr=[];
+      for(let i=0;i<n;i++) arr.push(a+(b-a)*i/(n-1));
+      return arr;
+    }
+
+    function extremaOnInterval(a,b){
+      const N=1800;
+      let minX=a,maxX=a,minY=Infinity,maxY=-Infinity;
+      for(let i=0;i<=N;i++){
+        const x = a + (b-a)*i/N;
+        const y = baseFunction(x);
+        if(y<minY){minY=y;minX=x;}
+        if(y>maxY){maxY=y;maxX=x;}
+      }
+      return {minX,minY,maxX,maxY};
+    }
+
+    function svgText(x,y,text,opts={}){
+      const size=opts.size||15;
+      const fill=opts.fill||css('--text');
+      const weight=opts.weight||500;
+      const anchor=opts.anchor||'start';
+      const family=opts.family||'Inter, sans-serif';
+      return `<text x="${x}" y="${y}" fill="${fill}" font-size="${size}" font-family="${family}" font-weight="${weight}" text-anchor="${anchor}">${text}</text>`;
+    }
+
+    function renderMain(){
+      const W=1180,H=700;
+      const a=state.a,b=state.b;
+      const ext=extremaOnInterval(a,b);
+      const xMin=-5,xMax=5;
+      const curve=sampleRange(xMin,xMax,700).map(x=>({x,y:baseFunction(x)}));
+      const yVals=curve.map(p=>p.y).concat([ext.minY,ext.maxY]);
+      const yMin=Math.min(...yVals)-0.55;
+      const yMax=Math.max(...yVals)+0.55;
+
+      const dom={x:60,y:110,w:700,h:94};
+      const graph={x:60,y:250,w:700,h:380};
+      const img={x:865,y:122,w:180,h:468};
+      const X=x=>mapLinear(x,xMin,xMax,graph.x,graph.x+graph.w);
+      const Y=y=>mapLinear(y,yMin,yMax,graph.y+graph.h,graph.y);
+      const XD=x=>mapLinear(x,xMin,xMax,dom.x,dom.x+dom.w);
+      const YI=y=>mapLinear(y,yMin,yMax,img.y+img.h,img.y);
+
+      let grid='';
+      for(let k=-4;k<=4;k++) grid += `<line x1="${X(k)}" y1="${graph.y}" x2="${X(k)}" y2="${graph.y+graph.h}" stroke="${css('--grid')}" stroke-width="1"/>`;
+      for(let j=0;j<=6;j++){
+        const yv=yMin+(yMax-yMin)*j/6;
+        grid += `<line x1="${graph.x}" y1="${Y(yv)}" x2="${graph.x+graph.w}" y2="${Y(yv)}" stroke="${css('--grid')}" stroke-width="1"/>`;
+      }
+      const path=curve.map((p,i)=>`${i?'L':'M'} ${X(p.x).toFixed(2)} ${Y(p.y).toFixed(2)}`).join(' ');
+
+      const samples=sampleRange(a,b,state.samples).map(x=>({x,y:baseFunction(x)}));
+      let domainDots='', graphDots='';
+      samples.forEach(p=>{
+        domainDots += `<circle cx="${XD(p.x)}" cy="${dom.y+dom.h/2}" r="2.9" fill="${css('--accent')}" opacity=".76"/>`;
+        graphDots += `<circle cx="${X(p.x)}" cy="${Y(p.y)}" r="2.7" fill="${css('--accent')}" opacity=".68"/>`;
+      });
+
+      const minColor=css('--accent-2'), maxColor=css('--accent-3');
+      const imgTop=YI(ext.maxY), imgBottom=YI(ext.minY);
+      const imgMidX=img.x+img.w/2;
+      const imgBarX=imgMidX-22;
+
+      els.mainSvg.innerHTML = `
+        <rect x="0" y="0" width="${W}" height="${H}" rx="26" fill="${css('--panel-2')}"/>
+
+        ${svgText(dom.x, 60, 'compact domain K', {size:22, weight:700, family:'Georgia, serif'})}
+        ${svgText(graph.x, 226, 'continuous graph on K', {size:22, weight:700, family:'Georgia, serif'})}
+        ${svgText(img.x-4, 60, 'image interval f(K)', {size:22, weight:700, family:'Georgia, serif'})}
+
+        <rect x="${dom.x}" y="${dom.y}" width="${dom.w}" height="${dom.h}" rx="24" fill="${css('--accent-soft')}" stroke="${css('--line')}"/>
+        <line x1="${dom.x+34}" y1="${dom.y+dom.h/2}" x2="${dom.x+dom.w-34}" y2="${dom.y+dom.h/2}" stroke="${css('--muted')}" stroke-width="2.2"/>
+        <rect x="${XD(a)}" y="${dom.y+dom.h/2-18}" width="${XD(b)-XD(a)}" height="36" rx="18" fill="rgba(45,122,118,.14)" stroke="${css('--accent')}" stroke-width="1.5"/>
+        ${domainDots}
+        <circle cx="${XD(a)}" cy="${dom.y+dom.h/2}" r="5.8" fill="${css('--text')}"/>
+        <circle cx="${XD(b)}" cy="${dom.y+dom.h/2}" r="5.8" fill="${css('--text')}"/>
+        ${svgText(XD(a), dom.y+dom.h/2-26, 'a', {anchor:'middle', size:15, family:'Georgia, serif', fill:css('--muted')})}
+        ${svgText(XD(b), dom.y+dom.h/2-26, 'b', {anchor:'middle', size:15, family:'Georgia, serif', fill:css('--muted')})}
+        <line x1="${XD(ext.minX)}" y1="${dom.y+12}" x2="${XD(ext.minX)}" y2="${dom.y+dom.h-12}" stroke="${minColor}" stroke-width="2" stroke-dasharray="6 6"/>
+        <line x1="${XD(ext.maxX)}" y1="${dom.y+12}" x2="${XD(ext.maxX)}" y2="${dom.y+dom.h-12}" stroke="${maxColor}" stroke-width="2" stroke-dasharray="6 6"/>
+        <circle cx="${XD(ext.minX)}" cy="${dom.y+dom.h/2}" r="8" fill="${minColor}"/>
+        <circle cx="${XD(ext.maxX)}" cy="${dom.y+dom.h/2}" r="8" fill="${maxColor}"/>
+        ${svgText(XD(ext.minX), dom.y+dom.h+24, 'x_min', {anchor:'middle', size:15, fill:minColor, weight:700, family:'Georgia, serif'})}
+        ${svgText(XD(ext.maxX), dom.y+dom.h+24, 'x_max', {anchor:'middle', size:15, fill:maxColor, weight:700, family:'Georgia, serif'})}
+        ${svgText(dom.x+dom.w-152, dom.y+28, 'closed + bounded', {size:14, fill:css('--accent'), weight:700})}
+
+        <rect x="${graph.x}" y="${graph.y}" width="${graph.w}" height="${graph.h}" rx="24" fill="rgba(255,255,255,.02)" stroke="${css('--line')}"/>
+        ${grid}
+        <line x1="${graph.x}" y1="${Y(0)}" x2="${graph.x+graph.w}" y2="${Y(0)}" stroke="${css('--line')}" stroke-width="1.3"/>
+        <line x1="${X(0)}" y1="${graph.y}" x2="${X(0)}" y2="${graph.y+graph.h}" stroke="${css('--line')}" stroke-width="1.3"/>
+        <rect x="${X(a)}" y="${graph.y}" width="${X(b)-X(a)}" height="${graph.h}" fill="rgba(45,122,118,.06)" stroke="${css('--accent')}" stroke-width="1.25" stroke-dasharray="8 6" rx="18"/>
+        <path d="${path}" fill="none" stroke="${css('--text')}" stroke-width="3.5" stroke-linecap="round"/>
+        ${graphDots}
+        <line x1="${graph.x}" y1="${Y(ext.minY)}" x2="${graph.x+graph.w}" y2="${Y(ext.minY)}" stroke="${minColor}" stroke-width="2.2" stroke-dasharray="9 7"/>
+        <line x1="${graph.x}" y1="${Y(ext.maxY)}" x2="${graph.x+graph.w}" y2="${Y(ext.maxY)}" stroke="${maxColor}" stroke-width="2.2" stroke-dasharray="9 7"/>
+        <line x1="${X(ext.minX)}" y1="${graph.y}" x2="${X(ext.minX)}" y2="${graph.y+graph.h}" stroke="${minColor}" stroke-width="1.9" stroke-dasharray="6 6"/>
+        <line x1="${X(ext.maxX)}" y1="${graph.y}" x2="${X(ext.maxX)}" y2="${graph.y+graph.h}" stroke="${maxColor}" stroke-width="1.9" stroke-dasharray="6 6"/>
+        <circle cx="${X(ext.minX)}" cy="${Y(ext.minY)}" r="8.5" fill="${minColor}" stroke="${css('--panel-2')}" stroke-width="2.7"/>
+        <circle cx="${X(ext.maxX)}" cy="${Y(ext.maxY)}" r="8.5" fill="${maxColor}" stroke="${css('--panel-2')}" stroke-width="2.7"/>
+        ${svgText(X(ext.minX)+12, Y(ext.minY)-12, 'global minimum', {size:15, fill:minColor, weight:700})}
+        ${svgText(X(ext.maxX)+12, Y(ext.maxY)-12, 'global maximum', {size:15, fill:maxColor, weight:700})}
+        ${svgText(graph.x+10, graph.y+22, 'restrict x to K', {size:14, fill:css('--accent'), weight:700})}
+        ${svgText(graph.x+graph.w-14, graph.y+graph.h+25, 'x', {size:14, fill:css('--muted'), anchor:'end'})}
+        ${svgText(X(0)+10, graph.y+18, 'f(x)', {size:14, fill:css('--muted'), family:'Georgia, serif'})}
+
+        <rect x="${img.x}" y="${img.y}" width="${img.w}" height="${img.h}" rx="24" fill="${css('--accent-soft')}" stroke="${css('--line')}"/>
+        <line x1="${imgMidX}" y1="${img.y+28}" x2="${imgMidX}" y2="${img.y+img.h-28}" stroke="${css('--muted')}" stroke-width="2.2"/>
+        <rect x="${imgBarX}" y="${imgTop}" width="44" height="${imgBottom-imgTop}" rx="22" fill="rgba(45,122,118,.18)" stroke="${css('--accent')}" stroke-width="1.4"/>
+        <line x1="${img.x+22}" y1="${imgTop}" x2="${img.x+img.w-22}" y2="${imgTop}" stroke="${maxColor}" stroke-width="2.5"/>
+        <line x1="${img.x+22}" y1="${imgBottom}" x2="${img.x+img.w-22}" y2="${imgBottom}" stroke="${minColor}" stroke-width="2.5"/>
+        <circle cx="${imgMidX}" cy="${imgTop}" r="8.2" fill="${maxColor}" stroke="${css('--panel-2')}" stroke-width="2.5"/>
+        <circle cx="${imgMidX}" cy="${imgBottom}" r="8.2" fill="${minColor}" stroke="${css('--panel-2')}" stroke-width="2.5"/>
+        ${svgText(img.x+img.w/2, imgTop-13, 'max f(K)', {anchor:'middle', size:15, fill:maxColor, weight:700})}
+        ${svgText(img.x+img.w/2, imgBottom+25, 'min f(K)', {anchor:'middle', size:15, fill:minColor, weight:700})}
+        ${svgText(img.x+img.w/2, img.y+img.h-8, 'attained endpoints', {anchor:'middle', size:14, fill:css('--accent'), weight:700})}
+
+        <path d="M ${XD(ext.minX)} ${dom.y+dom.h+34} C ${XD(ext.minX)} ${dom.y+dom.h+70}, ${X(ext.minX)-28} ${Y(ext.minY)-58}, ${X(ext.minX)} ${Y(ext.minY)-12}" fill="none" stroke="${minColor}" stroke-width="2.5" opacity=".94"/>
+        <path d="M ${X(ext.minX)+12} ${Y(ext.minY)} C ${X(ext.minX)+72} ${Y(ext.minY)}, ${img.x-36} ${imgBottom}, ${imgMidX-12} ${imgBottom}" fill="none" stroke="${minColor}" stroke-width="2.5" opacity=".94"/>
+        <path d="M ${XD(ext.maxX)} ${dom.y+dom.h+34} C ${XD(ext.maxX)} ${dom.y+dom.h+70}, ${X(ext.maxX)-28} ${Y(ext.maxY)-58}, ${X(ext.maxX)} ${Y(ext.maxY)-12}" fill="none" stroke="${maxColor}" stroke-width="2.5" opacity=".94"/>
+        <path d="M ${X(ext.maxX)+12} ${Y(ext.maxY)} C ${X(ext.maxX)+72} ${Y(ext.maxY)}, ${img.x-36} ${imgTop}, ${imgMidX-12} ${imgTop}" fill="none" stroke="${maxColor}" stroke-width="2.5" opacity=".94"/>
+
+        ${svgText(805, 334, 'continuous image', {size:16, fill:css('--accent'), weight:700, anchor:'middle'})}
+        ${svgText(805, 357, 'cannot miss its ends', {size:15, fill:css('--muted'), anchor:'middle'})}
+      `;
+
+      els.intervalBadge.textContent = `K = [${fmt(a)}, ${fmt(b)}]`;
+      els.rangeBadge.textContent = `f(K) = [${fmt(ext.minY)}, ${fmt(ext.maxY)}]`;
+      els.witnessBadge.textContent = `x_min ≈ ${fmt(ext.minX)},  x_max ≈ ${fmt(ext.maxX)}`;
+      els.compactMessage.innerHTML = `The colored domain points <strong>\(x_{\min}\)</strong> and <strong>\(x_{\max}\)</strong> are carried by the graph to the colored endpoints of the image interval. The theorem guarantees these endpoint values are <strong>attained</strong>.`;
+      els.heroStatus.textContent = 'extrema attained';
+    }
+
+    function renderMiniOpen(){
+      const W=260,H=180; const X=x=>mapLinear(x,0,1,24,236), Y=y=>mapLinear(y,0,1,152,26);
+      els.miniOpen.innerHTML = `
+        <rect x="0" y="0" width="${W}" height="${H}" rx="14" fill="${css('--panel-2')}"/>
+        <line x1="20" y1="${Y(0)}" x2="240" y2="${Y(0)}" stroke="${css('--line')}"/>
+        <line x1="${X(0)}" y1="18" x2="${X(0)}" y2="156" stroke="${css('--line')}"/>
+        <line x1="${X(0)}" y1="${Y(0)}" x2="${X(1)}" y2="${Y(1)}" stroke="${css('--text')}" stroke-width="2.8"/>
+        <circle cx="${X(0)}" cy="${Y(0)}" r="5.8" fill="${css('--panel-2')}" stroke="${css('--warn')}" stroke-width="2.2"/>
+        <circle cx="${X(1)}" cy="${Y(1)}" r="5.8" fill="${css('--panel-2')}" stroke="${css('--warn')}" stroke-width="2.2"/>
+        <line x1="30" y1="${Y(1)}" x2="236" y2="${Y(1)}" stroke="${css('--accent-3')}" stroke-width="2" stroke-dasharray="6 5"/>
+        <line x1="30" y1="${Y(0)}" x2="236" y2="${Y(0)}" stroke="${css('--accent-2')}" stroke-width="2" stroke-dasharray="6 5"/>
+      `;
+    }
+
+    function renderMiniUnbounded(){
+      const W=260,H=180; const X=x=>mapLinear(x,0,1,24,236), Y=y=>mapLinear(y,0,1,152,26);
+      els.miniUnbounded.innerHTML = `
+        <rect x="0" y="0" width="${W}" height="${H}" rx="14" fill="${css('--panel-2')}"/>
+        <line x1="20" y1="${Y(0)}" x2="240" y2="${Y(0)}" stroke="${css('--line')}"/>
+        <line x1="${X(0)}" y1="18" x2="${X(0)}" y2="156" stroke="${css('--line')}"/>
+        <path d="M ${X(0)} ${Y(0)} L ${X(.88)} ${Y(.88)}" fill="none" stroke="${css('--text')}" stroke-width="2.8"/>
+        <polygon points="${X(.91)},${Y(.91)} ${X(.86)},${Y(.95)} ${X(.95)},${Y(.86)}" fill="${css('--text')}"/>
+        <line x1="30" y1="${Y(0)}" x2="236" y2="${Y(0)}" stroke="${css('--accent-2')}" stroke-width="2" stroke-dasharray="6 5"/>
+      `;
+    }
+
+    function renderMiniDiscontinuous(){
+      const W=260,H=180; const X=x=>mapLinear(x,0,1,24,236), Y=y=>mapLinear(y,0,1,152,26);
+      els.miniDiscontinuous.innerHTML = `
+        <rect x="0" y="0" width="${W}" height="${H}" rx="14" fill="${css('--panel-2')}"/>
+        <line x1="20" y1="${Y(0)}" x2="240" y2="${Y(0)}" stroke="${css('--line')}"/>
+        <line x1="${X(0)}" y1="18" x2="${X(0)}" y2="156" stroke="${css('--line')}"/>
+        <path d="M ${X(0)} ${Y(0)} L ${X(.95)} ${Y(.95)}" fill="none" stroke="${css('--text')}" stroke-width="2.8"/>
+        <circle cx="${X(1)}" cy="${Y(1)}" r="5.6" fill="${css('--panel-2')}" stroke="${css('--warn')}" stroke-width="2.2"/>
+        <circle cx="${X(1)}" cy="${Y(0)}" r="6.1" fill="${css('--warn')}" stroke="${css('--panel-2')}" stroke-width="2.2"/>
+        <line x1="30" y1="${Y(1)}" x2="236" y2="${Y(1)}" stroke="${css('--accent-3')}" stroke-width="2" stroke-dasharray="6 5"/>
+      `;
+    }
+
+    function updateLabels(){
+      els.funcLabel.textContent = state.func;
+      els.leftVal.textContent = fmt(state.a);
+      els.rightVal.textContent = fmt(state.b);
+      els.ampVal.textContent = state.amp.toFixed(2);
+      els.tiltVal.textContent = state.tilt.toFixed(2);
+      els.sampleVal.textContent = String(state.samples);
+      [els.leftSlider, els.rightSlider, els.ampSlider, els.tiltSlider, els.sampleSlider].forEach(updateSliderFill);
+    }
+
+    function renderAll(){
+      updateLabels();
+      renderMain();
+      renderMiniOpen();
+      renderMiniUnbounded();
+      renderMiniDiscontinuous();
+      if(window.MathJax) MathJax.typesetPromise().catch(()=>{});
+    }
+
+    function syncState(){
+      state.func = els.funcSelect.value;
+      state.a = parseFloat(els.leftSlider.value);
+      state.b = parseFloat(els.rightSlider.value);
+      if(state.b <= state.a + 0.6){
+        state.b = state.a + 0.6;
+        els.rightSlider.value = state.b.toFixed(1);
+      }
+      state.amp = parseFloat(els.ampSlider.value);
+      state.tilt = parseFloat(els.tiltSlider.value);
+      state.samples = parseInt(els.sampleSlider.value,10);
+      renderAll();
+    }
+
+    ['input','change'].forEach(evt=>{
+      els.funcSelect.addEventListener(evt, syncState);
+      els.leftSlider.addEventListener(evt, syncState);
+      els.rightSlider.addEventListener(evt, syncState);
+      els.ampSlider.addEventListener(evt, syncState);
+      els.tiltSlider.addEventListener(evt, syncState);
+      els.sampleSlider.addEventListener(evt, syncState);
+    });
+
+    els.themeToggle.addEventListener('click', ()=> setTheme(state.theme === 'dark' ? 'light' : 'dark'));
+    els.themeToggle.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        setTheme(state.theme === 'dark' ? 'light' : 'dark');
+      }
+    });
+
+    els.funcSelect.value = state.func;
+    els.leftSlider.value = state.a;
+    els.rightSlider.value = state.b;
+    els.ampSlider.value = state.amp;
+    els.tiltSlider.value = state.tilt;
+    els.sampleSlider.value = state.samples;
+
+    setTheme(state.theme);
+  </script>
+</body>
+</html>

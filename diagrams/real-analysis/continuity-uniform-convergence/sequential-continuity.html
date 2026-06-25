@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for sequential continuity.">
+<title>Sequential Continuity | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)'], ['$', '$']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f7f3ea;
+    --paper:#fffdf7;
+    --paper2:#fbf7ef;
+    --ink:#1d2528;
+    --muted:#657276;
+    --soft:#dcd3c5;
+    --soft2:#ebe3d8;
+    --accent:#4d8f8a;
+    --accent2:#74aaa5;
+    --warn:#ba6b57;
+    --ok:#507c5c;
+    --shadow: 0 20px 50px rgba(55,42,25,.10);
+    --shadow2: 0 10px 30px rgba(55,42,25,.08);
+    --radius:22px;
+    --grid:rgba(29,37,40,.075);
+    --axis:rgba(29,37,40,.38);
+    --tube:rgba(77,143,138,.13);
+    --badTube:rgba(186,107,87,.12);
+  }
+  [data-theme="dark"]{
+    --bg:#101416;
+    --paper:#171d20;
+    --paper2:#13191c;
+    --ink:#eef2ef;
+    --muted:#aab4b2;
+    --soft:#293236;
+    --soft2:#20282c;
+    --accent:#7fcac3;
+    --accent2:#9bd6d0;
+    --warn:#e29b86;
+    --ok:#a9d1b2;
+    --shadow: 0 22px 60px rgba(0,0,0,.34);
+    --shadow2: 0 12px 36px rgba(0,0,0,.25);
+    --grid:rgba(238,242,239,.07);
+    --axis:rgba(238,242,239,.36);
+    --tube:rgba(127,202,195,.12);
+    --badTube:rgba(226,155,134,.12);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(900px 580px at 8% -10%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 58%),
+      radial-gradient(800px 520px at 100% 0%, color-mix(in srgb, var(--warn) 7%, transparent), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+    line-height:1.45;
+  }
+  button, select, input{font:inherit}
+  .app{width:min(1220px, calc(100% - 32px)); margin:0 auto; padding:28px 0 46px}
+  header{
+    display:grid;
+    grid-template-columns: 1fr auto;
+    gap:18px;
+    align-items:start;
+    margin-bottom:20px;
+  }
+  .kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    color:var(--accent);
+    font-size:.78rem;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    font-weight:700;
+  }
+  .dot{width:7px;height:7px;border-radius:999px;background:var(--accent);box-shadow:0 0 0 6px color-mix(in srgb, var(--accent) 14%, transparent)}
+  h1{font-size:clamp(2rem, 4vw, 4rem); line-height:.98; margin:14px 0 10px; letter-spacing:-.055em; font-weight:640}
+  .subtitle{max-width:760px; color:var(--muted); font-size:clamp(1rem,1.45vw,1.18rem)}
+  .top-actions{display:flex;gap:10px;align-items:center;justify-content:end;flex-wrap:wrap}
+  .pillbtn{
+    border:1px solid var(--soft);
+    background:color-mix(in srgb, var(--paper) 84%, transparent);
+    color:var(--ink);
+    padding:10px 13px;
+    border-radius:999px;
+    cursor:pointer;
+    box-shadow:var(--shadow2);
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    font-size:.9rem;
+  }
+  .grid{display:grid; gap:16px}
+  .layout{grid-template-columns: 360px 1fr; align-items:start}
+  .card{
+    background:linear-gradient(180deg, color-mix(in srgb, var(--paper) 96%, transparent), var(--paper));
+    border:1px solid var(--soft);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow2);
+  }
+  .card.pad{padding:18px}
+  .equation-card{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-bottom:16px;
+  }
+  .formula{
+    padding:17px 18px;
+    min-height:124px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    background:linear-gradient(180deg, color-mix(in srgb, var(--paper) 92%, var(--accent) 4%), var(--paper));
+  }
+  .formula small{
+    color:var(--muted);
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    margin-bottom:8px;
+  }
+  .formula .math{font-size:1.03rem}
+
+  /* Prevent oversized MathJax/SVG labels from taking over the visual panel. */
+  .mjx-container{max-width:100%; overflow-x:auto; overflow-y:hidden; line-height:1.15 !important;}
+  .formula .mjx-container[display="true"]{font-size:1.02rem !important; margin:0 !important;}
+  .summary .mjx-container[display="true"]{font-size:.98rem !important; margin:0 !important;}
+  .visual-card .mjx-container{font-size:1rem !important;}
+  .control-card{position:sticky; top:16px; padding:17px}
+  .section-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:14px;
+  }
+  .section-title h2, .section-title h3{font-size:1rem; margin:0; letter-spacing:-.02em}
+  .badge{
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    font-size:.73rem;
+    color:var(--accent);
+    border:1px solid color-mix(in srgb, var(--accent) 32%, var(--soft));
+    background:color-mix(in srgb, var(--accent) 8%, transparent);
+    padding:5px 8px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .control{padding:13px 0; border-top:1px solid var(--soft2)}
+  .control:first-of-type{border-top:0; padding-top:0}
+  label{display:flex; justify-content:space-between; align-items:baseline; gap:12px; color:var(--ink); font-size:.94rem; margin-bottom:8px}
+  label span:last-child{color:var(--muted); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif; font-size:.8rem}
+  select{
+    width:100%;
+    border:1px solid var(--soft);
+    border-radius:14px;
+    background:var(--paper2);
+    color:var(--ink);
+    padding:10px 11px;
+    outline:none;
+  }
+  input[type="range"]{width:100%; accent-color:var(--accent); cursor:pointer}
+  .segmented{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+  .segmented button{
+    border:1px solid var(--soft);
+    background:var(--paper2);
+    color:var(--muted);
+    padding:10px 8px;
+    border-radius:14px;
+    cursor:pointer;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    font-size:.86rem;
+  }
+  .segmented button.active{color:var(--ink); border-color:color-mix(in srgb, var(--accent) 45%, var(--soft)); background:color-mix(in srgb, var(--accent) 10%, var(--paper2))}
+  .readout{
+    display:grid;
+    gap:10px;
+    margin-top:14px;
+  }
+  .mini{
+    padding:12px;
+    border:1px solid var(--soft2);
+    border-radius:16px;
+    background:color-mix(in srgb, var(--paper2) 78%, transparent);
+  }
+  .mini b{font-size:.86rem; display:block; margin-bottom:3px}
+  .mini p{margin:0; color:var(--muted); font-size:.9rem}
+  .status-good b{color:var(--ok)}
+  .status-bad b{color:var(--warn)}
+  .visual-card{overflow:hidden}
+  .visual-head{
+    padding:17px 18px 0;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:14px;
+  }
+  .visual-head h2{font-size:1.15rem; margin:0 0 4px; letter-spacing:-.025em}
+  .visual-head p{margin:0;color:var(--muted);font-size:.94rem;max-width:700px}
+  .svgwrap{padding:8px 12px 12px}
+  .svgwrap > svg{width:100%; height:auto; display:block}
+  .mjx-container svg{width:auto !important; max-width:100% !important; height:auto !important; display:inline-block !important}
+  .axis{stroke:var(--axis); stroke-width:1.1}
+  .gridline{stroke:var(--grid); stroke-width:1}
+  .fn{fill:none; stroke:var(--ink); stroke-width:2.15; stroke-linecap:round; stroke-linejoin:round}
+  .fn-soft{fill:none; stroke:color-mix(in srgb, var(--ink) 42%, transparent); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+  .seq-line{fill:none; stroke:var(--accent); stroke-width:1.35; stroke-dasharray:3 6; opacity:.65}
+  .seq-dot{fill:var(--accent); stroke:var(--paper); stroke-width:1.5}
+  .tail-dot{fill:color-mix(in srgb, var(--accent) 80%, white); stroke:var(--paper); stroke-width:1.5}
+  .a-line{stroke:var(--warn); stroke-width:1.35; stroke-dasharray:6 7; opacity:.8}
+  .target-line{stroke:var(--accent); stroke-width:1.4; stroke-dasharray:7 7; opacity:.92}
+  .limit-line{stroke:var(--warn); stroke-width:1.2; stroke-dasharray:2 6; opacity:.85}
+  .tube{fill:var(--tube)}
+  .bad-tube{fill:var(--badTube)}
+  .label{font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif; font-size:12px; fill:var(--muted)}
+  .label-strong{font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif; font-size:12px; fill:var(--ink); font-weight:700}
+  .open-dot{fill:var(--paper); stroke:var(--ink); stroke-width:2}
+  .filled-dot{fill:var(--warn); stroke:var(--paper); stroke-width:1.5}
+  .panel-grid{display:grid; grid-template-columns: 1.04fr .96fr; gap:16px; margin-top:16px}
+  .notice{padding:18px}
+  .notice h3{font-size:1rem;margin:0 0 10px;letter-spacing:-.02em}
+  .notice p{margin:0;color:var(--muted)}
+  .notice .line{display:flex; gap:10px; align-items:flex-start; margin-top:10px}
+  .mark{width:8px; height:8px; border-radius:999px; background:var(--accent); margin-top:8px; flex:0 0 auto}
+  .summary{padding:18px;background:linear-gradient(180deg, color-mix(in srgb, var(--paper) 94%, var(--accent) 4%), var(--paper))}
+  .summary ul{margin:10px 0 0; padding-left:18px; color:var(--muted)}
+  .summary li{margin:7px 0}
+  .footer-note{margin-top:16px;color:var(--muted);font-size:.9rem;text-align:center}
+  @media (max-width: 980px){
+    .layout{grid-template-columns:1fr}
+    .control-card{position:relative; top:auto}
+    .equation-card{grid-template-columns:1fr}
+    .panel-grid{grid-template-columns:1fr}
+    header{grid-template-columns:1fr}
+    .top-actions{justify-content:start}
+  }
+  @media (max-width: 620px){
+    .app{width:min(100% - 20px, 1220px); padding-top:18px}
+    .visual-head{display:block}
+    .card.pad, .notice, .summary{padding:15px}
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <header>
+    <div>
+      <div class="kicker"><span class="dot"></span> Real Analysis · Metric spaces</div>
+      <h1>Sequential continuity</h1>
+      <div class="subtitle">Continuity seen through convergent sequences: points approach the input, and their images must approach the value of the function.</div>
+    </div>
+    <div class="top-actions">
+      <button class="pillbtn" id="themeToggle" aria-label="Toggle dark and light mode">Dark mode</button>
+      <button class="pillbtn" id="resetBtn">Reset view</button>
+    </div>
+  </header>
+
+  <section class="equation-card">
+    <div class="card formula">
+      <small>Sequential criterion</small>
+      <div class="math">\[
+      f \text{ continuous at } a
+      \Longleftrightarrow
+      \forall (x_n),\ x_n\to a \Rightarrow f(x_n)\to f(a).
+      \]</div>
+    </div>
+    <div class="card formula">
+      <small>Failure mode</small>
+      <div class="math">\[
+      f \text{ not continuous at } a
+      \Longleftrightarrow
+      \exists (x_n):\ x_n\to a,\quad f(x_n)\not\to f(a).
+      \]</div>
+    </div>
+  </section>
+
+  <main class="grid layout">
+    <aside class="card control-card">
+      <div class="section-title">
+        <h2>Controls</h2>
+        <span class="badge">at \(a=0\)</span>
+      </div>
+
+      <div class="control">
+        <label for="fnSelect">Function <span id="fnTag">continuous</span></label>
+        <select id="fnSelect">
+          <option value="continuous">continuous curve</option>
+          <option value="jump">jump discontinuity</option>
+          <option value="removable">removable discontinuity</option>
+          <option value="oscillatory">oscillatory discontinuity</option>
+        </select>
+      </div>
+
+      <div class="control">
+        <label for="seqSelect">Sequence test <span id="seqTag">alternating</span></label>
+        <select id="seqSelect">
+          <option value="best">best diagnostic witness</option>
+          <option value="right">right approach: \(x_n=c/(n+1)\)</option>
+          <option value="left">left approach: \(x_n=-c/(n+1)\)</option>
+          <option value="alternating">two-sided: \((-1)^n c/(n+1)\)</option>
+          <option value="geometric">fast approach: \(c r^n\)</option>
+          <option value="oscWitness">oscillation witness</option>
+        </select>
+      </div>
+
+      <div class="control">
+        <label for="countSlider">Number of terms <span id="countVal">42</span></label>
+        <input id="countSlider" type="range" min="12" max="90" step="1" value="42" />
+      </div>
+
+      <div class="control">
+        <label for="tailSlider">Tail begins at \(N\) <span id="tailVal">18</span></label>
+        <input id="tailSlider" type="range" min="3" max="80" step="1" value="18" />
+      </div>
+
+      <div class="control">
+        <label for="scaleSlider">Approach scale \(c\) <span id="scaleVal">1.20</span></label>
+        <input id="scaleSlider" type="range" min="0.35" max="1.55" step="0.01" value="1.20" />
+      </div>
+
+      <div class="control">
+        <label for="bandSlider">Tolerance band <span id="bandVal">0.16</span></label>
+        <input id="bandSlider" type="range" min="0.04" max="0.45" step="0.01" value="0.16" />
+      </div>
+
+      <div class="control">
+        <label>View emphasis <span id="viewTag">graph</span></label>
+        <div class="segmented" role="group" aria-label="View emphasis">
+          <button id="graphMode" class="active" type="button">graph</button>
+          <button id="tailMode" type="button">tail</button>
+        </div>
+      </div>
+
+      <div class="readout">
+        <div class="mini" id="domainStatus">
+          <b>Domain sequence</b>
+          <p>The selected \(x_n\) approaches \(0\).</p>
+        </div>
+        <div class="mini" id="imageStatus">
+          <b>Image sequence</b>
+          <p>Change the example to see whether \(f(x_n)\to f(0)\).</p>
+        </div>
+      </div>
+    </aside>
+
+    <section class="grid">
+      <div class="card visual-card">
+        <div class="visual-head">
+          <div>
+            <h2>The sequence criterion on the graph</h2>
+            <p>Input points collapse to the chosen point; their images must collapse to the value of the function there.</p>
+          </div>
+          <span class="badge" id="verdictBadge">checking sequence</span>
+        </div>
+        <div class="svgwrap">
+          <svg id="mainSvg" viewBox="0 0 920 500" role="img" aria-label="Interactive graph of sequential continuity"></svg>
+        </div>
+      </div>
+
+      <div class="card visual-card">
+        <div class="visual-head">
+          <div>
+            <h2>Tail microscope</h2>
+            <p>The shaded region begins at the selected tail index. The image tail must eventually sit near the target value.</p>
+          </div>
+          <span class="badge" id="tailBadge">tail behavior</span>
+        </div>
+        <div class="svgwrap">
+          <svg id="seqSvg" viewBox="0 0 920 390" role="img" aria-label="Tail behavior of x_n and f(x_n)"></svg>
+        </div>
+      </div>
+
+      <div class="panel-grid">
+        <div class="card notice">
+          <h3>What to notice</h3>
+          <div class="line"><span class="mark"></span><p id="notice1">A sequence can approach \(a\) from the right, left, or both sides. A continuous function cannot distinguish these approaches in the limit.</p></div>
+          <div class="line"><span class="mark"></span><p id="notice2">For discontinuity, one carefully chosen sequence is enough to disprove continuity.</p></div>
+          <div class="line"><span class="mark"></span><p id="notice3">A removable discontinuity is subtle: \(f(x_n)\) may converge, but to the wrong value.</p></div>
+        </div>
+
+        <div class="card summary">
+          <h3>Exam-style summary</h3>
+          <div class="math">\[
+          x_n\to a \quad\Longrightarrow\quad f(x_n)\to f(a)
+          \]</div>
+          <ul>
+            <li>To prove continuity: take an arbitrary sequence \((x_n)\) with \(x_n\to a\).</li>
+            <li>To disprove continuity: exhibit one sequence \(x_n\to a\) with bad image behavior.</li>
+            <li>Jump: two one-sided limits disagree.</li>
+            <li>Removable: the punctured limit exists but differs from \(f(a)\).</li>
+            <li>Oscillatory: image sequences fail to settle.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="footer-note">Sequential continuity and topological continuity are equivalent in metric spaces.</div>
+</div>
+
+<script>
+(function(){
+  const root = document.documentElement;
+  const app = document.getElementById('app');
+  const themeToggle = document.getElementById('themeToggle');
+  const resetBtn = document.getElementById('resetBtn');
+  const fnSelect = document.getElementById('fnSelect');
+  const seqSelect = document.getElementById('seqSelect');
+  const countSlider = document.getElementById('countSlider');
+  const tailSlider = document.getElementById('tailSlider');
+  const scaleSlider = document.getElementById('scaleSlider');
+  const bandSlider = document.getElementById('bandSlider');
+  const graphMode = document.getElementById('graphMode');
+  const tailMode = document.getElementById('tailMode');
+  const mainSvg = document.getElementById('mainSvg');
+  const seqSvg = document.getElementById('seqSvg');
+  const els = {
+    fnTag: document.getElementById('fnTag'), seqTag: document.getElementById('seqTag'),
+    countVal: document.getElementById('countVal'), tailVal: document.getElementById('tailVal'),
+    scaleVal: document.getElementById('scaleVal'), bandVal: document.getElementById('bandVal'),
+    viewTag: document.getElementById('viewTag'), verdictBadge: document.getElementById('verdictBadge'),
+    tailBadge: document.getElementById('tailBadge'), domainStatus: document.getElementById('domainStatus'),
+    imageStatus: document.getElementById('imageStatus'), notice1: document.getElementById('notice1'),
+    notice2: document.getElementById('notice2'), notice3: document.getElementById('notice3')
+  };
+
+  let state = { mode: 'graph' };
+
+  function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function svgEl(tag, attrs={}, parent){
+    const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k, v));
+    if(parent) parent.appendChild(e);
+    return e;
+  }
+  function clear(svg){ while(svg.firstChild) svg.removeChild(svg.firstChild); }
+  function clamp(x,a,b){ return Math.max(a, Math.min(b,x)); }
+  function fmt(x){ return Math.abs(x) < 1e-4 ? '0' : x.toFixed(3).replace(/0+$/,'').replace(/\.$/,''); }
+
+  const fns = {
+    continuous: {
+      label:'continuous',
+      fa: -0.10,
+      candidate: -0.10,
+      formula:'f(x)=0.52x^2+0.24x-0.10',
+      f(x){ return 0.52*x*x + 0.24*x - 0.10; },
+      notice:[
+        'For a continuous curve, every approach to 0 gives the same image limit.',
+        'Right, left, alternating, and fast sequences all force f(x_n) toward f(0).',
+        'The sequence is arbitrary in the theorem; the dashboard only samples typical approaches.'
+      ],
+      verdict(seq){ return {kind:'good', title:'passes this test', text:'Here the image tail collapses toward f(0). In the theorem, every sequence must pass.'}; }
+    },
+    jump: {
+      label:'jump',
+      fa: 0.00,
+      candidate: null,
+      formula:'f(x)=-0.70\;(x<0),\ f(0)=0,\ f(x)=0.70\;(x>0)',
+      f(x){ if(Math.abs(x)<1e-12) return 0; return x<0 ? -0.70 : 0.70; },
+      notice:[
+        'A jump is exposed by comparing sequences approaching from different sides.',
+        'An alternating sequence x_n→0 makes f(x_n) alternate between two separated values.',
+        'Even a one-sided sequence may converge, but not necessarily to the value f(0).'
+      ],
+      verdict(seq){ return {kind:'bad', title:'continuity fails', text:'The domain sequence approaches 0, but the image sequence does not approach f(0)=0.'}; }
+    },
+    removable: {
+      label:'removable',
+      fa: 0.22,
+      candidate: 1.00,
+      formula:'f(x)=\sin(3x)/(3x)\;(x\ne0),\quad f(0)=0.22',
+      f(x){ if(Math.abs(x)<1e-10) return 0.22; return Math.sin(3*x)/(3*x); },
+      notice:[
+        'A removable discontinuity is not detected by oscillation; the image sequence may converge.',
+        'The problem is that the sequence converges to the punctured limit, not to f(0).',
+        'Continuity requires f(x_n)→f(a), not merely that f(x_n) has some limit.'
+      ],
+      verdict(seq){ return {kind:'bad', title:'wrong limit', text:'The images settle near 1, while the function value is f(0)=0.22.'}; }
+    },
+    oscillatory: {
+      label:'oscillatory',
+      fa: 0.00,
+      candidate: null,
+      formula:'f(x)=\sin(1/x)\;(x\ne0),\quad f(0)=0',
+      f(x){ if(Math.abs(x)<1e-12) return 0; return Math.sin(1/x); },
+      notice:[
+        'Oscillation is revealed by sequences that hit different phases while still approaching 0.',
+        'One can choose x_n→0 with f(x_n)=1 and another with f(x_n)=-1.',
+        'A single alternating witness already prevents the image sequence from converging.'
+      ],
+      verdict(seq){ return {kind:'bad', title:'no image limit', text:'The input sequence converges to 0, but the image sequence keeps separated subsequential limits.'}; }
+    }
+  };
+
+  function selectedSequenceKey(fnKey){
+    const raw = seqSelect.value;
+    if(raw !== 'best') return raw;
+    if(fnKey === 'continuous') return 'alternating';
+    if(fnKey === 'jump') return 'alternating';
+    if(fnKey === 'removable') return 'right';
+    if(fnKey === 'oscillatory') return 'oscWitness';
+    return 'alternating';
+  }
+  function sequenceLabel(key){
+    return ({right:'right', left:'left', alternating:'two-sided', geometric:'fast', oscWitness:'oscillating witness', best:'diagnostic'})[key] || key;
+  }
+  function generateSeq(key, nCount, c){
+    const arr=[];
+    const r=.78;
+    for(let n=1;n<=nCount;n++){
+      let x;
+      if(key==='right') x = c/(n+1);
+      else if(key==='left') x = -c/(n+1);
+      else if(key==='geometric') x = c*Math.pow(r,n);
+      else if(key==='oscWitness'){
+        const k = Math.ceil(n/2);
+        x = (n%2===1) ? 1/(Math.PI/2 + 2*Math.PI*(k-1)) : 1/(3*Math.PI/2 + 2*Math.PI*(k-1));
+        x *= Math.min(1,c);
+      } else {
+        x = (n%2===0 ? 1 : -1)*c/(n+1);
+      }
+      arr.push({n,x});
+    }
+    return arr;
+  }
+
+  function mapFactory(plot){
+    const {x0,y0,w,h,xmin,xmax,ymin,ymax} = plot;
+    return {
+      X:x => x0 + (x-xmin)/(xmax-xmin)*w,
+      Y:y => y0 + h - (y-ymin)/(ymax-ymin)*h
+    };
+  }
+  function pathFromPoints(points, m){ return points.map((p,i)=>`${i?'L':'M'}${m.X(p.x).toFixed(2)},${m.Y(p.y).toFixed(2)}`).join(' '); }
+
+  function drawGrid(svg, plot, xticks, yticks){
+    const m = mapFactory(plot);
+    xticks.forEach(x => svgEl('line',{x1:m.X(x),y1:plot.y0,x2:m.X(x),y2:plot.y0+plot.h,class:'gridline'}, svg));
+    yticks.forEach(y => svgEl('line',{x1:plot.x0,y1:m.Y(y),x2:plot.x0+plot.w,y2:m.Y(y),class:'gridline'}, svg));
+    if(plot.ymin <= 0 && plot.ymax >= 0) svgEl('line',{x1:plot.x0,y1:m.Y(0),x2:plot.x0+plot.w,y2:m.Y(0),class:'axis'}, svg);
+    if(plot.xmin <= 0 && plot.xmax >= 0) svgEl('line',{x1:m.X(0),y1:plot.y0,x2:m.X(0),y2:plot.y0+plot.h,class:'axis'}, svg);
+  }
+
+  function drawFunction(svg, plot, fnKey, spec){
+    const m = mapFactory(plot);
+    const xmin = plot.xmin, xmax = plot.xmax;
+    if(fnKey === 'jump'){
+      const left = [{x:xmin,y:-.70},{x:0,y:-.70}];
+      const right = [{x:0,y:.70},{x:xmax,y:.70}];
+      svgEl('path',{d:pathFromPoints(left,m),class:'fn'},svg);
+      svgEl('path',{d:pathFromPoints(right,m),class:'fn'},svg);
+      svgEl('circle',{cx:m.X(0),cy:m.Y(-.70),r:7,class:'open-dot'},svg);
+      svgEl('circle',{cx:m.X(0),cy:m.Y(.70),r:7,class:'open-dot'},svg);
+      svgEl('circle',{cx:m.X(0),cy:m.Y(0),r:7,class:'filled-dot'},svg);
+      return;
+    }
+    if(fnKey === 'oscillatory'){
+      // readable branches away from the singularity plus a soft central oscillation band
+      svgEl('rect',{x:m.X(-.16),y:m.Y(1),width:m.X(.16)-m.X(-.16),height:m.Y(-1)-m.Y(1),rx:10,fill:'var(--badTube)'},svg);
+      [['left',xmin,-.055],['right',.055,xmax]].forEach(([_,a,b])=>{
+        const pts=[]; const steps=650;
+        for(let i=0;i<=steps;i++){ const x=a+(b-a)*i/steps; pts.push({x,y:spec.f(x)}); }
+        svgEl('path',{d:pathFromPoints(pts,m),class:'fn-soft'},svg);
+      });
+      svgEl('circle',{cx:m.X(0),cy:m.Y(0),r:7,class:'filled-dot'},svg);
+      return;
+    }
+    const pts=[];
+    for(let i=0;i<=720;i++){
+      const x = xmin + (xmax-xmin)*i/720;
+      pts.push({x,y:spec.f(x)});
+    }
+    svgEl('path',{d:pathFromPoints(pts,m),class:'fn'},svg);
+    if(fnKey === 'removable'){
+      svgEl('circle',{cx:m.X(0),cy:m.Y(1),r:7,class:'open-dot'},svg);
+      svgEl('circle',{cx:m.X(0),cy:m.Y(spec.fa),r:7,class:'filled-dot'},svg);
+    } else {
+      svgEl('circle',{cx:m.X(0),cy:m.Y(spec.fa),r:7,class:'filled-dot'},svg);
+    }
+  }
+
+  function renderMain(fnKey, spec, seq, tailN, band){
+    clear(mainSvg);
+    const emphasis = state.mode;
+    const plot = {x0:54,y0:42,w:812,h:365,xmin:-1.55,xmax:1.55,ymin:-1.25,ymax:1.28};
+    const m = mapFactory(plot);
+    drawGrid(mainSvg, plot, [-1.5,-1,-.5,0,.5,1,1.5], [-1,-.5,0,.5,1]);
+
+    // tolerance band around f(0)
+    svgEl('rect',{x:plot.x0,y:m.Y(spec.fa+band),width:plot.w,height:m.Y(spec.fa-band)-m.Y(spec.fa+band),class: fnKey==='continuous'?'tube':'bad-tube', rx:12}, mainSvg);
+    svgEl('line',{x1:plot.x0,y1:m.Y(spec.fa),x2:plot.x0+plot.w,y2:m.Y(spec.fa),class:'target-line'},mainSvg);
+    svgEl('text',{x:plot.x0+plot.w-8,y:m.Y(spec.fa)-8,'text-anchor':'end',class:'label-strong'},mainSvg).textContent='target f(0)';
+
+    // delta neighborhood in domain around 0
+    const delta = clamp(Math.max(...seq.slice(Math.max(0,tailN-1)).map(d=>Math.abs(d.x))) + .035, .07, .48);
+    svgEl('rect',{x:m.X(-delta),y:plot.y0,width:m.X(delta)-m.X(-delta),height:plot.h,class:'tube',rx:12},mainSvg);
+    svgEl('text',{x:m.X(delta)+7,y:plot.y0+18,class:'label'},mainSvg).textContent='tail near 0';
+
+    drawFunction(mainSvg, plot, fnKey, spec);
+
+    // candidate punctured limit line for removable
+    if(spec.candidate !== null && spec.candidate !== spec.fa){
+      svgEl('line',{x1:plot.x0,y1:m.Y(spec.candidate),x2:plot.x0+plot.w,y2:m.Y(spec.candidate),class:'limit-line'},mainSvg);
+      svgEl('text',{x:plot.x0+plot.w-8,y:m.Y(spec.candidate)+18,'text-anchor':'end',class:'label'},mainSvg).textContent='punctured limit';
+    }
+    if(fnKey==='oscillatory'){
+      svgEl('line',{x1:plot.x0,y1:m.Y(1),x2:plot.x0+plot.w,y2:m.Y(1),class:'limit-line'},mainSvg);
+      svgEl('line',{x1:plot.x0,y1:m.Y(-1),x2:plot.x0+plot.w,y2:m.Y(-1),class:'limit-line'},mainSvg);
+      svgEl('text',{x:plot.x0+plot.w-8,y:m.Y(1)-8,'text-anchor':'end',class:'label'},mainSvg).textContent='subsequence limit 1';
+      svgEl('text',{x:plot.x0+plot.w-8,y:m.Y(-1)+18,'text-anchor':'end',class:'label'},mainSvg).textContent='subsequence limit -1';
+    }
+
+    const visible = emphasis==='tail' ? seq.slice(Math.max(0,tailN-1)) : seq;
+    const maxDots = emphasis==='tail' ? visible.length : Math.min(visible.length, 62);
+    const start = Math.max(0, visible.length - maxDots);
+    visible.slice(start).forEach(d => {
+      const y = spec.f(d.x);
+      const isTail = d.n >= tailN;
+      svgEl('line',{x1:m.X(d.x),y1:m.Y(0),x2:m.X(d.x),y2:m.Y(y),class:'seq-line'}, mainSvg);
+      svgEl('circle',{cx:m.X(d.x),cy:m.Y(y),r:isTail?4.7:3.5,class:isTail?'tail-dot':'seq-dot',opacity:isTail?0.95:0.55}, mainSvg);
+    });
+
+    svgEl('line',{x1:m.X(0),y1:plot.y0,x2:m.X(0),y2:plot.y0+plot.h,class:'a-line'},mainSvg);
+    svgEl('text',{x:m.X(0)+8,y:plot.y0+plot.h+28,class:'label-strong'},mainSvg).textContent='a=0';
+    svgEl('text',{x:plot.x0,y:plot.y0-14,class:'label-strong'},mainSvg).textContent=spec.formula;
+    svgEl('text',{x:plot.x0,y:plot.y0+plot.h+28,class:'label'},mainSvg).textContent='input axis';
+    svgEl('text',{x:plot.x0+plot.w,y:plot.y0+plot.h+28,'text-anchor':'end',class:'label'},mainSvg).textContent='sequence points mapped onto the graph';
+
+    // small domain strip
+    const strip = {x0:70,y0:452,w:780,h:20,xmin:-1.55,xmax:1.55,ymin:0,ymax:1};
+    const sm = mapFactory(strip);
+    svgEl('line',{x1:strip.x0,y1:strip.y0+10,x2:strip.x0+strip.w,y2:strip.y0+10,class:'axis'},mainSvg);
+    svgEl('rect',{x:sm.X(-delta),y:strip.y0,width:sm.X(delta)-sm.X(-delta),height:20,class:'tube',rx:10},mainSvg);
+    seq.slice(Math.max(0,seq.length-50)).forEach(d=>{
+      svgEl('circle',{cx:sm.X(d.x),cy:strip.y0+10,r:d.n>=tailN?3.2:2.2,class:d.n>=tailN?'tail-dot':'seq-dot',opacity:d.n>=tailN?.85:.42},mainSvg);
+    });
+    svgEl('circle',{cx:sm.X(0),cy:strip.y0+10,r:4.5,class:'filled-dot'},mainSvg);
+    svgEl('text',{x:strip.x0,y:strip.y0-8,class:'label'},mainSvg).textContent='domain collapse: xₙ → 0';
+  }
+
+  function renderSeqSvg(fnKey, spec, seq, tailN, band){
+    clear(seqSvg);
+    const nMax = seq.length;
+    const top = {x0:60,y0:38,w:805,h:125,xmin:1,xmax:nMax,ymin:-1.55,ymax:1.55};
+    const bot = {x0:60,y0:220,w:805,h:125,xmin:1,xmax:nMax,ymin:-1.25,ymax:1.25};
+    const mt = mapFactory(top), mb = mapFactory(bot);
+    const tailX = mt.X(tailN);
+    svgEl('rect',{x:tailX,y:top.y0,width:top.x0+top.w-tailX,height:top.h,class:'tube',rx:12},seqSvg);
+    svgEl('rect',{x:tailX,y:bot.y0,width:bot.x0+bot.w-tailX,height:bot.h,class:fnKey==='continuous'?'tube':'bad-tube',rx:12},seqSvg);
+    drawGrid(seqSvg, top, [], [-1,0,1]);
+    drawGrid(seqSvg, bot, [], [-1,0,1]);
+    // bands
+    svgEl('rect',{x:top.x0,y:mt.Y(band),width:top.w,height:mt.Y(-band)-mt.Y(band),class:'tube',rx:8},seqSvg);
+    svgEl('rect',{x:bot.x0,y:mb.Y(spec.fa+band),width:bot.w,height:mb.Y(spec.fa-band)-mb.Y(spec.fa+band),class:fnKey==='continuous'?'tube':'bad-tube',rx:8},seqSvg);
+    svgEl('line',{x1:top.x0,y1:mt.Y(0),x2:top.x0+top.w,y2:mt.Y(0),class:'target-line'},seqSvg);
+    svgEl('line',{x1:bot.x0,y1:mb.Y(spec.fa),x2:bot.x0+bot.w,y2:mb.Y(spec.fa),class:'target-line'},seqSvg);
+    if(spec.candidate !== null && spec.candidate !== spec.fa){
+      svgEl('line',{x1:bot.x0,y1:mb.Y(spec.candidate),x2:bot.x0+bot.w,y2:mb.Y(spec.candidate),class:'limit-line'},seqSvg);
+      svgEl('text',{x:bot.x0+bot.w-8,y:mb.Y(spec.candidate)-8,'text-anchor':'end',class:'label'},seqSvg).textContent='limit along xₙ';
+    }
+    if(fnKey==='oscillatory'){
+      svgEl('line',{x1:bot.x0,y1:mb.Y(1),x2:bot.x0+bot.w,y2:mb.Y(1),class:'limit-line'},seqSvg);
+      svgEl('line',{x1:bot.x0,y1:mb.Y(-1),x2:bot.x0+bot.w,y2:mb.Y(-1),class:'limit-line'},seqSvg);
+    }
+    const xPath = seq.map(d=>({x:d.n,y:d.x}));
+    const yPath = seq.map(d=>({x:d.n,y:spec.f(d.x)}));
+    svgEl('path',{d:pathFromPoints(xPath, mt),class:'seq-line'},seqSvg);
+    svgEl('path',{d:pathFromPoints(yPath, mb),class:'seq-line'},seqSvg);
+    seq.forEach(d=>{
+      const cls = d.n>=tailN ? 'tail-dot' : 'seq-dot';
+      const op = d.n>=tailN ? .9 : .38;
+      svgEl('circle',{cx:mt.X(d.n),cy:mt.Y(d.x),r:d.n>=tailN?3.6:2.2,class:cls,opacity:op},seqSvg);
+      svgEl('circle',{cx:mb.X(d.n),cy:mb.Y(spec.f(d.x)),r:d.n>=tailN?3.6:2.2,class:cls,opacity:op},seqSvg);
+    });
+    svgEl('line',{x1:tailX,y1:top.y0-10,x2:tailX,y2:bot.y0+bot.h+10,class:'a-line'},seqSvg);
+    svgEl('text',{x:tailX+6,y:top.y0-15,class:'label-strong'},seqSvg).textContent='N';
+    svgEl('text',{x:top.x0,y:top.y0-14,class:'label-strong'},seqSvg).textContent='domain sequence: xₙ → 0';
+    svgEl('text',{x:bot.x0,y:bot.y0-14,class:'label-strong'},seqSvg).textContent='image sequence: f(xₙ) should → f(0)';
+    svgEl('text',{x:top.x0+top.w,y:top.y0+top.h+22,'text-anchor':'end',class:'label'},seqSvg).textContent='n';
+    svgEl('text',{x:bot.x0+bot.w,y:bot.y0+bot.h+22,'text-anchor':'end',class:'label'},seqSvg).textContent='n';
+    svgEl('text',{x:top.x0+top.w-8,y:mt.Y(0)-8,'text-anchor':'end',class:'label'},seqSvg).textContent='0';
+    svgEl('text',{x:bot.x0+bot.w-8,y:mb.Y(spec.fa)-8,'text-anchor':'end',class:'label'},seqSvg).textContent='f(0)';
+  }
+
+  function updateText(fnKey, spec, seqKey, seq, tailN, band){
+    els.fnTag.textContent = spec.label;
+    els.seqTag.textContent = sequenceLabel(seqKey);
+    els.countVal.textContent = countSlider.value;
+    els.tailVal.textContent = Math.min(+tailSlider.value, +countSlider.value-2);
+    els.scaleVal.textContent = (+scaleSlider.value).toFixed(2);
+    els.bandVal.textContent = (+bandSlider.value).toFixed(2);
+    els.viewTag.textContent = state.mode;
+    const verdict = spec.verdict(seqKey);
+    els.verdictBadge.textContent = verdict.title;
+    els.tailBadge.textContent = fnKey==='continuous' ? 'eventually near f(0)' : 'witness tail';
+    els.domainStatus.className='mini status-good';
+    const tail = seq.slice(Math.max(0,tailN-1));
+    const maxDomain = Math.max(...tail.map(d=>Math.abs(d.x)));
+    els.domainStatus.innerHTML = `<b>Domain sequence</b><p>For the displayed tail, max |xₙ−0| ≈ ${fmt(maxDomain)}. The inputs are collapsing toward 0.</p>`;
+    els.imageStatus.className = 'mini ' + (verdict.kind==='good' ? 'status-good' : 'status-bad');
+    const maxImage = Math.max(...tail.map(d=>Math.abs(spec.f(d.x)-spec.fa)));
+    const imageRange = Math.max(...tail.map(d=>spec.f(d.x))) - Math.min(...tail.map(d=>spec.f(d.x)));
+    const extra = verdict.kind==='good' ? `max |f(xₙ)−f(0)| ≈ ${fmt(maxImage)}.` : `tail spread ≈ ${fmt(imageRange)}, max |f(xₙ)−f(0)| ≈ ${fmt(maxImage)}.`;
+    els.imageStatus.innerHTML = `<b>Image sequence</b><p>${verdict.text} ${extra}</p>`;
+    els.notice1.textContent = spec.notice[0];
+    els.notice2.textContent = spec.notice[1];
+    els.notice3.textContent = spec.notice[2];
+    if(window.MathJax && MathJax.typesetPromise){ MathJax.typesetPromise([els.domainStatus, els.imageStatus]).catch(()=>{}); }
+  }
+
+  function update(){
+    const fnKey = fnSelect.value;
+    const spec = fns[fnKey];
+    let nCount = +countSlider.value;
+    let tailN = Math.min(+tailSlider.value, nCount-2);
+    tailSlider.max = Math.max(3, nCount-2);
+    tailSlider.value = tailN;
+    const c = +scaleSlider.value;
+    const band = +bandSlider.value;
+    const seqKey = selectedSequenceKey(fnKey);
+    const seq = generateSeq(seqKey, nCount, c).map(d=>({...d, y: spec.f(d.x)}));
+    updateText(fnKey, spec, seqKey, seq, tailN, band);
+    renderMain(fnKey, spec, seq, tailN, band);
+    renderSeqSvg(fnKey, spec, seq, tailN, band);
+  }
+
+  function setMode(mode){
+    state.mode = mode;
+    graphMode.classList.toggle('active', mode==='graph');
+    tailMode.classList.toggle('active', mode==='tail');
+    update();
+  }
+  [fnSelect, seqSelect, countSlider, tailSlider, scaleSlider, bandSlider].forEach(el=>el.addEventListener('input', update));
+  graphMode.addEventListener('click',()=>setMode('graph'));
+  tailMode.addEventListener('click',()=>setMode('tail'));
+  resetBtn.addEventListener('click',()=>{
+    fnSelect.value='continuous'; seqSelect.value='best'; countSlider.value=42; tailSlider.value=18; scaleSlider.value=1.20; bandSlider.value=.16; setMode('graph');
+  });
+  themeToggle.addEventListener('click',()=>{
+    const dark = document.body.getAttribute('data-theme') === 'dark';
+    document.body.setAttribute('data-theme', dark ? 'light' : 'dark');
+    themeToggle.textContent = dark ? 'Dark mode' : 'Light mode';
+    localStorage.setItem('seqTheme', dark ? 'light' : 'dark');
+    update();
+  });
+  const saved = localStorage.getItem('seqTheme');
+  if(saved === 'dark') { document.body.setAttribute('data-theme','dark'); themeToggle.textContent='Light mode'; }
+  else document.body.setAttribute('data-theme','light');
+  update();
+})();
+</script>
+</body>
+</html>

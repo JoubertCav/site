@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive real analysis diagram for uniform continuity.">
+  <title>Uniform Continuity | Real Analysis Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(','\\)'], ['$', '$']],
+        displayMath: [['\\[','\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    :root{
+      --bg:#f5f1e8;
+      --bg2:#fbf8f2;
+      --panel:rgba(255,255,255,.77);
+      --panel-2:#fffdfa;
+      --text:#1c2730;
+      --muted:#697880;
+      --line:#d9d1c4;
+      --line-2:#e8e1d5;
+      --accent:#2d7a76;
+      --accent-soft:rgba(45,122,118,.11);
+      --accent-2:#d56e57;
+      --accent-3:#5f7f9d;
+      --ok:#246c56;
+      --warn:#a45a4f;
+      --shadow:0 18px 40px rgba(42,51,60,.08);
+      --shadow-soft:0 10px 24px rgba(42,51,60,.05);
+      --grid:rgba(28,39,48,.08);
+      --badge:#f0ebe0;
+      --switch-track:#ebe5d8;
+      --switch-thumb:#ffffff;
+    }
+    body.dark{
+      --bg:#0d1318;
+      --bg2:#101920;
+      --panel:rgba(17,25,32,.84);
+      --panel-2:#121b22;
+      --text:#edf3f6;
+      --muted:#aab7c0;
+      --line:#26323b;
+      --line-2:#1f2b34;
+      --accent:#6ecdc3;
+      --accent-soft:rgba(110,205,195,.10);
+      --accent-2:#ee9b85;
+      --accent-3:#95bada;
+      --ok:#77d5ad;
+      --warn:#e18d87;
+      --shadow:0 22px 54px rgba(0,0,0,.28);
+      --shadow-soft:0 10px 26px rgba(0,0,0,.18);
+      --grid:rgba(237,243,246,.08);
+      --badge:#162129;
+      --switch-track:#1a242c;
+      --switch-thumb:#15202a;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(45,122,118,.06), transparent 24%),
+        radial-gradient(circle at 100% 0%, rgba(95,127,157,.06), transparent 22%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      transition:background .28s ease, color .28s ease;
+    }
+    .wrap{max-width:1540px; margin:0 auto; padding:24px 18px 34px;}
+    .topbar{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:18px; flex-wrap:wrap}
+    .headline h1{
+      margin:0;
+      font-family:Georgia, "Times New Roman", serif;
+      font-size:clamp(2.2rem, 4vw, 3.5rem);
+      line-height:1.05;
+      letter-spacing:-.03em;
+      font-weight:700;
+    }
+    .headline p{margin:.58rem 0 0; max-width:840px; color:var(--muted); font-size:1.04rem; line-height:1.55}
+    .top-actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .chip{
+      border:1px solid var(--line);
+      background:var(--panel);
+      padding:10px 14px;
+      border-radius:999px;
+      box-shadow:var(--shadow-soft);
+      color:var(--text);
+      font-size:.93rem;
+      backdrop-filter:blur(10px);
+    }
+    .theme-toggle{
+      display:flex; align-items:center; gap:10px; padding:8px 10px;
+      background:var(--panel); border:1px solid var(--line); border-radius:999px;
+      box-shadow:var(--shadow-soft); user-select:none; cursor:pointer;
+    }
+    .theme-toggle span.label{font-size:.93rem; color:var(--muted); min-width:74px}
+    .switch{
+      position:relative; width:72px; height:38px; border-radius:999px;
+      background:var(--switch-track); border:1px solid var(--line);
+      box-shadow:inset 0 1px 2px rgba(0,0,0,.05); overflow:hidden;
+    }
+    .switch .icon{position:absolute; top:50%; transform:translateY(-50%); font-size:14px; opacity:.84}
+    .switch .sun{left:10px}
+    .switch .moon{right:10px}
+    .thumb{
+      position:absolute; top:3px; left:3px; width:30px; height:30px; border-radius:50%;
+      background:var(--switch-thumb); border:1px solid var(--line-2);
+      box-shadow:0 4px 12px rgba(0,0,0,.16);
+      transition:left .28s cubic-bezier(.3,.9,.2,1), background .25s ease;
+      display:grid; place-items:center; font-size:14px;
+    }
+    body.dark .thumb{left:37px}
+
+    .layout{display:grid; grid-template-columns:320px minmax(0,1fr); gap:18px; align-items:start}
+    .card{
+      background:var(--panel); border:1px solid var(--line); border-radius:28px;
+      box-shadow:var(--shadow); backdrop-filter:blur(14px);
+    }
+    .sidebar{padding:18px; position:sticky; top:16px}
+    .section-head{display:flex; justify-content:space-between; gap:10px; align-items:flex-start; margin-bottom:14px}
+    .section-head h2,.section-head h3{margin:0; font-family:Georgia, "Times New Roman", serif; letter-spacing:-.02em}
+    .section-head p{margin:4px 0 0; color:var(--muted); font-size:.94rem; line-height:1.44}
+    .mini-chip{padding:7px 10px; border:1px solid var(--line); border-radius:999px; font-size:.82rem; background:var(--badge); color:var(--muted); white-space:nowrap}
+    .eqbox,.note-box,.summary-box{background:var(--panel-2); border:1px solid var(--line-2); border-radius:20px}
+    .eqbox{padding:16px 14px; margin-bottom:14px}
+    .note-box{padding:13px 14px; color:var(--muted); font-size:.93rem; line-height:1.5; margin-top:14px}
+    .summary-box{padding:12px 13px; margin-top:14px; font-size:.93rem; line-height:1.46}
+    .control-group{margin:14px 0 16px}
+    .control-group label{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px; font-weight:600}
+    .control-group small{color:var(--muted); font-weight:500}
+    select,input[type="range"]{width:100%}
+    select{
+      background:var(--panel-2); color:var(--text); border:1px solid var(--line);
+      border-radius:16px; padding:12px 13px; font-size:.98rem; outline:none;
+    }
+    input[type="range"]{
+      -webkit-appearance:none; appearance:none; height:8px; border-radius:999px; border:1px solid var(--line);
+      background:linear-gradient(90deg,var(--accent),var(--accent)); background-repeat:no-repeat; background-size:50% 100%;
+    }
+    input[type="range"]::-webkit-slider-thumb{
+      -webkit-appearance:none; appearance:none; width:20px; height:20px; border-radius:50%;
+      background:var(--accent); border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,.18); cursor:pointer;
+    }
+    body.dark input[type="range"]::-webkit-slider-thumb{border-color:#0d1318}
+
+    .main{display:grid; gap:18px}
+    .hero{padding:18px}
+    .hero-top{display:flex; justify-content:space-between; gap:12px; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap}
+    .hero-top p{margin:4px 0 0; color:var(--muted); line-height:1.45; max-width:720px}
+    .status{padding:8px 12px; border-radius:999px; border:1px solid var(--line); background:rgba(36,108,86,.08); color:var(--ok); font-size:.92rem; white-space:nowrap}
+    .two-col{display:grid; grid-template-columns:minmax(0,1fr) 290px; gap:16px; align-items:start}
+    .svg-shell{padding:10px; border-radius:24px; border:1px solid var(--line-2); background:var(--panel-2)}
+    svg.diagram,svg.mini-svg{display:block; width:100%; height:auto}
+    .metrics{display:grid; gap:10px}
+    .metric-card{padding:14px; border-radius:18px; background:var(--panel-2); border:1px solid var(--line-2)}
+    .metric-card h4{margin:0 0 6px; font-family:Georgia, "Times New Roman", serif; font-size:1rem}
+    .metric-card p{margin:0; color:var(--muted); font-size:.91rem; line-height:1.42}
+    .metric-card .value{display:block; margin-top:7px; color:var(--accent); font-weight:700}
+
+    .grid-2{display:grid; grid-template-columns:1.2fr .8fr; gap:18px}
+    .panel{padding:18px}
+    .failure-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px}
+    .failure-card{border:1px solid var(--line-2); border-radius:20px; background:var(--panel-2); padding:10px}
+    .failure-card h4{margin:0 0 8px; font-size:.98rem; font-family:Georgia, "Times New Roman", serif}
+    .failure-card p{margin:8px 0 0; color:var(--muted); line-height:1.4; font-size:.9rem}
+    .footer-strip{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+    .strip-box{padding:12px 13px; border:1px solid var(--line-2); border-radius:16px; background:var(--panel-2); font-size:.93rem; line-height:1.45}
+    .subtle{color:var(--muted)}
+
+    @media (max-width: 1180px){
+      .layout{grid-template-columns:1fr}
+      .sidebar{position:static}
+      .two-col,.grid-2{grid-template-columns:1fr}
+    }
+    @media (max-width: 920px){
+      .failure-grid,.footer-strip{grid-template-columns:1fr}
+      .wrap{padding:18px 14px 28px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="headline">
+        <h1>Uniform continuity</h1>
+        <p>Ordinary continuity gives a \(\delta\) that may depend on the point. Uniform continuity gives <strong>one global \(\delta\)</strong> that works everywhere on the domain.</p>
+      </div>
+      <div class="top-actions">
+        <div class="chip">one \(\delta\) for all \(x,y\)</div>
+        <div class="chip">Heine–Cantor: compact + continuous ⇒ uniformly continuous</div>
+        <div id="themeToggle" class="theme-toggle" role="button" aria-label="Toggle dark and light mode" tabindex="0">
+          <span class="label" id="themeLabel">light mode</span>
+          <div class="switch">
+            <span class="icon sun">☀</span>
+            <span class="icon moon">☾</span>
+            <div class="thumb" id="themeThumb">☀</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layout">
+      <aside class="card sidebar">
+        <div class="section-head">
+          <div>
+            <h2>Controls</h2>
+            <p>Test whether a chosen global \(\delta\) works for the selected \(\varepsilon\).</p>
+          </div>
+          <div class="mini-chip">diagram first</div>
+        </div>
+
+        <div class="eqbox">
+          \[
+          \forall \varepsilon>0\ \exists \delta>0:\
+          |x-y|<\delta \Rightarrow |f(x)-f(y)|<\varepsilon
+          \]
+          \[
+          \text{same }\delta\text{ for all }x,y
+          \]
+        </div>
+
+        <div class="control-group">
+          <label for="exampleSelect">Example <small id="exampleLabel"></small></label>
+          <select id="exampleSelect">
+            <option value="sinCompact">\(\sin x\) on \([0,2\pi]\)</option>
+            <option value="sqrtCompact">\(\sqrt{x}\) on \([0,1]\)</option>
+            <option value="x2Compact">\(x^2\) on \([-2,2]\)</option>
+            <option value="x2R">\(x^2\) on \(\mathbb R\) (viewed on \([-3,3]\))</option>
+            <option value="invOpen">\(1/x\) on \((0,1)\)</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="epsSlider">\(\varepsilon\) <small id="epsVal"></small></label>
+          <input id="epsSlider" type="range" min="0.08" max="1.5" step="0.02" value="0.50" />
+        </div>
+        <div class="control-group">
+          <label for="deltaSlider">candidate global \(\delta\) <small id="deltaVal"></small></label>
+          <input id="deltaSlider" type="range" min="0.02" max="1.6" step="0.02" value="0.40" />
+        </div>
+        <div class="control-group">
+          <label for="probeSlider">probe locations <small id="probeVal"></small></label>
+          <input id="probeSlider" type="range" min="4" max="14" step="1" value="7" />
+        </div>
+
+        <div id="compactMessage" class="note-box"></div>
+        <div class="summary-box"><strong>Heine–Cantor.</strong> If \(K\subset\mathbb R^n\) is compact and \(f:K\to\mathbb R\) is continuous, then \(f\) is uniformly continuous on \(K\).</div>
+      </aside>
+
+      <main class="main">
+        <section class="card hero">
+          <div class="hero-top">
+            <div>
+              <h2 style="margin:0; font-family:Georgia, 'Times New Roman', serif; letter-spacing:-.02em">Global \(\delta\) control</h2>
+              <p>The same horizontal scale \(\delta\) is tested at many places. Green means the resulting vertical change stays below \(\varepsilon\). Red exhibits failure.</p>
+            </div>
+            <div id="heroStatus" class="status">global \(\delta\) works</div>
+          </div>
+
+          <div class="two-col">
+            <div class="svg-shell">
+              <svg id="mainSvg" class="diagram" viewBox="0 0 1200 760" aria-label="Uniform continuity main diagram"></svg>
+            </div>
+            <div class="metrics">
+              <div class="metric-card">
+                <h4>Domain type</h4>
+                <p id="domainTypeText">compact / noncompact</p>
+                <span class="value" id="domainBadge"></span>
+              </div>
+              <div class="metric-card">
+                <h4>Current test</h4>
+                <p>Maximum observed output change under \(|x-y|<\delta\).</p>
+                <span class="value" id="oscillationBadge"></span>
+              </div>
+              <div class="metric-card">
+                <h4>Worst pair</h4>
+                <p>The most difficult location for the current \(\delta\).</p>
+                <span class="value" id="witnessBadge"></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="grid-2">
+          <section class="card panel">
+            <div class="section-head">
+              <div>
+                <h3>Ordinary continuity vs uniform continuity</h3>
+                <p>The curve below shows the local \(\delta_x\) needed at each point for the chosen \(\varepsilon\).</p>
+              </div>
+              <div class="mini-chip">local vs global</div>
+            </div>
+            <div class="svg-shell">
+              <svg id="profileSvg" class="diagram" viewBox="0 0 900 420" aria-label="Local delta profile"></svg>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <div class="section-head">
+              <div>
+                <h3>Failure pictures</h3>
+                <p>Two typical ways uniform continuity can fail.</p>
+              </div>
+              <div class="mini-chip">contrast</div>
+            </div>
+            <div class="failure-grid">
+              <div class="failure-card">
+                <h4>Noncompact growth</h4>
+                <svg id="miniGrowth" class="mini-svg" viewBox="0 0 260 180"></svg>
+                <p>For \(x^2\) on \(\mathbb R\), distant regions need smaller and smaller local \(\delta_x\).</p>
+              </div>
+              <div class="failure-card">
+                <h4>Boundary singularity</h4>
+                <svg id="miniBoundary" class="mini-svg" viewBox="0 0 260 180"></svg>
+                <p>For \(1/x\) on \((0,1)\), local \(\delta_x\) collapses near \(0\).</p>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <section class="footer-strip">
+          <div class="strip-box"><strong>Ordinary continuity.</strong> For each point \(a\) and each \(\varepsilon>0\), there exists a \(\delta_a\) that may depend on \(a\).</div>
+          <div class="strip-box"><strong>Uniform continuity.</strong> For each \(\varepsilon>0\), one \(\delta\) works simultaneously for every pair \(x,y\) in the domain.</div>
+          <div class="strip-box"><strong>Geometric test.</strong> The graph has no region where a fixed horizontal move can create a vertical jump larger than \(\varepsilon\).</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const EXAMPLES = {
+      sinCompact: {
+        label:'sinCompact',
+        domain:[0, 2*Math.PI],
+        viewport:[0, 2*Math.PI],
+        compact:true,
+        openLeft:false,
+        openRight:false,
+        description:'continuous on a compact interval',
+        formula:'f(x)=sin x',
+        f:x=>Math.sin(x)
+      },
+      sqrtCompact: {
+        label:'sqrtCompact',
+        domain:[0, 1],
+        viewport:[0, 1],
+        compact:true,
+        openLeft:false,
+        openRight:false,
+        description:'continuous on a compact interval',
+        formula:'f(x)=√x',
+        f:x=>Math.sqrt(Math.max(0,x))
+      },
+      x2Compact: {
+        label:'x2Compact',
+        domain:[-2, 2],
+        viewport:[-2, 2],
+        compact:true,
+        openLeft:false,
+        openRight:false,
+        description:'continuous on a compact interval',
+        formula:'f(x)=x²',
+        f:x=>x*x
+      },
+      x2R: {
+        label:'x2R',
+        domain:[-3, 3],
+        viewport:[-3, 3],
+        compact:false,
+        openLeft:true,
+        openRight:true,
+        description:'view of a noncompact domain ℝ',
+        formula:'f(x)=x² on ℝ',
+        f:x=>x*x
+      },
+      invOpen: {
+        label:'invOpen',
+        domain:[0.08, 1],
+        viewport:[0.08, 1],
+        compact:false,
+        openLeft:true,
+        openRight:true,
+        description:'continuous but noncompact domain (0,1)',
+        formula:'f(x)=1/x on (0,1)',
+        f:x=>1/x
+      }
+    };
+
+    const state = {
+      example:'sinCompact',
+      eps:0.50,
+      delta:0.40,
+      probes:7,
+      theme:localStorage.getItem('uniform-cont-theme') || 'light'
+    };
+
+    const els = {
+      themeToggle:document.getElementById('themeToggle'),
+      themeLabel:document.getElementById('themeLabel'),
+      themeThumb:document.getElementById('themeThumb'),
+      exampleSelect:document.getElementById('exampleSelect'),
+      epsSlider:document.getElementById('epsSlider'),
+      deltaSlider:document.getElementById('deltaSlider'),
+      probeSlider:document.getElementById('probeSlider'),
+      exampleLabel:document.getElementById('exampleLabel'),
+      epsVal:document.getElementById('epsVal'),
+      deltaVal:document.getElementById('deltaVal'),
+      probeVal:document.getElementById('probeVal'),
+      compactMessage:document.getElementById('compactMessage'),
+      mainSvg:document.getElementById('mainSvg'),
+      profileSvg:document.getElementById('profileSvg'),
+      miniGrowth:document.getElementById('miniGrowth'),
+      miniBoundary:document.getElementById('miniBoundary'),
+      heroStatus:document.getElementById('heroStatus'),
+      domainTypeText:document.getElementById('domainTypeText'),
+      domainBadge:document.getElementById('domainBadge'),
+      oscillationBadge:document.getElementById('oscillationBadge'),
+      witnessBadge:document.getElementById('witnessBadge')
+    };
+
+    const css = name => getComputedStyle(document.body).getPropertyValue(name).trim();
+    const fmt = x => (x < 0 ? '−' : '') + Math.abs(x).toFixed(2);
+    const mapLinear = (x,a,b,c,d) => c + (x-a)*(d-c)/(b-a);
+
+    function setTheme(theme){
+      state.theme = theme;
+      document.body.classList.toggle('dark', theme === 'dark');
+      localStorage.setItem('uniform-cont-theme', theme);
+      els.themeLabel.textContent = theme === 'dark' ? 'dark mode' : 'light mode';
+      els.themeThumb.textContent = theme === 'dark' ? '☾' : '☀';
+      renderAll();
+    }
+
+    function updateSliderFill(input){
+      const min=parseFloat(input.min), max=parseFloat(input.max), val=parseFloat(input.value);
+      const pct=((val-min)/(max-min))*100;
+      input.style.backgroundSize = pct + '% 100%';
+    }
+
+    function svgText(x,y,text,opts={}){
+      const size=opts.size||15, fill=opts.fill||css('--text'), weight=opts.weight||500;
+      const anchor=opts.anchor||'start', family=opts.family||'Inter, sans-serif';
+      return `<text x="${x}" y="${y}" fill="${fill}" font-size="${size}" font-family="${family}" font-weight="${weight}" text-anchor="${anchor}">${text}</text>`;
+    }
+
+    function numericStats(){
+      const ex = EXAMPLES[state.example];
+      const f = ex.f;
+      const [a,b] = ex.domain;
+      const delta = state.delta;
+      const eps = state.eps;
+      const N = 260;
+      const xs = Array.from({length:N}, (_,i)=>a + (b-a)*i/(N-1));
+      let maxDiff = -Infinity;
+      let witness = {x:a, y:Math.min(a+delta,b), diff:0};
+      for(let i=0;i<N;i++){
+        const x = xs[i];
+        const low = Math.max(a, x-delta);
+        const high = Math.min(b, x+delta);
+        const M = 40;
+        for(let j=0;j<=M;j++){
+          const y = low + (high-low)*j/M;
+          const diff = Math.abs(f(x)-f(y));
+          if(diff > maxDiff){ maxDiff = diff; witness = {x,y,diff}; }
+        }
+      }
+      const works = maxDiff < eps;
+      return {maxDiff, witness, works};
+    }
+
+    function localDeltaProfile(){
+      const ex = EXAMPLES[state.example];
+      const f = ex.f;
+      const [a,b] = ex.domain;
+      const eps = state.eps;
+      const count = 95;
+      const xs = Array.from({length:count}, (_,i)=>a + (b-a)*i/(count-1));
+      const maxR = Math.max((b-a)*0.48, 0.08);
+
+      function good(x,r){
+        const left = Math.max(a, x-r);
+        const right = Math.min(b, x+r);
+        const M = 28;
+        for(let j=0;j<=M;j++){
+          const y = left + (right-left)*j/M;
+          if(Math.abs(f(y)-f(x)) >= eps) return false;
+        }
+        return true;
+      }
+
+      const rs = xs.map(x=>{
+        let lo = 0, hi = maxR;
+        for(let k=0;k<18;k++){
+          const mid = 0.5*(lo+hi);
+          if(good(x,mid)) lo = mid; else hi = mid;
+        }
+        return lo;
+      });
+      const minR = Math.min(...rs);
+      const minIndex = rs.indexOf(minR);
+      return {xs, rs, minR, minX: xs[minIndex]};
+    }
+
+    function renderMain(){
+      const ex = EXAMPLES[state.example];
+      const f = ex.f;
+      const [a,b] = ex.domain;
+      const eps = state.eps, delta = state.delta;
+      const stats = numericStats();
+      const probeCount = state.probes;
+
+      const W = 1200, H = 760;
+      const dom = {x:70, y:100, w:730, h:90};
+      const graph = {x:70, y:248, w:730, h:430};
+      const gauge = {x:935, y:118, w:150, h:520};
+
+      const samples = Array.from({length:probeCount}, (_,i)=>{
+        const pad = Math.min(delta*0.55, (b-a)/(probeCount+3));
+        const x = a + (i+1)*(b-a)/(probeCount+1);
+        let y = Math.min(x + 0.75*delta, b);
+        if(y - x < 0.15*delta) y = Math.max(a, x - 0.75*delta);
+        return {x,y,fx:f(x),fy:f(y),diff:Math.abs(f(x)-f(y))};
+      });
+
+      let yMin = Infinity, yMax = -Infinity;
+      const curvePts = Array.from({length:700}, (_,i)=>{
+        const x = a + (b-a)*i/699;
+        const y = f(x);
+        yMin = Math.min(yMin,y);
+        yMax = Math.max(yMax,y);
+        return {x,y};
+      });
+      samples.forEach(s=>{ yMin = Math.min(yMin,s.fx,s.fy); yMax = Math.max(yMax,s.fx,s.fy); });
+      yMin -= 0.12*(yMax-yMin||1) + 0.08;
+      yMax += 0.12*(yMax-yMin||1) + 0.08;
+
+      const XD = x => mapLinear(x,a,b,dom.x,dom.x+dom.w);
+      const X = x => mapLinear(x,a,b,graph.x,graph.x+graph.w);
+      const Y = y => mapLinear(y,yMin,yMax,graph.y+graph.h,graph.y);
+      const YG = y => mapLinear(y,yMin,yMax,gauge.y+gauge.h,gauge.y);
+
+      const path = curvePts.map((p,i)=>`${i?'L':'M'} ${X(p.x).toFixed(2)} ${Y(p.y).toFixed(2)}`).join(' ');
+
+      let grid='';
+      for(let j=0;j<=6;j++){
+        const val = yMin + (yMax-yMin)*j/6;
+        grid += `<line x1="${graph.x}" y1="${Y(val)}" x2="${graph.x+graph.w}" y2="${Y(val)}" stroke="${css('--grid')}" stroke-width="1"/>`;
+      }
+      for(let j=0;j<=6;j++){
+        const val = a + (b-a)*j/6;
+        grid += `<line x1="${X(val)}" y1="${graph.y}" x2="${X(val)}" y2="${graph.y+graph.h}" stroke="${css('--grid')}" stroke-width="1"/>`;
+      }
+
+      let probeSVG='';
+      samples.forEach(s=>{
+        const good = s.diff < eps;
+        const col = good ? css('--accent') : css('--accent-2');
+        const x1 = X(s.x), x2 = X(s.y);
+        const y1 = Y(s.fx), y2 = Y(s.fy);
+        probeSVG += `
+          <line x1="${XD(s.x)}" y1="${dom.y+dom.h/2}" x2="${XD(s.y)}" y2="${dom.y+dom.h/2}" stroke="${col}" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+          <circle cx="${XD(s.x)}" cy="${dom.y+dom.h/2}" r="4.4" fill="${col}"/>
+          <circle cx="${XD(s.y)}" cy="${dom.y+dom.h/2}" r="4.4" fill="${col}"/>
+          <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="2.6" opacity=".92"/>
+          <circle cx="${x1}" cy="${y1}" r="4.6" fill="${col}" stroke="${css('--panel-2')}" stroke-width="2"/>
+          <circle cx="${x2}" cy="${y2}" r="4.6" fill="${col}" stroke="${css('--panel-2')}" stroke-width="2"/>
+          <line x1="${x2+8}" y1="${Math.min(y1,y2)}" x2="${x2+8}" y2="${Math.max(y1,y2)}" stroke="${col}" stroke-width="2"/>
+        `;
+      });
+
+      const worst = stats.witness;
+      const wx1 = X(worst.x), wx2 = X(worst.y), wy1 = Y(f(worst.x)), wy2 = Y(f(worst.y));
+      const wcol = stats.works ? css('--accent-3') : css('--accent-2');
+
+      const gaugeMid = gauge.x + gauge.w*0.55;
+      const gaugeCenterY = gauge.y + gauge.h*0.5;
+      const epsTop = YG((yMin+yMax)/2 + eps/2);
+      const epsBottom = YG((yMin+yMax)/2 - eps/2);
+
+      const domainBadge = ex.compact ? 'compact domain' : 'noncompact domain';
+
+      els.mainSvg.innerHTML = `
+        <rect x="0" y="0" width="${W}" height="${H}" rx="24" fill="${css('--panel-2')}"/>
+
+        ${svgText(dom.x, 58, 'same δ tested everywhere on the domain', {size:22, weight:700, family:'Georgia, serif'})}
+        ${svgText(graph.x, 228, 'graph of f : local vertical responses to the same horizontal scale', {size:22, weight:700, family:'Georgia, serif'})}
+        ${svgText(gauge.x-4, 58, 'ε target', {size:22, weight:700, family:'Georgia, serif'})}
+
+        <rect x="${dom.x}" y="${dom.y}" width="${dom.w}" height="${dom.h}" rx="22" fill="${css('--accent-soft')}" stroke="${css('--line')}"/>
+        <line x1="${dom.x+30}" y1="${dom.y+dom.h/2}" x2="${dom.x+dom.w-30}" y2="${dom.y+dom.h/2}" stroke="${css('--muted')}" stroke-width="2.2"/>
+        ${probeSVG}
+        ${ex.openLeft ? `<circle cx="${XD(a)}" cy="${dom.y+dom.h/2}" r="6" fill="${css('--panel-2')}" stroke="${css('--text')}" stroke-width="2.2"/>` : `<circle cx="${XD(a)}" cy="${dom.y+dom.h/2}" r="6" fill="${css('--text')}"/>`}
+        ${ex.openRight ? `<circle cx="${XD(b)}" cy="${dom.y+dom.h/2}" r="6" fill="${css('--panel-2')}" stroke="${css('--text')}" stroke-width="2.2"/>` : `<circle cx="${XD(b)}" cy="${dom.y+dom.h/2}" r="6" fill="${css('--text')}"/>`}
+        ${svgText(XD(a), dom.y+dom.h/2-26, ex.openLeft ? '(' : '[', {anchor:'middle', size:22, family:'Georgia, serif', fill:css('--muted')})}
+        ${svgText(XD(b), dom.y+dom.h/2-26, ex.openRight ? ')' : ']', {anchor:'middle', size:22, family:'Georgia, serif', fill:css('--muted')})}
+        ${svgText(dom.x+dom.w-84, dom.y+26, `δ = ${delta.toFixed(2)}`, {size:16, fill:css('--accent'), weight:700})}
+
+        <rect x="${graph.x}" y="${graph.y}" width="${graph.w}" height="${graph.h}" rx="24" fill="rgba(255,255,255,.02)" stroke="${css('--line')}"/>
+        ${grid}
+        <line x1="${graph.x}" y1="${Y(0)}" x2="${graph.x+graph.w}" y2="${Y(0)}" stroke="${css('--line')}" stroke-width="1.3"/>
+        <path d="${path}" fill="none" stroke="${css('--text')}" stroke-width="3.45" stroke-linecap="round"/>
+        ${probeSVG}
+        <line x1="${wx1}" y1="${wy1}" x2="${wx2}" y2="${wy2}" stroke="${wcol}" stroke-width="4.2" opacity=".95"/>
+        <circle cx="${wx1}" cy="${wy1}" r="6.6" fill="${wcol}" stroke="${css('--panel-2')}" stroke-width="2.2"/>
+        <circle cx="${wx2}" cy="${wy2}" r="6.6" fill="${wcol}" stroke="${css('--panel-2')}" stroke-width="2.2"/>
+        <line x1="${wx2+12}" y1="${Math.min(wy1,wy2)}" x2="${wx2+12}" y2="${Math.max(wy1,wy2)}" stroke="${wcol}" stroke-width="3"/>
+        ${svgText(wx2+20, (wy1+wy2)/2-6, `|Δf| = ${worst.diff.toFixed(2)}`, {size:15, fill:wcol, weight:700})}
+        ${svgText(graph.x+12, graph.y+24, 'green: within ε', {size:14, fill:css('--accent'), weight:700})}
+        ${svgText(graph.x+134, graph.y+24, 'red: exceeds ε', {size:14, fill:css('--accent-2'), weight:700})}
+        ${svgText(graph.x+graph.w-12, graph.y+graph.h+24, 'x', {size:14, fill:css('--muted'), anchor:'end'})}
+        ${svgText(graph.x+12, graph.y+18, 'f(x)', {size:14, fill:css('--muted'), family:'Georgia, serif'})}
+
+        <rect x="${gauge.x}" y="${gauge.y}" width="${gauge.w}" height="${gauge.h}" rx="24" fill="${css('--accent-soft')}" stroke="${css('--line')}"/>
+        <line x1="${gaugeMid}" y1="${gauge.y+30}" x2="${gaugeMid}" y2="${gauge.y+gauge.h-30}" stroke="${css('--muted')}" stroke-width="2.2"/>
+        <line x1="${gauge.x+28}" y1="${epsTop}" x2="${gauge.x+gauge.w-28}" y2="${epsTop}" stroke="${css('--accent-3')}" stroke-width="2.5"/>
+        <line x1="${gauge.x+28}" y1="${epsBottom}" x2="${gauge.x+gauge.w-28}" y2="${epsBottom}" stroke="${css('--accent-3')}" stroke-width="2.5"/>
+        <rect x="${gaugeMid-22}" y="${Math.min(epsTop,epsBottom)}" width="44" height="${Math.abs(epsBottom-epsTop)}" rx="22" fill="rgba(95,127,157,.18)" stroke="${css('--accent-3')}" stroke-width="1.4"/>
+        <circle cx="${gaugeMid}" cy="${epsTop}" r="7.8" fill="${css('--accent-3')}" stroke="${css('--panel-2')}" stroke-width="2.4"/>
+        <circle cx="${gaugeMid}" cy="${epsBottom}" r="7.8" fill="${css('--accent-3')}" stroke="${css('--panel-2')}" stroke-width="2.4"/>
+        ${svgText(gaugeMid, epsTop-14, '+ε/2', {anchor:'middle', size:14, fill:css('--accent-3'), weight:700})}
+        ${svgText(gaugeMid, epsBottom+26, '−ε/2', {anchor:'middle', size:14, fill:css('--accent-3'), weight:700})}
+        ${svgText(gaugeMid, gauge.y+gauge.h-8, `ε = ${eps.toFixed(2)}`, {anchor:'middle', size:15, fill:css('--accent-3'), weight:700})}
+      `;
+
+      els.domainTypeText.textContent = ex.compact ? 'compact interval' : 'noncompact / open setting';
+      els.domainBadge.textContent = domainBadge;
+      els.oscillationBadge.textContent = `max |f(x)-f(y)| ≈ ${stats.maxDiff.toFixed(2)}`;
+      els.witnessBadge.textContent = `x ≈ ${fmt(worst.x)}, y ≈ ${fmt(worst.y)}`;
+      els.compactMessage.innerHTML = stats.works
+        ? `For the current \(\varepsilon=${eps.toFixed(2)}\), the chosen global \(\delta=${delta.toFixed(2)}\) keeps every tested pair below \(\varepsilon\).`
+        : `For the current \(\varepsilon=${eps.toFixed(2)}\), the chosen global \(\delta=${delta.toFixed(2)}\) fails: some pair satisfies \(|x-y|<\delta\) but produces \(|f(x)-f(y)|\ge \varepsilon\).`;
+      els.heroStatus.textContent = stats.works ? 'global δ works' : 'global δ fails';
+      els.heroStatus.style.color = stats.works ? css('--ok') : css('--warn');
+      els.heroStatus.style.background = stats.works ? 'rgba(36,108,86,.08)' : 'rgba(164,90,79,.08)';
+    }
+
+    function renderProfile(){
+      const ex = EXAMPLES[state.example];
+      const profile = localDeltaProfile();
+      const [a,b] = ex.domain;
+      const W=900,H=420;
+      const chart={x:72,y:44,w:770,h:310};
+      const rs = profile.rs;
+      const xs = profile.xs;
+      const maxR = Math.max(...rs, state.delta) * 1.12 || 1;
+      const X=x=>mapLinear(x,a,b,chart.x,chart.x+chart.w);
+      const Y=r=>mapLinear(r,0,maxR,chart.y+chart.h,chart.y);
+      const path=xs.map((x,i)=>`${i?'L':'M'} ${X(x).toFixed(2)} ${Y(rs[i]).toFixed(2)}`).join(' ');
+
+      let grid='';
+      for(let j=0;j<=5;j++){
+        const val=maxR*j/5;
+        grid += `<line x1="${chart.x}" y1="${Y(val)}" x2="${chart.x+chart.w}" y2="${Y(val)}" stroke="${css('--grid')}" stroke-width="1"/>`;
+      }
+      for(let j=0;j<=6;j++){
+        const val=a+(b-a)*j/6;
+        grid += `<line x1="${X(val)}" y1="${chart.y}" x2="${X(val)}" y2="${chart.y+chart.h}" stroke="${css('--grid')}" stroke-width="1"/>`;
+      }
+
+      const minR = profile.minR;
+      const canShowGlobal = minR > 0.01;
+      const deltaCol = state.delta <= minR ? css('--accent') : css('--accent-2');
+
+      els.profileSvg.innerHTML = `
+        <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--panel-2')}"/>
+        ${svgText(chart.x, 26, 'local admissible δₓ for the chosen ε', {size:20, weight:700, family:'Georgia, serif'})}
+        <rect x="${chart.x}" y="${chart.y}" width="${chart.w}" height="${chart.h}" rx="20" fill="rgba(255,255,255,.02)" stroke="${css('--line')}"/>
+        ${grid}
+        <line x1="${chart.x}" y1="${chart.y+chart.h}" x2="${chart.x+chart.w}" y2="${chart.y+chart.h}" stroke="${css('--line')}" stroke-width="1.3"/>
+        <line x1="${chart.x}" y1="${chart.y}" x2="${chart.x}" y2="${chart.y+chart.h}" stroke="${css('--line')}" stroke-width="1.3"/>
+        <path d="${path}" fill="none" stroke="${css('--text')}" stroke-width="3.1" stroke-linecap="round"/>
+        <line x1="${chart.x}" y1="${Y(state.delta)}" x2="${chart.x+chart.w}" y2="${Y(state.delta)}" stroke="${deltaCol}" stroke-width="2.4" stroke-dasharray="8 6"/>
+        ${svgText(chart.x+10, Y(state.delta)-10, 'chosen global δ', {size:14, fill:deltaCol, weight:700})}
+        <circle cx="${X(profile.minX)}" cy="${Y(minR)}" r="7.4" fill="${css('--accent-3')}" stroke="${css('--panel-2')}" stroke-width="2.2"/>
+        ${svgText(X(profile.minX)+10, Y(minR)-12, `inf local scale ≈ ${minR.toFixed(2)}`, {size:14, fill:css('--accent-3'), weight:700})}
+        ${svgText(chart.x+chart.w-8, chart.y+chart.h+24, 'x', {size:14, fill:css('--muted'), anchor:'end'})}
+        ${svgText(chart.x+8, chart.y+18, 'δₓ', {size:14, fill:css('--muted'), family:'Georgia, serif'})}
+        ${svgText(chart.x+10, chart.y+chart.h+44, canShowGlobal ? 'uniform continuity appears as the local δₓ profile staying above a positive floor' : 'the local δₓ profile sinks toward 0, so no positive global δ survives', {size:14, fill:css('--muted')})}
+      `;
+    }
+
+    function renderMiniGrowth(){
+      const W=260,H=180; const X=x=>mapLinear(x,-3,3,24,236), Y=y=>mapLinear(y,0,9,152,26);
+      const pts=[];
+      for(let i=0;i<120;i++){
+        const x=-3+6*i/119; pts.push(`${i?'L':'M'} ${X(x)} ${Y(x*x)}`);
+      }
+      els.miniGrowth.innerHTML = `
+        <rect x="0" y="0" width="${W}" height="${H}" rx="14" fill="${css('--panel-2')}"/>
+        <line x1="20" y1="${Y(0)}" x2="240" y2="${Y(0)}" stroke="${css('--line')}"/>
+        <path d="${pts.join(' ')}" fill="none" stroke="${css('--text')}" stroke-width="2.8"/>
+        <line x1="${X(0.1)}" y1="${Y(0.1*0.1)}" x2="${X(0.6)}" y2="${Y(0.6*0.6)}" stroke="${css('--accent')}" stroke-width="3"/>
+        <line x1="${X(2.2)}" y1="${Y(2.2*2.2)}" x2="${X(2.7)}" y2="${Y(2.7*2.7)}" stroke="${css('--accent-2')}" stroke-width="3"/>
+      `;
+    }
+
+    function renderMiniBoundary(){
+      const W=260,H=180; const X=x=>mapLinear(x,0.08,1,24,236), Y=y=>mapLinear(y,1,12,152,26);
+      const pts=[];
+      for(let i=0;i<150;i++){
+        const x=0.08 + (1-0.08)*i/149; pts.push(`${i?'L':'M'} ${X(x)} ${Y(1/x)}`);
+      }
+      els.miniBoundary.innerHTML = `
+        <rect x="0" y="0" width="${W}" height="${H}" rx="14" fill="${css('--panel-2')}"/>
+        <line x1="20" y1="${Y(1)}" x2="240" y2="${Y(1)}" stroke="${css('--line')}"/>
+        <path d="${pts.join(' ')}" fill="none" stroke="${css('--text')}" stroke-width="2.8"/>
+        <line x1="${X(0.75)}" y1="${Y(1/0.75)}" x2="${X(0.90)}" y2="${Y(1/0.90)}" stroke="${css('--accent')}" stroke-width="3"/>
+        <line x1="${X(0.11)}" y1="${Y(1/0.11)}" x2="${X(0.16)}" y2="${Y(1/0.16)}" stroke="${css('--accent-2')}" stroke-width="3"/>
+      `;
+    }
+
+    function updateLabels(){
+      els.exampleLabel.textContent = state.example;
+      els.epsVal.textContent = state.eps.toFixed(2);
+      els.deltaVal.textContent = state.delta.toFixed(2);
+      els.probeVal.textContent = String(state.probes);
+      [els.epsSlider, els.deltaSlider, els.probeSlider].forEach(updateSliderFill);
+    }
+
+    function renderAll(){
+      updateLabels();
+      renderMain();
+      renderProfile();
+      renderMiniGrowth();
+      renderMiniBoundary();
+      if(window.MathJax) MathJax.typesetPromise().catch(()=>{});
+    }
+
+    function syncState(){
+      state.example = els.exampleSelect.value;
+      state.eps = parseFloat(els.epsSlider.value);
+      state.delta = parseFloat(els.deltaSlider.value);
+      state.probes = parseInt(els.probeSlider.value, 10);
+      renderAll();
+    }
+
+    ['input','change'].forEach(evt=>{
+      els.exampleSelect.addEventListener(evt, syncState);
+      els.epsSlider.addEventListener(evt, syncState);
+      els.deltaSlider.addEventListener(evt, syncState);
+      els.probeSlider.addEventListener(evt, syncState);
+    });
+
+    els.themeToggle.addEventListener('click', ()=> setTheme(state.theme === 'dark' ? 'light' : 'dark'));
+    els.themeToggle.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        setTheme(state.theme === 'dark' ? 'light' : 'dark');
+      }
+    });
+
+    els.exampleSelect.value = state.example;
+    els.epsSlider.value = state.eps;
+    els.deltaSlider.value = state.delta;
+    els.probeSlider.value = state.probes;
+    setTheme(state.theme);
+  </script>
+</body>
+</html>
