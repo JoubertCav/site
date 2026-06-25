@@ -599,6 +599,57 @@ p {
   font-size: 1.1rem;
 }
 
+.diagram-list {
+  margin-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+
+.diagram-list-item {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.diagram-no {
+  color: var(--muted);
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+}
+
+.diagram-list-item h3 {
+  margin-bottom: 0.25rem;
+  font-size: clamp(1.18rem, 2vw, 1.55rem);
+}
+
+.diagram-list-item a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.diagram-list-item a:hover {
+  color: var(--claret);
+  border-color: var(--claret);
+}
+
+.diagram-list-item p {
+  max-width: 58ch;
+  margin: 0;
+}
+
+.diagram-status {
+  color: var(--muted);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .contact-box {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -848,6 +899,15 @@ p {
   .item {
     grid-template-columns: 1fr;
     gap: 0.45rem;
+  }
+
+  .diagram-list-item {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+
+  .diagram-status {
+    justify-self: start;
   }
 
   .hub-card,
