@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for open balls and induced topology.">
+<title>Open Balls and Induced Topology | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+  :root{
+    --bg:#f7f3ea;
+    --paper:#fffdf8;
+    --paper2:#f0eadf;
+    --ink:#1f2729;
+    --muted:#687371;
+    --line:rgba(31,39,41,.13);
+    --grid:rgba(31,39,41,.075);
+    --accent:#2f9e91;
+    --accent2:#c1784a;
+    --accent3:#5369a6;
+    --good:#2f9e91;
+    --bad:#b85c57;
+    --warn:#c1784a;
+    --shadow:0 18px 48px rgba(31,39,41,.09);
+    --radius:22px;
+  }
+  [data-theme="dark"]{
+    --bg:#0c1118;
+    --paper:#131b25;
+    --paper2:#182331;
+    --ink:#edf3f1;
+    --muted:#9ba9a6;
+    --line:rgba(237,243,241,.13);
+    --grid:rgba(237,243,241,.08);
+    --accent:#58c8ba;
+    --accent2:#d79a6e;
+    --accent3:#90a7ff;
+    --good:#58c8ba;
+    --bad:#e08a84;
+    --warn:#d79a6e;
+    --shadow:0 18px 48px rgba(0,0,0,.34);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 10% -10%, color-mix(in srgb,var(--accent) 12%, transparent), transparent 34%),
+      radial-gradient(circle at 90% 0%, color-mix(in srgb,var(--accent2) 11%, transparent), transparent 30%),
+      var(--bg);
+    color:var(--ink);
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height:1.45;
+  }
+  .wrap{width:min(1180px,calc(100% - 34px)); margin:0 auto; padding:28px 0 44px}
+  header{
+    display:grid; grid-template-columns:1fr auto; gap:18px; align-items:start;
+    margin-bottom:18px;
+  }
+  .kicker{font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:780; margin-bottom:8px}
+  h1{font-family:Georgia, 'Times New Roman', serif; font-weight:560; font-size:clamp(2rem,4.2vw,4.25rem); line-height:.98; margin:0 0 10px}
+  .subtitle{max-width:820px; color:var(--muted); font-size:1.04rem}
+  .toggle{border:1px solid var(--line); background:var(--paper); color:var(--ink); border-radius:999px; padding:10px 14px; cursor:pointer; box-shadow:var(--shadow)}
+  .grid{display:grid; grid-template-columns:1.18fr .82fr; gap:18px; align-items:start}
+  .card{background:color-mix(in srgb,var(--paper) 96%, transparent); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden}
+  .card.pad{padding:18px}
+  .cardTitle{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px}
+  h2{font-family:Georgia, 'Times New Roman', serif; font-size:1.28rem; font-weight:560; margin:0}
+  h3{font-size:.92rem; margin:0 0 8px; letter-spacing:.03em; text-transform:uppercase; color:var(--muted)}
+  .small{font-size:.88rem; color:var(--muted)}
+  .math{font-family:Georgia, "Times New Roman", serif; background:linear-gradient(180deg,color-mix(in srgb,var(--paper2) 94%,transparent),color-mix(in srgb,var(--paper) 70%,transparent)); border:1px solid var(--line); border-radius:16px; padding:13px 14px; margin:10px 0; overflow:auto; font-size:1.04rem}
+  .eq{font-family:Georgia,"Times New Roman",serif; font-style:italic; letter-spacing:.01em; white-space:nowrap; color:var(--ink)}
+  .eq .op{font-style:normal; color:var(--muted); padding:0 .18em}
+  .eq .set{font-style:normal}
+  .eq .word{font-style:normal; color:var(--muted)}
+  .eq .quant{font-style:normal; color:var(--accent); font-weight:700}
+  .displayEq{display:block; font-size:1.08rem; line-height:1.7; text-align:center}
+  sub{font-size:.7em} sup{font-size:.7em}
+  .controls{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:12px}
+  label{font-size:.77rem; color:var(--muted); display:block; margin-bottom:6px; font-weight:720; letter-spacing:.05em; text-transform:uppercase}
+  input[type="range"]{width:100%; accent-color:var(--accent)}
+  select, button, input[type="number"]{width:100%; border:1px solid var(--line); background:var(--paper2); color:var(--ink); border-radius:14px; padding:10px 11px; font:inherit}
+  button{cursor:pointer; font-weight:750}
+  .pillrow{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+  .pill{border:1px solid var(--line); background:var(--paper2); color:var(--muted); border-radius:999px; padding:6px 9px; font-size:.78rem; font-weight:700}
+  .pill.good{color:var(--good); border-color:color-mix(in srgb,var(--good) 40%,var(--line)); background:color-mix(in srgb,var(--good) 12%,var(--paper))}
+  .pill.bad{color:var(--bad); border-color:color-mix(in srgb,var(--bad) 40%,var(--line)); background:color-mix(in srgb,var(--bad) 12%,var(--paper))}
+  .pill.warn{color:var(--warn); border-color:color-mix(in srgb,var(--warn) 40%,var(--line)); background:color-mix(in srgb,var(--warn) 12%,var(--paper))}
+  .canvasBox{padding:10px; border-top:1px solid var(--line); background:linear-gradient(180deg,color-mix(in srgb,var(--paper2) 58%, transparent), transparent)}
+  svg{display:block; width:100%; height:auto; border-radius:18px; background:var(--paper)}
+  .two{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:18px}
+  .stack{display:grid; gap:18px}
+  .legend{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:10px}
+  .legend span{display:flex; align-items:center; gap:7px; font-size:.8rem; color:var(--muted)}
+  .dot{width:10px; height:10px; border-radius:50%; display:inline-block; background:var(--accent)}
+  .sw{width:18px; height:10px; border-radius:999px; display:inline-block; background:var(--accent)}
+  .readout{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:12px}
+  .stat{border:1px solid var(--line); background:var(--paper2); border-radius:16px; padding:11px}
+  .stat strong{display:block; font-size:1.05rem; margin-top:2px}
+  .table{width:100%; border-collapse:separate; border-spacing:0; overflow:hidden; border:1px solid var(--line); border-radius:16px; font-size:.88rem}
+  .table th,.table td{padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top}
+  .table tr:last-child td{border-bottom:none}.table th{text-align:left; color:var(--muted); background:var(--paper2); font-size:.76rem; text-transform:uppercase; letter-spacing:.05em}
+  .tabs{display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 0}
+  .tab{width:auto; padding:8px 10px; border-radius:999px; color:var(--muted)}
+  .tab.active{background:color-mix(in srgb,var(--accent) 16%,var(--paper)); color:var(--accent); border-color:color-mix(in srgb,var(--accent) 44%,var(--line))}
+  .law{border-left:3px solid var(--accent); padding-left:12px; color:var(--muted); font-size:.93rem}
+  .notice{background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 13%,var(--paper)), color-mix(in srgb,var(--accent2) 9%,var(--paper))); border:1px solid var(--line); border-radius:18px; padding:14px}
+  .proofline{display:grid; gap:8px; margin-top:8px}
+  .proofline div{padding:9px 11px; border:1px solid var(--line); border-radius:14px; background:var(--paper2); font-family:Georgia,"Times New Roman",serif}
+  .footer{margin-top:18px; color:var(--muted); font-size:.88rem; text-align:center}
+  @media(max-width:900px){.grid,.two{grid-template-columns:1fr}.controls,.readout{grid-template-columns:1fr} header{grid-template-columns:1fr}.toggle{justify-self:start}.legend{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-theme="light">
+<div class="wrap">
+  <header>
+    <div>
+      <div class="kicker">Real analysis · metric topology</div>
+      <h1>Open balls and induced topology</h1>
+      <div class="subtitle">A distance function draws balls. Balls define neighborhoods. Neighborhoods define open sets. The collection of all open sets is the topology generated by the metric.</div>
+    </div>
+    <button class="toggle" id="themeBtn">Dark mode</button>
+  </header>
+
+  <section class="grid">
+    <div class="card">
+      <div class="card pad">
+        <div class="cardTitle">
+          <h2>Main diagram: balls create local tests</h2>
+          <div class="pillrow"><span class="pill" id="metricPill">metric</span><span class="pill" id="openPill">open test</span></div>
+        </div>
+        <div class="math">
+          <span class="displayEq eq">B<sup>d</sup><sub>r</sub>(x) <span class="op">=</span> <span class="set">{ y ∈ X : d(x,y) &lt; r }</span></span>
+          <span class="displayEq eq">G ⊂ X <span class="word">is open</span> <span class="op">⇔</span> <span class="quant">∀</span>x∈G, <span class="quant">∃</span>r&gt;0 : B<sub>r</sub>(x) ⊂ G</span>
+        </div>
+        <div class="controls">
+          <div>
+            <label>Metric</label>
+            <select id="metric">
+              <option value="euclidean">Euclidean d₂</option>
+              <option value="taxicab">Taxicab d₁</option>
+              <option value="sup">Sup metric d∞</option>
+              <option value="discrete">Discrete metric</option>
+            </select>
+          </div>
+          <div>
+            <label>Set to test</label>
+            <select id="setMode">
+              <option value="openDisk">Open Euclidean disk</option>
+              <option value="closedDisk">Closed Euclidean disk</option>
+              <option value="puncturedDisk">Punctured disk</option>
+              <option value="openSquare">Open square</option>
+              <option value="closedSquare">Closed square</option>
+              <option value="halfPlane">Open half-plane</option>
+              <option value="annulus">Open annulus</option>
+            </select>
+          </div>
+          <div>
+            <label>Ball radius r = <span id="rVal"></span></label>
+            <input id="radius" type="range" min="0.15" max="2.2" step="0.05" value="0.85" />
+          </div>
+          <div>
+            <label>Probe point x</label>
+            <select id="probe">
+              <option value="inside">interior candidate</option>
+              <option value="nearBoundary">near boundary</option>
+              <option value="boundary">boundary point</option>
+              <option value="outside">exterior point</option>
+            </select>
+          </div>
+          <div>
+            <label>Center a-coordinate = <span id="cxVal"></span></label>
+            <input id="cx" type="range" min="-1.5" max="1.5" step="0.05" value="0" />
+          </div>
+          <div>
+            <label>Center b-coordinate = <span id="cyVal"></span></label>
+            <input id="cy" type="range" min="-1.5" max="1.5" step="0.05" value="0" />
+          </div>
+        </div>
+      </div>
+      <div class="canvasBox">
+        <svg id="mainSvg" viewBox="0 0 760 520" aria-label="Metric ball and open set diagram"></svg>
+        <div class="legend">
+          <span><i class="sw" style="background:color-mix(in srgb,var(--accent) 30%,transparent)"></i>candidate set <span class="eq">G</span></span>
+          <span><i class="sw" style="background:color-mix(in srgb,var(--accent2) 34%,transparent)"></i>ball <span class="eq">B<sub>r</sub>(x)</span></span>
+          <span><i class="dot" style="background:var(--accent3)"></i>probe point <span class="eq">x</span></span>
+        </div>
+      </div>
+    </div>
+
+    <aside class="stack">
+      <div class="card pad">
+        <h2>Interpretation</h2>
+        <div class="readout">
+          <div class="stat"><span class="small">Point status</span><strong id="pointStatus">—</strong></div>
+          <div class="stat"><span class="small">Local ball</span><strong id="ballStatus">—</strong></div>
+          <div class="stat"><span class="small">Global set</span><strong id="globalStatus">—</strong></div>
+        </div>
+        <div class="math" id="formulaBox"></div>
+        <p class="small" id="interpretation"></p>
+      </div>
+
+      <div class="card pad">
+        <h2>Metric axioms</h2>
+        <table class="table">
+          <thead><tr><th>Axiom</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>positivity</td><td><span class="eq">d(x,y) ≥ 0</span> and <span class="eq">d(x,y)=0 ⇔ x=y</span></td></tr>
+            <tr><td>symmetry</td><td><span class="eq">d(x,y)=d(y,x)</span></td></tr>
+            <tr><td>triangle</td><td><span class="eq">d(x,z) ≤ d(x,y)+d(y,z)</span></td></tr>
+          </tbody>
+        </table>
+        <div class="notice" style="margin-top:12px">
+          A metric is not just a formula for length. It is a machine that generates all open sets through its balls.
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="two">
+    <div class="card pad">
+      <div class="cardTitle"><h2>Equivalent metrics</h2><span class="pill good">same topology</span></div>
+      <div class="math"><span class="displayEq eq"><span class="word">On</span> ℝ<sup>2</sup>: d<sub>∞</sub>(x,y) ≤ d<sub>2</sub>(x,y) ≤ d<sub>1</sub>(x,y) ≤ 2d<sub>∞</sub>(x,y)</span></div>
+      <div class="controls">
+        <div>
+          <label>Comparison radius ε = <span id="epsVal"></span></label>
+          <input id="eps" type="range" min="0.4" max="2.1" step="0.05" value="1.25" />
+        </div>
+        <div>
+          <label>View</label>
+          <select id="equivView">
+            <option value="d2dinf">d₂ versus d∞</option>
+            <option value="d1d2">d₁ versus d₂</option>
+          </select>
+        </div>
+      </div>
+      <svg id="equivSvg" viewBox="0 0 620 360" aria-label="Equivalent metrics diagram"></svg>
+      <div class="proofline" id="equivText"></div>
+    </div>
+
+    <div class="card pad">
+      <div class="cardTitle"><h2>Neighborhoods</h2><span class="pill">local notion</span></div>
+      <div class="math"><span class="displayEq eq">N <span class="word">is a neighborhood of</span> x <span class="op">⇔</span> <span class="quant">∃</span>r&gt;0 : B<sub>r</sub>(x) ⊂ N</span></div>
+      <div class="controls">
+        <div>
+          <label>Neighborhood size = <span id="nSizeVal"></span></label>
+          <input id="nSize" type="range" min="0.7" max="2.6" step="0.05" value="1.55" />
+        </div>
+        <div>
+          <label>Ball inside = <span id="innerVal"></span></label>
+          <input id="inner" type="range" min="0.15" max="1.5" step="0.05" value="0.8" />
+        </div>
+      </div>
+      <svg id="neighSvg" viewBox="0 0 620 360" aria-label="Neighborhood diagram"></svg>
+      <p class="law" id="neighText"></p>
+    </div>
+  </section>
+
+  <section class="two">
+    <div class="card pad">
+      <div class="cardTitle"><h2>Discrete metric</h2><span class="pill warn">topology changes</span></div>
+      <div class="math"><span class="displayEq eq">d(x,y)=0 <span class="word">if</span> x=y, <span class="word">and</span> d(x,y)=1 <span class="word">if</span> x≠y</span></div>
+      <svg id="discSvg" viewBox="0 0 620 340" aria-label="Discrete metric balls"></svg>
+      <div class="notice">For <span class="eq">0&lt;r≤1</span>, <span class="eq">B<sub>r</sub>(x)={x}</span>. Hence every subset is a union of singleton balls, so every subset is open.</div>
+    </div>
+
+    <div class="card pad">
+      <div class="cardTitle"><h2>Topology generated by a metric</h2><span class="pill good">definition</span></div>
+      <div class="math"><span class="displayEq eq">τ<sub>d</sub> = <span class="set">{ G ⊂ X : <span class="quant">∀</span>x∈G, <span class="quant">∃</span>rₓ&gt;0 <span class="word">with</span> B<sub>rₓ</sub>(x) ⊂ G }</span></span></div>
+      <table class="table">
+        <thead><tr><th>Concept</th><th>Metric-topological translation</th></tr></thead>
+        <tbody>
+          <tr><td>Ball</td><td>primitive open neighborhood produced by <span class="eq">d</span></td></tr>
+          <tr><td>Neighborhood</td><td>any set containing some ball around the point</td></tr>
+          <tr><td>Open set</td><td>every point has a protective ball still inside the set</td></tr>
+          <tr><td>Equivalent metrics</td><td>different ball shapes, same open sets</td></tr>
+        </tbody>
+      </table>
+      <div class="notice" style="margin-top:12px">The topology forgets exact distances but remembers which points are near enough to define continuity, convergence, and compactness.</div>
+    </div>
+  </section>
+
+  <section class="card pad" style="margin-top:18px">
+    <div class="cardTitle"><h2>Compact exam-style summary</h2><span class="pill">memorize</span></div>
+    <div class="two" style="margin-top:0">
+      <div>
+        <h3>Definitions</h3>
+        <div class="math"><span class="displayEq eq">B<sub>r</sub>(x) = <span class="set">{ y : d(x,y) &lt; r }</span></span></div>
+        <div class="math"><span class="displayEq eq">G <span class="word">open</span> <span class="op">⇔</span> <span class="quant">∀</span>x∈G, <span class="quant">∃</span>r&gt;0 : B<sub>r</sub>(x) ⊂ G</span></div>
+        <div class="math"><span class="displayEq eq">N <span class="word">neighborhood of</span> x <span class="op">⇔</span> <span class="quant">∃</span>r&gt;0 : B<sub>r</sub>(x) ⊂ N</span></div>
+      </div>
+      <div>
+        <h3>What to notice</h3>
+        <div class="proofline">
+          <div>Open is a local property: check each point using a sufficiently small ball.</div>
+          <div>Boundary points kill openness when every ball leaks outside.</div>
+          <div>Equivalent metrics may draw different balls but generate the same family <span class="eq">τ<sub>d</sub></span>.</div>
+          <div>The discrete metric makes every subset open; topology can be much finer than Euclidean topology.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">Single-file app · no external libraries · inline SVG diagrams</div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const root = document.body;
+  const state = {
+    metric:'euclidean', setMode:'openDisk', r:.85, probe:'inside', cx:0, cy:0, eps:1.25, equivView:'d2dinf', nSize:1.55, inner:.8
+  };
+  const accent = () => getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+  const accent2 = () => getComputedStyle(document.documentElement).getPropertyValue('--accent2').trim();
+  const accent3 = () => getComputedStyle(document.documentElement).getPropertyValue('--accent3').trim();
+  const ink = () => getComputedStyle(document.documentElement).getPropertyValue('--ink').trim();
+  const muted = () => getComputedStyle(document.documentElement).getPropertyValue('--muted').trim();
+  const grid = () => getComputedStyle(document.documentElement).getPropertyValue('--grid').trim();
+  const line = () => getComputedStyle(document.documentElement).getPropertyValue('--line').trim();
+  const paper = () => getComputedStyle(document.documentElement).getPropertyValue('--paper').trim();
+
+  function esc(s){ return String(s).replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+  function fmt(x){ return Number(x).toFixed(2).replace(/\.00$/,''); }
+  function mapFactory(w,h,scale=70){
+    return {
+      x:v=>w/2+v*scale,
+      y:v=>h/2-v*scale,
+      invx:px=>(px-w/2)/scale,
+      invy:py=>(h/2-py)/scale,
+      scale
+    };
+  }
+  function gridSvg(w,h,scale=70){
+    const m=mapFactory(w,h,scale); let s='';
+    for(let v=-4;v<=4;v++){
+      s+=`<line x1="${m.x(v)}" y1="18" x2="${m.x(v)}" y2="${h-18}" stroke="${grid()}"/>`;
+      s+=`<line x1="18" y1="${m.y(v)}" x2="${w-18}" y2="${m.y(v)}" stroke="${grid()}"/>`;
+    }
+    s+=`<line x1="20" y1="${m.y(0)}" x2="${w-20}" y2="${m.y(0)}" stroke="${line()}"/>`;
+    s+=`<line x1="${m.x(0)}" y1="20" x2="${m.x(0)}" y2="${h-20}" stroke="${line()}"/>`;
+    return s;
+  }
+  function circlePath(cx,cy,r,m,n=120){
+    let d='';
+    for(let i=0;i<=n;i++){
+      const t=2*Math.PI*i/n, x=m.x(cx+r*Math.cos(t)), y=m.y(cy+r*Math.sin(t));
+      d += (i?'L':'M')+x.toFixed(2)+' '+y.toFixed(2)+' ';
+    }
+    return d+'Z';
+  }
+  function diamondPath(cx,cy,r,m){
+    const pts=[[cx,cy+r],[cx+r,cy],[cx,cy-r],[cx-r,cy]];
+    return pts.map((p,i)=>(i?'L':'M')+m.x(p[0])+' '+m.y(p[1])).join(' ')+' Z';
+  }
+  function squarePath(cx,cy,r,m){
+    const pts=[[cx-r,cy-r],[cx+r,cy-r],[cx+r,cy+r],[cx-r,cy+r]];
+    return pts.map((p,i)=>(i?'L':'M')+m.x(p[0])+' '+m.y(p[1])).join(' ')+' Z';
+  }
+  function metricBallPath(metric,cx,cy,r,m){
+    if(metric==='taxicab') return diamondPath(cx,cy,r,m);
+    if(metric==='sup') return squarePath(cx,cy,r,m);
+    if(metric==='discrete') return r<=1 ? circlePath(cx,cy,.12,m) : squarePath(0,0,4,m);
+    return circlePath(cx,cy,r,m);
+  }
+  function setPath(mode,m){
+    if(mode==='openDisk' || mode==='closedDisk' || mode==='puncturedDisk') return circlePath(0,0,1.7,m);
+    if(mode==='openSquare' || mode==='closedSquare') return squarePath(0,0,1.65,m);
+    if(mode==='halfPlane'){
+      const pts=[[-4,-4],[4,-4],[4,4],[-1.1,4]];
+      return pts.map((p,i)=>(i?'L':'M')+m.x(p[0])+' '+m.y(p[1])).join(' ')+' Z';
+    }
+    if(mode==='annulus'){
+      return circlePath(0,0,2.05,m)+' '+circlePath(0,0,.85,m,90);
+    }
+    return circlePath(0,0,1.7,m);
+  }
+  function pointFor(mode,probe){
+    const dict={
+      openDisk:{inside:[.55,.25],nearBoundary:[1.45,.2],boundary:[1.7,0],outside:[2.15,.2]},
+      closedDisk:{inside:[.55,.25],nearBoundary:[1.45,.2],boundary:[1.7,0],outside:[2.15,.2]},
+      puncturedDisk:{inside:[.8,.25],nearBoundary:[.15,.04],boundary:[0,0],outside:[2.15,.2]},
+      openSquare:{inside:[.55,.25],nearBoundary:[1.45,.15],boundary:[1.65,.3],outside:[2.05,.3]},
+      closedSquare:{inside:[.55,.25],nearBoundary:[1.45,.15],boundary:[1.65,.3],outside:[2.05,.3]},
+      halfPlane:{inside:[.55,.2],nearBoundary:[-.65,.1],boundary:[-1.1,.15],outside:[-1.7,.2]},
+      annulus:{inside:[1.35,.25],nearBoundary:[.92,.08],boundary:[.85,0],outside:[.3,.15]}
+    };
+    return dict[mode][probe] || [.4,.3];
+  }
+  function inSet(mode,x,y){
+    const rr=x*x+y*y;
+    if(mode==='openDisk') return rr<1.7*1.7;
+    if(mode==='closedDisk') return rr<=1.7*1.7+1e-9;
+    if(mode==='puncturedDisk') return rr<1.7*1.7 && rr>1e-8;
+    if(mode==='openSquare') return Math.abs(x)<1.65 && Math.abs(y)<1.65;
+    if(mode==='closedSquare') return Math.abs(x)<=1.65+1e-9 && Math.abs(y)<=1.65+1e-9;
+    if(mode==='halfPlane') return x>-1.1;
+    if(mode==='annulus') return rr>.85*.85 && rr<2.05*2.05;
+    return false;
+  }
+  function setOpenStatus(mode,metric){
+    if(metric==='discrete') return {open:true,text:'open in the discrete topology', cls:'good'};
+    if(['openDisk','puncturedDisk','openSquare','halfPlane','annulus'].includes(mode)) return {open:true,text:'open', cls:'good'};
+    return {open:false,text:'not open', cls:'bad'};
+  }
+  function globalName(mode){
+    return ({openDisk:'open Euclidean disk', closedDisk:'closed Euclidean disk', puncturedDisk:'punctured disk', openSquare:'open square', closedSquare:'closed square', halfPlane:'open half-plane', annulus:'open annulus'})[mode];
+  }
+  function metricName(metric){
+    return ({euclidean:'Euclidean d₂',taxicab:'taxicab d₁',sup:'sup d∞',discrete:'discrete metric'})[metric];
+  }
+  function localPossible(mode,probe,metric){
+    const p=pointFor(mode,probe), inside=inSet(mode,p[0],p[1]);
+    if(!inside) return {status:'outside G', ball:'no local test', ok:false};
+    if(metric==='discrete') return {status:'inside G', ball:'choose r<1: {x}⊂G', ok:true};
+    if(probe==='boundary') return {status:'boundary point', ball:'every ball leaks', ok:false};
+    if(probe==='nearBoundary') return {status:'inside G', ball:'small enough ball works', ok:true};
+    return {status:'interior point', ball:'visible ball can fit', ok:true};
+  }
+  function drawMain(){
+    const svg=$('mainSvg'), w=760,h=520,m=mapFactory(w,h,70), {metric,setMode,r,probe,cx,cy}=state;
+    const p=pointFor(setMode,probe); const status=setOpenStatus(setMode,metric); const loc=localPossible(setMode,probe,metric);
+    let s=gridSvg(w,h,70);
+    const openStroke = ['closedDisk','closedSquare'].includes(setMode) ? 'stroke-dasharray="0"' : 'stroke-dasharray="8 6"';
+    const evenodd = setMode==='annulus' ? 'fill-rule="evenodd"' : '';
+    s+=`<path d="${setPath(setMode,m)}" ${evenodd} fill="${accent()}" fill-opacity="0.18" stroke="${accent()}" stroke-width="2.4" ${openStroke}/>`;
+    if(setMode==='puncturedDisk'){
+      s+=`<circle cx="${m.x(0)}" cy="${m.y(0)}" r="6" fill="${paper()}" stroke="${accent()}" stroke-width="2"/>`;
+    }
+    const bx=p[0]+cx*.18, by=p[1]+cy*.18;
+    s+=`<path d="${metricBallPath(metric,bx,by,r,m)}" fill="${accent2()}" fill-opacity="0.25" stroke="${accent2()}" stroke-width="2.8"/>`;
+    if(metric==='discrete'){
+      const pts=[[-2,-1.2],[-1.2,1.1],[-.2,.4],[.6,-.9],[1.4,.9],[2.1,-.2]];
+      pts.forEach((q,i)=>{s+=`<circle cx="${m.x(q[0])}" cy="${m.y(q[1])}" r="6" fill="${muted()}" opacity=".55"/>`;});
+    }
+    s+=`<circle cx="${m.x(bx)}" cy="${m.y(by)}" r="7.5" fill="${accent3()}" stroke="${paper()}" stroke-width="3"/>`;
+    s+=`<text x="${m.x(bx)+12}" y="${m.y(by)-10}" font-size="15" fill="${ink()}" font-weight="700">x</text>`;
+    s+=`<text x="28" y="42" font-size="15" fill="${muted()}">G = ${esc(globalName(setMode))}</text>`;
+    s+=`<text x="28" y="64" font-size="15" fill="${muted()}">Ball shape from ${esc(metricName(metric))}</text>`;
+    svg.innerHTML=s;
+    $('metricPill').textContent=metricName(metric);
+    $('openPill').textContent=status.text;
+    $('openPill').className='pill '+status.cls;
+    $('pointStatus').textContent=loc.status;
+    $('ballStatus').textContent=loc.ball;
+    $('globalStatus').textContent=status.text;
+    $('formulaBox').innerHTML = metric==='discrete'
+      ? '<span class="displayEq eq">B<sub>r</sub>(x)={x} <span class="word">for</span> 0&lt;r≤1; &nbsp; B<sub>r</sub>(x)=X <span class="word">for</span> r&gt;1</span>'
+      : '<span class="displayEq eq">x ∈ int(G) <span class="op">⇔</span> <span class="quant">∃</span>r&gt;0 : B<sub>r</sub>(x) ⊂ G</span>';
+    $('interpretation').textContent = status.open
+      ? 'The set is open in the selected topology: every point has some sufficiently small ball contained in the set.'
+      : 'The set contains boundary points with no protective ball inside the set; every ball around such a point leaks into the complement.';
+  }
+  function drawEquiv(){
+    const svg=$('equivSvg'), w=620,h=360,m=mapFactory(w,h,62), eps=state.eps;
+    let s=gridSvg(w,h,62);
+    if(state.equivView==='d2dinf'){
+      s+=`<path d="${squarePath(0,0,eps,m)}" fill="${accent3()}" fill-opacity=".12" stroke="${accent3()}" stroke-width="2.2"/>`;
+      s+=`<path d="${circlePath(0,0,eps,m)}" fill="${accent()}" fill-opacity=".17" stroke="${accent()}" stroke-width="2.6"/>`;
+      s+=`<path d="${squarePath(0,0,eps/Math.sqrt(2),m)}" fill="${accent2()}" fill-opacity=".24" stroke="${accent2()}" stroke-width="2.6"/>`;
+      s+=`<text x="24" y="38" fill="${muted()}" font-size="15">B∞(ε/√2) ⊂ B₂(ε) ⊂ B∞(ε)</text>`;
+      $('equivText').innerHTML='<div>Because <span class="eq">d<sub>∞</sub> ≤ d<sub>2</sub> ≤ √2 d<sub>∞</sub></span>, each ball of one metric contains a smaller ball of the other.</div><div>Therefore <span class="eq">d<sub>2</sub></span> and <span class="eq">d<sub>∞</sub></span> generate the same topology on <span class="eq">ℝ<sup>2</sup></span>.</div>';
+    } else {
+      s+=`<path d="${circlePath(0,0,eps,m)}" fill="${accent3()}" fill-opacity=".13" stroke="${accent3()}" stroke-width="2.2"/>`;
+      s+=`<path d="${diamondPath(0,0,eps,m)}" fill="${accent()}" fill-opacity=".2" stroke="${accent()}" stroke-width="2.6"/>`;
+      s+=`<path d="${circlePath(0,0,eps/Math.sqrt(2),m)}" fill="${accent2()}" fill-opacity=".22" stroke="${accent2()}" stroke-width="2.6"/>`;
+      s+=`<text x="24" y="38" fill="${muted()}" font-size="15">B₂(ε/√2) ⊂ B₁(ε) ⊂ B₂(ε)</text>`;
+      $('equivText').innerHTML='<div>Because <span class="eq">d<sub>2</sub> ≤ d<sub>1</sub> ≤ √2 d<sub>2</sub></span>, Euclidean and taxicab balls absorb each other after resizing.</div><div>The ball shapes differ, but the induced open sets are identical.</div>';
+    }
+    svg.innerHTML=s;
+  }
+  function drawNeigh(){
+    const svg=$('neighSvg'), w=620,h=360,m=mapFactory(w,h,62), size=state.nSize, innerR=state.inner;
+    let s=gridSvg(w,h,62);
+    s+=`<path d="${squarePath(0,0,size,m)}" fill="${accent()}" fill-opacity=".13" stroke="${accent()}" stroke-width="2.5" stroke-dasharray="8 6"/>`;
+    s+=`<path d="${circlePath(0,0,Math.min(innerR,size-.04),m)}" fill="${accent2()}" fill-opacity=".25" stroke="${accent2()}" stroke-width="2.7"/>`;
+    s+=`<circle cx="${m.x(0)}" cy="${m.y(0)}" r="7" fill="${accent3()}" stroke="${paper()}" stroke-width="3"/>`;
+    s+=`<text x="24" y="38" fill="${muted()}" font-size="15">N contains a ball around x</text>`;
+    svg.innerHTML=s;
+    const ok=innerR<=size;
+    $('neighText').textContent= ok ? 'Since a ball around x sits inside N, the set N is a neighborhood of x.' : 'If the displayed ball does not fit inside N, shrink it. A neighborhood only needs one positive radius.';
+  }
+  function drawDiscrete(){
+    const svg=$('discSvg'), w=620,h=340,m=mapFactory(w,h,58);
+    let s='';
+    const pts=[[-2.3,-.8],[-1.55,1.1],[-.7,.1],[.15,1.35],[.85,-.85],[1.65,.45],[2.35,-.15]];
+    pts.forEach((p,i)=>{
+      const chosen=i===2 || i===4 || i===5;
+      if(chosen) s+=`<circle cx="${m.x(p[0])}" cy="${m.y(p[1])}" r="18" fill="${accent()}" fill-opacity=".16" stroke="${accent()}" stroke-width="2"/>`;
+      s+=`<circle cx="${m.x(p[0])}" cy="${m.y(p[1])}" r="7" fill="${chosen?accent():muted()}"/>`;
+      s+=`<text x="${m.x(p[0])+10}" y="${m.y(p[1])-8}" font-size="13" fill="${muted()}">${String.fromCharCode(97+i)}</text>`;
+    });
+    s+=`<text x="24" y="34" fill="${muted()}" font-size="15">Any subset is a union of singleton balls</text>`;
+    svg.innerHTML=s;
+  }
+  function sync(){
+    $('rVal').textContent=fmt(state.r); $('cxVal').textContent=fmt(state.cx); $('cyVal').textContent=fmt(state.cy);
+    $('epsVal').textContent=fmt(state.eps); $('nSizeVal').textContent=fmt(state.nSize); $('innerVal').textContent=fmt(state.inner);
+    drawMain(); drawEquiv(); drawNeigh(); drawDiscrete();
+  }
+  function bind(id,key,parse=v=>v){
+    $(id).addEventListener('input',e=>{state[key]=parse(e.target.value); sync();});
+  }
+  bind('metric','metric'); bind('setMode','setMode'); bind('radius','r',Number); bind('probe','probe'); bind('cx','cx',Number); bind('cy','cy',Number); bind('eps','eps',Number); bind('equivView','equivView'); bind('nSize','nSize',Number); bind('inner','inner',Number);
+  $('themeBtn').addEventListener('click',()=>{
+    const dark=root.getAttribute('data-theme')==='dark';
+    root.setAttribute('data-theme',dark?'light':'dark');
+    $('themeBtn').textContent=dark?'Dark mode':'Light mode';
+    sync();
+  });
+  sync();
+})();
+</script>
+</body>
+</html>

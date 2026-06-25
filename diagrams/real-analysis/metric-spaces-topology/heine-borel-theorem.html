@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for the Heine-Borel theorem.">
+<title>Heine-Borel Theorem | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+  :root{
+    --bg:#f7f2e8;
+    --paper:#fffdf8;
+    --paper2:#f1eadf;
+    --ink:#202826;
+    --muted:#69736f;
+    --line:rgba(32,40,38,.14);
+    --grid:rgba(32,40,38,.075);
+    --accent:#2e9d8f;
+    --accent2:#c1784b;
+    --accent3:#5e7ce2;
+    --bad:#b85a58;
+    --good:#2e9d8f;
+    --shadow:0 18px 45px rgba(32,40,38,.08);
+    --radius:22px;
+  }
+  [data-theme="dark"]{
+    --bg:#0d1117;
+    --paper:#141a22;
+    --paper2:#19212b;
+    --ink:#eef5f2;
+    --muted:#9ba9a5;
+    --line:rgba(238,245,242,.13);
+    --grid:rgba(238,245,242,.07);
+    --accent:#5bc9ba;
+    --accent2:#dfa06a;
+    --accent3:#8fa2ff;
+    --bad:#ee8a86;
+    --good:#5bc9ba;
+    --shadow:0 22px 55px rgba(0,0,0,.28);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:
+      radial-gradient(circle at 18% -10%, rgba(46,157,143,.13), transparent 30%),
+      radial-gradient(circle at 86% 4%, rgba(193,120,75,.10), transparent 28%),
+      var(--bg);
+    color:var(--ink);
+    line-height:1.45;
+  }
+  .wrap{width:min(1180px, calc(100% - 32px)); margin:0 auto; padding:28px 0 44px}
+  header{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:18px;
+    align-items:start;
+    margin-bottom:18px;
+  }
+  .eyebrow{font-size:.78rem; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); font-weight:800}
+  h1{margin:.15rem 0 .35rem; font-size:clamp(2rem, 5vw, 4rem); line-height:1.03; letter-spacing:-.045em}
+  .subtitle{max-width:840px; color:var(--muted); font-size:clamp(1rem, 1.8vw, 1.15rem)}
+  .top-actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+  button,.select,input[type="range"]{font:inherit}
+  button,.pill{
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:999px;
+    padding:10px 14px;
+    box-shadow:var(--shadow);
+  }
+  button{cursor:pointer; transition:.2s transform ease, .2s border-color ease, .2s background ease}
+  button:hover{transform:translateY(-1px); border-color:rgba(46,157,143,.35)}
+  .panel{
+    background:linear-gradient(180deg, color-mix(in srgb, var(--paper) 96%, var(--accent) 4%), var(--paper));
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  .controls{
+    display:grid;
+    grid-template-columns:1.5fr 1fr 1fr 1fr;
+    gap:12px;
+    padding:14px;
+    margin:18px 0;
+  }
+  label{display:grid; gap:7px; font-size:.82rem; color:var(--muted); font-weight:700}
+  select,.valuebox{
+    border:1px solid var(--line);
+    background:var(--paper2);
+    color:var(--ink);
+    border-radius:15px;
+    padding:10px 11px;
+    min-height:42px;
+  }
+  input[type="range"]{width:100%; accent-color:var(--accent)}
+  .math-row{
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    gap:14px;
+    margin:18px 0;
+  }
+  .math-card{padding:18px 18px 16px}
+  .math-title{font-size:.78rem; text-transform:uppercase; letter-spacing:.14em; color:var(--accent); font-weight:850; margin-bottom:10px}
+  .equation{
+    font-family:"STIX Two Text", "Cambria Math", Georgia, serif;
+    font-size:clamp(1.05rem, 1.8vw, 1.35rem);
+    line-height:1.7;
+    letter-spacing:.01em;
+  }
+  .equation .small{font-size:.9em; color:var(--muted)}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:stretch}
+  .viz{padding:14px; min-height:500px; display:grid; gap:10px}
+  .viz-head{display:flex; justify-content:space-between; gap:12px; align-items:flex-start; padding:2px 2px 0}
+  .viz-title{font-weight:850; letter-spacing:-.02em}
+  .viz-sub{font-size:.9rem; color:var(--muted); margin-top:2px}
+  svg{width:100%; height:auto; display:block; border-radius:18px; background:linear-gradient(180deg, color-mix(in srgb, var(--paper2) 82%, transparent), color-mix(in srgb, var(--paper) 90%, transparent)); border:1px solid var(--line)}
+  .caption{font-size:.86rem; color:var(--muted); padding:0 4px 4px}
+  .lower{display:grid; grid-template-columns:.95fr 1.05fr; gap:14px; margin-top:14px}
+  .notice{padding:18px}
+  .notice h3,.summary h3{margin:0 0 10px; font-size:.98rem; letter-spacing:-.01em}
+  .notice p{margin:7px 0; color:var(--muted)}
+  .status-grid{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; margin-top:10px}
+  .status{
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:11px;
+    background:color-mix(in srgb, var(--paper2) 65%, transparent);
+  }
+  .status b{display:block; font-size:.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-bottom:3px}
+  .status .ok{color:var(--good); font-weight:850}
+  .status .no{color:var(--bad); font-weight:850}
+  .summary{padding:18px}
+  .summary ul{margin:8px 0 0 0; padding:0; list-style:none; display:grid; gap:10px}
+  .summary li{padding:12px 13px; border:1px solid var(--line); border-radius:16px; background:color-mix(in srgb, var(--paper2) 62%, transparent)}
+  .mini-math{font-family:"STIX Two Text", "Cambria Math", Georgia, serif; font-size:1.04rem}
+  .tag{display:inline-flex; gap:6px; align-items:center; border:1px solid var(--line); border-radius:999px; padding:5px 9px; color:var(--muted); background:color-mix(in srgb, var(--paper2) 70%, transparent); font-size:.78rem; font-weight:750}
+  .legend{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+  .dot{width:9px; height:9px; border-radius:50%; display:inline-block; background:var(--accent)}
+  .dot.orange{background:var(--accent2)} .dot.blue{background:var(--accent3)} .dot.red{background:var(--bad)}
+  .footer-note{color:var(--muted); font-size:.86rem; margin-top:16px; text-align:center}
+  @media (max-width:900px){
+    header,.math-row,.grid2,.lower,.controls{grid-template-columns:1fr}
+    .top-actions{justify-content:flex-start}
+    .viz{min-height:auto}
+  }
+</style>
+</head>
+<body data-theme="light">
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">06 · compactness in Rⁿ</div>
+      <h1>Heine–Borel theorem</h1>
+      <div class="subtitle">Closed and bounded sets are exactly the compact subsets of finite-dimensional Euclidean space. The app separates the theorem from the two tempting but false half-statements.</div>
+    </div>
+    <div class="top-actions">
+      <button id="themeBtn" aria-label="Toggle theme">Dark mode</button>
+    </div>
+  </header>
+
+  <section class="math-row">
+    <div class="panel math-card">
+      <div class="math-title">The theorem</div>
+      <div class="equation">
+        K ⊂ ℝ<sup>n</sup> is compact
+        &nbsp;⇔&nbsp;
+        K is closed and bounded.
+        <br><span class="small">In metric spaces generally, compact ⇒ closed and bounded; the converse is special to ℝ<sup>n</sup>.</span>
+      </div>
+    </div>
+    <div class="panel math-card">
+      <div class="math-title">Two equivalent lenses in ℝⁿ</div>
+      <div class="equation">
+        every open cover has a finite subcover
+        <br>⇔ every sequence has a subsequence converging to a point of K.
+      </div>
+    </div>
+  </section>
+
+  <section class="panel controls" aria-label="Controls">
+    <label>Model set K
+      <select id="setType">
+        <option value="compact">closed bounded ball: compact</option>
+        <option value="openbounded">bounded but not closed: fails</option>
+        <option value="closedunbounded">closed but not bounded: fails</option>
+        <option value="neither">neither closed nor bounded: fails</option>
+        <option value="finite">finite set: compact</option>
+      </select>
+    </label>
+    <label>Norm used for the visual ball
+      <select id="normType">
+        <option value="euclidean">Euclidean norm ‖·‖₂</option>
+        <option value="sup">Sup norm ‖·‖∞</option>
+        <option value="taxicab">Taxicab norm ‖·‖₁</option>
+      </select>
+    </label>
+    <label>Size parameter R: <span id="rVal">1.80</span>
+      <input id="radius" type="range" min="1.1" max="2.6" step="0.05" value="1.8" />
+    </label>
+    <label>Finite stage N: <span id="nVal">8</span>
+      <input id="stage" type="range" min="3" max="18" step="1" value="8" />
+    </label>
+  </section>
+
+  <main class="grid2">
+    <section class="panel viz">
+      <div class="viz-head">
+        <div>
+          <div class="viz-title">Topological lens: covers and finite subcovers</div>
+          <div class="viz-sub" id="coverSub">Open covers become finite on compact sets.</div>
+        </div>
+        <div class="legend">
+          <span class="tag"><i class="dot"></i>K</span>
+          <span class="tag"><i class="dot blue"></i>cover</span>
+          <span class="tag"><i class="dot orange"></i>finite stage</span>
+        </div>
+      </div>
+      <svg id="coverSvg" viewBox="0 0 760 500" role="img" aria-label="Open-cover compactness diagram"></svg>
+      <div class="caption" id="coverCaption"></div>
+    </section>
+
+    <section class="panel viz">
+      <div class="viz-head">
+        <div>
+          <div class="viz-title">Sequential lens: trapped tails and escaping limits</div>
+          <div class="viz-sub" id="seqSub">Compactness forces subsequences to converge inside K.</div>
+        </div>
+        <div class="legend">
+          <span class="tag"><i class="dot"></i>set</span>
+          <span class="tag"><i class="dot orange"></i>sequence</span>
+          <span class="tag"><i class="dot blue"></i>subsequence / limit</span>
+        </div>
+      </div>
+      <svg id="seqSvg" viewBox="0 0 760 500" role="img" aria-label="Sequential compactness diagram"></svg>
+      <div class="caption" id="seqCaption"></div>
+    </section>
+  </main>
+
+  <section class="lower">
+    <div class="panel notice">
+      <h3>What to notice</h3>
+      <p id="noticeText"></p>
+      <div class="status-grid">
+        <div class="status"><b>closed?</b><span id="closedStatus"></span></div>
+        <div class="status"><b>bounded?</b><span id="boundedStatus"></span></div>
+        <div class="status"><b>cover compact?</b><span id="coverStatus"></span></div>
+        <div class="status"><b>sequence compact?</b><span id="seqStatus"></span></div>
+      </div>
+    </div>
+    <div class="panel summary">
+      <h3>Compact exam summary</h3>
+      <ul>
+        <li><span class="mini-math">K compact in ℝ<sup>n</sup> ⇒ K closed and bounded.</span></li>
+        <li><span class="mini-math">K closed and bounded in ℝ<sup>n</sup> ⇒ K compact.</span> This uses finite-dimensional completeness plus Bolzano–Weierstrass.</li>
+        <li><span class="mini-math">bounded alone fails:</span> the open ball B(0,1) is bounded but not compact.</li>
+        <li><span class="mini-math">closed alone fails:</span> ℝ<sup>n</sup> or any closed unbounded ray is closed but not compact.</li>
+        <li><span class="mini-math">In general metric spaces:</span> closed + bounded need not imply compact.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="footer-note">The diagrams are 2D coordinate slices. The statements are the finite-dimensional theorem in ℝ<sup>n</sup>.</div>
+</div>
+
+<script>
+(function(){
+  const body = document.body;
+  const themeBtn = document.getElementById('themeBtn');
+  const setType = document.getElementById('setType');
+  const normType = document.getElementById('normType');
+  const radius = document.getElementById('radius');
+  const stage = document.getElementById('stage');
+  const rVal = document.getElementById('rVal');
+  const nVal = document.getElementById('nVal');
+  const coverSvg = document.getElementById('coverSvg');
+  const seqSvg = document.getElementById('seqSvg');
+  const coverCaption = document.getElementById('coverCaption');
+  const seqCaption = document.getElementById('seqCaption');
+  const noticeText = document.getElementById('noticeText');
+  const closedStatus = document.getElementById('closedStatus');
+  const boundedStatus = document.getElementById('boundedStatus');
+  const coverStatus = document.getElementById('coverStatus');
+  const seqStatus = document.getElementById('seqStatus');
+  const coverSub = document.getElementById('coverSub');
+  const seqSub = document.getElementById('seqSub');
+
+  const NS = 'http://www.w3.org/2000/svg';
+  const W = 760, H = 500;
+  const margin = 54;
+  const scale = 82;
+  const cx = W/2, cy = H/2 + 8;
+
+  function css(name){ return getComputedStyle(body).getPropertyValue(name).trim(); }
+  function el(name, attrs={}, parent){
+    const e = document.createElementNS(NS, name);
+    for(const [k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+    if(parent) parent.appendChild(e);
+    return e;
+  }
+  function clear(svg){ while(svg.firstChild) svg.removeChild(svg.firstChild); }
+  function X(x){ return cx + x*scale; }
+  function Y(y){ return cy - y*scale; }
+  function fmt(v){ return Number(v).toFixed(2); }
+
+  function defs(svg){
+    const d = el('defs',{},svg);
+    const grid = el('pattern',{id:'grid', width:scale/2, height:scale/2, patternUnits:'userSpaceOnUse'},d);
+    el('path',{d:`M ${scale/2} 0 L 0 0 0 ${scale/2}`, fill:'none', stroke:css('--grid'), 'stroke-width':'1'},grid);
+    const glow = el('filter',{id:'softGlow', x:'-30%', y:'-30%', width:'160%', height:'160%'},d);
+    el('feGaussianBlur',{stdDeviation:'3.5', result:'blur'},glow);
+    const merge = el('feMerge',{},glow);
+    el('feMergeNode',{in:'blur'},merge); el('feMergeNode',{in:'SourceGraphic'},merge);
+    const arrow = el('marker',{id:'arrow', markerWidth:'9', markerHeight:'9', refX:'8', refY:'4.5', orient:'auto'},d);
+    el('path',{d:'M0,0 L9,4.5 L0,9 Z', fill:css('--muted')},arrow);
+  }
+  function background(svg){
+    defs(svg);
+    el('rect',{x:0,y:0,width:W,height:H,fill:'url(#grid)'},svg);
+    el('line',{x1:margin,y1:cy,x2:W-margin,y2:cy,stroke:css('--line'),'stroke-width':1.2},svg);
+    el('line',{x1:cx,y1:margin,x2:cx,y2:H-margin,stroke:css('--line'),'stroke-width':1.2},svg);
+    ['-3','-2','-1','1','2','3'].forEach(t=>{
+      const x=Number(t);
+      el('line',{x1:X(x),y1:cy-4,x2:X(x),y2:cy+4,stroke:css('--line')},svg);
+      text(svg,X(x),cy+22,t,'.72rem',css('--muted'),'middle');
+      el('line',{x1:cx-4,y1:Y(x),x2:cx+4,y2:Y(x),stroke:css('--line')},svg);
+      text(svg,cx-18,Y(x)+4,t,'.72rem',css('--muted'),'end');
+    });
+    text(svg,W-margin+22,cy+5,'x₁','.82rem',css('--muted'),'middle');
+    text(svg,cx-2,margin-16,'x₂','.82rem',css('--muted'),'middle');
+  }
+  function text(svg,x,y,content,size='13px',fill=css('--ink'),anchor='start',weight='600'){
+    const t=el('text',{x,y,fill,'font-size':size,'text-anchor':anchor,'font-weight':weight,'font-family':'Inter, system-ui, sans-serif'},svg);
+    t.textContent=content; return t;
+  }
+  function mathText(svg,x,y,content,size='15px',fill=css('--ink'),anchor='start'){
+    const t=el('text',{x,y,fill,'font-size':size,'text-anchor':anchor,'font-family':'Georgia, Cambria Math, serif'},svg);
+    t.textContent=content; return t;
+  }
+  function ballShape(svg,R,norm,attrs){
+    const r=R*scale;
+    if(norm==='euclidean') return el('circle',{cx,cy,r,...attrs},svg);
+    if(norm==='sup') return el('rect',{x:cx-r,y:cy-r,width:2*r,height:2*r,rx:10,ry:10,...attrs},svg);
+    const pts = `${cx},${cy-r} ${cx+r},${cy} ${cx},${cy+r} ${cx-r},${cy}`;
+    return el('polygon',{points:pts,...attrs},svg);
+  }
+  function drawSet(svg,type,R,norm,mode='normal'){
+    const setFill = colorMix(css('--accent'), .17);
+    const edge = css('--accent');
+    if(type==='compact'){
+      ballShape(svg,R,norm,{fill:setFill,stroke:edge,'stroke-width':2.6});
+      mathText(svg,X(-3.55),Y(2.55),'closed boundary included', '14px', css('--muted'));
+    } else if(type==='openbounded'){
+      ballShape(svg,R,norm,{fill:setFill,stroke:edge,'stroke-width':2.6,'stroke-dasharray':'8 7'});
+      mathText(svg,X(-3.55),Y(2.55),'dashed boundary missing', '14px', css('--muted'));
+    } else if(type==='closedunbounded'){
+      const h = Math.min(R*.55,1.05)*scale;
+      el('rect',{x:0,y:cy-h,width:W,height:2*h,fill:setFill,stroke:'none'},svg);
+      el('line',{x1:margin,y1:cy-h,x2:W-margin,y2:cy-h,stroke:edge,'stroke-width':2.6},svg);
+      el('line',{x1:margin,y1:cy+h,x2:W-margin,y2:cy+h,stroke:edge,'stroke-width':2.6},svg);
+      el('path',{d:`M${W-margin-18},${cy-h} l18,0 M${W-margin-18},${cy+h} l18,0`,stroke:edge,'stroke-width':2.6},svg);
+      mathText(svg,X(-3.55),Y(2.55),'closed strip, unbounded in x₁', '14px', css('--muted'));
+    } else if(type==='neither'){
+      const h = Math.min(R*.50,1.0)*scale;
+      el('rect',{x:0,y:cy-h,width:W,height:2*h,fill:setFill,stroke:'none'},svg);
+      el('line',{x1:margin,y1:cy-h,x2:W-margin,y2:cy-h,stroke:edge,'stroke-width':2.6,'stroke-dasharray':'8 7'},svg);
+      el('line',{x1:margin,y1:cy+h,x2:W-margin,y2:cy+h,stroke:edge,'stroke-width':2.6,'stroke-dasharray':'8 7'},svg);
+      mathText(svg,X(-3.55),Y(2.55),'open strip, unbounded', '14px', css('--muted'));
+    } else if(type==='finite'){
+      const pts=[[-1.5,-.5],[-.35,1.0],[.9,.55],[1.6,-1.05],[0,-.9]];
+      pts.forEach((p,i)=>{
+        el('circle',{cx:X(p[0]),cy:Y(p[1]),r:9,fill:edge,stroke:css('--paper'),'stroke-width':2.2},svg);
+        text(svg,X(p[0])+13,Y(p[1])+5,`p${i+1}`,'.76rem',css('--muted'));
+      });
+      mathText(svg,X(-3.55),Y(2.55),'finite subsets are compact', '14px', css('--muted'));
+    }
+  }
+  function colorMix(hex, alpha){
+    // CSS already supports rgba better from computed vars? Convert simple #rrggbb.
+    if(!hex.startsWith('#')) return hex;
+    const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+  function drawBoundingBall(svg,R){
+    el('circle',{cx,cy,r:R*scale,fill:'none',stroke:css('--accent2'),'stroke-width':2,'stroke-dasharray':'7 7',opacity:.9},svg);
+    mathText(svg,X(R*.72),Y(R*.72),`bounding ball radius ${fmt(R)}`,'13px',css('--accent2'));
+  }
+
+  function renderCover(){
+    const type=setType.value, norm=normType.value, R=+radius.value, N=+stage.value;
+    clear(coverSvg); background(coverSvg);
+    drawSet(coverSvg,type,R,norm,'cover');
+
+    if(type==='compact'){
+      drawBoundingBall(coverSvg,R+.22);
+      const centers=[[-.85,.75],[.45,.85],[1.05,-.15],[-.35,-.65],[-1.15,-.1],[.35,.1]];
+      centers.forEach((c,i)=>{
+        el('circle',{cx:X(c[0]),cy:Y(c[1]),r:(.72+((i%2)*.07))*scale,fill:colorMix(css('--accent3'),.13),stroke:css('--accent3'),'stroke-width':1.6,opacity:.95},coverSvg);
+      });
+      text(coverSvg,X(-3.55),Y(-2.65),'finite subcover selected from the open cover','.82rem',css('--muted'));
+      coverCaption.innerHTML='For a closed bounded set in ℝ<sup>n</sup>, every open cover admits finitely many members that still cover K.';
+      coverSub.textContent='Finite subcover exists because K is compact.';
+    } else if(type==='openbounded'){
+      // Nested cover U_m = ball of radius R - R/m. Finite stage misses outer shell.
+      const maxr = R - R/(N+1);
+      ballShape(coverSvg,maxr,norm,{fill:colorMix(css('--accent3'),.13),stroke:css('--accent3'),'stroke-width':2.1});
+      ballShape(coverSvg,R,norm,{fill:'none',stroke:css('--bad'),'stroke-width':2.5,'stroke-dasharray':'8 7'});
+      mathText(coverSvg,X(-3.3),Y(-2.62),'Uₘ = B(0, R − R/m),   ⋃ₘ Uₘ = B(0,R)', '15px', css('--ink'));
+      mathText(coverSvg,X(.45),Y(-2.25),`finite stage m ≤ ${N} leaves an outer annulus`, '14px', css('--bad'));
+      coverCaption.innerHTML='Boundedness alone fails: the open ball is covered by nested smaller open balls, but no finite stage reaches the missing boundary.';
+      coverSub.textContent='No finite subcover for the displayed nested cover.';
+    } else if(type==='closedunbounded'){
+      const rr = Math.min(.45*N,3.05);
+      el('circle',{cx,cy,r:rr*scale,fill:colorMix(css('--accent3'),.14),stroke:css('--accent3'),'stroke-width':2.1},coverSvg);
+      mathText(coverSvg,X(-3.35),Y(-2.62),'Uₘ = B(0,m),   ⋃ₘ Uₘ covers the unbounded set', '15px', css('--ink'));
+      mathText(coverSvg,X(1.25),Y(.45),`finite stage m ≤ ${N} misses the tail`, '14px', css('--bad'));
+      el('path',{d:`M${X(2.25)},${Y(0)} C ${X(2.6)},${Y(.45)} ${X(2.9)},${Y(.35)} ${X(3.28)},${Y(.1)}`,fill:'none',stroke:css('--bad'),'stroke-width':2.2,'marker-end':'url(#arrow)'},coverSvg);
+      coverCaption.innerHTML='Closedness alone fails: an unbounded closed set can be covered by expanding balls B(0,m), but finitely many only reach a largest radius.';
+      coverSub.textContent='No finite subcover because K is not bounded.';
+    } else if(type==='neither'){
+      const rr = Math.min(.42*N,3.0);
+      el('circle',{cx,cy,r:rr*scale,fill:colorMix(css('--accent3'),.12),stroke:css('--accent3'),'stroke-width':2,'stroke-dasharray':'5 5'},coverSvg);
+      mathText(coverSvg,X(-3.35),Y(-2.62),'unbounded tail + missing boundary: both failures appear', '15px', css('--ink'));
+      coverCaption.innerHTML='This set fails both necessary conditions: it is not closed and not bounded, so compactness cannot hold.';
+      coverSub.textContent='Both compactness mechanisms break.';
+    } else if(type==='finite'){
+      const pts=[[-1.5,-.5],[-.35,1.0],[.9,.55],[1.6,-1.05],[0,-.9]];
+      pts.forEach((p,i)=>{
+        el('circle',{cx:X(p[0]),cy:Y(p[1]),r:.32*scale,fill:colorMix(css('--accent3'),.13),stroke:css('--accent3'),'stroke-width':1.7},coverSvg);
+        el('circle',{cx:X(p[0]),cy:Y(p[1]),r:8,fill:css('--accent')},coverSvg);
+      });
+      mathText(coverSvg,X(-3.35),Y(-2.62),'one open neighborhood per point gives a finite subcover', '15px', css('--ink'));
+      coverCaption.innerHTML='Finite sets are compact: choose, for each point, one cover member containing it. There are only finitely many points.';
+      coverSub.textContent='Finite set: compact in every metric space.';
+    }
+  }
+
+  function drawSequencePoint(svg,p,i,total,highlight=false){
+    const size = highlight ? 8.5 : 4.8;
+    const fill = highlight ? css('--accent3') : css('--accent2');
+    const opacity = highlight ? 1 : Math.max(.25, .3 + .7*i/total);
+    el('circle',{cx:X(p[0]),cy:Y(p[1]),r:size,fill,opacity,stroke:highlight?css('--paper'):'none','stroke-width':highlight?2:0},svg);
+  }
+  function renderSequence(){
+    const type=setType.value, norm=normType.value, R=+radius.value, N=+stage.value;
+    clear(seqSvg); background(seqSvg);
+    drawSet(seqSvg,type,R,norm,'seq');
+
+    if(type==='compact'){
+      const L=[.45*R,.18*R];
+      el('circle',{cx:X(L[0]),cy:Y(L[1]),r:.34*scale,fill:colorMix(css('--accent3'),.11),stroke:css('--accent3'),'stroke-width':1.6,'stroke-dasharray':'6 5'},seqSvg);
+      el('circle',{cx:X(L[0]),cy:Y(L[1]),r:9,fill:css('--accent3'),stroke:css('--paper'),'stroke-width':2.2},seqSvg);
+      mathText(seqSvg,X(L[0])+.2*scale,Y(L[1])-.32*scale,'cluster point in K','14px',css('--accent3'));
+      const pts=[];
+      for(let i=1;i<=N+18;i++){
+        const a=i*.83;
+        const rad=Math.min(R*.88, 1.35/(1+i*.07));
+        pts.push([L[0]+rad*Math.cos(a), L[1]+rad*Math.sin(a)]);
+      }
+      pts.forEach((p,i)=>drawSequencePoint(seqSvg,p,i,pts.length,i%4===0));
+      mathText(seqSvg,X(-3.35),Y(-2.62),'bounded + closed: subsequences cannot escape the set', '15px', css('--ink'));
+      seqCaption.innerHTML='The sequence may wander, but inside a compact set some subsequence converges to a point still belonging to K.';
+      seqSub.textContent='Sequential compactness holds.';
+    } else if(type==='openbounded'){
+      const pts=[];
+      for(let i=2;i<=N+18;i++) pts.push([R - R/i, .12*Math.sin(i)]);
+      pts.forEach((p,i)=>drawSequencePoint(seqSvg,p,i,pts.length,i%3===0));
+      const bd=[R,0];
+      el('circle',{cx:X(bd[0]),cy:Y(bd[1]),r:10,fill:css('--paper'),stroke:css('--bad'),'stroke-width':2.4,'stroke-dasharray':'5 4'},seqSvg);
+      mathText(seqSvg,X(bd[0])-.95*scale,Y(.42),'limit lies on missing boundary','14px',css('--bad'));
+      el('path',{d:`M${X(R-.65)},${Y(.32)} C${X(R-.35)},${Y(.55)} ${X(R-.14)},${Y(.38)} ${X(R-.02)},${Y(.08)}`,fill:'none',stroke:css('--bad'),'stroke-width':2,'marker-end':'url(#arrow)'},seqSvg);
+      mathText(seqSvg,X(-3.35),Y(-2.62),'xₘ → boundary point not in K', '15px', css('--ink'));
+      seqCaption.innerHTML='The sequence stays in the bounded open ball, but its limit belongs to the missing boundary. No subsequence converges to a point of K.';
+      seqSub.textContent='Bounded but not closed: sequential compactness fails.';
+    } else if(type==='closedunbounded'){
+      const pts=[];
+      const maxX=3.25;
+      for(let i=1;i<=N+14;i++) pts.push([-2.65 + i*(maxX+2.65)/(N+14), .08*Math.sin(i*.7)]);
+      pts.forEach((p,i)=>drawSequencePoint(seqSvg,p,i,pts.length,i%4===0));
+      el('path',{d:`M${X(1.7)},${Y(.45)} C ${X(2.2)},${Y(.75)} ${X(2.75)},${Y(.45)} ${X(3.32)},${Y(.14)}`,fill:'none',stroke:css('--bad'),'stroke-width':2.2,'marker-end':'url(#arrow)'},seqSvg);
+      mathText(seqSvg,X(1.35),Y(.82),'sequence escapes every bounded region','14px',css('--bad'));
+      mathText(seqSvg,X(-3.35),Y(-2.62),'xₘ = m e₁ has no convergent subsequence', '15px', css('--ink'));
+      seqCaption.innerHTML='The set is closed, so limits would stay inside if they existed. The problem is unboundedness: a sequence can run away and have no convergent subsequence.';
+      seqSub.textContent='Closed but unbounded: sequential compactness fails.';
+    } else if(type==='neither'){
+      const pts=[];
+      for(let i=2;i<=N+16;i++) pts.push([-2.8+i*.31, .52*R - .52*R/i]);
+      pts.forEach((p,i)=>drawSequencePoint(seqSvg,p,i,pts.length,i%3===0));
+      mathText(seqSvg,X(-3.35),Y(-2.62),'can escape in space and toward missing boundary', '15px', css('--ink'));
+      seqCaption.innerHTML='Without closedness and boundedness, both compactness protections are absent.';
+      seqSub.textContent='Neither closed nor bounded: compactness fails.';
+    } else if(type==='finite'){
+      const base=[[-1.5,-.5],[-.35,1.0],[.9,.55],[1.6,-1.05],[0,-.9]];
+      const seq=[];
+      for(let i=0;i<N+18;i++) seq.push(base[(i*i+2*i)%base.length]);
+      seq.forEach((p,i)=>drawSequencePoint(seqSvg,p,i,seq.length,i%5===0));
+      const p=base[1];
+      el('circle',{cx:X(p[0]),cy:Y(p[1]),r:.36*scale,fill:colorMix(css('--accent3'),.11),stroke:css('--accent3'),'stroke-width':1.6,'stroke-dasharray':'6 5'},seqSvg);
+      mathText(seqSvg,X(-3.35),Y(-2.62),'in an infinite sequence, some finite-set value repeats infinitely often', '15px', css('--ink'));
+      seqCaption.innerHTML='Every sequence in a finite set has a constant subsequence. Hence finite sets are sequentially compact.';
+      seqSub.textContent='Finite set: sequential compactness holds.';
+    }
+  }
+
+  function renderStatus(){
+    const type=setType.value;
+    const data={
+      compact:{closed:true,bounded:true,compact:true,notice:'Heine–Borel says this is the good case: closedness keeps limits inside K, while boundedness prevents sequences and covers from escaping to infinity.'},
+      openbounded:{closed:false,bounded:true,compact:false,notice:'This isolates the first false shortcut. A bounded set can still fail compactness when it misses its boundary; sequences may converge to points outside the set.'},
+      closedunbounded:{closed:true,bounded:false,compact:false,notice:'This isolates the second false shortcut. A closed set can still fail compactness when it is unbounded; sequences may escape and open covers may need infinitely many expanding balls.'},
+      neither:{closed:false,bounded:false,compact:false,notice:'Here both compactness mechanisms fail: limits can fall outside the set and points can run arbitrarily far away.'},
+      finite:{closed:true,bounded:true,compact:true,notice:'Finite subsets of ℝⁿ are compact. They are closed, bounded, and every open cover is reduced by choosing one cover member per point.'}
+    }[type];
+    function yn(v){return v?'<span class="ok">yes</span>':'<span class="no">no</span>'}
+    closedStatus.innerHTML=yn(data.closed);
+    boundedStatus.innerHTML=yn(data.bounded);
+    coverStatus.innerHTML=data.compact?'<span class="ok">finite subcovers exist</span>':'<span class="no">some cover has no finite subcover</span>';
+    seqStatus.innerHTML=data.compact?'<span class="ok">subsequence limit stays in K</span>':'<span class="no">a bad sequence exists</span>';
+    noticeText.textContent=data.notice;
+  }
+  function render(){
+    rVal.textContent=fmt(+radius.value);
+    nVal.textContent=stage.value;
+    renderCover(); renderSequence(); renderStatus();
+  }
+
+  themeBtn.addEventListener('click',()=>{
+    const dark=body.getAttribute('data-theme')==='dark';
+    body.setAttribute('data-theme', dark?'light':'dark');
+    themeBtn.textContent=dark?'Dark mode':'Light mode';
+    render();
+  });
+  [setType,normType,radius,stage].forEach(input=>input.addEventListener('input',render));
+  render();
+})();
+</script>
+</body>
+</html>

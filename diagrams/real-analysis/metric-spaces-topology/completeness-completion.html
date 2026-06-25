@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for completeness and completion in metric spaces.">
+<title>Completeness and Completion | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+:root{
+  --bg:#f5efe4;
+  --paper:#fffdf8;
+  --paper-soft:#faf6ee;
+  --ink:#202423;
+  --muted:#6c7470;
+  --faint:#8d9690;
+  --line:rgba(32,36,35,.14);
+  --line2:rgba(32,36,35,.08);
+  --accent:#2d9c8d;
+  --accent-soft:rgba(45,156,141,.13);
+  --warm:#bd7a4b;
+  --warm-soft:rgba(189,122,75,.13);
+  --blue:#607aa7;
+  --bad:#b85d57;
+  --bad-soft:rgba(184,93,87,.13);
+  --good:#2d9c8d;
+  --shadow:0 22px 70px rgba(48,39,28,.10);
+  --shadow2:0 12px 34px rgba(48,39,28,.08);
+  --radius:28px;
+  --serif: Georgia, Cambria, "Times New Roman", serif;
+  --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+[data-theme="dark"]{
+  --bg:#0e1217;
+  --paper:#151b23;
+  --paper-soft:#111720;
+  --ink:#edf4f1;
+  --muted:#a3aea9;
+  --faint:#7f8b86;
+  --line:rgba(237,244,241,.14);
+  --line2:rgba(237,244,241,.08);
+  --accent:#62cbbb;
+  --accent-soft:rgba(98,203,187,.13);
+  --warm:#dfa06d;
+  --warm-soft:rgba(223,160,109,.13);
+  --blue:#8ea7df;
+  --bad:#e1847d;
+  --bad-soft:rgba(225,132,125,.13);
+  --good:#62cbbb;
+  --shadow:0 24px 80px rgba(0,0,0,.30);
+  --shadow2:0 14px 40px rgba(0,0,0,.24);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:var(--sans);
+  background:
+    radial-gradient(circle at 12% -6%, color-mix(in oklab,var(--accent) 15%,transparent), transparent 34rem),
+    radial-gradient(circle at 96% 7%, color-mix(in oklab,var(--warm) 12%,transparent), transparent 29rem),
+    linear-gradient(180deg, var(--bg), color-mix(in oklab,var(--bg) 82%,var(--paper) 18%));
+  line-height:1.5;
+}
+.app{width:min(1380px, calc(100% - 36px)); margin:0 auto; padding:30px 0 54px;}
+.topbar{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:22px; margin-bottom:22px;
+}
+.brand{max-width:880px}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:9px;
+  font-size:12px; font-weight:800; color:var(--muted);
+  letter-spacing:.16em; text-transform:uppercase;
+}
+.eyebrow::before{
+  content:""; width:9px; height:9px; border-radius:50%; background:var(--accent);
+  box-shadow:0 0 0 6px var(--accent-soft);
+}
+h1{
+  font-family:var(--serif);
+  font-size:clamp(36px,5vw,68px);
+  line-height:.98; letter-spacing:-.045em;
+  margin:12px 0 12px;
+  font-weight:700;
+}
+.subtitle{
+  margin:0; max-width:780px; color:var(--muted);
+  font-size:clamp(15px,1.8vw,18px);
+}
+.theme{
+  border:1px solid var(--line);
+  background:color-mix(in oklab,var(--paper) 76%,transparent);
+  color:var(--ink);
+  border-radius:999px;
+  padding:10px 14px;
+  cursor:pointer;
+  font-weight:750;
+  box-shadow:var(--shadow2);
+  white-space:nowrap;
+}
+.theme:hover{border-color:color-mix(in oklab,var(--accent) 55%,var(--line))}
+.card{
+  background:linear-gradient(180deg, color-mix(in oklab,var(--paper) 96%,transparent), color-mix(in oklab,var(--paper-soft) 91%,transparent));
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+.card.pad{padding:22px}
+.theory{
+  display:grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap:12px; align-items:stretch;
+  margin-bottom:18px;
+}
+.node{
+  min-height:94px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:color-mix(in oklab,var(--paper) 70%,transparent);
+  display:grid; place-items:center; text-align:center;
+  padding:14px;
+}
+.node b{font-family:var(--serif); font-size:22px; letter-spacing:-.02em}
+.node span{font-size:13px; color:var(--muted)}
+.arrow{
+  align-self:center;
+  font-family:var(--serif);
+  color:var(--faint);
+  font-size:28px;
+}
+.formulas{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:12px;
+}
+.formula{
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:color-mix(in oklab,var(--paper) 72%,transparent);
+  padding:14px 15px;
+  font-family:var(--serif);
+  color:var(--ink);
+}
+.formula b{font-family:var(--sans); font-size:12px; color:var(--muted); letter-spacing:.13em; text-transform:uppercase}
+.formula .math{display:block; margin-top:6px; font-size:17px}
+.tabs{
+  display:flex; gap:8px; padding:10px; border-bottom:1px solid var(--line);
+  background:color-mix(in oklab,var(--paper-soft) 72%,transparent);
+}
+.tab{
+  border:1px solid transparent;
+  background:transparent;
+  color:var(--muted);
+  border-radius:999px;
+  padding:9px 13px;
+  font-weight:800;
+  cursor:pointer;
+}
+.tab.active{
+  color:var(--ink);
+  border-color:color-mix(in oklab,var(--accent) 38%,var(--line));
+  background:var(--accent-soft);
+}
+.workspace{padding:20px}
+.panel{display:none}
+.panel.active{display:block}
+.toolbar{
+  display:grid;
+  grid-template-columns:minmax(300px,1.35fr) repeat(3,minmax(180px,1fr));
+  gap:12px;
+  align-items:end;
+  margin-bottom:14px;
+}
+.control{
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:color-mix(in oklab,var(--paper) 70%,transparent);
+  padding:11px 12px;
+}
+.control label{
+  display:flex; justify-content:space-between; gap:12px; align-items:center;
+  color:var(--muted);
+  font-size:11px; letter-spacing:.13em; text-transform:uppercase; font-weight:850;
+  margin-bottom:7px;
+}
+select, input[type="range"]{width:100%; font:inherit}
+select{
+  border:0; outline:0; background:transparent; color:var(--ink);
+  font-size:15px;
+}
+input[type="range"]{accent-color:var(--accent)}
+.figure{
+  position:relative;
+  border:1px solid var(--line);
+  border-radius:26px;
+  background:
+    linear-gradient(180deg, color-mix(in oklab,var(--paper) 86%,transparent), color-mix(in oklab,var(--paper-soft) 86%,transparent));
+  overflow:hidden;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35);
+}
+.figure svg{display:block; width:100%; height:auto}
+#mainSvg{min-height:560px}
+#classSvg{min-height:450px}
+.status-row{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:12px;
+}
+.stat{
+  border:1px solid var(--line);
+  background:color-mix(in oklab,var(--paper) 67%,transparent);
+  border-radius:18px;
+  padding:12px 14px;
+  min-height:76px;
+}
+.stat small{
+  display:block; color:var(--muted); font-size:11px; letter-spacing:.12em;
+  text-transform:uppercase; font-weight:850; margin-bottom:5px;
+}
+.stat strong{font-family:var(--serif); font-size:20px; font-weight:600}
+.badge{
+  display:inline-flex; align-items:center;
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:5px 9px;
+  font-size:12px;
+  font-family:var(--sans);
+  font-weight:850;
+  color:var(--muted);
+  background:var(--paper-soft);
+}
+.badge.good{color:var(--good); border-color:color-mix(in oklab,var(--good) 42%,var(--line)); background:var(--accent-soft)}
+.badge.bad{color:var(--bad); border-color:color-mix(in oklab,var(--bad) 42%,var(--line)); background:var(--bad-soft)}
+.note{
+  margin-top:12px;
+  border-left:3px solid var(--accent);
+  background:var(--accent-soft);
+  color:var(--muted);
+  border-radius:16px;
+  padding:12px 14px;
+}
+.legend{
+  display:flex; flex-wrap:wrap; gap:9px; margin-top:12px;
+  color:var(--muted); font-size:12px; font-weight:750;
+}
+.legend span{display:inline-flex; align-items:center; gap:7px}
+.dot{width:11px;height:11px;border-radius:50%;display:inline-block;background:var(--accent)}
+.dot.tail{background:var(--warm)}
+.dot.missing{background:transparent;border:2px solid var(--bad)}
+.dot.added{background:var(--good)}
+.proof-grid{
+  display:grid; grid-template-columns:300px 1fr; gap:14px; margin-top:18px;
+}
+.steps{
+  display:flex; flex-direction:column; gap:8px;
+}
+.step{
+  text-align:left;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:11px 12px;
+  background:color-mix(in oklab,var(--paper) 70%,transparent);
+  color:var(--muted);
+  cursor:pointer;
+  font-weight:800;
+}
+.step.active{background:var(--accent-soft); color:var(--ink); border-color:color-mix(in oklab,var(--accent) 38%,var(--line))}
+.proofbox{
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:20px;
+  background:color-mix(in oklab,var(--paper) 70%,transparent);
+  min-height:220px;
+}
+.proofbox h3{font-family:var(--serif); font-size:25px; margin:0 0 10px; letter-spacing:-.02em}
+.proofbox .equation{
+  border:1px solid var(--line);
+  background:var(--paper-soft);
+  border-radius:18px;
+  padding:16px;
+  font-family:var(--serif);
+  font-size:22px;
+  text-align:center;
+  margin:10px 0;
+}
+.proofbox p{color:var(--muted); margin:0; font-size:15px}
+.summary{
+  margin-top:18px;
+  display:grid; grid-template-columns:1fr 1fr; gap:14px;
+}
+.summary h2{font-family:var(--serif); margin:0 0 10px; font-size:25px}
+.summary ul{list-style:none; padding:0; margin:0; display:grid; gap:8px}
+.summary li{
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:color-mix(in oklab,var(--paper) 68%,transparent);
+  padding:11px 13px;
+  color:var(--muted);
+}
+.summary b{color:var(--ink)}
+.footer{margin-top:16px; text-align:center; font-size:12px; color:var(--muted)}
+@media(max-width:1050px){
+  .topbar,.theory,.formulas,.toolbar,.status-row,.proof-grid,.summary{grid-template-columns:1fr}
+  .arrow{display:none}
+  .workspace{padding:14px}
+  #mainSvg{min-height:430px}
+  #classSvg{min-height:360px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="eyebrow">Metric spaces · completion</div>
+      <h1>Completeness and Completion</h1>
+      <p class="subtitle">Completeness is the principle that every Cauchy behavior has a point already inside the space. Completion adds precisely the missing limits, represented by equivalence classes of Cauchy sequences.</p>
+    </div>
+    <button class="theme" id="themeBtn">Dark mode</button>
+  </header>
+
+  <section class="card pad">
+    <div class="theory">
+      <div class="node"><div><b>X</b><br><span>original metric space</span></div></div>
+      <div class="arrow">→</div>
+      <div class="node"><div><b>C(X)</b><br><span>Cauchy sequences in X</span></div></div>
+      <div class="arrow">→</div>
+      <div class="node"><div><b>X̂ = C(X)/∼</b><br><span>quotient by asymptotic equality</span></div></div>
+    </div>
+    <div class="formulas">
+      <div class="formula"><b>Cauchy</b><span class="math">∀ε &gt; 0 ∃N : m,n ≥ N ⇒ d(xₘ,xₙ) &lt; ε</span></div>
+      <div class="formula"><b>Equivalence</b><span class="math">(xₙ) ∼ (yₙ) ⇔ d(xₙ,yₙ) → 0</span></div>
+      <div class="formula"><b>Embedding</b><span class="math">ι(x) = [x,x,x,…], with ι(X) dense in X̂</span></div>
+    </div>
+  </section>
+
+  <main class="card" style="margin-top:18px">
+    <div class="tabs">
+      <button class="tab active" data-panel="missing">Missing limits</button>
+      <button class="tab" data-panel="quotient">Equivalence classes</button>
+    </div>
+
+    <div class="workspace">
+      <section class="panel active" id="missing">
+        <div class="toolbar">
+          <div class="control">
+            <label for="modelSelect">Space and sequence</label>
+            <select id="modelSelect">
+              <option value="qSqrt2">X = ℚ, rational sequence → √2</option>
+              <option value="punctured">X = ℝ \ {0}, sequence 1/n</option>
+              <option value="openInterval">X = (0,1), sequence 1/(n+1)</option>
+              <option value="realConvergent">X = ℝ, convergent oscillation</option>
+              <option value="nonCauchy">X = ℝ, non-Cauchy oscillation</option>
+            </select>
+          </div>
+          <div class="control">
+            <label for="epsRange">ε <span id="epsVal"></span></label>
+            <input id="epsRange" type="range" min="0.02" max="0.36" step="0.01" value="0.14" />
+          </div>
+          <div class="control">
+            <label for="nRange">Tail starts at N <span id="nVal"></span></label>
+            <input id="nRange" type="range" min="1" max="45" step="1" value="1" />
+          </div>
+          <div class="control">
+            <label for="countRange">Plotted terms <span id="countVal"></span></label>
+            <input id="countRange" type="range" min="20" max="110" step="5" value="65" />
+          </div>
+        </div>
+
+        <div class="figure"><svg id="mainSvg" viewBox="0 0 1260 560" role="img" aria-label="Cauchy sequence and its completion"></svg></div>
+
+        <div class="legend">
+          <span><i class="dot"></i> early terms</span>
+          <span><i class="dot tail"></i> selected tail</span>
+          <span><i class="dot missing"></i> missing point in X</span>
+          <span><i class="dot added"></i> point present in completion</span>
+        </div>
+
+        <div class="status-row">
+          <div class="stat"><small>Actual status</small><strong id="actualStatus"></strong></div>
+          <div class="stat"><small>Limit in X?</small><strong id="limitStatus"></strong></div>
+          <div class="stat"><small>Finite tail diameter</small><strong id="diameterStatus"></strong></div>
+          <div class="stat"><small>Completion adds</small><strong id="completionStatus"></strong></div>
+        </div>
+        <div class="note" id="interpretation"></div>
+      </section>
+
+      <section class="panel" id="quotient">
+        <div class="toolbar" style="grid-template-columns:minmax(300px,1fr) minmax(240px,.6fr)">
+          <div class="control">
+            <label for="compareSelect">Compare with</label>
+            <select id="compareSelect">
+              <option value="same">another sequence with the same target</option>
+              <option value="different">a Cauchy sequence with a different target</option>
+              <option value="invalid">a non-Cauchy sequence</option>
+            </select>
+          </div>
+          <div class="control">
+            <label for="classNRange">Tail starts at N <span id="classNVal"></span></label>
+            <input id="classNRange" type="range" min="1" max="55" step="1" value="8" />
+          </div>
+        </div>
+
+        <div class="figure"><svg id="classSvg" viewBox="0 0 1260 460" role="img" aria-label="Equivalence classes of Cauchy sequences"></svg></div>
+
+        <div class="status-row" style="grid-template-columns:repeat(2,1fr)">
+          <div class="stat"><small>Max plotted tail distance</small><strong id="classDistance"></strong></div>
+          <div class="stat"><small>Quotient verdict</small><strong id="classVerdict"></strong></div>
+        </div>
+        <div class="note" id="classNote"></div>
+      </section>
+    </div>
+  </main>
+
+  <section class="card pad proof-grid">
+    <div class="steps" id="proofSteps">
+      <button class="step active" data-step="0">1 · Cauchy sequences</button>
+      <button class="step" data-step="1">2 · Quotient relation</button>
+      <button class="step" data-step="2">3 · Metric on classes</button>
+      <button class="step" data-step="3">4 · Dense embedding</button>
+      <button class="step" data-step="4">5 · Completeness</button>
+    </div>
+    <div class="proofbox" id="proofBox"></div>
+  </section>
+
+  <section class="summary">
+    <div class="card pad">
+      <h2>What to notice</h2>
+      <ul>
+        <li><b>Convergent ⇒ Cauchy</b> in every metric space.</li>
+        <li><b>Cauchy ⇒ convergent</b> is the extra property called completeness.</li>
+        <li>Completion adds points for missing Cauchy behavior, not for arbitrary sequences.</li>
+        <li>The copy of X inside X̂ is dense through constant sequences.</li>
+      </ul>
+    </div>
+    <div class="card pad">
+      <h2>Exam summary</h2>
+      <ul>
+        <li><b>Complete:</b> every Cauchy sequence converges in the space.</li>
+        <li><b>Completion:</b> a complete metric space X̂ with an isometric dense embedding ι:X→X̂.</li>
+        <li><b>Construction:</b> X̂ = C(X)/∼, where (xₙ)∼(yₙ) iff d(xₙ,yₙ)→0.</li>
+        <li><b>Metric:</b> d̂([xₙ],[yₙ]) = limₙ d(xₙ,yₙ).</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="footer">Finite diagrams for infinite definitions. The finite tail diameter is only a visual approximation.</div>
+</div>
+
+<script>
+const root=document.documentElement;
+const themeBtn=document.getElementById('themeBtn');
+themeBtn.addEventListener('click',()=>{
+  const dark=root.getAttribute('data-theme')==='dark';
+  if(dark){root.removeAttribute('data-theme');themeBtn.textContent='Dark mode'}
+  else{root.setAttribute('data-theme','dark');themeBtn.textContent='Light mode'}
+  renderAll();
+});
+
+document.querySelectorAll('.tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.panel).classList.add('active');
+    renderAll();
+  });
+});
+
+const sqrt2=Math.sqrt(2);
+function truncSqrt(n){const p=Math.pow(10,Math.min(n,14));return Math.floor(sqrt2*p)/p;}
+function ceilSqrt(n){const p=Math.pow(10,Math.min(n,14));return Math.ceil(sqrt2*p)/p;}
+
+const models={
+  qSqrt2:{
+    title:'X = ℚ with the usual metric',
+    short:'ℚ',
+    seqLabel:'decimal truncations of √2',
+    domain:[1.18,1.62],
+    limit:sqrt2, limitLabel:'√2',
+    inX:false, complete:false, cauchy:true,
+    completion:'ℝ',
+    seq:n=>truncSqrt(n),
+    base:'dense',
+    missing:'√2 ∉ ℚ',
+    interp:'The sequence is rational at every finite stage. It is Cauchy in ℚ, but its intended limit √2 is not rational. The completion adds the missing real point.'
+  },
+  punctured:{
+    title:'X = ℝ \\ {0} with the usual metric',
+    short:'ℝ \\ {0}',
+    seqLabel:'xₙ = 1/n',
+    domain:[-.18,1.12],
+    limit:0, limitLabel:'0',
+    inX:false, complete:false, cauchy:true,
+    completion:'ℝ',
+    seq:n=>1/n,
+    base:'punctured',
+    missing:'0 removed',
+    interp:'The terms remain in ℝ \\ {0}, but their natural limit is the deleted point 0. The sequence is Cauchy without converging in the original space.'
+  },
+  openInterval:{
+    title:'X = (0,1) with the usual metric',
+    short:'(0,1)',
+    seqLabel:'xₙ = 1/(n+1)',
+    domain:[-.08,1.08],
+    limit:0, limitLabel:'0',
+    inX:false, complete:false, cauchy:true,
+    completion:'[0,1] locally; ℝ if embedded globally',
+    seq:n=>1/(n+1),
+    base:'interval',
+    missing:'endpoint not in X',
+    interp:'A Cauchy sequence in an open interval can run toward a missing endpoint. This is why open intervals are not complete in the inherited Euclidean metric.'
+  },
+  realConvergent:{
+    title:'X = ℝ with the usual metric',
+    short:'ℝ',
+    seqLabel:'xₙ = 0.8 + (-1)ⁿ·0.7/(n+2)',
+    domain:[0.25,1.15],
+    limit:.8, limitLabel:'0.8',
+    inX:true, complete:true, cauchy:true,
+    completion:'nothing new: ℝ is already complete',
+    seq:n=>.8 + (n%2 ? -1 : 1)*.7/(n+2),
+    base:'real',
+    missing:'none',
+    interp:'Here the Cauchy behavior has its limit inside the space. Completeness says that this always happens for sequences in ℝ.'
+  },
+  nonCauchy:{
+    title:'X = ℝ with the usual metric',
+    short:'ℝ',
+    seqLabel:'xₙ = (-1)ⁿ·0.65',
+    domain:[-.95,.95],
+    limit:null, limitLabel:'none',
+    inX:false, complete:true, cauchy:false,
+    completion:'not relevant: only Cauchy sequences enter C(X)',
+    seq:n=> n%2 ? -.65 : .65,
+    base:'real',
+    missing:'no limit',
+    interp:'The late terms do not become mutually close. This sequence is not Cauchy, so it does not define a point of the completion.'
+  }
+};
+
+const els={
+  model:document.getElementById('modelSelect'),
+  eps:document.getElementById('epsRange'),
+  n:document.getElementById('nRange'),
+  count:document.getElementById('countRange'),
+  epsVal:document.getElementById('epsVal'),
+  nVal:document.getElementById('nVal'),
+  countVal:document.getElementById('countVal'),
+  actualStatus:document.getElementById('actualStatus'),
+  limitStatus:document.getElementById('limitStatus'),
+  diameterStatus:document.getElementById('diameterStatus'),
+  completionStatus:document.getElementById('completionStatus'),
+  interpretation:document.getElementById('interpretation'),
+  compare:document.getElementById('compareSelect'),
+  classN:document.getElementById('classNRange'),
+  classNVal:document.getElementById('classNVal'),
+  classDistance:document.getElementById('classDistance'),
+  classVerdict:document.getElementById('classVerdict'),
+  classNote:document.getElementById('classNote')
+};
+Object.values(els).forEach(el=>{
+  if(el && (el.tagName==='INPUT'||el.tagName==='SELECT')) el.addEventListener('input',renderAll);
+});
+
+function css(name){return getComputedStyle(root).getPropertyValue(name).trim();}
+function svgEl(name,attrs={}){const e=document.createElementNS('http://www.w3.org/2000/svg',name); for(const [k,v] of Object.entries(attrs)) e.setAttribute(k,v); return e;}
+function add(parent,name,attrs={}){const e=svgEl(name,attrs); parent.appendChild(e); return e;}
+function text(parent,x,y,str,anchor='middle',size=13,fill=null,family='Inter, system-ui, sans-serif'){
+  const t=add(parent,'text',{x,y,'text-anchor':anchor,'font-size':size,fill:fill||css('--muted'),'font-family':family});
+  t.textContent=str; return t;
+}
+function mathText(parent,x,y,str,anchor='middle',size=17,fill=null){
+  return text(parent,x,y,str,anchor,size,fill||css('--ink'),'Georgia, Cambria, serif');
+}
+function mapX(v,domain,left,width){return left + (v-domain[0])/(domain[1]-domain[0])*width;}
+function fmt(x){if(x===null || !Number.isFinite(x)) return '—'; if(Math.abs(x)<1e-4) return x.toExponential(1); return x.toFixed(4).replace(/0+$/,'').replace(/\.$/,'');}
+function sub(n){return String(n).replace(/[0-9]/g,d=>'₀₁₂₃₄₅₆₇₈₉'[+d]);}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function tailStats(seq,N,M){const vals=[]; for(let n=N;n<=M;n++) vals.push(seq(n)); return {min:Math.min(...vals), max:Math.max(...vals), diam:Math.max(...vals)-Math.min(...vals)};}
+
+function axis(g,left,right,y,label){
+  add(g,'line',{x1:left,y1:y,x2:right,y2:y,stroke:css('--line'),'stroke-width':2});
+  add(g,'line',{x1:left,y1:y,x2:left+10,y2:y-6,stroke:css('--line'),'stroke-width':2});
+  add(g,'line',{x1:left,y1:y,x2:left+10,y2:y+6,stroke:css('--line'),'stroke-width':2});
+  add(g,'line',{x1:right,y1:y,x2:right-10,y2:y-6,stroke:css('--line'),'stroke-width':2});
+  add(g,'line',{x1:right,y1:y,x2:right-10,y2:y+6,stroke:css('--line'),'stroke-width':2});
+  text(g,(left+right)/2,y+38,label,'middle',14);
+}
+function drawSpace(g,model,left,width,y,completed=false){
+  const right=left+width;
+  axis(g,left,right,y, completed ? 'completed space X̂' : 'original space X');
+  if(model.base==='dense'){
+    for(let q=2;q<=18;q++){
+      for(let p=Math.ceil(model.domain[0]*q);p<=Math.floor(model.domain[1]*q);p++){
+        add(g,'circle',{cx:mapX(p/q,model.domain,left,width),cy:y,r:1.8,fill:css('--muted'),opacity:.28});
+      }
+    }
+    text(g,right-4,y-22,'rational dust','end',12);
+  }
+  if(model.base==='punctured'){
+    const x0=mapX(0,model.domain,left,width);
+    add(g,'circle',{cx:x0,cy:y,r:10,fill:css('--paper'),stroke:css('--bad'),'stroke-width':3});
+    text(g,x0,y-26,'0 removed','middle',12,css('--bad'));
+  }
+  if(model.base==='interval'){
+    const x0=mapX(0,model.domain,left,width), x1=mapX(1,model.domain,left,width);
+    add(g,'line',{x1:x0,y1:y,x2:x1,y2:y,stroke:css('--accent'),'stroke-width':8,'stroke-linecap':'round',opacity:.28});
+    add(g,'circle',{cx:x0,cy:y,r:10,fill:css('--paper'),stroke:css('--bad'),'stroke-width':3});
+    add(g,'circle',{cx:x1,cy:y,r:10,fill:css('--paper'),stroke:css('--bad'),'stroke-width':3});
+    text(g,(x0+x1)/2,y-26,'open interval','middle',12);
+  }
+  if(model.limit!==null){
+    const lx=mapX(model.limit,model.domain,left,width);
+    if(completed || model.inX){
+      add(g,'circle',{cx:lx,cy:y,r:10,fill:css('--good'),stroke:css('--paper'),'stroke-width':3});
+      text(g,lx,y-28,model.limitLabel+' ∈ '+(completed?'X̂':'X'),'middle',13,css('--good'));
+    }else{
+      add(g,'circle',{cx:lx,cy:y,r:10,fill:css('--paper'),stroke:css('--bad'),'stroke-width':3});
+      text(g,lx,y-28,model.missing,'middle',13,css('--bad'));
+    }
+  }
+}
+function drawSequenceOnLine(g,model,left,width,y,N,M,eps,mode){
+  const stats=tailStats(model.seq,N,M);
+  if(model.limit!==null){
+    const lx=mapX(model.limit,model.domain,left,width);
+    const a=mapX(model.limit-eps,model.domain,left,width);
+    const b=mapX(model.limit+eps,model.domain,left,width);
+    add(g,'rect',{x:Math.min(a,b),y:y-64,width:Math.abs(b-a),height:128,rx:20,fill:css('--accent'),opacity:.075,stroke:css('--accent'),'stroke-width':1.2,'stroke-dasharray':'6 7'});
+    text(g,lx,y-78,'ε-neighborhood of '+model.limitLabel,'middle',13,css('--accent'));
+  }
+  const tx1=mapX(stats.min,model.domain,left,width);
+  const tx2=mapX(stats.max,model.domain,left,width);
+  add(g,'rect',{x:Math.min(tx1,tx2),y:y+76,width:Math.max(4,Math.abs(tx2-tx1)),height:22,rx:8,fill:css('--warm'),opacity:.20,stroke:css('--warm'),'stroke-width':1.3});
+  text(g,(tx1+tx2)/2,y+116,'plotted tail diameter','middle',12,css('--warm'));
+  for(let n=1;n<=M;n++){
+    const val=model.seq(n);
+    const x=mapX(val,model.domain,left,width);
+    const tail=n>=N;
+    let yy;
+    if(mode==='top') yy = y + (tail ? 40 + ((n-N)%5)*5 : -48 - (n%4)*6);
+    else yy = y + (tail ? -40 - ((n-N)%5)*5 : 48 + (n%4)*6);
+    add(g,'line',{x1:x,y1:y,x2:x,y2:yy,stroke:tail?css('--warm'):css('--line'),'stroke-width':1,opacity:tail?.34:.25});
+    add(g,'circle',{cx:x,cy:yy,r:tail?4.6:3.1,fill:tail?css('--warm'):css('--accent'),opacity:tail?.90:.45,stroke:css('--paper'),'stroke-width':1});
+    if(n===1||n===2||n===N||n===M){
+      text(g,x,yy+(mode==='top'?(tail?18:-10):(tail?-11:18)),'x'+sub(n),'middle',11);
+    }
+  }
+  return stats;
+}
+function drawMain(){
+  const svg=document.getElementById('mainSvg'); svg.innerHTML='';
+  const model=models[els.model.value], eps=+els.eps.value, N=+els.n.value, M=+els.count.value;
+  add(svg,'defs',{}).innerHTML='<marker id="arrow" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 z" fill="'+css('--accent')+'"></path></marker>';
+  add(svg,'rect',{x:0,y:0,width:1260,height:560,fill:'transparent'});
+  mathText(svg,630,42,model.title,'middle',24);
+  text(svg,630,70,model.seqLabel,'middle',14,css('--muted'));
+
+  const L=120, W=1020, yTop=205, yBot=405;
+  drawSpace(svg,model,L,W,yTop,false);
+  const stats=drawSequenceOnLine(svg,model,L,W,yTop,N,M,eps,'top');
+
+  add(svg,'path',{d:'M 630 293 C 630 320, 630 342, 630 365',fill:'none',stroke:css('--accent'),'stroke-width':2.4,'marker-end':'url(#arrow)'});
+  mathText(svg,656,332,'completion','start',17,css('--accent'));
+
+  drawSpace(svg,model,L,W,yBot,true);
+  drawSequenceOnLine(svg,model,L,W,yBot,N,M,eps,'bottom');
+
+  if(model.limit!==null && !model.inX) mathText(svg,630,520,'The class [xₙ] is the point added at '+model.limitLabel,'middle',19,css('--good'));
+  if(model.inX) mathText(svg,630,520,'No new point is needed: the Cauchy behavior already converges in X.','middle',19,css('--good'));
+  if(!model.cauchy) mathText(svg,630,520,'The sequence is not Cauchy, so it is not an element of C(X).','middle',19,css('--bad'));
+
+  els.epsVal.textContent=eps.toFixed(2);
+  els.nVal.textContent=N;
+  els.countVal.textContent=M;
+  els.actualStatus.innerHTML=model.cauchy?'<span class="badge good">Cauchy</span>':'<span class="badge bad">not Cauchy</span>';
+  els.limitStatus.innerHTML=model.limit===null?'no limit':(model.inX?'<span class="badge good">yes</span>':'<span class="badge bad">no</span>');
+  els.diameterStatus.textContent=fmt(stats.diam);
+  els.completionStatus.textContent=model.complete?'no new limits':(model.limit===null?'only Cauchy classes':'the class [xₙ]');
+  els.interpretation.textContent=model.interp;
+}
+function comparisonSequences(model,kind){
+  const x=model.seq;
+  if(kind==='invalid') return {x, y:n=>n%2?model.domain[0]+.18:model.domain[1]-.18, yName:'oscillating non-Cauchy sequence', yCauchy:false, equivalent:false, note:'The quotient construction starts from Cauchy sequences only. A non-Cauchy row is not an element of C(X), so it cannot represent a completion point.'};
+  if(kind==='different'){
+    let target=(model.limit!==null?model.limit+.22:(model.domain[0]+model.domain[1])/2+.25);
+    target=clamp(target,model.domain[0]+.08,model.domain[1]-.08);
+    return {x, y:n=>target + .06/(n+2), yName:'Cauchy sequence with a different target', yCauchy:true, equivalent:false, note:'Both rows are Cauchy, but their distance does not tend to zero. They become different points in the completion.'};
+  }
+  if(els.model.value==='qSqrt2') return {x, y:n=>ceilSqrt(n), yName:'upper decimal approximations of √2', yCauchy:true, equivalent:true, note:'Lower and upper rational approximations define the same completed point because their distance tends to zero.'};
+  if(els.model.value==='punctured') return {x, y:n=>1/(n+2), yName:'yₙ = 1/(n+2)', yCauchy:true, equivalent:true, note:'Both sequences chase the deleted point 0; the completion identifies them.'};
+  if(els.model.value==='openInterval') return {x, y:n=>1/(n+3), yName:'yₙ = 1/(n+3)', yCauchy:true, equivalent:true, note:'Different speeds toward the same missing endpoint define the same equivalence class.'};
+  if(els.model.value==='realConvergent') return {x, y:n=>.8 + .08/(n+2), yName:'another sequence converging to 0.8', yCauchy:true, equivalent:true, note:'In a complete space, classes exist, but each class is already represented by an ordinary point of X.'};
+  return {x, y:n=>n%2?-.65:.65, yName:'the same oscillation', yCauchy:false, equivalent:false, note:'Non-Cauchy sequences are excluded from completion.'};
+}
+function drawClass(){
+  const svg=document.getElementById('classSvg'); svg.innerHTML='';
+  const model=models[els.model.value], comp=comparisonSequences(model,els.compare.value), N=+els.classN.value, M=60;
+  const L=120,W=1020,y1=150,y2=310;
+  add(svg,'rect',{x:0,y:0,width:1260,height:460,fill:'transparent'});
+  mathText(svg,630,42,'Quotient test: when do two Cauchy sequences become one point?','middle',23);
+  text(svg,630,70,'(xₙ) ∼ (yₙ) precisely when d(xₙ,yₙ) → 0','middle',14,css('--muted'));
+  axis(svg,L,L+W,y1,'first row: xₙ');
+  axis(svg,L,L+W,y2,'second row: yₙ');
+  text(svg,L+8,y1-48,model.seqLabel,'start',13,css('--muted'));
+  text(svg,L+8,y2-48,comp.yName,'start',13,css('--muted'));
+
+  const distances=[];
+  for(let n=1;n<=M;n++){
+    const xv=comp.x(n), yv=comp.y(n);
+    distances.push(Math.abs(xv-yv));
+    const xx=mapX(xv,model.domain,L,W);
+    const yy=mapX(yv,model.domain,L,W);
+    const tail=n>=N;
+    if(tail && n%4===0){
+      add(svg,'line',{x1:xx,y1:y1,x2:yy,y2:y2,stroke:css('--warm'),'stroke-width':1.2,opacity:.30});
+    }
+    add(svg,'circle',{cx:xx,cy:y1+(n%3-1)*10,r:tail?5:3.2,fill:tail?css('--warm'):css('--accent'),opacity:tail?.90:.42,stroke:css('--paper'),'stroke-width':1});
+    add(svg,'circle',{cx:yy,cy:y2+(n%3-1)*10,r:tail?5:3.2,fill:tail?css('--warm'):css('--blue'),opacity:tail?.90:.42,stroke:css('--paper'),'stroke-width':1});
+  }
+  const tailDist=Math.max(...distances.slice(N-1));
+  const color=comp.equivalent?css('--good'):(comp.yCauchy?css('--warm'):css('--bad'));
+  mathText(svg,630,405,'max plotted tail distance ≈ '+fmt(tailDist),'middle',19,color);
+
+  els.classNVal.textContent=N;
+  els.classDistance.textContent=fmt(tailDist);
+  els.classVerdict.innerHTML=comp.equivalent?'<span class="badge good">same class</span>':(comp.yCauchy?'<span class="badge bad">different classes</span>':'<span class="badge bad">not in quotient</span>');
+  els.classNote.textContent=comp.note;
+}
+
+const proofSteps=[
+  {title:'1. Start with Cauchy sequences', equation:'C(X) = { (xₙ) : (xₙ) is Cauchy in X }', body:'Completion begins only with sequences whose tails become internally small. Arbitrary sequences are not part of the construction.'},
+  {title:'2. Identify asymptotically equal sequences', equation:'(xₙ) ∼ (yₙ) ⇔ d(xₙ,yₙ) → 0', body:'This is the precise meaning of “they are trying to become the same missing point.”'},
+  {title:'3. Define the metric on classes', equation:'d̂([xₙ],[yₙ]) = limₙ d(xₙ,yₙ)', body:'Because the representatives are Cauchy, this real limit exists; because of the equivalence relation, it does not depend on the representatives.'},
+  {title:'4. Embed the original space densely', equation:'ι(x) = [x,x,x,…]', body:'Each point becomes a constant Cauchy sequence. The embedding is isometric, and constant representatives approximate every class.'},
+  {title:'5. The completion is complete', equation:'Every Cauchy sequence in X̂ converges in X̂', body:'The quotient construction adds exactly enough points so that all Cauchy behavior has a limit.'}
+];
+function renderProof(i=0){
+  document.querySelectorAll('.step').forEach(s=>s.classList.toggle('active',+s.dataset.step===i));
+  const s=proofSteps[i];
+  document.getElementById('proofBox').innerHTML='<h3>'+s.title+'</h3><div class="equation">'+s.equation+'</div><p>'+s.body+'</p>';
+}
+document.getElementById('proofSteps').addEventListener('click',e=>{
+  if(e.target.matches('.step')) renderProof(+e.target.dataset.step);
+});
+function renderAll(){
+  drawMain();
+  drawClass();
+  const active=document.querySelector('.step.active');
+  renderProof(active ? +active.dataset.step : 0);
+}
+renderAll();
+</script>
+</body>
+</html>

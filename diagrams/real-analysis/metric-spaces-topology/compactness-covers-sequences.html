@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for compactness by covers and sequences.">
+<title>Compactness: Covers and Sequences | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+:root{
+  --bg:#f7f3ea;
+  --paper:#fffdf8;
+  --paper2:#f1eadf;
+  --ink:#1f2627;
+  --muted:#66706f;
+  --line:rgba(31,38,39,.13);
+  --grid:rgba(31,38,39,.07);
+  --accent:#2c9c8f;
+  --accent2:#b8754b;
+  --accent3:#6f7fd8;
+  --bad:#c1666b;
+  --good:#2c9c8f;
+  --warn:#b8754b;
+  --shadow:0 20px 55px rgba(31,38,39,.08);
+  --soft:rgba(44,156,143,.12);
+  --soft2:rgba(184,117,75,.13);
+  --soft3:rgba(111,127,216,.12);
+}
+[data-theme="dark"]{
+  --bg:#0d1117;
+  --paper:#131922;
+  --paper2:#18202b;
+  --ink:#eef3f1;
+  --muted:#99a8a5;
+  --line:rgba(238,243,241,.12);
+  --grid:rgba(238,243,241,.07);
+  --accent:#55c7b8;
+  --accent2:#d59b69;
+  --accent3:#9aa6ff;
+  --bad:#e0848a;
+  --good:#55c7b8;
+  --warn:#d59b69;
+  --shadow:0 22px 60px rgba(0,0,0,.28);
+  --soft:rgba(85,199,184,.12);
+  --soft2:rgba(213,155,105,.13);
+  --soft3:rgba(154,166,255,.12);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 12% 0%, var(--soft), transparent 34rem),
+    radial-gradient(circle at 88% 12%, var(--soft3), transparent 34rem),
+    var(--bg);
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height:1.45;
+}
+button, select, input{font:inherit;color:inherit}
+.app{width:min(1220px,94vw);margin:0 auto;padding:28px 0 48px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.index{width:38px;height:38px;border:1px solid var(--line);border-radius:14px;display:grid;place-items:center;color:var(--accent);background:var(--paper);box-shadow:var(--shadow);font-weight:700}
+.themeBtn{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:9px 13px;cursor:pointer;box-shadow:var(--shadow);color:var(--muted)}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:stretch;margin-bottom:18px}
+.card{background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);padding:22px;backdrop-filter: blur(8px)}
+h1{font-family:Georgia, "Times New Roman", serif;font-weight:500;letter-spacing:-.04em;line-height:1.04;font-size:clamp(34px,5vw,66px);margin:0 0 10px}
+.subtitle{font-size:clamp(15px,1.6vw,19px);color:var(--muted);max-width:70ch;margin:0}
+.pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.pill{border:1px solid var(--line);background:var(--paper2);color:var(--muted);padding:7px 10px;border-radius:999px;font-size:12px}
+.theorem{display:grid;gap:10px}
+.theorem h2,.card h2{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.eq{font-family:"STIX Two Text", Georgia, "Times New Roman", serif;font-size:18px;line-height:1.55;color:var(--ink)}
+.eq.big{font-size:20px}
+.eqBlock{padding:14px 16px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,var(--paper),var(--paper2));}
+.stack{display:grid;gap:8px}
+.arrowEq{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.arrowEq .tag{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:3px 7px;background:var(--paper)}
+.controls{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.control{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:14px;min-width:0}
+label{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+select,input[type="range"]{width:100%}
+select{background:var(--paper2);border:1px solid var(--line);border-radius:12px;padding:9px 10px;outline:none}
+input[type="range"]{accent-color:var(--accent)}
+.value{font-size:13px;color:var(--ink);font-weight:650;margin-top:5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+.visualCard{padding:0;overflow:hidden}
+.vHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px 20px 12px;border-bottom:1px solid var(--line)}
+.vHead h3{margin:0;font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:24px;letter-spacing:-.02em}
+.vHead p{margin:4px 0 0;color:var(--muted);font-size:13px;max-width:48ch}
+.status{border:1px solid var(--line);background:var(--paper2);border-radius:999px;padding:7px 10px;font-size:12px;color:var(--muted);white-space:nowrap}
+.status.good{color:var(--good);background:var(--soft)}
+.status.bad{color:var(--bad);background:rgba(193,102,107,.10)}
+.svgWrap{padding:12px 14px 8px}
+svg{width:100%;height:auto;display:block;overflow:visible}
+.caption{display:grid;grid-template-columns:1fr;gap:8px;padding:0 20px 18px;color:var(--muted);font-size:13px}
+.caption strong{color:var(--ink)}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.key{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 8px;background:var(--paper2);font-size:12px;color:var(--muted)}
+.sw{width:10px;height:10px;border-radius:999px;background:var(--accent)}
+.sw.cover{background:var(--accent3)}.sw.seq{background:var(--accent)}.sw.sub{background:var(--accent2)}.sw.miss{background:var(--bad)}
+.infoGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-top:18px}
+.mini h3{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 9px}
+.mini p{margin:0;color:var(--muted);font-size:14px}.mini strong{color:var(--ink)}
+.notice{border-left:3px solid var(--accent);padding-left:12px}
+.exam ul{padding-left:18px;margin:0;color:var(--muted);font-size:14px}.exam li{margin:6px 0}.exam strong{color:var(--ink)}
+.note{font-size:12px;color:var(--muted);margin-top:10px}
+.formulaLine{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:7px 0}
+.mathchip{display:inline-block;border:1px solid var(--line);border-radius:12px;padding:5px 8px;background:var(--paper2);font-family:Georgia,"Times New Roman",serif;color:var(--ink)}
+@media (max-width:980px){.hero,.grid2,.infoGrid{grid-template-columns:1fr}.controls{grid-template-columns:1fr 1fr}.vHead{flex-direction:column}.status{white-space:normal}}
+@media (max-width:560px){.app{width:min(96vw,1220px);padding-top:18px}.controls{grid-template-columns:1fr}.card{padding:18px;border-radius:22px}.vHead{padding:16px}.caption{padding:0 16px 16px}.hero{gap:12px}.grid2{gap:12px}.infoGrid{gap:12px}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="topbar">
+    <div class="brand"><div class="index">05</div><span>Real analysis · topology in ℝⁿ</span></div>
+    <button class="themeBtn" id="themeBtn">Dark mode</button>
+  </div>
+
+  <section class="hero">
+    <div class="card">
+      <h1>Compactness:<br>covers and sequences</h1>
+      <p class="subtitle">Two equivalent ways of seeing the same object in metric spaces: every open cover can be reduced to finitely many sets, and every sequence contains a convergent subsequence whose limit remains inside.</p>
+      <div class="pillrow">
+        <span class="pill">open-cover compactness</span>
+        <span class="pill">sequential compactness</span>
+        <span class="pill">finite subcovers</span>
+        <span class="pill">Heine–Borel in ℝⁿ</span>
+      </div>
+    </div>
+    <div class="card theorem">
+      <h2>Central equivalence in ℝⁿ</h2>
+      <div class="eqBlock eq big">
+        K ⊂ ℝⁿ is compact<br>
+        ⇔ every open cover of K has a finite subcover<br>
+        ⇔ every sequence in K has a subsequence converging to a point of K<br>
+        ⇔ K is closed and bounded.
+      </div>
+      <div class="stack eq">
+        <div class="arrowEq"><span class="tag">cover lens</span> K ⊂ ⋃<sub>α∈A</sub> U<sub>α</sub> ⇒ K ⊂ U<sub>α₁</sub> ∪ ··· ∪ U<sub>αₘ</sub></div>
+        <div class="arrowEq"><span class="tag">sequence lens</span> x<sub>k</sub> ∈ K ⇒ ∃ k<sub>j</sub> ↑ ∞ with x<sub>kⱼ</sub> → x ∈ K</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="controls">
+    <div class="control">
+      <label for="setType">set in ℝⁿ</label>
+      <select id="setType">
+        <option value="closedDisk">closed bounded ball</option>
+        <option value="openDisk">open bounded ball</option>
+        <option value="halfRect">bounded not closed</option>
+        <option value="strip">closed unbounded strip</option>
+        <option value="finite">finite set</option>
+      </select>
+      <div class="value" id="setStatus">compact</div>
+    </div>
+    <div class="control">
+      <label for="normType">ball shape</label>
+      <select id="normType">
+        <option value="euclidean">Euclidean norm</option>
+        <option value="sup">sup norm</option>
+        <option value="taxicab">taxicab norm</option>
+      </select>
+      <div class="value">same topology on ℝⁿ</div>
+    </div>
+    <div class="control">
+      <label for="coverLevel">finite cover attempt</label>
+      <input id="coverLevel" type="range" min="2" max="9" value="5" />
+      <div class="value" id="coverValue">m = 5</div>
+    </div>
+    <div class="control">
+      <label for="seqCount">sequence length drawn</label>
+      <input id="seqCount" type="range" min="18" max="80" value="42" />
+      <div class="value" id="seqValue">N = 42</div>
+    </div>
+    <div class="control">
+      <label for="eps">ε-neighborhood</label>
+      <input id="eps" type="range" min="8" max="36" value="18" />
+      <div class="value" id="epsValue">ε = 0.18</div>
+    </div>
+  </section>
+
+  <section class="grid2">
+    <div class="card visualCard">
+      <div class="vHead">
+        <div>
+          <h3>Topological lens</h3>
+          <p>Open sets cover the whole set. Compactness says one finite selection already covers it.</p>
+        </div>
+        <div class="status" id="coverStatus">finite subcover visible</div>
+      </div>
+      <div class="svgWrap"><svg id="coverSvg" viewBox="0 0 560 410" aria-label="Open cover diagram"></svg></div>
+      <div class="caption">
+        <div id="coverCaption"><strong>Closed bounded sets:</strong> every open cover has a finite subcover.</div>
+        <div class="legend">
+          <span class="key"><span class="sw cover"></span>open cover elements</span>
+          <span class="key"><span class="sw seq"></span>set K</span>
+          <span class="key"><span class="sw miss"></span>missed region / obstruction</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card visualCard">
+      <div class="vHead">
+        <div>
+          <h3>Sequential lens</h3>
+          <p>A compact set traps infinite sequences tightly enough to force a convergent subsequence inside the set.</p>
+        </div>
+        <div class="status" id="seqStatus">subsequence converges in K</div>
+      </div>
+      <div class="svgWrap"><svg id="seqSvg" viewBox="0 0 560 410" aria-label="Sequential compactness diagram"></svg></div>
+      <div class="caption">
+        <div id="seqCaption"><strong>Sequential compactness:</strong> some subsequence has a limit in K.</div>
+        <div class="legend">
+          <span class="key"><span class="sw seq"></span>sequence points</span>
+          <span class="key"><span class="sw sub"></span>selected subsequence</span>
+          <span class="key"><span class="sw miss"></span>bad limit / escape</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="infoGrid">
+    <div class="card mini">
+      <h3>Definition</h3>
+      <div class="eq">
+        K compact<br>
+        ⇔ for every family of open sets {U<sub>α</sub>}<sub>α∈A</sub>,<br>
+        K ⊂ ⋃<sub>α∈A</sub>U<sub>α</sub><br>
+        implies K ⊂ U<sub>α₁</sub>∪···∪U<sub>αₘ</sub>.
+      </div>
+      <p class="note">This is the topological definition. It uses open sets, not sequences.</p>
+    </div>
+    <div class="card mini notice">
+      <h3>What to notice</h3>
+      <p id="noticeText"><strong>Closed + bounded</strong> is the special simplification valid in ℝⁿ. The actual topological object is the finite-subcover property.</p>
+    </div>
+    <div class="card mini exam">
+      <h3>Exam summary</h3>
+      <ul>
+        <li><strong>In ℝⁿ:</strong> compact ⇔ closed and bounded.</li>
+        <li><strong>Metric spaces:</strong> compact ⇔ sequentially compact.</li>
+        <li><strong>Not closed:</strong> sequences may converge to a missing boundary point.</li>
+        <li><strong>Not bounded:</strong> sequences may escape with no convergent subsequence.</li>
+        <li><strong>Finite sets:</strong> compact in every metric space.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+<script>
+const root=document.documentElement;
+const themeBtn=document.getElementById('themeBtn');
+themeBtn.addEventListener('click',()=>{
+  const dark=root.getAttribute('data-theme')==='dark';
+  if(dark){root.removeAttribute('data-theme');themeBtn.textContent='Dark mode'}
+  else{root.setAttribute('data-theme','dark');themeBtn.textContent='Light mode'}
+  update();
+});
+const els={
+  setType:document.getElementById('setType'), normType:document.getElementById('normType'), coverLevel:document.getElementById('coverLevel'), seqCount:document.getElementById('seqCount'), eps:document.getElementById('eps'),
+  setStatus:document.getElementById('setStatus'), coverValue:document.getElementById('coverValue'), seqValue:document.getElementById('seqValue'), epsValue:document.getElementById('epsValue'),
+  coverStatus:document.getElementById('coverStatus'), seqStatus:document.getElementById('seqStatus'), coverCaption:document.getElementById('coverCaption'), seqCaption:document.getElementById('seqCaption'), noticeText:document.getElementById('noticeText'),
+  coverSvg:document.getElementById('coverSvg'), seqSvg:document.getElementById('seqSvg')
+};
+for(const k of ['setType','normType','coverLevel','seqCount','eps']) els[k].addEventListener('input',update);
+function css(name){return getComputedStyle(root).getPropertyValue(name).trim()}
+function S(svg){svg.innerHTML='';return svg}
+const W=560,H=410, cx=280, cy=210, scale=126;
+function X(x){return cx+x*scale} function Y(y){return cy-y*scale}
+function el(name,attrs={},parent){const e=document.createElementNS('http://www.w3.org/2000/svg',name);for(const [k,v] of Object.entries(attrs)) e.setAttribute(k,v); if(parent) parent.appendChild(e); return e;}
+function group(parent,attrs={}){return el('g',attrs,parent)}
+function grid(svg){
+  const g=group(svg,{opacity:1});
+  for(let i=-2;i<=2;i+=.5){
+    el('line',{x1:X(-2),y1:Y(i),x2:X(2),y2:Y(i),stroke:css('--grid'),'stroke-width':1},g);
+    el('line',{x1:X(i),y1:Y(-1.45),x2:X(i),y2:Y(1.45),stroke:css('--grid'),'stroke-width':1},g);
+  }
+  el('line',{x1:X(-2),y1:Y(0),x2:X(2),y2:Y(0),stroke:css('--line'),'stroke-width':1.2},g);
+  el('line',{x1:X(0),y1:Y(-1.45),x2:X(0),y2:Y(1.45),stroke:css('--line'),'stroke-width':1.2},g);
+  el('text',{x:X(1.85),y:Y(0)-8,fill:css('--muted'),'font-size':12},g).textContent='coordinate slice of ℝⁿ';
+}
+function normBallPath(x,y,r,norm){
+  const px=X(x), py=Y(y), R=r*scale;
+  if(norm==='sup') return `M ${px-R} ${py-R} L ${px+R} ${py-R} L ${px+R} ${py+R} L ${px-R} ${py+R} Z`;
+  if(norm==='taxicab') return `M ${px} ${py-R} L ${px+R} ${py} L ${px} ${py+R} L ${px-R} ${py} Z`;
+  return null;
+}
+function drawBall(svg,x,y,r,attrs={},norm='euclidean'){
+  const path=normBallPath(x,y,r,norm);
+  if(path) return el('path',Object.assign({d:path},attrs),svg);
+  return el('circle',Object.assign({cx:X(x),cy:Y(y),r:r*scale},attrs),svg);
+}
+function drawSet(svg,type,opts={}){
+  const fill=opts.fill||css('--soft'), stroke=opts.stroke||css('--accent'), dash=opts.dash||'';
+  if(type==='closedDisk'||type==='openDisk'){
+    drawBall(svg,0,0,1,{fill,stroke,'stroke-width':2.2,'stroke-dasharray':type==='openDisk'?'7 7':dash},'euclidean');
+    if(type==='openDisk') el('text',{x:X(.62),y:Y(.78),fill:css('--muted'),'font-size':12},svg).textContent='boundary not included';
+  }
+  if(type==='halfRect'){
+    const p=`M ${X(-1.05)} ${Y(.62)} L ${X(1)} ${Y(.62)} L ${X(1)} ${Y(-.62)} L ${X(-1.05)} ${Y(-.62)} Z`;
+    el('path',{d:p,fill,stroke,'stroke-width':2.2},svg);
+    el('line',{x1:X(1),y1:Y(.62),x2:X(1),y2:Y(-.62),stroke:css('--bad'),'stroke-width':3,'stroke-dasharray':'7 7'},svg);
+    el('text',{x:X(.62),y:Y(.82),fill:css('--bad'),'font-size':12},svg).textContent='missing face';
+  }
+  if(type==='strip'){
+    el('rect',{x:X(-2.15),y:Y(.35),width:(4.3*scale),height:.7*scale,fill,stroke,'stroke-width':2.2},svg);
+    el('path',{d:`M ${X(1.72)} ${Y(.35)} L ${X(2.05)} ${Y(.35)} M ${X(1.93)} ${Y(.48)} L ${X(2.06)} ${Y(.35)} L ${X(1.93)} ${Y(.22)}`,stroke:stroke,'stroke-width':2,fill:'none'},svg);
+    el('path',{d:`M ${X(-1.72)} ${Y(-.35)} L ${X(-2.05)} ${Y(-.35)} M ${X(-1.93)} ${Y(-.48)} L ${X(-2.06)} ${Y(-.35)} L ${X(-1.93)} ${Y(-.22)}`,stroke:stroke,'stroke-width':2,fill:'none'},svg);
+  }
+  if(type==='finite'){
+    const pts=[[-.9,.55],[-.25,-.25],[.45,.5],[.92,-.45]];
+    pts.forEach((p,i)=>{
+      el('circle',{cx:X(p[0]),cy:Y(p[1]),r:8,fill:css('--accent'),stroke:css('--paper'),'stroke-width':2},svg);
+      el('text',{x:X(p[0])+10,y:Y(p[1])-8,fill:css('--muted'),'font-size':12},svg).textContent='p'+(i+1);
+    });
+  }
+}
+function addLabel(svg,text,x,y,color=css('--muted')){el('text',{x:X(x),y:Y(y),fill:color,'font-size':12,'font-weight':600},svg).textContent=text}
+function coverDiagram(){
+  const svg=S(els.coverSvg), type=els.setType.value, norm=els.normType.value, m=+els.coverLevel.value;
+  grid(svg);
+  drawSet(svg,type,{fill:css('--soft'),stroke:css('--accent')});
+  const coverColor=css('--accent3'), bad=css('--bad'), good=css('--accent');
+  if(type==='closedDisk'){
+    const centers=[];
+    const rad=.46-.012*m;
+    for(let a=0;a<Math.PI*2;a+=Math.PI/4){centers.push([.58*Math.cos(a),.58*Math.sin(a)]);}
+    centers.push([0,0]); centers.push([-.22,.38],[.28,-.38]);
+    centers.forEach((c,i)=>drawBall(svg,c[0],c[1],rad,{fill:'none',stroke:coverColor,'stroke-width':1.4,opacity:.35},norm));
+    const selected=[[0,0],[-.58,0],[.58,0],[0,.58],[0,-.58],[-.42,.42],[.42,-.42]];
+    selected.slice(0,Math.min(selected.length,m+1)).forEach(c=>drawBall(svg,c[0],c[1],.52,{fill:'none',stroke:good,'stroke-width':2.2,opacity:.72},norm));
+    addLabel(svg,'finite subcover selected',-.95,-1.18,good);
+  }
+  if(type==='openDisk'){
+    for(let j=1;j<=m;j++) drawBall(svg,0,0,1-1/(j+1),{fill:'none',stroke:coverColor,'stroke-width':1.2,opacity:.22+.04*j},'euclidean');
+    drawBall(svg,0,0,1-1/(m+1),{fill:css('--soft3'),stroke:coverColor,'stroke-width':2,opacity:.75},'euclidean');
+    drawBall(svg,0,0,1,{fill:'none',stroke:bad,'stroke-width':5,opacity:.16},'euclidean');
+    addLabel(svg,'finite attempt misses outer annulus',-.95,-1.18,bad);
+  }
+  if(type==='halfRect'){
+    const right=1-1/(m+1);
+    el('rect',{x:X(-1.15),y:Y(.72),width:(right+1.15)*scale,height:1.44*scale,fill:css('--soft3'),stroke:coverColor,'stroke-width':2,opacity:.55},svg);
+    el('rect',{x:X(right),y:Y(.62),width:(1-right)*scale,height:1.24*scale,fill:'rgba(193,102,107,.16)',stroke:bad,'stroke-width':2,'stroke-dasharray':'5 5'},svg);
+    addLabel(svg,'finite attempt misses a strip near the open face',-.98,-1.18,bad);
+  }
+  if(type==='strip'){
+    const a=.45*m;
+    el('rect',{x:X(-a),y:Y(.5),width:2*a*scale,height:1*scale,fill:css('--soft3'),stroke:coverColor,'stroke-width':2,opacity:.62},svg);
+    el('rect',{x:X(a),y:Y(.35),width:(2.1-a)*scale,height:.7*scale,fill:'rgba(193,102,107,.15)',stroke:'none'},svg);
+    el('rect',{x:X(-2.1),y:Y(.35),width:(2.1-a)*scale,height:.7*scale,fill:'rgba(193,102,107,.15)',stroke:'none'},svg);
+    addLabel(svg,'finite windows miss the unbounded tails',-.98,-1.18,bad);
+  }
+  if(type==='finite'){
+    const pts=[[-.9,.55],[-.25,-.25],[.45,.5],[.92,-.45]];
+    pts.forEach(p=>drawBall(svg,p[0],p[1],.28,{fill:'none',stroke:coverColor,'stroke-width':1.5,opacity:.45},norm));
+    pts.forEach(p=>drawBall(svg,p[0],p[1],.2,{fill:'none',stroke:good,'stroke-width':2.3,opacity:.8},norm));
+    addLabel(svg,'one neighborhood per point is already finite',-.98,-1.18,good);
+  }
+}
+function seqPoints(type,N){
+  const pts=[], sub=[];
+  if(type==='closedDisk'){
+    const p=[.38,.22];
+    for(let n=1;n<=N;n++){
+      if(n%5===0){const j=n/5; const r=.55/(j+1); const a=1.3*j; pts.push([p[0]+r*Math.cos(a),p[1]+r*Math.sin(a),n,true]); sub.push(n-1);}
+      else{const a=n*2.399963; const r=.18+.72*((n*37)%100)/100; pts.push([r*Math.cos(a),r*Math.sin(a),n,false]);}
+    }
+    return {pts,sub,limit:p,kind:'good'};
+  }
+  if(type==='openDisk'){
+    for(let n=1;n<=N;n++) pts.push([1-1/(n+1),.12*Math.sin(n*.7)/(n*.05+1),n,n%3===0]);
+    return {pts,sub:pts.map((_,i)=>i).filter(i=>i%3===0),limit:[1,0],kind:'badBoundary'};
+  }
+  if(type==='halfRect'){
+    for(let n=1;n<=N;n++) pts.push([1-1/(n+1),.18*Math.cos(n*.55),n,n%3===0]);
+    return {pts,sub:pts.map((_,i)=>i).filter(i=>i%3===0),limit:[1,0],kind:'badBoundary'};
+  }
+  if(type==='strip'){
+    for(let n=1;n<=N;n++) pts.push([-1.75+3.5*(n-1)/(N-1),.22*Math.sin(n*.8),n,n%5===0]);
+    return {pts,sub:pts.map((_,i)=>i).filter(i=>i%5===0),limit:null,kind:'escape'};
+  }
+  if(type==='finite'){
+    const base=[[-.9,.55],[-.25,-.25],[.45,.5],[.92,-.45]];
+    for(let n=1;n<=N;n++){const p=base[(n*n+n)%4]; pts.push([p[0],p[1],n,(n*n+n)%4===1]);}
+    return {pts,sub:pts.map((p,i)=>p[3]?i:null).filter(i=>i!==null),limit:base[1],kind:'goodFinite'};
+  }
+}
+function sequenceDiagram(){
+  const svg=S(els.seqSvg), type=els.setType.value, norm=els.normType.value, N=+els.seqCount.value, eps=+els.eps.value/100;
+  grid(svg);
+  drawSet(svg,type,{fill:css('--soft'),stroke:css('--accent')});
+  const data=seqPoints(type,N), pts=data.pts;
+  const seqColor=css('--accent'), subColor=css('--accent2'), bad=css('--bad');
+  if(data.limit){
+    drawBall(svg,data.limit[0],data.limit[1],eps,{fill:data.kind.startsWith('bad')?'rgba(193,102,107,.08)':css('--soft2'),stroke:data.kind.startsWith('bad')?bad:subColor,'stroke-width':1.7,'stroke-dasharray':'5 5'},norm);
+  }
+  if(data.kind==='escape'){
+    el('path',{d:`M ${X(.9)} ${Y(.28)} C ${X(1.25)} ${Y(.4)}, ${X(1.55)} ${Y(.18)}, ${X(1.9)} ${Y(.22)}`,stroke:bad,'stroke-width':2.5,fill:'none','marker-end':'url(#none)'},svg);
+    addLabel(svg,'escapes every bounded region',.35,1.08,bad);
+  }
+  pts.forEach((p,i)=>{
+    const r=3.3+Math.min(i,45)*.015;
+    el('circle',{cx:X(p[0]),cy:Y(p[1]),r,fill:seqColor,opacity:.25},svg);
+  });
+  data.sub.forEach((idx,j)=>{
+    const p=pts[idx]; if(!p) return;
+    el('circle',{cx:X(p[0]),cy:Y(p[1]),r:6.2,fill:subColor,opacity:.92,stroke:css('--paper'),'stroke-width':1.5},svg);
+    if(j>0){const q=pts[data.sub[j-1]]; el('line',{x1:X(q[0]),y1:Y(q[1]),x2:X(p[0]),y2:Y(p[1]),stroke:subColor,'stroke-width':1.2,opacity:.45},svg);}
+  });
+  if(data.limit){
+    el('circle',{cx:X(data.limit[0]),cy:Y(data.limit[1]),r:7.5,fill:data.kind.startsWith('bad')?bad:subColor,stroke:css('--paper'),'stroke-width':2},svg);
+    addLabel(svg,data.kind.startsWith('bad')?'limit outside K':'limit in K',data.limit[0]+.08,data.limit[1]+.12,data.kind.startsWith('bad')?bad:subColor);
+  }
+  if(data.kind==='goodFinite') addLabel(svg,'a repeated value gives a constant subsequence',-.98,-1.18,subColor);
+  if(data.kind==='good') addLabel(svg,'highlighted subsequence enters every ε-ball',-.98,-1.18,subColor);
+  if(data.kind==='badBoundary') addLabel(svg,'sequence converges, but the limit is missing',-.98,-1.18,bad);
+}
+function updateText(){
+  const type=els.setType.value, m=+els.coverLevel.value, N=+els.seqCount.value, eps=(+els.eps.value/100).toFixed(2);
+  els.coverValue.textContent='m = '+m;
+  els.seqValue.textContent='N = '+N;
+  els.epsValue.textContent='ε = '+eps;
+  const statusMap={
+    closedDisk:['compact','finite subcover visible','subsequence converges in K','good','Closed bounded ball: compact by Heine–Borel. Covers have finite subcovers; sequences have convergent subsequences inside.'],
+    openDisk:['not compact','finite subcover fails','limit can leave K','bad','Open bounded ball: bounded but not closed. A sequence can approach the boundary, and a natural open cover has no finite subcover.'],
+    halfRect:['not compact','finite subcover fails','missing boundary limit','bad','Bounded but not closed: the missing face is invisible to boundedness but visible to sequences and covers.'],
+    strip:['not compact','unbounded cover obstruction','sequence escapes','bad','Closed but unbounded: finite cover windows miss the tails, and sequences can escape every bounded region.'],
+    finite:['compact','finite subcover immediate','constant subsequence exists','good','Finite set: any open cover reduces to finitely many chosen neighborhoods; any sequence repeats some value infinitely often.']
+  };
+  const s=statusMap[type];
+  els.setStatus.textContent=s[0];
+  els.coverStatus.textContent=s[1];
+  els.seqStatus.textContent=s[2];
+  els.coverStatus.className='status '+(s[3]==='good'?'good':'bad');
+  els.seqStatus.className='status '+(s[3]==='good'?'good':'bad');
+  if(type==='closedDisk'){
+    els.coverCaption.innerHTML='<strong>Topological characterization:</strong> the visible cover is only a finite sample, but compactness says every open cover admits some finite subcover.';
+    els.seqCaption.innerHTML='<strong>Sequential characterization:</strong> the highlighted subsequence approaches a point that remains inside K.';
+  } else if(type==='openDisk'){
+    els.coverCaption.innerHTML='<strong>No finite subcover:</strong> the nested cover B(0,1−1/m) covers the open ball only in the infinite union.';
+    els.seqCaption.innerHTML='<strong>Sequential failure:</strong> x<sub>n</sub> → boundary point, but that boundary point is not in K.';
+  } else if(type==='halfRect'){
+    els.coverCaption.innerHTML='<strong>No finite subcover:</strong> a finite attempt leaves a strip near the missing face.';
+    els.seqCaption.innerHTML='<strong>Sequential failure:</strong> a sequence may converge to the missing face, outside the set.';
+  } else if(type==='strip'){
+    els.coverCaption.innerHTML='<strong>No finite subcover:</strong> finite bounded windows cannot cover an unbounded strip.';
+    els.seqCaption.innerHTML='<strong>Sequential failure:</strong> x<sub>n</sub> can escape to infinity, so no convergent subsequence is forced.';
+  } else {
+    els.coverCaption.innerHTML='<strong>Finite compactness:</strong> choose one cover element around each point; finitely many points gives finitely many choices.';
+    els.seqCaption.innerHTML='<strong>Pigeonhole subsequence:</strong> infinitely many sequence terms must repeat one of the finitely many points.';
+  }
+  els.noticeText.innerHTML='<strong>'+s[0][0].toUpperCase()+s[0].slice(1)+':</strong> '+s[4]+' In ℝⁿ, the bridge between both pictures is exactly closed + bounded.';
+}
+function update(){updateText();coverDiagram();sequenceDiagram();}
+update();
+</script>
+</body>
+</html>

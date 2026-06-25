@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for interior, closure, and boundary.">
+<title>Interior, Closure, and Boundary | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+:root{
+  --bg:#f6f0e6;
+  --paper:#fffdf8;
+  --paper2:#f1eadf;
+  --ink:#202725;
+  --muted:#66716d;
+  --line:rgba(32,39,37,.14);
+  --grid:rgba(32,39,37,.085);
+  --accent:#2d9c8f;
+  --accent-soft:rgba(45,156,143,.16);
+  --accent-mid:rgba(45,156,143,.34);
+  --warm:#b7754d;
+  --warm-soft:rgba(183,117,77,.18);
+  --blue:#557fa5;
+  --shadow:0 18px 45px rgba(34,31,24,.09);
+  --radius:22px;
+}
+[data-theme="dark"]{
+  --bg:#0d1117;
+  --paper:#131922;
+  --paper2:#19212d;
+  --ink:#ecf3f0;
+  --muted:#9aa8a4;
+  --line:rgba(236,243,240,.13);
+  --grid:rgba(236,243,240,.08);
+  --accent:#5bd0c1;
+  --accent-soft:rgba(91,208,193,.14);
+  --accent-mid:rgba(91,208,193,.26);
+  --warm:#d49b70;
+  --warm-soft:rgba(212,155,112,.14);
+  --blue:#7fa8ca;
+  --shadow:0 22px 48px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at top left, var(--accent-soft), transparent 34rem),
+    radial-gradient(circle at bottom right, var(--warm-soft), transparent 32rem),
+    var(--bg);
+  line-height:1.45;
+}
+.container{max-width:1240px;margin:0 auto;padding:28px 18px 46px}
+header{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:18px;
+  align-items:start;
+  margin-bottom:18px;
+}
+.eyebrow{font-size:.78rem;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);font-weight:800;margin-bottom:8px}
+h1{margin:0;font-size:clamp(2rem,4.8vw,4.6rem);line-height:.98;letter-spacing:-.055em;font-weight:860}
+.subtitle{margin:14px 0 0;max-width:760px;color:var(--muted);font-size:1.02rem}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.btn,.chip{
+  border:1px solid var(--line);
+  background:var(--paper);
+  color:var(--ink);
+  border-radius:999px;
+  padding:10px 14px;
+  font-weight:750;
+  box-shadow:var(--shadow);
+  cursor:pointer;
+}
+.chip{cursor:default;box-shadow:none;background:var(--paper2);font-size:.85rem;color:var(--muted)}
+.grid{display:grid;grid-template-columns:360px 1fr;gap:18px;align-items:start}
+.card{
+  background:linear-gradient(180deg,var(--paper),var(--paper));
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.card.pad{padding:18px}
+.card h2,.card h3{margin:0 0 10px;font-size:1rem;letter-spacing:-.02em}
+.card h2{font-size:1.12rem}
+.controls{display:grid;gap:15px}
+.control{border-top:1px solid var(--line);padding-top:13px}
+.control:first-child{border-top:0;padding-top:0}
+label{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:.86rem;font-weight:800;color:var(--muted);margin-bottom:8px}
+select,input[type="range"]{width:100%}
+select{
+  appearance:none;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:11px 12px;
+  background:var(--paper2);
+  color:var(--ink);
+  font-weight:750;
+  outline:none;
+}
+input[type="range"]{accent-color:var(--accent)}
+.value{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:900}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.miniBtn{
+  border:1px solid var(--line);
+  background:var(--paper2);
+  color:var(--ink);
+  border-radius:13px;
+  padding:9px 8px;
+  font-weight:760;
+  cursor:pointer;
+  font-size:.82rem;
+}
+.miniBtn:hover,.btn:hover{transform:translateY(-1px)}
+.stage{padding:16px;display:grid;gap:14px}
+.svg-wrap{position:relative;border-radius:20px;background:var(--paper);border:1px solid var(--line);overflow:hidden;min-height:520px}
+svg{display:block;width:100%;height:auto}
+.legend{
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.82rem;color:var(--muted);padding:0 2px
+}
+.key{display:inline-flex;align-items:center;gap:6px;background:var(--paper2);border:1px solid var(--line);border-radius:999px;padding:6px 9px;font-weight:700}
+.sw{width:13px;height:13px;border-radius:4px;background:var(--accent-mid);border:1px solid var(--accent)}
+.sw.bound{background:transparent;border:2px solid var(--warm)}
+.sw.ball{background:rgba(85,127,165,.16);border:2px solid var(--blue)}
+.sw.point{border-radius:50%;background:var(--ink);border:0}
+.panelGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.info{
+  border:1px solid var(--line);
+  background:var(--paper2);
+  border-radius:18px;
+  padding:14px;
+  min-height:112px;
+}
+.info .name{font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:900;margin-bottom:5px}
+.info .big{font-size:1.25rem;font-weight:900;letter-spacing:-.025em}
+.info .small{font-size:.85rem;color:var(--muted);margin-top:4px}
+.formulaBox{
+  display:grid;
+  gap:9px;
+  border:1px solid var(--line);
+  background:var(--paper);
+  border-radius:18px;
+  padding:14px;
+}
+.mathline{
+  font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;
+  font-size:1.02rem;
+  background:var(--paper2);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:10px 12px;
+  overflow-x:auto;
+  white-space:nowrap;
+}
+.mathline .op{font-family:inherit;color:var(--accent);font-weight:700}
+.mathline .warn{color:var(--warm);font-weight:700}
+.twoCols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+.list{display:grid;gap:10px}
+.item{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--paper2)}
+.badge{width:28px;height:28px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:900;border:1px solid var(--line)}
+.item strong{display:block;margin-bottom:2px}.item span{color:var(--muted);font-size:.9rem}
+.smallNote{font-size:.86rem;color:var(--muted)}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.kpi .cell{padding:10px;border-radius:14px;border:1px solid var(--line);background:var(--paper2)}
+.kpi .cell b{display:block;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.kpi .cell span{font-weight:900;font-size:1.05rem}
+.footerSummary{margin-top:18px;padding:18px;border-radius:22px;border:1px solid var(--line);background:var(--paper);box-shadow:var(--shadow)}
+.summaryGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+.summaryGrid .mathline{font-size:.98rem}
+@media(max-width:940px){.grid,.twoCols{grid-template-columns:1fr}.panelGrid,.summaryGrid{grid-template-columns:1fr}.kpi{grid-template-columns:1fr 1fr}header{grid-template-columns:1fr}.toolbar{justify-content:flex-start}.svg-wrap{min-height:auto}}
+@media(max-width:560px){.container{padding:20px 12px 32px}.row2,.quick,.kpi{grid-template-columns:1fr}h1{font-size:2.2rem}.panelGrid{gap:9px}.card.pad{padding:14px}}
+</style>
+</head>
+<body data-theme="light">
+<div class="container">
+  <header>
+    <div>
+      <div class="eyebrow">Real analysis · topology of ℝⁿ</div>
+      <h1>Interior, closure, and boundary</h1>
+      <p class="subtitle">A point is classified by what every sufficiently small neighborhood around it sees. The diagram is a two-coordinate slice; the definitions are the full topology of <strong>ℝⁿ</strong>.</p>
+    </div>
+    <div class="toolbar">
+      <span class="chip" id="sliceChip">2D slice of ℝ²</span>
+      <button class="btn" id="themeBtn">Dark mode</button>
+    </div>
+  </header>
+
+  <section class="grid">
+    <aside class="card pad controls">
+      <div>
+        <h2>Controls</h2>
+        <p class="smallNote">Move the point and the neighborhood radius. The verdict is local: it depends on all sufficiently small balls around the point.</p>
+      </div>
+
+      <div class="control">
+        <label>Ambient space <span class="value" id="dimVal">ℝ²</span></label>
+        <select id="dim">
+          <option value="1">ℝ¹</option>
+          <option value="2" selected>ℝ²</option>
+          <option value="3">ℝ³</option>
+          <option value="5">ℝ⁵</option>
+          <option value="n">ℝⁿ</option>
+        </select>
+      </div>
+
+      <div class="control">
+        <label>Norm generating the balls <span class="value" id="normVal">Euclidean</span></label>
+        <select id="norm">
+          <option value="l2" selected>Euclidean ‖·‖₂</option>
+          <option value="linf">Sup norm ‖·‖∞</option>
+          <option value="l1">Taxicab norm ‖·‖₁</option>
+        </select>
+      </div>
+
+      <div class="control">
+        <label>Set A <span class="value" id="setVal">open unit ball</span></label>
+        <select id="setType">
+          <option value="openBall" selected>Open unit ball B₁(0)</option>
+          <option value="closedBall">Closed unit ball B̄₁(0)</option>
+          <option value="puncturedBall">Punctured ball B₁(0) \ {0}</option>
+          <option value="annulus">Open annulus 0.45 &lt; ‖x‖ &lt; 1</option>
+          <option value="halfspace">Closed half-space x₁ ≥ 0</option>
+          <option value="finite">Finite set in ℝⁿ</option>
+          <option value="dense">Dense countable model Qⁿ</option>
+        </select>
+      </div>
+
+      <div class="control row2">
+        <div>
+          <label>x₁ <span class="value" id="xVal">0.35</span></label>
+          <input type="range" id="xRange" min="-1.45" max="1.45" value="0.35" step="0.01" />
+        </div>
+        <div>
+          <label>x₂ <span class="value" id="yVal">0.20</span></label>
+          <input type="range" id="yRange" min="-1.45" max="1.45" value="0.20" step="0.01" />
+        </div>
+      </div>
+
+      <div class="control">
+        <label>Neighborhood radius r <span class="value" id="rVal">0.28</span></label>
+        <input type="range" id="rRange" min="0.04" max="0.80" value="0.28" step="0.01" />
+        <div class="quick">
+          <button class="miniBtn" data-preset="inside">Interior point</button>
+          <button class="miniBtn" data-preset="boundary">Boundary point</button>
+          <button class="miniBtn" data-preset="outside">Exterior point</button>
+          <button class="miniBtn" data-preset="special">Special point</button>
+        </div>
+      </div>
+
+      <div class="formulaBox">
+        <h3>Metric-topology definitions</h3>
+        <div class="mathline">B<sub>r</sub>(x) = { y ∈ ℝ<sup>n</sup> : d(x,y) &lt; r }</div>
+        <div class="mathline">x ∈ <span class="op">int</span>(A) ⇔ ∃r&gt;0 : B<sub>r</sub>(x) ⊂ A</div>
+        <div class="mathline">x ∈ <span class="op">cl</span>(A) ⇔ ∀r&gt;0 : B<sub>r</sub>(x) ∩ A ≠ ∅</div>
+        <div class="mathline">x ∈ <span class="op">bd</span>(A) ⇔ ∀r&gt;0 : B<sub>r</sub>(x) sees A and ℝ<sup>n</sup> \ A</div>
+      </div>
+    </aside>
+
+    <main class="card stage">
+      <div class="svg-wrap">
+        <svg id="mainSvg" viewBox="0 0 760 560" role="img" aria-label="Topology diagram in R n"></svg>
+      </div>
+      <div class="legend">
+        <span class="key"><span class="sw"></span>A</span>
+        <span class="key"><span class="sw bound"></span>boundary</span>
+        <span class="key"><span class="sw ball"></span>B<sub>r</sub>(x)</span>
+        <span class="key"><span class="sw point"></span>selected x</span>
+      </div>
+      <section class="panelGrid">
+        <div class="info">
+          <div class="name">Local classification</div>
+          <div class="big" id="classBig">Interior point</div>
+          <div class="small" id="classSmall">Some whole ball around x fits inside A.</div>
+        </div>
+        <div class="info">
+          <div class="name">This chosen ball</div>
+          <div class="big" id="ballBig">Bᵣ(x) ⊂ A</div>
+          <div class="small" id="ballSmall">For this radius, the visible neighborhood is contained in A.</div>
+        </div>
+        <div class="info">
+          <div class="name">Closure / limit behavior</div>
+          <div class="big" id="closureBig">x ∈ cl(A)</div>
+          <div class="small" id="closureSmall">Every ball around x meets A.</div>
+        </div>
+      </section>
+    </main>
+  </section>
+
+  <section class="twoCols">
+    <div class="card pad">
+      <h2>What the topology is doing</h2>
+      <div class="list">
+        <div class="item"><div class="badge">1</div><div><strong>Balls are the primitive test objects.</strong><span>Changing the norm changes the shape of balls, but on finite-dimensional ℝⁿ the usual norms generate the same open sets.</span></div></div>
+        <div class="item"><div class="badge">2</div><div><strong>Interior means stable membership.</strong><span>If x is interior, small perturbations of x remain in A.</span></div></div>
+        <div class="item"><div class="badge">3</div><div><strong>Closure means arbitrarily good approximation.</strong><span>x belongs to cl(A) when points of A can be found inside every neighborhood of x.</span></div></div>
+        <div class="item"><div class="badge">4</div><div><strong>Boundary means unavoidable ambiguity.</strong><span>Every neighborhood intersects both A and its complement.</span></div></div>
+      </div>
+    </div>
+
+    <div class="card pad">
+      <h2>Live exact verdict</h2>
+      <div class="kpi">
+        <div class="cell"><b>x ∈ A</b><span id="kA">yes</span></div>
+        <div class="cell"><b>x ∈ int(A)</b><span id="kInt">yes</span></div>
+        <div class="cell"><b>x ∈ cl(A)</b><span id="kCl">yes</span></div>
+        <div class="cell"><b>x ∈ bd(A)</b><span id="kBd">no</span></div>
+      </div>
+      <div class="formulaBox" style="margin-top:12px">
+        <div class="mathline" id="setFormula">A = B<sub>1</sub>(0) = {x : ‖x‖ &lt; 1}</div>
+        <div class="mathline" id="pointFormula">x = (0.35, 0.20), &nbsp; ‖x‖ = 0.40</div>
+        <div class="mathline" id="localRadiusFormula">largest visible interior margin ≈ 0.60</div>
+      </div>
+      <p class="smallNote" style="margin-bottom:0">For the dense model Qⁿ, the plotted dots are only a finite visual shadow. The verdict uses the theorem cl(Qⁿ)=ℝⁿ and int(Qⁿ)=∅.</p>
+    </div>
+  </section>
+
+  <section class="footerSummary">
+    <h2>Compact exam-style summary</h2>
+    <div class="summaryGrid">
+      <div class="mathline"><span class="op">int</span>(A) = {x : ∃r&gt;0, B<sub>r</sub>(x) ⊂ A}</div>
+      <div class="mathline"><span class="op">cl</span>(A) = {x : ∀r&gt;0, B<sub>r</sub>(x) ∩ A ≠ ∅}</div>
+      <div class="mathline"><span class="op">bd</span>(A) = <span class="op">cl</span>(A) \ <span class="op">int</span>(A)</div>
+      <div class="mathline">x ∈ A′ ⇔ ∀r&gt;0, (B<sub>r</sub>(x) \ {x}) ∩ A ≠ ∅</div>
+      <div class="mathline">A dense in ℝ<sup>n</sup> ⇔ <span class="op">cl</span>(A)=ℝ<sup>n</sup></div>
+      <div class="mathline">x isolated in A ⇔ ∃r&gt;0, B<sub>r</sub>(x) ∩ A = {x}</div>
+    </div>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const svg = $('mainSvg');
+const state = {
+  dim:'2', norm:'l2', setType:'openBall', x:0.35, y:0.20, r:0.28, dark:false
+};
+const finitePts = [[-0.55,0.08],[0.48,0.48],[0.05,-0.72]];
+const W=760,H=560, margin=52, minX=-1.55,maxX=1.55,minY=-1.35,maxY=1.35;
+function sx(x){return margin+(x-minX)/(maxX-minX)*(W-2*margin)}
+function sy(y){return H-margin-(y-minY)/(maxY-minY)*(H-2*margin)}
+function ux(px){return minX+(px-margin)/(W-2*margin)*(maxX-minX)}
+function uy(py){return minY+(H-margin-py)/(H-2*margin)*(maxY-minY)}
+function fmt(v){return (Math.round(v*100)/100).toFixed(2)}
+function norm2(x,y){
+  if(state.norm==='l2') return Math.hypot(x,y);
+  if(state.norm==='linf') return Math.max(Math.abs(x),Math.abs(y));
+  return Math.abs(x)+Math.abs(y);
+}
+function distNorm(a,b,c,d){return norm2(a-c,b-d)}
+function ballPath(cx,cy,r){
+  if(state.norm==='l2'){
+    const R = sx(cx+r)-sx(cx);
+    return `<circle cx="${sx(cx)}" cy="${sy(cy)}" r="${Math.abs(R)}" />`;
+  }
+  if(state.norm==='linf'){
+    return `<rect x="${sx(cx-r)}" y="${sy(cy+r)}" width="${sx(cx+r)-sx(cx-r)}" height="${sy(cy-r)-sy(cy+r)}" rx="4" />`;
+  }
+  const pts = [[cx,cy+r],[cx+r,cy],[cx,cy-r],[cx-r,cy]].map(p=>`${sx(p[0])},${sy(p[1])}`).join(' ');
+  return `<polygon points="${pts}" />`;
+}
+function normName(){return state.norm==='l2'?'Euclidean':state.norm==='linf'?'sup norm':'taxicab'}
+function setName(){
+  return {
+    openBall:'open unit ball', closedBall:'closed unit ball', puncturedBall:'punctured ball', annulus:'open annulus', halfspace:'closed half-space', finite:'finite set', dense:'dense Qⁿ model'
+  }[state.setType];
+}
+function approxEq(a,b){return Math.abs(a-b)<0.025}
+function inA(x,y){
+  const d=norm2(x,y);
+  switch(state.setType){
+    case 'openBall': return d<1;
+    case 'closedBall': return d<=1;
+    case 'puncturedBall': return d>0.035 && d<1;
+    case 'annulus': return d>0.45 && d<1;
+    case 'halfspace': return x>=0;
+    case 'finite': return finitePts.some(p=>distNorm(x,y,p[0],p[1])<0.035);
+    case 'dense': return false;
+  }
+}
+function verdict(x,y){
+  const d=norm2(x,y); let v={inA:false,int:false,cl:false,bd:false,limit:false,isolated:false,margin:0,desc:''};
+  const eps=0.025;
+  switch(state.setType){
+    case 'openBall':
+      v.inA=d<1; v.int=d<1; v.cl=d<=1+eps; v.bd=approxEq(d,1); v.limit=d<=1+eps; v.margin=Math.max(0,1-d); break;
+    case 'closedBall':
+      v.inA=d<=1+eps; v.int=d<1-eps; v.cl=d<=1+eps; v.bd=approxEq(d,1); v.limit=d<=1+eps; v.margin=Math.max(0,1-d); break;
+    case 'puncturedBall':
+      v.inA=d>eps && d<1; v.int=d>eps && d<1; v.cl=d<=1+eps; v.bd=d<eps || approxEq(d,1); v.limit=d<=1+eps; v.margin=v.int?Math.min(d,1-d):0; break;
+    case 'annulus':
+      v.inA=d>0.45 && d<1; v.int=v.inA; v.cl=d>=0.45-eps && d<=1+eps; v.bd=approxEq(d,0.45)||approxEq(d,1); v.limit=v.cl; v.margin=v.int?Math.min(d-0.45,1-d):0; break;
+    case 'halfspace':
+      v.inA=x>=-eps; v.int=x>eps; v.cl=x>=-eps; v.bd=Math.abs(x)<eps; v.limit=x>=-eps; v.margin=Math.max(0,x); break;
+    case 'finite':
+      const mind=Math.min(...finitePts.map(p=>distNorm(x,y,p[0],p[1])));
+      v.inA=mind<0.035; v.int=false; v.cl=v.inA; v.bd=v.inA; v.limit=false; v.isolated=v.inA; v.margin=0; break;
+    case 'dense':
+      v.inA=false; v.int=false; v.cl=true; v.bd=true; v.limit=true; v.isolated=false; v.margin=0; break;
+  }
+  return v;
+}
+function ballStatus(v){
+  let subset=false, meetsA=false, meetsC=false;
+  const x=state.x,y=state.y,r=state.r,d=norm2(x,y);
+  switch(state.setType){
+    case 'openBall': subset=d+r<=1; meetsA=d<1+r; meetsC=!subset; break;
+    case 'closedBall': subset=d+r<=1; meetsA=d<=1+r; meetsC=!subset; break;
+    case 'puncturedBall': subset=d-r>0 && d+r<=1; meetsA=d<1+r && !(d+r<=0.035); meetsC=!subset; break;
+    case 'annulus': subset=d-r>=0.45 && d+r<=1; meetsA=d+r>0.45 && d-r<1; meetsC=!subset; break;
+    case 'halfspace': subset=x-r>=0; meetsA=x+r>=0; meetsC=!subset; break;
+    case 'finite': subset=false; meetsA=finitePts.some(p=>distNorm(x,y,p[0],p[1])<r); meetsC=true; break;
+    case 'dense': subset=false; meetsA=true; meetsC=true; break;
+  }
+  return {subset,meetsA,meetsC};
+}
+function drawGrid(){
+  let s='';
+  for(let t=-1.5;t<=1.5001;t+=0.25){
+    s+=`<line x1="${sx(t)}" y1="${sy(minY)}" x2="${sx(t)}" y2="${sy(maxY)}" stroke="var(--grid)" stroke-width="1"/>`;
+  }
+  for(let t=-1.25;t<=1.2501;t+=0.25){
+    s+=`<line x1="${sx(minX)}" y1="${sy(t)}" x2="${sx(maxX)}" y2="${sy(t)}" stroke="var(--grid)" stroke-width="1"/>`;
+  }
+  s+=`<line x1="${sx(minX)}" y1="${sy(0)}" x2="${sx(maxX)}" y2="${sy(0)}" stroke="var(--line)" stroke-width="1.4"/>`;
+  s+=`<line x1="${sx(0)}" y1="${sy(minY)}" x2="${sx(0)}" y2="${sy(maxY)}" stroke="var(--line)" stroke-width="1.4"/>`;
+  s+=`<text x="${sx(maxX)-10}" y="${sy(0)-8}" text-anchor="end" fill="var(--muted)" font-size="13" font-weight="700">x₁</text>`;
+  s+=`<text x="${sx(0)+8}" y="${sy(maxY)+15}" fill="var(--muted)" font-size="13" font-weight="700">x₂</text>`;
+  return s;
+}
+function drawSet(){
+  let s='';
+  if(['openBall','closedBall'].includes(state.setType)){
+    s+=`<g fill="var(--accent-mid)" stroke="var(--warm)" stroke-width="3" ${state.setType==='openBall'?'stroke-dasharray="7 6"':''}>${ballPath(0,0,1)}</g>`;
+    s+=`<text x="${sx(.66)}" y="${sy(.62)}" fill="var(--muted)" font-size="13" font-weight="800">A</text>`;
+  } else if(state.setType==='puncturedBall'){
+    s+=`<g fill="var(--accent-mid)" stroke="var(--warm)" stroke-width="3" stroke-dasharray="7 6">${ballPath(0,0,1)}</g>`;
+    s+=`<circle cx="${sx(0)}" cy="${sy(0)}" r="8" fill="var(--paper)" stroke="var(--warm)" stroke-width="3"/>`;
+    s+=`<text x="${sx(.66)}" y="${sy(.62)}" fill="var(--muted)" font-size="13" font-weight="800">A = B₁(0) without 0</text>`;
+  } else if(state.setType==='annulus'){
+    const outer = shapeD(0,0,1), inner = shapeD(0,0,0.45);
+    if(state.norm==='l2'){
+      s+=`<path d="${outer} ${inner}" fill="var(--accent-mid)" fill-rule="evenodd" stroke="var(--warm)" stroke-width="3" stroke-dasharray="7 6"/>`;
+    } else {
+      s+=`<path d="${outer} ${inner}" fill="var(--accent-mid)" fill-rule="evenodd" stroke="var(--warm)" stroke-width="3" stroke-dasharray="7 6"/>`;
+    }
+    s+=`<text x="${sx(.52)}" y="${sy(.08)}" fill="var(--muted)" font-size="13" font-weight="800">annulus</text>`;
+  } else if(state.setType==='halfspace'){
+    s+=`<rect x="${sx(0)}" y="${sy(maxY)}" width="${sx(maxX)-sx(0)}" height="${sy(minY)-sy(maxY)}" fill="var(--accent-mid)"/>`;
+    s+=`<line x1="${sx(0)}" y1="${sy(minY)}" x2="${sx(0)}" y2="${sy(maxY)}" stroke="var(--warm)" stroke-width="3"/>`;
+    s+=`<text x="${sx(.35)}" y="${sy(.95)}" fill="var(--muted)" font-size="13" font-weight="800">A = {x₁ ≥ 0}</text>`;
+  } else if(state.setType==='finite'){
+    finitePts.forEach((p,i)=>{
+      s+=`<circle cx="${sx(p[0])}" cy="${sy(p[1])}" r="8" fill="var(--accent)" stroke="var(--paper)" stroke-width="3"/>`;
+      s+=`<circle cx="${sx(p[0])}" cy="${sy(p[1])}" r="15" fill="none" stroke="var(--warm)" stroke-width="2" stroke-dasharray="4 4"/>`;
+    });
+    s+=`<text x="${sx(-1.32)}" y="${sy(1.1)}" fill="var(--muted)" font-size="13" font-weight="800">finite A: no interior, all points isolated</text>`;
+  } else if(state.setType==='dense'){
+    for(let i=-12;i<=12;i++){
+      for(let j=-10;j<=10;j++){
+        const xx=i/8 + ((j%2)*0.018), yy=j/8 + ((i%2)*0.014);
+        if(xx>minX&&xx<maxX&&yy>minY&&yy<maxY){
+          s+=`<circle cx="${sx(xx)}" cy="${sy(yy)}" r="2.1" fill="var(--accent)" opacity="0.62"/>`;
+        }
+      }
+    }
+    s+=`<text x="${sx(-1.32)}" y="${sy(1.1)}" fill="var(--muted)" font-size="13" font-weight="800">visual shadow of Qⁿ: dense, not open</text>`;
+  }
+  return s;
+}
+function shapeD(cx,cy,r){
+  if(state.norm==='l2'){
+    const R=sx(cx+r)-sx(cx), X=sx(cx), Y=sy(cy);
+    return `M ${X+R} ${Y} A ${R} ${R} 0 1 0 ${X-R} ${Y} A ${R} ${R} 0 1 0 ${X+R} ${Y} Z`;
+  }
+  if(state.norm==='linf'){
+    return `M ${sx(cx-r)} ${sy(cy-r)} L ${sx(cx+r)} ${sy(cy-r)} L ${sx(cx+r)} ${sy(cy+r)} L ${sx(cx-r)} ${sy(cy+r)} Z`;
+  }
+  return `M ${sx(cx)} ${sy(cy+r)} L ${sx(cx+r)} ${sy(cy)} L ${sx(cx)} ${sy(cy-r)} L ${sx(cx-r)} ${sy(cy)} Z`;
+}
+function drawBall(){
+  return `<g fill="rgba(85,127,165,.12)" stroke="var(--blue)" stroke-width="2.5">${ballPath(state.x,state.y,state.r)}</g>`;
+}
+function drawPoint(){
+  const x=sx(state.x),y=sy(state.y);
+  return `<g>
+    <line x1="${x}" y1="${y}" x2="${x}" y2="${sy(0)}" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 4" opacity=".7"/>
+    <line x1="${x}" y1="${y}" x2="${sx(0)}" y2="${y}" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 4" opacity=".7"/>
+    <circle cx="${x}" cy="${y}" r="7" fill="var(--ink)" stroke="var(--paper)" stroke-width="3"/>
+    <text x="${x+12}" y="${y-12}" fill="var(--ink)" font-size="14" font-weight="900">x</text>
+  </g>`;
+}
+function drawSmallTopologyRibbon(){
+  const baseY=522, startX=62, gap=122;
+  const labels=['interior','boundary','exterior','closure'];
+  return `<g opacity=".96">
+    ${labels.map((lab,i)=>`<rect x="${startX+i*gap}" y="${baseY-26}" width="104" height="30" rx="15" fill="var(--paper2)" stroke="var(--line)"/><text x="${startX+i*gap+52}" y="${baseY-7}" text-anchor="middle" fill="var(--muted)" font-size="12" font-weight="800">${lab}</text>`).join('')}
+  </g>`;
+}
+function render(){
+  $('xVal').textContent=fmt(state.x); $('yVal').textContent=fmt(state.y); $('rVal').textContent=fmt(state.r);
+  $('normVal').textContent=normName(); $('setVal').textContent=setName();
+  $('dimVal').innerHTML=state.dim==='n'?'ℝ<sup>n</sup>':'ℝ<sup>'+state.dim+'</sup>';
+  $('sliceChip').innerHTML= state.dim==='2' ? '2D picture of ℝ²' : '2D coordinate slice of '+(state.dim==='n'?'ℝⁿ':'ℝ'+supChar(state.dim));
+  svg.innerHTML = `
+    <rect x="0" y="0" width="760" height="560" fill="var(--paper)"/>
+    ${drawGrid()}
+    ${drawSet()}
+    ${drawBall()}
+    ${drawPoint()}
+    ${drawSmallTopologyRibbon()}
+  `;
+  const v=verdict(state.x,state.y), bs=ballStatus(v), d=norm2(state.x,state.y);
+  let classBig='Exterior point', classSmall='Some ball around x misses A completely.';
+  if(v.int){classBig='Interior point'; classSmall='There exists a radius ρ>0 with Bρ(x) contained in A.';}
+  else if(v.bd){classBig='Boundary point'; classSmall='Every ball around x meets both A and its complement.';}
+  else if(v.cl){classBig='Closure point'; classSmall='Every ball around x meets A, although x may not be in A.';}
+  if(v.isolated){classBig='Isolated point'; classSmall='x is in A, but some ball meets A only at x.';}
+  $('classBig').textContent=classBig; $('classSmall').textContent=classSmall;
+  $('ballBig').textContent = bs.subset ? 'Bᵣ(x) ⊂ A' : (bs.meetsA && bs.meetsC ? 'Bᵣ(x) sees both' : bs.meetsA ? 'Bᵣ(x) meets A' : 'Bᵣ(x) misses A');
+  $('ballSmall').textContent = bs.subset ? 'This particular radius is small enough to fit inside A.' : (bs.meetsA&&bs.meetsC ? 'For this radius, the neighborhood crosses the boundary.' : bs.meetsA ? 'It touches A, but is not contained in A.' : 'It lies in the exterior region.');
+  $('closureBig').textContent = v.cl ? 'x ∈ cl(A)' : 'x ∉ cl(A)';
+  $('closureSmall').textContent = v.limit ? (v.isolated ? 'But x is not a limit point; it is isolated.' : 'x is also a limit/accumulation point of A.') : 'There is a positive distance from x to A.';
+  $('kA').textContent = v.inA?'yes':'no'; $('kInt').textContent=v.int?'yes':'no'; $('kCl').textContent=v.cl?'yes':'no'; $('kBd').textContent=v.bd?'yes':'no';
+  $('setFormula').innerHTML = setFormula();
+  $('pointFormula').innerHTML = `x = (${fmt(state.x)}, ${fmt(state.y)}${state.dim!=='1'&&state.dim!=='2'?', 0, …, 0':''}), &nbsp; ‖x‖ = ${fmt(d)}`;
+  $('localRadiusFormula').innerHTML = localFormula(v);
+}
+function supChar(s){return {'1':'¹','2':'²','3':'³','5':'⁵'}[s]||'ⁿ'}
+function setFormula(){
+  switch(state.setType){
+    case 'openBall': return `A = B<sub>1</sub>(0) = {x ∈ ℝ<sup>n</sup> : ‖x‖ &lt; 1}`;
+    case 'closedBall': return `A = B̄<sub>1</sub>(0) = {x ∈ ℝ<sup>n</sup> : ‖x‖ ≤ 1}`;
+    case 'puncturedBall': return `A = B<sub>1</sub>(0) \ {0}`;
+    case 'annulus': return `A = {x ∈ ℝ<sup>n</sup> : 0.45 &lt; ‖x‖ &lt; 1}`;
+    case 'halfspace': return `A = {x ∈ ℝ<sup>n</sup> : x<sub>1</sub> ≥ 0}`;
+    case 'finite': return `A is finite; in ℝ<sup>n</sup>, finite sets are closed and have empty interior.`;
+    case 'dense': return `A = Q<sup>n</sup>; cl(A)=ℝ<sup>n</sup>, int(A)=∅, bd(A)=ℝ<sup>n</sup>.`;
+  }
+}
+function localFormula(v){
+  if(state.setType==='dense') return `Every nonempty ball contains points of Q<sup>n</sup> and of ℝ<sup>n</sup> \ Q<sup>n</sup>.`;
+  if(state.setType==='finite') return v.isolated ? `x is isolated: some B<sub>ρ</sub>(x) meets A only at x.` : `x is outside the finite closed set A unless it coincides with one listed point.`;
+  if(v.int) return `interior margin ρ can be chosen with 0 &lt; ρ ≤ ${fmt(v.margin)}`;
+  if(v.bd) return `no positive ball fits inside A or inside the exterior.`;
+  if(v.cl) return `x is approximated by A: every B<sub>r</sub>(x) intersects A.`;
+  return `x has positive distance from A; a small ball misses A.`;
+}
+function preset(kind){
+  const t=state.setType;
+  if(kind==='inside'){
+    if(t==='annulus'){state.x=.7;state.y=0}
+    else if(t==='halfspace'){state.x=.55;state.y=.15}
+    else if(t==='finite'){state.x=finitePts[0][0];state.y=finitePts[0][1]}
+    else if(t==='dense'){state.x=.33;state.y=.17}
+    else {state.x=.35;state.y=.2}
+  }
+  if(kind==='boundary'){
+    if(t==='annulus'){state.x=1;state.y=0}
+    else if(t==='halfspace'){state.x=0;state.y=.35}
+    else if(t==='finite'){state.x=finitePts[1][0];state.y=finitePts[1][1]}
+    else if(t==='dense'){state.x=.4;state.y=.2}
+    else {state.x=1;state.y=0}
+  }
+  if(kind==='outside'){
+    if(t==='halfspace'){state.x=-.55;state.y=.15}
+    else if(t==='finite'){state.x=.95;state.y=-.1}
+    else if(t==='dense'){state.x=.12;state.y=-.33}
+    else {state.x=1.25;state.y=.15}
+  }
+  if(kind==='special'){
+    if(t==='puncturedBall'){state.x=0;state.y=0}
+    else if(t==='annulus'){state.x=.45;state.y=0}
+    else if(t==='finite'){state.x=finitePts[2][0];state.y=finitePts[2][1]}
+    else if(t==='dense'){state.x=Math.SQRT2/3;state.y=Math.PI/10}
+    else {state.x=0;state.y=0}
+  }
+  $('xRange').value=state.x; $('yRange').value=state.y; render();
+}
+$('themeBtn').addEventListener('click',()=>{
+  state.dark=!state.dark; document.body.dataset.theme=state.dark?'dark':'light'; $('themeBtn').textContent=state.dark?'Light mode':'Dark mode'; render();
+});
+$('dim').addEventListener('change',e=>{state.dim=e.target.value; render();});
+$('norm').addEventListener('change',e=>{state.norm=e.target.value; render();});
+$('setType').addEventListener('change',e=>{state.setType=e.target.value; render();});
+$('xRange').addEventListener('input',e=>{state.x=parseFloat(e.target.value); render();});
+$('yRange').addEventListener('input',e=>{state.y=parseFloat(e.target.value); render();});
+$('rRange').addEventListener('input',e=>{state.r=parseFloat(e.target.value); render();});
+document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',()=>preset(b.dataset.preset)));
+render();
+</script>
+</body>
+</html>
