@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for the density of rationals and irrationals.">
+<title>Density of Rationals and Irrationals | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+  :root{
+    --bg:#f6f1e8;
+    --paper:#fffdf8;
+    --paper2:#f0eadf;
+    --ink:#1e2527;
+    --muted:#65706f;
+    --line:rgba(30,37,39,.14);
+    --grid:rgba(30,37,39,.08);
+    --accent:#2f9d90;
+    --accent-soft:rgba(47,157,144,.14);
+    --accent-mid:rgba(47,157,144,.28);
+    --warm:#b87642;
+    --warm-soft:rgba(184,118,66,.16);
+    --bad:#a64c55;
+    --shadow:0 22px 54px rgba(36,31,25,.08);
+    --radius:22px;
+  }
+  [data-theme="dark"]{
+    --bg:#0d1117;
+    --paper:#131922;
+    --paper2:#18212c;
+    --ink:#eef4f1;
+    --muted:#a1aea9;
+    --line:rgba(238,244,241,.13);
+    --grid:rgba(238,244,241,.075);
+    --accent:#57c7b9;
+    --accent-soft:rgba(87,199,185,.14);
+    --accent-mid:rgba(87,199,185,.28);
+    --warm:#d49a66;
+    --warm-soft:rgba(212,154,102,.15);
+    --bad:#d07882;
+    --shadow:0 24px 60px rgba(0,0,0,.32);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:
+      radial-gradient(circle at 18% -10%, var(--accent-soft), transparent 34rem),
+      radial-gradient(circle at 100% 0%, var(--warm-soft), transparent 28rem),
+      var(--bg);
+    color:var(--ink);
+    min-height:100vh;
+  }
+  .wrap{width:min(1180px, calc(100% - 32px)); margin:0 auto; padding:28px 0 44px}
+  header{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:18px;
+    align-items:start;
+    margin-bottom:18px;
+  }
+  .eyebrow{font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin-bottom:10px}
+  h1{font-family:Georgia, "Times New Roman", serif; font-weight:500; font-size:clamp(31px, 5vw, 58px); line-height:.96; margin:0 0 12px}
+  .subtitle{max-width:820px; color:var(--muted); font-size:16px; line-height:1.65; margin:0}
+  .top-actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
+  button, select, input{font:inherit}
+  .btn{
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--ink);
+    padding:10px 13px;
+    border-radius:999px;
+    cursor:pointer;
+    box-shadow:0 8px 22px rgba(0,0,0,.04);
+    transition:.18s ease;
+  }
+  .btn:hover{transform:translateY(-1px); border-color:var(--accent)}
+  .btn.active{background:var(--accent); color:#fff; border-color:transparent}
+  .grid{display:grid; grid-template-columns:1.45fr .85fr; gap:16px; align-items:start}
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,.035), transparent), var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .pad{padding:18px}
+  .card-title{display:flex; justify-content:space-between; gap:12px; align-items:flex-start; margin-bottom:12px}
+  h2{font-size:15px; letter-spacing:.03em; text-transform:uppercase; color:var(--muted); margin:0; font-weight:700}
+  .small{font-size:12.5px; color:var(--muted); line-height:1.55}
+  .formula{
+    font-family:"Times New Roman", Georgia, serif;
+    font-size:18px;
+    line-height:1.55;
+    padding:14px 15px;
+    border:1px solid var(--line);
+    background:var(--paper2);
+    border-radius:18px;
+    overflow:auto;
+  }
+  .formula strong{font-family:Inter, sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); font-weight:800}
+  .control-panel{display:grid; gap:14px}
+  .control{padding:14px; border:1px solid var(--line); border-radius:18px; background:var(--paper2)}
+  .control label{display:flex; justify-content:space-between; gap:10px; font-size:13px; color:var(--muted); margin-bottom:10px}
+  .value{color:var(--ink); font-variant-numeric:tabular-nums; font-weight:700}
+  input[type="range"]{width:100%; accent-color:var(--accent)}
+  .seg{display:flex; flex-wrap:wrap; gap:8px}
+  .seg .btn{padding:8px 11px; font-size:13px; box-shadow:none; background:transparent}
+  .statgrid{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; margin-top:12px}
+  .stat{border:1px solid var(--line); background:var(--paper2); border-radius:17px; padding:12px}
+  .stat .k{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.12em; margin-bottom:5px}
+  .stat .v{font-family:"Times New Roman", Georgia, serif; font-size:19px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  svg{display:block; width:100%; height:auto}
+  .svgbox{border-top:1px solid var(--line); background:linear-gradient(180deg, transparent, rgba(0,0,0,.015))}
+  .axis{stroke:var(--ink); stroke-width:1.1; opacity:.7}
+  .tick{stroke:var(--line); stroke-width:1}
+  .gridline{stroke:var(--grid); stroke-width:1}
+  .interval{stroke:var(--accent); stroke-width:10; stroke-linecap:round; opacity:.88}
+  .shifted{stroke:var(--warm); stroke-width:7; stroke-linecap:round; opacity:.82}
+  .open-dot{fill:var(--paper); stroke:var(--accent); stroke-width:2.3}
+  .pointQ{fill:var(--accent); stroke:var(--paper); stroke-width:2.4}
+  .pointI{fill:var(--warm); stroke:var(--paper); stroke-width:2.4}
+  .faint{opacity:.38}
+  .label{font-size:12px; fill:var(--muted)}
+  .label-ink{font-size:13px; fill:var(--ink); font-weight:650}
+  .label-serif{font-family:Georgia, "Times New Roman", serif; font-size:16px; fill:var(--ink)}
+  .pill{
+    display:inline-flex; align-items:center; gap:7px;
+    padding:6px 10px; border:1px solid var(--line); border-radius:999px;
+    color:var(--muted); background:var(--paper2); font-size:12px; white-space:nowrap;
+  }
+  .dot{width:8px; height:8px; border-radius:50%; background:var(--accent); display:inline-block}
+  .dot.warm{background:var(--warm)}
+  .columns{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px}
+  .proofline{display:grid; grid-template-columns:34px 1fr; gap:10px; padding:12px 0; border-bottom:1px solid var(--line)}
+  .proofline:last-child{border-bottom:0}
+  .num{width:28px; height:28px; display:grid; place-items:center; border-radius:50%; background:var(--accent-soft); color:var(--accent); font-weight:800; font-size:12px}
+  .proofline p{margin:0; color:var(--muted); line-height:1.55; font-size:14px}
+  .proofline .math{font-family:"Times New Roman", Georgia, serif; color:var(--ink); font-size:17px}
+  .notice{border-left:4px solid var(--accent); padding:14px 15px; background:var(--accent-soft); border-radius:16px; color:var(--ink); line-height:1.55}
+  .exam{display:grid; gap:10px}
+  .exam .item{padding:13px 14px; border:1px solid var(--line); border-radius:17px; background:var(--paper2); line-height:1.5}
+  .mono{font-variant-numeric:tabular-nums}
+  .decimal-strip{display:grid; gap:9px; margin-top:10px}
+  .decimal-row{display:grid; grid-template-columns:90px 1fr; gap:10px; align-items:center; font-size:12px; color:var(--muted)}
+  .dotsline{position:relative; height:26px; border-radius:999px; border:1px solid var(--line); overflow:hidden; background:linear-gradient(90deg, var(--grid), transparent)}
+  .dotsline span{position:absolute; top:50%; width:6px; height:6px; border-radius:50%; transform:translate(-50%,-50%); background:var(--accent)}
+  .dotsline span.ir{background:var(--warm)}
+  footer{margin-top:18px; text-align:center; color:var(--muted); font-size:12px}
+  @media (max-width:900px){.grid,.columns{grid-template-columns:1fr} header{grid-template-columns:1fr}.top-actions{justify-content:flex-start}.statgrid{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.wrap{width:min(100% - 20px, 1180px); padding-top:18px}.pad{padding:14px}.statgrid{grid-template-columns:1fr}.decimal-row{grid-template-columns:1fr}.formula{font-size:16px}}
+</style>
+</head>
+<body data-theme="light">
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Real Analysis · Density</div>
+      <h1>Density of rationals and irrationals</h1>
+      <p class="subtitle">Every open interval, however small, contains both rational and irrational points. The decimal picture gives intuition; the order-theoretic proof uses the Archimedean property and does not depend on base ten.</p>
+    </div>
+    <div class="top-actions">
+      <button class="btn" id="themeBtn">Dark mode</button>
+      <button class="btn" id="resetBtn">Reset</button>
+    </div>
+  </header>
+
+  <section class="grid">
+    <main class="card">
+      <div class="pad">
+        <div class="card-title">
+          <div>
+            <h2>The interval microscope</h2>
+            <div class="small">Move the interval. The app constructs one rational point and one irrational point inside it.</div>
+          </div>
+          <div class="seg" id="modeBtns">
+            <button class="btn active" data-mode="both">Both</button>
+            <button class="btn" data-mode="q">Rational</button>
+            <button class="btn" data-mode="i">Irrational</button>
+          </div>
+        </div>
+        <div class="formula" id="mainFormula">
+          ∀ a,b ∈ ℝ, &nbsp; a &lt; b &nbsp; ⇒ &nbsp; ∃ q ∈ ℚ, ∃ ξ ∈ ℝ∖ℚ : &nbsp; a &lt; q &lt; b and a &lt; ξ &lt; b.
+        </div>
+        <div class="statgrid">
+          <div class="stat"><div class="k">Interval</div><div class="v mono" id="statInterval"></div></div>
+          <div class="stat"><div class="k">Length</div><div class="v mono" id="statWidth"></div></div>
+          <div class="stat"><div class="k">Rational witness</div><div class="v mono" id="statQ"></div></div>
+          <div class="stat"><div class="k">Irrational witness</div><div class="v mono" id="statI"></div></div>
+        </div>
+      </div>
+      <div class="svgbox"><svg id="mainSvg" viewBox="0 0 900 390" role="img" aria-label="Real line interval with rational and irrational witnesses"></svg></div>
+    </main>
+
+    <aside class="card">
+      <div class="pad control-panel">
+        <div>
+          <h2>Controls</h2>
+          <div class="small">The denominator is chosen so that the scaled interval has length greater than one.</div>
+        </div>
+        <div class="control">
+          <label><span>interval center</span><span class="value" id="centerVal"></span></label>
+          <input id="center" type="range" min="-3" max="3" step="0.05" value="0.35" />
+        </div>
+        <div class="control">
+          <label><span>interval width</span><span class="value" id="widthVal"></span></label>
+          <input id="width" type="range" min="0.15" max="4.8" step="0.01" value="1.35" />
+        </div>
+        <div class="control">
+          <label><span>extra denominator margin</span><span class="value" id="marginVal"></span></label>
+          <input id="margin" type="range" min="0" max="16" step="1" value="2" />
+        </div>
+        <div class="control">
+          <label><span>decimal microscope depth</span><span class="value" id="depthVal"></span></label>
+          <input id="depth" type="range" min="1" max="6" step="1" value="3" />
+        </div>
+        <div class="notice" id="interp"></div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="columns">
+    <div class="card">
+      <div class="pad">
+        <div class="card-title">
+          <div>
+            <h2>Order-theoretic proof</h2>
+            <div class="small">The proof is geometric after multiplying the interval by a large integer.</div>
+          </div>
+          <span class="pill"><span class="dot"></span>rational construction</span>
+        </div>
+        <div class="formula">Choose n ∈ ℕ with n(b − a) &gt; 1. Let m = ⌊na⌋ + 1. Then na &lt; m &lt; nb, so q = m/n ∈ (a,b).</div>
+      </div>
+      <div class="svgbox"><svg id="scaledSvg" viewBox="0 0 900 250" role="img" aria-label="Scaled interval containing an integer"></svg></div>
+    </div>
+
+    <div class="card">
+      <div class="pad">
+        <div class="card-title">
+          <div>
+            <h2>Irrational by shifting</h2>
+            <div class="small">Use a tiny irrational displacement τ and then shift a rational point.</div>
+          </div>
+          <span class="pill"><span class="dot warm"></span>irrational construction</span>
+        </div>
+        <div class="formula">Choose τ = √2/k with 0 &lt; τ &lt; b − a. Pick r ∈ ℚ ∩ (a − τ, b − τ). Then ξ = r + τ is irrational and ξ ∈ (a,b).</div>
+      </div>
+      <div class="svgbox"><svg id="shiftSvg" viewBox="0 0 900 250" role="img" aria-label="Shifted interval construction of an irrational"></svg></div>
+    </div>
+  </section>
+
+  <section class="columns">
+    <div class="card pad">
+      <div class="card-title">
+        <div>
+          <h2>Decimal intuition</h2>
+          <div class="small">Finite decimals are rational. At enough depth, a decimal grid point lands inside any interval.</div>
+        </div>
+        <span class="pill" id="decimalPill"></span>
+      </div>
+      <div class="decimal-strip" id="decimalStrip"></div>
+      <div class="notice" style="margin-top:14px">Decimal expansion is intuition, not the theorem. Density is an order statement: between any two real numbers there are points of both types.</div>
+    </div>
+
+    <div class="card pad">
+      <div class="card-title">
+        <div>
+          <h2>What to notice</h2>
+          <div class="small">The theorem says both sets are everywhere, even though they are disjoint.</div>
+        </div>
+      </div>
+      <div class="proofline"><div class="num">1</div><p><span class="math">ℚ</span> has no open gap: every open interval touches it.</p></div>
+      <div class="proofline"><div class="num">2</div><p><span class="math">ℝ∖ℚ</span> also has no open gap: irrational points are just as dense.</p></div>
+      <div class="proofline"><div class="num">3</div><p>Density does <em>not</em> mean “many” in the cardinal sense. <span class="math">ℚ</span> is countable; <span class="math">ℝ∖ℚ</span> is uncountable.</p></div>
+      <div class="proofline"><div class="num">4</div><p>Topologically: <span class="math">cl(ℚ)=ℝ</span> and <span class="math">cl(ℝ∖ℚ)=ℝ</span>.</p></div>
+    </div>
+  </section>
+
+  <section class="card pad" style="margin-top:16px">
+    <div class="card-title">
+      <div>
+        <h2>Compact exam-style summary</h2>
+        <div class="small">A clean proof pattern to reproduce.</div>
+      </div>
+    </div>
+    <div class="exam">
+      <div class="item"><strong>Rational density.</strong> Let <span class="formula-inline">a&lt;b</span>. By the Archimedean property, choose <span class="formula-inline">n∈ℕ</span> such that <span class="formula-inline">n(b−a)&gt;1</span>. Put <span class="formula-inline">m=⌊na⌋+1</span>. Then <span class="formula-inline">na&lt;m≤na+1&lt;nb</span>, hence <span class="formula-inline">a&lt;m/n&lt;b</span>.</div>
+      <div class="item"><strong>Irrational density.</strong> Pick <span class="formula-inline">k∈ℕ</span> so large that <span class="formula-inline">τ=√2/k&lt;b−a</span>. Since rationals are dense, choose <span class="formula-inline">r∈ℚ</span> with <span class="formula-inline">a−τ&lt;r&lt;b−τ</span>. Then <span class="formula-inline">ξ=r+τ∈(a,b)</span>, and <span class="formula-inline">ξ</span> is irrational.</div>
+      <div class="item"><strong>Topological form.</strong> A set <span class="formula-inline">D⊂ℝ</span> is dense iff every nonempty open interval intersects <span class="formula-inline">D</span>. Therefore <span class="formula-inline">ℚ</span> and <span class="formula-inline">ℝ∖ℚ</span> are both dense in <span class="formula-inline">ℝ</span>.</div>
+    </div>
+  </section>
+
+  <footer>Single-file HTML · no backend · pure SVG/JavaScript diagrams</footer>
+</div>
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const state = { mode:'both' };
+  const inputs = ['center','width','margin','depth'];
+  const themeBtn = $('themeBtn');
+  const resetBtn = $('resetBtn');
+
+  function fmt(x, d=4){
+    if(!isFinite(x)) return '—';
+    const s = Number(x).toFixed(d).replace(/0+$/,'').replace(/\.$/,'');
+    return s === '-0' ? '0' : s;
+  }
+  function fracApprox(x, maxDen=1000){
+    let bestN=1, bestD=1, bestErr=Infinity;
+    for(let d=1; d<=maxDen; d++){
+      const n = Math.round(x*d), err = Math.abs(x - n/d);
+      if(err < bestErr){ bestErr=err; bestN=n; bestD=d; }
+    }
+    return [bestN,bestD];
+  }
+  function niceFormulaQ(m,n){ return `${m}/${n}`; }
+  function values(){
+    const center = +$('center').value;
+    const width = +$('width').value;
+    const margin = +$('margin').value;
+    const depth = +$('depth').value;
+    const a = center - width/2;
+    const b = center + width/2;
+    const n = Math.floor(1/width) + 1 + margin;
+    const m = Math.floor(n*a) + 1;
+    const q = m/n;
+    const k = Math.floor((2*Math.SQRT2)/width) + 1 + margin;
+    const tau = Math.SQRT2/k;
+    const n2 = n;
+    const m2 = Math.floor(n2*(a - tau)) + 1;
+    const r = m2/n2;
+    const xi = r + tau;
+    return {center,width,margin,depth,a,b,n,m,q,k,tau,n2,m2,r,xi};
+  }
+  function map(x, xmin, xmax, left=70, right=830){ return left + (x-xmin)/(xmax-xmin)*(right-left); }
+  function line(svg,x1,y1,x2,y2,cls){ return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="${cls}"/>`; }
+  function circle(x,y,r,cls){ return `<circle cx="${x}" cy="${y}" r="${r}" class="${cls}"/>`; }
+  function text(x,y,t,cls='label',anchor='middle'){ return `<text x="${x}" y="${y}" text-anchor="${anchor}" class="${cls}">${t}</text>`; }
+  function path(d, extra=''){ return `<path d="${d}" ${extra}/>`; }
+
+  function drawMain(v){
+    const svg = $('mainSvg');
+    const extra = Math.max(.55, v.width*.42, v.tau*2);
+    const xmin = Math.min(v.a - extra, v.a - v.tau - extra*.45);
+    const xmax = v.b + extra;
+    const y = 208;
+    let h = '';
+    h += `<rect width="900" height="390" fill="transparent"/>`;
+    const t0 = Math.ceil(xmin), t1 = Math.floor(xmax);
+    for(let t=t0; t<=t1; t++){
+      const x = map(t,xmin,xmax);
+      h += line(x,70,x,314,'gridline');
+      h += line(x,y-7,x,y+7,'tick');
+      h += text(x,y+28, t, 'label');
+    }
+    h += line(55,y,845,y,'axis');
+    h += `<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--muted)"/></marker></defs>`;
+    h += line(65,y,835,y,'axis');
+    const xa = map(v.a,xmin,xmax), xb = map(v.b,xmin,xmax), xq = map(v.q,xmin,xmax), xi = map(v.xi,xmin,xmax);
+    const showQ = state.mode === 'both' || state.mode === 'q';
+    const showI = state.mode === 'both' || state.mode === 'i';
+    h += `<line x1="${xa}" y1="${y}" x2="${xb}" y2="${y}" class="interval"/>`;
+    h += circle(xa,y,8,'open-dot') + circle(xb,y,8,'open-dot');
+    h += text(xa,y-20,`a=${fmt(v.a,3)}`,'label-serif');
+    h += text(xb,y-20,`b=${fmt(v.b,3)}`,'label-serif');
+    h += `<rect x="${xa}" y="94" width="${xb-xa}" height="172" rx="18" fill="var(--accent-soft)" stroke="var(--line)"/>`;
+    h += text((xa+xb)/2,86,'open interval (a,b)','label-ink');
+
+    // scatter some rational finite decimal grid points and irrational shifts inside interval
+    const count = 16;
+    for(let j=0; j<count; j++){
+      const px = v.a + (j+1)/(count+1)*v.width;
+      const cx = map(px,xmin,xmax);
+      const yy = 151 + ((j%3)-1)*9;
+      h += `<circle cx="${cx}" cy="${yy}" r="3.5" fill="var(--accent)" opacity=".32"/>`;
+    }
+    for(let j=0; j<10; j++){
+      const px = v.a + (j+.7)/(10.7)*v.width;
+      const cx = map(px,xmin,xmax);
+      const yy = 266 + ((j%3)-1)*9;
+      h += `<circle cx="${cx}" cy="${yy}" r="3.4" fill="var(--warm)" opacity=".32"/>`;
+    }
+    if(showQ){
+      h += line(xq,114,xq,282,'tick');
+      h += circle(xq,y,9,'pointQ');
+      h += text(xq,112,`q = ${niceFormulaQ(v.m,v.n)} ≈ ${fmt(v.q,4)}`,'label-ink');
+      h += `<path d="M${xq},123 C${xq-25},145 ${xq-25},172 ${xq},194" fill="none" stroke="var(--accent)" stroke-width="1.3" opacity=".55" marker-end="url(#arrow)"/>`;
+    }
+    if(showI){
+      h += line(xi,122,xi,294,'tick');
+      h += circle(xi,y,9,'pointI');
+      h += text(xi,317,`ξ = r + √2/${v.k} ≈ ${fmt(v.xi,4)}`,'label-ink');
+      h += `<path d="M${xi},303 C${xi+25},282 ${xi+25},243 ${xi},219" fill="none" stroke="var(--warm)" stroke-width="1.3" opacity=".55" marker-end="url(#arrow)"/>`;
+    }
+    h += text(70,52,'Two disjoint dense sets share every open interval.','label-ink','start');
+    h += text(70,72,'Rational points are shown in teal; irrational witnesses in warm ochre.','label','start');
+    svg.innerHTML = h;
+  }
+
+  function drawScaled(v){
+    const svg = $('scaledSvg');
+    const A = v.n*v.a, B = v.n*v.b, M = v.m;
+    const xmin = Math.floor(A)-1.1, xmax = Math.ceil(B)+1.1;
+    const y = 130;
+    let h = `<rect width="900" height="250" fill="transparent"/>`;
+    for(let t=Math.ceil(xmin); t<=Math.floor(xmax); t++){
+      const x = map(t,xmin,xmax,70,830);
+      h += line(x,74,x,180,'gridline');
+      h += line(x,y-9,x,y+9,'tick');
+      h += text(x,y+31,t,'label');
+    }
+    h += line(55,y,845,y,'axis');
+    const xA = map(A,xmin,xmax,70,830), xB = map(B,xmin,xmax,70,830), xM = map(M,xmin,xmax,70,830);
+    h += `<line x1="${xA}" y1="${y}" x2="${xB}" y2="${y}" class="interval"/>`;
+    h += circle(xA,y,7,'open-dot') + circle(xB,y,7,'open-dot');
+    h += circle(xM,y,9,'pointQ');
+    h += text(xA,y-22,`na=${fmt(A,3)}`,'label-serif');
+    h += text(xB,y-22,`nb=${fmt(B,3)}`,'label-serif');
+    h += text(xM,y-42,`integer m=${M}`,'label-ink');
+    h += text(70,40,`Scaled length: n(b−a) = ${v.n} · ${fmt(v.width,3)} = ${fmt(v.n*v.width,3)} > 1`,'label-ink','start');
+    h += text(70,218,`Dividing back by n sends m to q=m/n inside the original interval.`,'label','start');
+    svg.innerHTML = h;
+  }
+
+  function drawShift(v){
+    const svg = $('shiftSvg');
+    const xmin = v.a - v.tau - Math.max(.35, v.width*.23);
+    const xmax = v.b + Math.max(.35, v.width*.23);
+    const y1 = 88, y2 = 164;
+    let h = `<rect width="900" height="250" fill="transparent"/>`;
+    const xa = map(v.a,xmin,xmax,70,830), xb = map(v.b,xmin,xmax,70,830);
+    const xsA = map(v.a-v.tau,xmin,xmax,70,830), xsB = map(v.b-v.tau,xmin,xmax,70,830);
+    const xr = map(v.r,xmin,xmax,70,830), xxi = map(v.xi,xmin,xmax,70,830);
+    h += line(55,y1,845,y1,'axis') + line(55,y2,845,y2,'axis');
+    h += `<line x1="${xa}" y1="${y1}" x2="${xb}" y2="${y1}" class="interval"/>`;
+    h += circle(xa,y1,7,'open-dot') + circle(xb,y1,7,'open-dot');
+    h += `<line x1="${xsA}" y1="${y2}" x2="${xsB}" y2="${y2}" class="shifted"/>`;
+    h += circle(xsA,y2,6,'open-dot') + circle(xsB,y2,6,'open-dot');
+    h += circle(xr,y2,8,'pointQ');
+    h += circle(xxi,y1,8,'pointI');
+    h += `<defs><marker id="arrow2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--warm)"/></marker></defs>`;
+    h += `<path d="M${xr},${y2-16} C${(xr+xxi)/2},${y2-58} ${(xr+xxi)/2},${y1+48} ${xxi},${y1+16}" fill="none" stroke="var(--warm)" stroke-width="1.6" opacity=".78" marker-end="url(#arrow2)"/>`;
+    h += text(70,37,`τ = √2/${v.k} ≈ ${fmt(v.tau,5)} < b−a`,'label-ink','start');
+    h += text((xa+xb)/2,y1-21,'target interval (a,b)','label-ink');
+    h += text((xsA+xsB)/2,y2+35,'shifted interval (a−τ,b−τ)','label');
+    h += text(xr,y2-22,`r∈ℚ`,'label-ink');
+    h += text(xxi,y1+34,`ξ=r+τ∉ℚ`,'label-ink');
+    h += text(70,224,'Rational + nonzero irrational is irrational; the shift places it back in (a,b).','label','start');
+    svg.innerHTML = h;
+  }
+
+  function drawDecimal(v){
+    const D = Math.pow(10, v.depth);
+    const minStep = Math.ceil(v.a*D);
+    let points=[];
+    for(let z=minStep; z/D < v.b && points.length<80; z++){
+      const x = z/D;
+      if(x>v.a && x<v.b) points.push(x);
+    }
+    const required = Math.max(1, Math.ceil(-Math.log10(v.width)) + 1);
+    $('decimalPill').textContent = `grid step 10⁻${v.depth}`;
+    let html = '';
+    const rows = [
+      {lab:'finite decimals', cls:'', arr:points.slice(0,42)},
+      {lab:'irrational shifts', cls:'ir', arr:points.slice(0,28).map(x=>x+Math.SQRT2/Math.pow(10, v.depth+2)).filter(x=>x>v.a&&x<v.b)}
+    ];
+    rows.forEach(row=>{
+      html += `<div class="decimal-row"><div>${row.lab}</div><div class="dotsline">`;
+      row.arr.forEach(x=>{
+        const pct = (x-v.a)/v.width*100;
+        html += `<span class="${row.cls}" style="left:${pct}%"></span>`;
+      });
+      html += `</div></div>`;
+    });
+    const first = points[0];
+    html += `<div class="small">At this depth, ${points.length ? `the first finite decimal inside is <strong>${fmt(first, v.depth)}</strong>.` : `no finite decimal grid point appears; increase depth to at least about <strong>${required}</strong>.`} Finite decimals are rational, but the proof above works in any ordered Archimedean field setting for ℝ.</div>`;
+    $('decimalStrip').innerHTML = html;
+  }
+
+  function update(){
+    const v = values();
+    $('centerVal').textContent = fmt(v.center,2);
+    $('widthVal').textContent = fmt(v.width,2);
+    $('marginVal').textContent = v.margin;
+    $('depthVal').textContent = v.depth;
+    $('statInterval').textContent = `(${fmt(v.a,3)}, ${fmt(v.b,3)})`;
+    $('statWidth').textContent = fmt(v.width,4);
+    $('statQ').textContent = `${v.m}/${v.n} ≈ ${fmt(v.q,5)}`;
+    $('statI').textContent = `${fmt(v.r,5)} + √2/${v.k} ≈ ${fmt(v.xi,5)}`;
+    $('interp').innerHTML = `Because <strong>n(b−a)=${fmt(v.n*v.width,3)}&gt;1</strong>, the scaled interval contains an integer <strong>m=${v.m}</strong>. Dividing by <strong>n=${v.n}</strong> gives a rational witness. For the irrational witness, shift by <strong>τ=√2/${v.k}</strong> and use rational density again.`;
+    $('mainFormula').innerHTML = state.mode==='q'
+      ? `∀ a&lt;b, &nbsp; ∃ q∈ℚ : a&lt;q&lt;b. &nbsp; A rational point is forced by the integer grid after scaling.`
+      : state.mode==='i'
+      ? `∀ a&lt;b, &nbsp; ∃ ξ∈ℝ∖ℚ : a&lt;ξ&lt;b. &nbsp; Shift a rational point by a tiny irrational τ.`
+      : `∀ a,b ∈ ℝ, &nbsp; a &lt; b &nbsp; ⇒ &nbsp; ∃ q ∈ ℚ, ∃ ξ ∈ ℝ∖ℚ : &nbsp; a &lt; q &lt; b and a &lt; ξ &lt; b.`;
+    drawMain(v); drawScaled(v); drawShift(v); drawDecimal(v);
+  }
+
+  inputs.forEach(id=>$(id).addEventListener('input', update));
+  document.querySelectorAll('#modeBtns .btn').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('#modeBtns .btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); state.mode = btn.dataset.mode; update();
+  }));
+  themeBtn.addEventListener('click',()=>{
+    const dark = document.body.getAttribute('data-theme') !== 'dark';
+    document.body.setAttribute('data-theme', dark ? 'dark':'light');
+    themeBtn.textContent = dark ? 'Light mode':'Dark mode';
+    update();
+  });
+  resetBtn.addEventListener('click',()=>{
+    $('center').value='0.35'; $('width').value='1.35'; $('margin').value='2'; $('depth').value='3';
+    document.querySelectorAll('#modeBtns .btn').forEach(b=>b.classList.toggle('active', b.dataset.mode==='both'));
+    state.mode='both'; update();
+  });
+  update();
+})();
+</script>
+</body>
+</html>

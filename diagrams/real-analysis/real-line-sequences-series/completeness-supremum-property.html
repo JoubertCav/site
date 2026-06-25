@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for completeness and the supremum property.">
+<title>Completeness and the Supremum Property | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+:root{
+  --bg:#f6f1e8;
+  --surface:#fffdf8;
+  --surface2:#f0eadf;
+  --ink:#1f2525;
+  --muted:#687270;
+  --line:#d7cfc2;
+  --soft:#e9e0d2;
+  --accent:#2e9b8f;
+  --accent2:#b87848;
+  --accent3:#526fa8;
+  --danger:#b95656;
+  --ok:#2d8f72;
+  --shadow:0 18px 50px rgba(38,32,22,.09);
+  --axis:#5f6866;
+  --grid:rgba(31,37,37,.08);
+  --cardAlpha:rgba(255,253,248,.86);
+}
+[data-theme="dark"]{
+  --bg:#0e1218;
+  --surface:#141b24;
+  --surface2:#192331;
+  --ink:#edf2ef;
+  --muted:#a4b0ad;
+  --line:#2a3543;
+  --soft:#202b39;
+  --accent:#59c8ba;
+  --accent2:#d29a68;
+  --accent3:#8da8e6;
+  --danger:#e07a7a;
+  --ok:#73d1a9;
+  --shadow:0 20px 60px rgba(0,0,0,.34);
+  --axis:#a5b0ad;
+  --grid:rgba(237,242,239,.08);
+  --cardAlpha:rgba(20,27,36,.86);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(46,155,143,.13), transparent 34rem),
+    radial-gradient(circle at 85% 20%, rgba(184,120,72,.10), transparent 28rem),
+    var(--bg);
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height:1.45;
+}
+.math, math{font-family:"STIX Two Math","Cambria Math",Georgia,serif}
+.app{max-width:1240px;margin:0 auto;padding:28px 18px 40px}
+.hero{
+  display:grid;
+  grid-template-columns:1.4fr auto;
+  gap:18px;
+  align-items:start;
+  margin-bottom:18px;
+}
+.title-card{
+  background:linear-gradient(135deg,var(--cardAlpha),rgba(255,255,255,.12));
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:26px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(12px);
+}
+h1{margin:0;font-size:clamp(2rem,4.5vw,4.1rem);letter-spacing:-.055em;line-height:.94;font-weight:760}
+.subtitle{max-width:760px;color:var(--muted);margin:14px 0 0;font-size:1.02rem}
+.pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.pill{border:1px solid var(--line);background:var(--surface2);border-radius:999px;padding:7px 10px;color:var(--muted);font-size:.78rem;letter-spacing:.02em}
+.mode-card{display:flex;gap:10px;align-items:center;justify-content:flex-end;min-width:190px}
+button,.select, input[type="range"]{font:inherit}
+button,.select{
+  border:1px solid var(--line);
+  color:var(--ink);
+  background:var(--surface);
+  border-radius:14px;
+  padding:10px 12px;
+  cursor:pointer;
+  box-shadow:0 7px 20px rgba(0,0,0,.04);
+}
+button:hover{border-color:var(--accent)}
+.toggle{display:flex;align-items:center;gap:8px}
+.tabs{display:flex;gap:8px;overflow:auto;padding:4px 0 16px;margin-bottom:2px}
+.tab{
+  white-space:nowrap;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--muted);
+  border-radius:999px;
+  padding:10px 14px;
+}
+.tab.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:290px 1fr 300px;gap:16px;align-items:start}
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.card.pad{padding:18px}
+.card-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 14px}
+h2{font-size:1rem;margin:0;letter-spacing:-.02em}
+h3{font-size:.86rem;margin:18px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.small{font-size:.86rem;color:var(--muted)}
+.definition{
+  padding:14px 16px;
+  border:1px solid var(--line);
+  background:linear-gradient(135deg,var(--surface2),transparent);
+  border-radius:18px;
+  margin:12px 0;
+}
+.formula{font-size:.98rem;color:var(--ink)}
+.control{padding:13px 0;border-top:1px solid var(--line)}
+.control:first-of-type{border-top:0}
+label{display:flex;justify-content:space-between;gap:12px;font-size:.86rem;color:var(--muted);margin-bottom:8px}
+.value{font-variant-numeric:tabular-nums;color:var(--ink)}
+input[type="range"]{width:100%;accent-color:var(--accent)}
+select{width:100%}.select{appearance:none}
+.diagram-wrap{padding:12px;background:linear-gradient(180deg,var(--surface),var(--surface2));min-height:560px}
+svg{display:block;width:100%;height:auto;border-radius:20px;background:
+  linear-gradient(90deg,var(--grid) 1px,transparent 1px),
+  linear-gradient(0deg,var(--grid) 1px,transparent 1px),
+  var(--surface);
+  background-size:44px 44px;
+  border:1px solid var(--line);
+}
+.panel-section{display:none}.panel-section.active{display:block}
+.notice{
+  border-left:3px solid var(--accent);
+  padding:12px 13px;
+  background:var(--surface2);
+  border-radius:14px;
+  color:var(--muted);
+  font-size:.9rem;
+}
+.status{
+  display:grid;
+  gap:10px;
+  margin-top:12px;
+}
+.kv{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid var(--line);padding:8px 0;font-size:.9rem}
+.kv:last-child{border-bottom:0}
+.kv span:first-child{color:var(--muted)}
+.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface2);border-radius:999px;padding:5px 8px;font-size:.78rem;color:var(--muted)}
+.badge.ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok),var(--line) 60%)}
+.badge.no{color:var(--danger);border-color:color-mix(in srgb,var(--danger),var(--line) 60%)}
+.law-list{display:grid;gap:8px}
+.law{
+  padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--surface2);cursor:pointer
+}
+.law.active{outline:2px solid var(--accent);background:linear-gradient(135deg,rgba(46,155,143,.12),var(--surface2))}
+.proof-step{border:1px solid var(--line);border-radius:16px;padding:12px;background:var(--surface2);margin:8px 0}
+.footer-summary{margin-top:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.summary-card{padding:14px;border:1px solid var(--line);background:var(--surface);border-radius:20px;box-shadow:var(--shadow)}
+.summary-card strong{display:block;margin-bottom:5px}
+code{font-family:"SFMono-Regular",Consolas,monospace;background:var(--surface2);padding:2px 5px;border-radius:6px}
+@media(max-width:1050px){.grid{grid-template-columns:1fr}.diagram-wrap{min-height:auto}.hero{grid-template-columns:1fr}.mode-card{justify-content:flex-start}.footer-summary{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.app{padding:18px 12px 28px}.title-card{padding:20px;border-radius:22px}.footer-summary{grid-template-columns:1fr}.tabs{padding-bottom:10px}.card{border-radius:20px}}
+</style>
+</head>
+<body data-theme="light">
+<div class="app">
+  <header class="hero">
+    <div class="title-card">
+      <h1>Completeness<br>and Supremum</h1>
+      <p class="subtitle">The real line is not merely ordered. It has no missing boundary points: every nonempty bounded-above set has a least upper bound.</p>
+      <div class="pill-row">
+        <span class="pill">upper bounds</span>
+        <span class="pill">least upper bound</span>
+        <span class="pill">Dedekind cuts</span>
+        <span class="pill">nested intervals</span>
+        <span class="pill">equivalent forms</span>
+      </div>
+    </div>
+    <div class="mode-card">
+      <button id="themeBtn" class="toggle" aria-label="toggle theme">◐ Theme</button>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="sections">
+    <button class="tab active" data-tab="sup">Supremum lab</button>
+    <button class="tab" data-tab="cut">Dedekind cuts</button>
+    <button class="tab" data-tab="nested">Nested intervals</button>
+    <button class="tab" data-tab="equiv">Equivalence map</button>
+  </nav>
+
+  <section id="sup" class="panel-section active">
+    <div class="grid">
+      <aside class="card pad">
+        <div class="card-title"><h2>Controls</h2><span class="badge">set on a line</span></div>
+        <div class="definition">
+          <div class="formula math">s = sup A ⇔ s is an upper bound and every smaller number fails.</div>
+        </div>
+        <div class="control">
+          <label for="setModel">Set model</label>
+          <select id="setModel" class="select">
+            <option value="open">A = (0,a)</option>
+            <option value="closed">A = [0,a]</option>
+            <option value="sequence">A = {a − 1/n : n∈N}</option>
+            <option value="sqrt">A = {q∈Q : q² &lt; 2}</option>
+          </select>
+        </div>
+        <div class="control" id="aControl">
+          <label for="aVal">endpoint a <span class="value" id="aOut"></span></label>
+          <input id="aVal" type="range" min="0.6" max="3.6" step="0.05" value="2.2" />
+        </div>
+        <div class="control">
+          <label for="mVal">candidate upper bound M <span class="value" id="mOut"></span></label>
+          <input id="mVal" type="range" min="-0.5" max="4.2" step="0.02" value="2.6" />
+        </div>
+        <div class="control">
+          <label for="sampleN">visible sample <span class="value" id="nOut"></span></label>
+          <input id="sampleN" type="range" min="4" max="60" step="1" value="24" />
+        </div>
+        <div class="notice" id="supFormula"></div>
+      </aside>
+      <main class="card">
+        <div class="diagram-wrap">
+          <svg id="supSvg" viewBox="0 0 820 560" role="img" aria-label="supremum diagram"></svg>
+        </div>
+      </main>
+      <aside class="card pad">
+        <div class="card-title"><h2>Interpretation</h2><span id="ubBadge" class="badge"></span></div>
+        <div class="status" id="supStatus"></div>
+        <h3>What to notice</h3>
+        <div class="notice" id="supNotice"></div>
+        <h3>Exam summary</h3>
+        <div class="definition small">
+          To prove <span class="math">s = sup A</span>, prove:<br><br>
+          1. <span class="math">∀x∈A, x≤s</span>.<br>
+          2. <span class="math">∀ε&gt;0, ∃x∈A : s−ε &lt; x ≤ s</span>.<br><br>
+          The second line says: no smaller number can still bound the set.
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="cut" class="panel-section">
+    <div class="grid">
+      <aside class="card pad">
+        <div class="card-title"><h2>Controls</h2><span class="badge">cut = left set</span></div>
+        <div class="definition">
+          <div class="formula math">L is a cut: nonempty, proper, downward closed, with no largest element.</div>
+        </div>
+        <div class="control">
+          <label for="cutModel">Cut model</label>
+          <select id="cutModel" class="select">
+            <option value="rational">rational cut L = {x : x &lt; c}</option>
+            <option value="sqrt2">irrational cut L = {q∈Q : q² &lt; 2 or q &lt; 0}</option>
+          </select>
+        </div>
+        <div class="control" id="cControl">
+          <label for="cVal">cut point c <span class="value" id="cOut"></span></label>
+          <input id="cVal" type="range" min="-1.4" max="2.6" step="0.05" value="0.85" />
+        </div>
+        <div class="control">
+          <label for="ambient">ambient line</label>
+          <select id="ambient" class="select">
+            <option value="R">real line R</option>
+            <option value="Q">rational shadow Q</option>
+          </select>
+        </div>
+        <div class="notice" id="cutFormula"></div>
+      </aside>
+      <main class="card">
+        <div class="diagram-wrap">
+          <svg id="cutSvg" viewBox="0 0 820 560" role="img" aria-label="Dedekind cut diagram"></svg>
+        </div>
+      </main>
+      <aside class="card pad">
+        <div class="card-title"><h2>Interpretation</h2><span class="badge">gap test</span></div>
+        <div class="status" id="cutStatus"></div>
+        <h3>What to notice</h3>
+        <div class="notice" id="cutNotice"></div>
+        <h3>Exam summary</h3>
+        <div class="definition small">
+          A Dedekind cut records all numbers to the left of a boundary. Completeness says every such admissible boundary is represented by a real number. In <span class="math">Q</span>, the <span class="math">√2</span> boundary is missing.
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="nested" class="panel-section">
+    <div class="grid">
+      <aside class="card pad">
+        <div class="card-title"><h2>Controls</h2><span class="badge">interval stack</span></div>
+        <div class="definition">
+          <div class="formula math">I₁ ⊇ I₂ ⊇ I₃ ⊇ ···</div>
+        </div>
+        <div class="control">
+          <label for="nestedModel">Model</label>
+          <select id="nestedModel" class="select">
+            <option value="closed">closed shrinking intervals</option>
+            <option value="open">open intervals (0,1/n)</option>
+            <option value="sqrt">rational intervals trapping √2</option>
+          </select>
+        </div>
+        <div class="control" id="centerControl">
+          <label for="centerVal">center c <span class="value" id="centerOut"></span></label>
+          <input id="centerVal" type="range" min="-1.6" max="2.2" step="0.05" value="0.45" />
+        </div>
+        <div class="control" id="radiusControl">
+          <label for="radiusVal">initial radius r₁ <span class="value" id="radiusOut"></span></label>
+          <input id="radiusVal" type="range" min="0.5" max="2.4" step="0.05" value="1.7" />
+        </div>
+        <div class="control">
+          <label for="levelsVal">number of intervals <span class="value" id="levelsOut"></span></label>
+          <input id="levelsVal" type="range" min="4" max="14" step="1" value="9" />
+        </div>
+        <div class="control" id="decayControl">
+          <label for="decayVal">shrink factor ρ <span class="value" id="decayOut"></span></label>
+          <input id="decayVal" type="range" min="0.35" max="0.85" step="0.01" value="0.62" />
+        </div>
+        <div class="notice" id="nestedFormula"></div>
+      </aside>
+      <main class="card">
+        <div class="diagram-wrap">
+          <svg id="nestedSvg" viewBox="0 0 820 620" role="img" aria-label="nested intervals diagram"></svg>
+        </div>
+      </main>
+      <aside class="card pad">
+        <div class="card-title"><h2>Interpretation</h2><span class="badge">intersection</span></div>
+        <div class="status" id="nestedStatus"></div>
+        <h3>What to notice</h3>
+        <div class="notice" id="nestedNotice"></div>
+        <h3>Exam summary</h3>
+        <div class="definition small">
+          In <span class="math">R</span>, nested nonempty closed bounded intervals have nonempty intersection. If lengths tend to zero, the intersection consists of exactly one point.
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="equiv" class="panel-section">
+    <div class="grid">
+      <aside class="card pad">
+        <div class="card-title"><h2>Completeness forms</h2><span class="badge">click one</span></div>
+        <div class="law-list" id="lawList"></div>
+      </aside>
+      <main class="card">
+        <div class="diagram-wrap">
+          <svg id="equivSvg" viewBox="0 0 820 560" role="img" aria-label="equivalence map"></svg>
+        </div>
+      </main>
+      <aside class="card pad">
+        <div class="card-title"><h2 id="lawTitle">Supremum property</h2><span class="badge">theorem form</span></div>
+        <div class="definition" id="lawStatement"></div>
+        <h3>Proof microscope</h3>
+        <div id="proofSteps"></div>
+        <h3>What to notice</h3>
+        <div class="notice" id="equivNotice"></div>
+      </aside>
+    </div>
+
+    <div class="footer-summary">
+      <div class="summary-card small"><strong>Supremum property</strong>Nonempty and bounded above ⇒ least upper bound exists.</div>
+      <div class="summary-card small"><strong>Dedekind completeness</strong>No admissible cut leaves a hole in the ordered line.</div>
+      <div class="summary-card small"><strong>Nested intervals</strong>Closed bounded nested intervals cannot vanish.</div>
+      <div class="summary-card small"><strong>Cauchy completeness</strong>Every internally convergent-looking sequence actually converges.</div>
+    </div>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const root = document.body;
+const fmt = x => (Math.abs(x) < 1e-10 ? 0 : x).toFixed(2);
+const NS = 'http://www.w3.org/2000/svg';
+function E(tag, attrs={}, children=[]){ const el=document.createElementNS(NS,tag); Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v)); children.forEach(c=>el.appendChild(c)); return el; }
+function T(x,y,text,cls='',anchor='middle',size=13){ const t=E('text',{x,y,'text-anchor':anchor,class:cls,'font-size':size,fill:'var(--ink)'}); t.textContent=text; return t; }
+function line(x1,y1,x2,y2,attrs={}){return E('line',Object.assign({x1,y1,x2,y2,stroke:'var(--axis)','stroke-width':2,'stroke-linecap':'round'},attrs));}
+function rect(x,y,w,h,attrs={}){return E('rect',Object.assign({x,y,width:w,height:h,rx:12,fill:'none',stroke:'var(--line)'},attrs));}
+function circle(cx,cy,r,attrs={}){return E('circle',Object.assign({cx,cy,r,fill:'var(--accent)',stroke:'var(--surface)','stroke-width':2},attrs));}
+function clear(svg){ while(svg.firstChild) svg.removeChild(svg.firstChild); }
+function scale(domain, range){ const [a,b]=domain,[c,d]=range; return x => c+(x-a)*(d-c)/(b-a); }
+function axis(svg, y, domain=[-2,4], range=[70,750]){
+  const x=scale(domain,range);
+  svg.appendChild(line(range[0],y,range[1],y,{stroke:'var(--axis)','stroke-width':2}));
+  for(let k=Math.ceil(domain[0]); k<=Math.floor(domain[1]); k++){
+    const xx=x(k); svg.appendChild(line(xx,y-7,xx,y+7,{stroke:'var(--axis)','stroke-width':1}));
+    svg.appendChild(T(xx,y+28,String(k),'','middle',12));
+  }
+  return x;
+}
+function labelBox(svg,x,y,txt,fill='var(--surface2)',stroke='var(--line)'){
+  const g=E('g');
+  const w=Math.max(42,txt.length*7.2+18);
+  g.appendChild(rect(x-w/2,y-17,w,30,{fill,stroke,rx:15}));
+  g.appendChild(T(x,y+4,txt,'','middle',12));
+  svg.appendChild(g); return g;
+}
+function setHtml(id, html){ $(id).innerHTML=html; }
+
+$('themeBtn').addEventListener('click',()=>{
+  root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+  drawAll();
+});
+
+document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel-section').forEach(s=>s.classList.remove('active'));
+  btn.classList.add('active'); $(btn.dataset.tab).classList.add('active'); drawAll();
+}));
+
+['setModel','aVal','mVal','sampleN','cutModel','cVal','ambient','nestedModel','centerVal','radiusVal','levelsVal','decayVal'].forEach(id=>{
+  const el=$(id); if(el) el.addEventListener('input',drawAll);
+});
+
+function supData(){
+  const model=$('setModel').value; const a=+$('aVal').value; const M=+$('mVal').value; const N=+$('sampleN').value;
+  if(model==='sqrt') return {model,a:Math.SQRT2,M,N,sup:Math.SQRT2,domain:[-0.5,3.2]};
+  return {model,a,M,N,sup:a,domain:[-0.5,4.2]};
+}
+function isUpper(model,M,sup){ return M + 1e-9 >= sup; }
+function witness(model,M,sup,a,N){
+  if(M>=sup) return null;
+  if(model==='closed') return sup;
+  if(model==='open') return (M+sup)/2;
+  if(model==='sequence'){
+    const need = 1/(sup-M);
+    const n = Math.max(1,Math.ceil(need)+1);
+    return sup - 1/n;
+  }
+  if(model==='sqrt') return (M+sup)/2;
+}
+function drawSup(){
+  const svg=$('supSvg'); clear(svg);
+  const {model,a,M,N,sup,domain}=supData();
+  $('aOut').textContent=fmt(a); $('mOut').textContent=fmt(M); $('nOut').textContent=N;
+  $('aControl').style.display = model==='sqrt' ? 'none':'block';
+  const x=axis(svg,330,domain,[70,750]);
+  svg.appendChild(T(70,70,'A subset of the ordered line','', 'start',18));
+  svg.appendChild(T(70,96,'Upper bounds form a ray. The supremum is the first point of that ray.','', 'start',13));
+
+  const y=330;
+  const supX=x(sup), MX=x(M);
+  // upper-bound ray
+  svg.appendChild(line(supX,y-54,x(domain[1]),y-54,{stroke:'var(--accent2)','stroke-width':12,'stroke-opacity':.22}));
+  svg.appendChild(line(supX,y-54,x(domain[1]),y-54,{stroke:'var(--accent2)','stroke-width':2,'stroke-dasharray':'5 7'}));
+  svg.appendChild(T((supX+x(domain[1]))/2,y-72,'upper bounds','', 'middle',12));
+
+  if(model==='open' || model==='closed'){
+    svg.appendChild(line(x(0),y,x(a),y,{stroke:'var(--accent)','stroke-width':14,'stroke-opacity':.30}));
+    svg.appendChild(line(x(0),y,x(a),y,{stroke:'var(--accent)','stroke-width':4}));
+    svg.appendChild(circle(x(0),y,8,{fill:model==='closed'?'var(--accent)':'var(--surface)',stroke:'var(--accent)','stroke-width':3}));
+    svg.appendChild(circle(x(a),y,8,{fill:model==='closed'?'var(--accent)':'var(--surface)',stroke:'var(--accent)','stroke-width':3}));
+  }
+  if(model==='sequence'){
+    for(let n=1;n<=N;n++){
+      const val=a-1/n; const r=n===1?5:Math.max(2.5,6-n*.05);
+      svg.appendChild(circle(x(val),y+20*Math.sin(n*.9),r,{fill:'var(--accent)','stroke':'var(--surface)','stroke-width':1.5,'fill-opacity':.78}));
+    }
+    svg.appendChild(line(x(a-1),y,x(a),y,{stroke:'var(--accent)','stroke-width':2,'stroke-dasharray':'4 6','stroke-opacity':.6}));
+  }
+  if(model==='sqrt'){
+    for(let i=0;i<N;i++){
+      const val = 0.05 + i*(sup-0.06)/Math.max(1,N-1);
+      svg.appendChild(circle(x(val),y+18*Math.sin(i*1.77),4,{fill:'var(--accent)','stroke':'var(--surface)','stroke-width':1.2,'fill-opacity':.72}));
+    }
+    svg.appendChild(line(x(0),y,x(sup),y,{stroke:'var(--accent)','stroke-width':3,'stroke-dasharray':'4 7'}));
+    svg.appendChild(T(x(.2),y+52,'rational points with q² < 2','', 'start',12));
+  }
+
+  // Sup marker
+  svg.appendChild(line(supX,126,supX,420,{stroke:'var(--accent2)','stroke-width':2.5}));
+  svg.appendChild(circle(supX,y-54,7,{fill:'var(--accent2)',stroke:'var(--surface)','stroke-width':2}));
+  labelBox(svg,supX,116, model==='sqrt'?'sup = √2':'sup = '+fmt(sup),'var(--surface2)','var(--accent2)');
+
+  // M marker
+  svg.appendChild(line(MX,160,MX,445,{stroke:isUpper(model,M,sup)?'var(--ok)':'var(--danger)','stroke-width':2,'stroke-dasharray':'7 7'}));
+  svg.appendChild(circle(MX,y+70,8,{fill:isUpper(model,M,sup)?'var(--ok)':'var(--danger)',stroke:'var(--surface)','stroke-width':2}));
+  labelBox(svg,MX,468,'M = '+fmt(M),'var(--surface2)',isUpper(model,M,sup)?'var(--ok)':'var(--danger)');
+
+  const w=witness(model,M,sup,a,N);
+  if(w!==null){
+    svg.appendChild(line(x(w),y-28,x(w),y+45,{stroke:'var(--danger)','stroke-width':2}));
+    svg.appendChild(circle(x(w),y,6,{fill:'var(--danger)',stroke:'var(--surface)','stroke-width':2}));
+    labelBox(svg,x(w),y-45,'witness x > M','var(--surface2)','var(--danger)');
+    svg.appendChild(E('path',{d:`M ${MX} ${y+102} C ${(MX+x(w))/2} ${y+135}, ${(MX+x(w))/2} ${y+135}, ${x(w)} ${y+102}`, fill:'none', stroke:'var(--danger)','stroke-width':1.5,'marker-end':''}));
+  }
+
+  const upper=isUpper(model,M,sup);
+  $('ubBadge').className='badge '+(upper?'ok':'no');
+  $('ubBadge').textContent=upper?'upper bound':'not upper';
+  const attained = model==='closed' ? 'yes' : 'no';
+  const setFormula = model==='open' ? `A=(0,${fmt(a)})` : model==='closed' ? `A=[0,${fmt(a)}]` : model==='sequence' ? `A={${fmt(a)}−1/n:n∈N}` : 'A={q∈Q:q²<2}';
+  setHtml('supFormula', `<span class="math">${setFormula}</span><br><span class="math">sup A = ${model==='sqrt'?'√2':fmt(sup)}</span>`);
+  setHtml('supStatus', `
+    <div class="kv"><span>Candidate status</span><strong>${upper?'M bounds A above':'some x∈A lies above M'}</strong></div>
+    <div class="kv"><span>Least upper bound</span><strong>${model==='sqrt'?'√2':fmt(sup)}</strong></div>
+    <div class="kv"><span>Maximum attained?</span><strong>${attained}</strong></div>
+    <div class="kv"><span>Boundary logic</span><strong>${upper?'M is in the upper-bound ray':'M lies left of the ray'}</strong></div>`);
+  const notice = model==='closed'
+    ? 'Here the supremum is also a maximum: the boundary point belongs to the set.'
+    : model==='sqrt'
+    ? 'In R, √2 is the least upper bound. In Q alone, this boundary is missing.'
+    : 'The supremum need not belong to the set. It is the first upper bound, not necessarily an element.';
+  $('supNotice').textContent=notice;
+}
+
+function drawCut(){
+  const svg=$('cutSvg'); clear(svg);
+  const model=$('cutModel').value; const ambient=$('ambient').value; let c=+$('cVal').value;
+  if(model==='sqrt2') c=Math.SQRT2;
+  $('cOut').textContent=fmt(c); $('cControl').style.display=model==='sqrt2'?'none':'block';
+  const domain=[-2,3]; const x=axis(svg,315,domain,[70,750]); const y=315;
+  svg.appendChild(T(70,70,'A cut is a boundary described from the left','', 'start',18));
+  svg.appendChild(T(70,96,'Completeness says the boundary is an actual real point, not a hole.','', 'start',13));
+
+  const cx=x(c);
+  svg.appendChild(line(x(domain[0]),y,cx,y,{stroke:'var(--accent)','stroke-width':18,'stroke-opacity':.30}));
+  svg.appendChild(line(cx,y,x(domain[1]),y,{stroke:'var(--accent2)','stroke-width':18,'stroke-opacity':.20}));
+  svg.appendChild(line(x(domain[0]),y,cx,y,{stroke:'var(--accent)','stroke-width':4}));
+  svg.appendChild(line(cx,y,x(domain[1]),y,{stroke:'var(--accent2)','stroke-width':4}));
+  svg.appendChild(line(cx,128,cx,440,{stroke:'var(--accent3)','stroke-width':2.5}));
+  labelBox(svg,cx,118,model==='sqrt2'?'boundary √2':'boundary c','var(--surface2)','var(--accent3)');
+  svg.appendChild(circle(cx,y,8,{fill:'var(--surface)',stroke:'var(--accent3)','stroke-width':3}));
+
+  // Rational shadow points
+  if(ambient==='Q'){
+    let pts=[];
+    for(let den=1; den<=8; den++) for(let num=Math.ceil(domain[0]*den); num<=Math.floor(domain[1]*den); num++) pts.push(num/den);
+    pts=[...new Set(pts.map(v=>v.toFixed(4)))].map(Number).sort((a,b)=>a-b);
+    pts.forEach((v,i)=>{
+      if(Math.abs(v-c)<.015) return;
+      const left = v<c;
+      svg.appendChild(circle(x(v),y+(left?-36:36)+(i%3-1)*6,2.8,{fill:left?'var(--accent)':'var(--accent2)',stroke:'none','fill-opacity':.72}));
+    });
+    svg.appendChild(T(70,502,'Q is drawn as a finite rational shadow: the real density is suggested, not exhausted.','', 'start',12));
+  } else {
+    svg.appendChild(rect(x(domain[0]),y-52,cx-x(domain[0]),104,{fill:'rgba(46,155,143,.08)',stroke:'none'}));
+    svg.appendChild(rect(cx,y-52,x(domain[1])-cx,104,{fill:'rgba(184,120,72,.06)',stroke:'none'}));
+  }
+  labelBox(svg,(x(domain[0])+cx)/2,y-78,'L: left set','var(--surface2)','var(--accent)');
+  labelBox(svg,(cx+x(domain[1]))/2,y+82,'R: right set','var(--surface2)','var(--accent2)');
+
+  const realized = ambient==='R' || model==='rational';
+  const boundaryName = model==='sqrt2'?'√2':fmt(c);
+  setHtml('cutFormula', model==='sqrt2'
+    ? `<span class="math">L={q∈Q : q&lt;0 or q²&lt;2}</span><br><span class="math">boundary = √2</span>`
+    : `<span class="math">L={x : x&lt;${fmt(c)}}</span><br><span class="math">boundary = ${fmt(c)}</span>`);
+  setHtml('cutStatus', `
+    <div class="kv"><span>Ambient</span><strong>${ambient}</strong></div>
+    <div class="kv"><span>Boundary</span><strong>${boundaryName}</strong></div>
+    <div class="kv"><span>Boundary belongs to ambient?</span><strong>${realized?'yes':'no'}</strong></div>
+    <div class="kv"><span>Cut has largest left element?</span><strong>no</strong></div>`);
+  $('cutNotice').textContent = model==='sqrt2' && ambient==='Q'
+    ? 'This is the canonical hole in Q: the cut is perfectly ordered, but no rational number realizes its boundary.'
+    : 'The cut is represented by a point on the real line. The boundary need not belong to the left set.';
+}
+
+function nestedIntervals(){
+  const model=$('nestedModel').value; const c=+$('centerVal').value; const r=+$('radiusVal').value; const L=+$('levelsVal').value; const rho=+$('decayVal').value;
+  let arr=[];
+  if(model==='closed') for(let n=1;n<=L;n++){ let rn=r*Math.pow(rho,n-1); arr.push({a:c-rn,b:c+rn,open:false,label:`I${n}`}); }
+  if(model==='open') for(let n=1;n<=L;n++) arr.push({a:0,b:1/n,open:true,label:`I${n}`});
+  if(model==='sqrt'){
+    const s=Math.SQRT2;
+    for(let n=1;n<=L;n++){ const d=1/(n+1); arr.push({a:s-d,b:s+d,open:false,label:`I${n}`}); }
+  }
+  return {model,c,r,L,rho,arr};
+}
+function drawNested(){
+  const svg=$('nestedSvg'); clear(svg);
+  const {model,c,r,L,rho,arr}=nestedIntervals();
+  $('centerOut').textContent=fmt(c); $('radiusOut').textContent=fmt(r); $('levelsOut').textContent=L; $('decayOut').textContent=fmt(rho);
+  $('centerControl').style.display=model==='closed'?'block':'none';
+  $('radiusControl').style.display=model==='closed'?'block':'none';
+  $('decayControl').style.display=model==='closed'?'block':'none';
+  const domain = model==='open' ? [-.25,1.25] : model==='sqrt' ? [.2,2.5] : [c-r-0.35,c+r+0.35];
+  const x=axis(svg,540,domain,[70,750]);
+  svg.appendChild(T(70,58,'Nested intervals turn completeness into a shrinking corridor','', 'start',18));
+  svg.appendChild(T(70,84,'Closedness keeps the limiting boundary inside; lengths going to zero force uniqueness.','', 'start',13));
+  const top=130, gap=30;
+  arr.forEach((it,i)=>{
+    const y=top+i*gap; const xa=x(it.a), xb=x(it.b);
+    svg.appendChild(line(xa,y,xb,y,{stroke:'var(--accent)','stroke-width':10,'stroke-opacity':.25}));
+    svg.appendChild(line(xa,y,xb,y,{stroke:'var(--accent)','stroke-width':3}));
+    svg.appendChild(circle(xa,y,5,{fill:it.open?'var(--surface)':'var(--accent)',stroke:'var(--accent)','stroke-width':2}));
+    svg.appendChild(circle(xb,y,5,{fill:it.open?'var(--surface)':'var(--accent)',stroke:'var(--accent)','stroke-width':2}));
+    svg.appendChild(T(42,y+4,it.label,'','middle',12));
+  });
+  let interA=Math.max(...arr.map(z=>z.a)); let interB=Math.min(...arr.map(z=>z.b));
+  if(model==='closed') { interA=c; interB=c; }
+  if(model==='sqrt') { interA=Math.SQRT2; interB=Math.SQRT2; }
+  if(model==='open') { interA=0; interB=0; }
+  const ix=x(interA);
+  svg.appendChild(line(ix,108,ix,555,{stroke:model==='open'?'var(--danger)':'var(--accent2)','stroke-width':2.5,'stroke-dasharray':model==='open'?'7 7':'none'}));
+  labelBox(svg,ix,105,model==='sqrt'?'√2':model==='open'?'missing 0':'limit c', 'var(--surface2)', model==='open'?'var(--danger)':'var(--accent2)');
+  if(model==='open'){
+    svg.appendChild(T(70,500,'∩(0,1/n)=∅ because 0 is excluded and every x>0 eventually falls outside.','', 'start',13));
+  }
+  const status = model==='open' ? 'empty' : 'one point';
+  const closed = model==='open' ? 'no' : 'yes';
+  const formula = model==='closed' ? `Iₙ=[c−r₁ρⁿ⁻¹,c+r₁ρⁿ⁻¹]` : model==='open' ? `Iₙ=(0,1/n)` : `Iₙ=[√2−1/(n+1),√2+1/(n+1)]`;
+  setHtml('nestedFormula', `<span class="math">${formula}</span>`);
+  setHtml('nestedStatus', `
+    <div class="kv"><span>Nested?</span><strong>yes</strong></div>
+    <div class="kv"><span>Closed intervals?</span><strong>${closed}</strong></div>
+    <div class="kv"><span>Intersection</span><strong>${status}</strong></div>
+    <div class="kv"><span>Lengths tend to zero?</span><strong>yes</strong></div>`);
+  $('nestedNotice').textContent = model==='open'
+    ? 'The failure is not completeness. The theorem requires closed intervals; open intervals can shrink toward a point they exclude.'
+    : model==='sqrt'
+    ? 'In R the trapped point is √2. In Q the same corridor would aim at a missing point.'
+    : 'The nested closed intervals cannot lose their limiting point; shrinking lengths make that point unique.';
+}
+
+const laws = [
+  {id:'lub', title:'Supremum property', short:'nonempty bounded-above sets have suprema', statement:'Every nonempty A⊂R bounded above has s=sup A in R.', steps:['First show the set of upper bounds is nonempty.', 'Completeness selects its least element.', 'The ε-characterization says points of A approach s from below.'], notice:'This is the central form: all other standard real-analysis completeness theorems can be recovered from it.'},
+  {id:'ded', title:'Dedekind completeness', short:'cuts have real boundaries', statement:'Every Dedekind cut of Q is realized by exactly one real number.', steps:['A cut is a downward-closed left set with no greatest element.', 'Take the supremum of the left set inside R.', 'That supremum is the missing boundary described by the cut.'], notice:'The cut does not name the boundary directly; it describes the boundary by everything lying to its left.'},
+  {id:'nested', title:'Nested interval property', short:'closed nested intervals intersect', statement:'If I₁⊇I₂⊇⋯ are nonempty closed bounded intervals in R, then ∩ₙIₙ≠∅.', steps:['Write Iₙ=[aₙ,bₙ].', 'The left endpoints form an increasing bounded sequence.', 'Let a=sup{aₙ}; then a≤bₙ for every n, hence a lies in every interval.'], notice:'The proof is supremum geometry: left endpoints climb, right endpoints still bound them.'},
+  {id:'mono', title:'Monotone convergence', short:'increasing bounded sequences converge', statement:'Every increasing sequence bounded above converges to its supremum.', steps:['Let s=sup{xₙ:n∈N}.', 'For ε>0, s−ε is not an upper bound.', 'So some x_N>s−ε; monotonicity keeps all later terms inside ε of s.'], notice:'A monotone sequence converges because its range has a least upper boundary.'},
+  {id:'cauchy', title:'Cauchy completeness', short:'Cauchy sequences converge', statement:'Every Cauchy sequence in R converges to a real number.', steps:['Cauchy sequences are eventually bounded.', 'Use nested closed intervals or limsup/liminf to trap the tail.', 'Completeness forces the trapped limiting point to exist.'], notice:'Cauchy means the sequence internally closes up; completeness says the point it closes around belongs to the space.'}
+];
+let activeLaw='lub';
+function drawEquiv(){
+  const list=$('lawList'); list.innerHTML='';
+  laws.forEach(l=>{ const d=document.createElement('div'); d.className='law '+(l.id===activeLaw?'active':''); d.innerHTML=`<strong>${l.title}</strong><br><span class="small">${l.short}</span>`; d.onclick=()=>{activeLaw=l.id;drawEquiv();}; list.appendChild(d); });
+  const law=laws.find(z=>z.id===activeLaw);
+  $('lawTitle').textContent=law.title;
+  $('lawStatement').innerHTML=`<div class="formula math">${law.statement}</div>`;
+  $('proofSteps').innerHTML=law.steps.map((s,i)=>`<div class="proof-step small"><strong>${i+1}.</strong> ${s}</div>`).join('');
+  $('equivNotice').textContent=law.notice;
+
+  const svg=$('equivSvg'); clear(svg);
+  svg.appendChild(T(70,56,'Equivalence map: one completeness phenomenon, several languages','', 'start',18));
+  svg.appendChild(T(70,82,'In the usual ordered-field/real-analysis setting, these forms are interchangeable.','', 'start',13));
+  const nodes = {
+    lub:[410,130,'Supremum'], ded:[205,260,'Cuts'], nested:[615,260,'Nested intervals'], mono:[305,420,'Monotone seq.'], cauchy:[515,420,'Cauchy seq.']
+  };
+  const edges=[['lub','ded'],['lub','nested'],['lub','mono'],['nested','cauchy'],['mono','cauchy'],['ded','nested'],['mono','nested']];
+  edges.forEach(([a,b])=>{
+    const A=nodes[a],B=nodes[b];
+    svg.appendChild(line(A[0],A[1],B[0],B[1],{stroke:'var(--line)','stroke-width':2.2}));
+  });
+  Object.entries(nodes).forEach(([id,n])=>{
+    const active=id===activeLaw;
+    svg.appendChild(circle(n[0],n[1],54,{fill:active?'var(--accent)':'var(--surface2)',stroke:active?'var(--accent)':'var(--line)','stroke-width':active?3:2,'fill-opacity':active?.85:1}));
+    const label=T(n[0],n[1]+4,n[2],'','middle',13); label.setAttribute('fill',active?'var(--bg)':'var(--ink)'); svg.appendChild(label);
+  });
+  const id=activeLaw, n=nodes[id];
+  svg.appendChild(circle(n[0],n[1],64,{fill:'none',stroke:'var(--accent2)','stroke-width':2,'stroke-dasharray':'6 7'}));
+}
+
+function drawAll(){ drawSup(); drawCut(); drawNested(); drawEquiv(); }
+drawAll();
+</script>
+</body>
+</html>

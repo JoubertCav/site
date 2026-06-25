@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for sequence convergence.">
+<title>Sequence Convergence | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+  :root{
+    --bg:#f7f2e9;
+    --paper:#fffdf7;
+    --paper-2:#f1eadf;
+    --ink:#202625;
+    --muted:#65716d;
+    --line:rgba(32,38,37,.13);
+    --grid:rgba(32,38,37,.08);
+    --accent:#2e9d8f;
+    --accent-2:#c1784a;
+    --accent-3:#6478b8;
+    --bad:#b95f5f;
+    --good:#2e9d8f;
+    --shadow:0 18px 45px rgba(32,38,37,.08);
+    --radius:20px;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --serif: Georgia, "Times New Roman", serif;
+  }
+  [data-theme="dark"]{
+    --bg:#0c1117;
+    --paper:#121923;
+    --paper-2:#17212d;
+    --ink:#ecf2ef;
+    --muted:#9ea9a5;
+    --line:rgba(236,242,239,.12);
+    --grid:rgba(236,242,239,.075);
+    --accent:#55c7b8;
+    --accent-2:#d59669;
+    --accent-3:#8ea2ee;
+    --bad:#ee8b8b;
+    --good:#55c7b8;
+    --shadow:0 22px 55px rgba(0,0,0,.28);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0; min-height:100%; background:var(--bg); color:var(--ink); font-family:var(--sans);}
+  body{transition:background .25s ease,color .25s ease;}
+  .wrap{width:min(1240px,94vw); margin:0 auto; padding:28px 0 42px;}
+  header{display:grid; grid-template-columns:1fr auto; gap:16px; align-items:start; margin-bottom:18px;}
+  .eyebrow{display:inline-flex; gap:8px; align-items:center; border:1px solid var(--line); background:color-mix(in srgb,var(--paper) 80%, transparent); border-radius:999px; padding:7px 11px; color:var(--muted); font-size:12px; letter-spacing:.04em; text-transform:uppercase;}
+  h1{font-family:var(--serif); font-weight:500; letter-spacing:-.035em; font-size:clamp(34px,5vw,62px); line-height:.96; margin:14px 0 10px;}
+  .subtitle{max-width:780px; color:var(--muted); font-size:16px; line-height:1.55; margin:0;}
+  .top-actions{display:flex; gap:10px; align-items:center; justify-content:flex-end; flex-wrap:wrap;}
+  button,.select-wrap select{font:inherit; color:var(--ink); background:var(--paper); border:1px solid var(--line); border-radius:999px; padding:10px 13px; box-shadow:0 6px 18px rgba(0,0,0,.035); cursor:pointer;}
+  button:hover,.select-wrap select:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));}
+  button.primary{background:var(--accent); color:#fff; border-color:transparent;}
+  [data-theme="dark"] button.primary{color:#07110f;}
+  .grid{display:grid; grid-template-columns:340px 1fr; gap:18px; align-items:start;}
+  .card{background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden;}
+  .card.pad{padding:18px;}
+  .control-card{position:sticky; top:14px;}
+  .card-title{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px;}
+  .card-title h2,.card-title h3{font-family:var(--serif); font-weight:500; margin:0; letter-spacing:-.02em;}
+  .card-title h2{font-size:24px}.card-title h3{font-size:20px}
+  .small{font-size:12px;color:var(--muted);line-height:1.45}.muted{color:var(--muted)}
+  .formula{font-family:var(--serif); border:1px solid var(--line); background:linear-gradient(180deg,color-mix(in srgb,var(--paper-2) 72%,transparent),transparent); border-radius:16px; padding:14px; line-height:1.55; font-size:18px; overflow:auto;}
+  .formula .mono{font-family:var(--mono); font-size:.9em;}
+  .controls{display:grid; gap:14px; margin-top:16px;}
+  label{display:grid; gap:7px; font-size:13px; color:var(--muted);}
+  .rowline{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  input[type="range"]{width:100%; accent-color:var(--accent);}
+  select{width:100%; appearance:none; background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%); background-position:calc(100% - 16px) 50%,calc(100% - 11px) 50%; background-size:5px 5px,5px 5px; background-repeat:no-repeat; padding-right:30px!important;}
+  .pill{font-family:var(--mono); color:var(--ink); border:1px solid var(--line); background:var(--paper-2); border-radius:999px; padding:4px 8px; font-size:12px; white-space:nowrap;}
+  .tabs{display:flex; gap:8px; flex-wrap:wrap; padding:12px; border-bottom:1px solid var(--line); background:color-mix(in srgb,var(--paper-2) 55%,transparent);}
+  .tab{border-radius:999px; padding:9px 12px; border:1px solid var(--line); background:transparent; color:var(--muted); font-size:13px; box-shadow:none;}
+  .tab.active{background:var(--accent); color:#fff; border-color:transparent;}
+  [data-theme="dark"] .tab.active{color:#061412;}
+  .panel{display:none; padding:18px;}.panel.active{display:block;}
+  .plot-card{padding:14px;}
+  svg{display:block; width:100%; height:auto;}
+  .two{display:grid; grid-template-columns:1.45fr .85fr; gap:16px; align-items:stretch;}
+  .stack{display:grid; gap:16px;}
+  .mini-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
+  .stat{border:1px solid var(--line); background:var(--paper-2); border-radius:16px; padding:12px; min-height:84px;}
+  .stat b{display:block; font-family:var(--serif); font-size:19px; font-weight:500; margin-bottom:5px;}
+  .notice{border-left:3px solid var(--accent); background:color-mix(in srgb,var(--accent) 9%,var(--paper)); border-radius:16px; padding:13px 14px; color:var(--ink); line-height:1.5;}
+  .exam{display:grid; gap:8px; font-size:14px; line-height:1.55;}
+  .exam div{border:1px solid var(--line); background:var(--paper-2); border-radius:14px; padding:10px 12px;}
+  .truth-table{width:100%; border-collapse:separate; border-spacing:0; overflow:hidden; border:1px solid var(--line); border-radius:16px; font-size:13px;}
+  .truth-table th,.truth-table td{padding:9px 10px; border-bottom:1px solid var(--line); text-align:center;}
+  .truth-table th{background:var(--paper-2); color:var(--muted); font-weight:600;}
+  .truth-table tr:last-child td{border-bottom:none;}
+  .ok{color:var(--good)}.bad{color:var(--bad)}
+  .legend{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; color:var(--muted); font-size:12px;}
+  .dot{display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; vertical-align:-1px; background:var(--accent);}
+  .dot.bad{background:var(--bad)} .dot.warn{background:var(--accent-2)} .dot.blue{background:var(--accent-3)}
+  .module-head{display:grid; grid-template-columns:1fr auto; gap:14px; align-items:center; margin-bottom:14px;}
+  .thin{font-weight:400}.mono{font-family:var(--mono)}
+  .callout{border:1px dashed color-mix(in srgb,var(--accent) 45%,var(--line)); border-radius:16px; padding:12px; color:var(--muted); background:color-mix(in srgb,var(--accent) 6%,transparent);}
+  .slider-pair{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .switch{display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); background:var(--paper); padding:8px 10px; border-radius:999px; color:var(--muted); font-size:13px;}
+  .switch input{accent-color:var(--accent)}
+  footer{color:var(--muted); text-align:center; font-size:12px; padding:24px 0 0;}
+  @media (max-width:980px){.grid{grid-template-columns:1fr}.control-card{position:relative;top:auto}.two{grid-template-columns:1fr}.mini-grid{grid-template-columns:1fr}.module-head{grid-template-columns:1fr}.slider-pair{grid-template-columns:1fr}header{grid-template-columns:1fr}.top-actions{justify-content:flex-start}}
+</style>
+</head>
+<body data-theme="light">
+<div class="wrap">
+<header>
+  <div>
+    <div class="eyebrow">Real Analysis • Sequences</div>
+    <h1>Sequence convergence</h1>
+    <p class="subtitle">The limit is not where the first terms are. It is the point around which every sufficiently late tail is trapped.</p>
+  </div>
+  <div class="top-actions">
+    <button id="themeBtn" aria-label="Toggle dark mode">Dark mode</button>
+    <button id="resetBtn" class="primary">Reset view</button>
+  </div>
+</header>
+
+<div class="grid">
+  <aside class="card pad control-card">
+    <div class="card-title"><h2>Control object</h2><span class="pill">ε–N</span></div>
+    <div class="formula">
+      <div><b>Definition.</b></div>
+      <div style="margin-top:6px">
+        x<sub>n</sub> → L ⇔ ∀ε &gt; 0, ∃N ∈ ℕ : n ≥ N ⇒ |x<sub>n</sub> − L| &lt; ε.
+      </div>
+    </div>
+    <div class="controls">
+      <label>
+        <span class="rowline"><span>Sequence</span><span class="pill" id="seqLimitPill">L = 0</span></span>
+        <select id="sequenceSelect">
+          <option value="inv">xₙ = 1/n</option>
+          <option value="altinv">xₙ = (−1)ⁿ/n</option>
+          <option value="shift">xₙ = 1 + 2/n</option>
+          <option value="sinroot">xₙ = sin(n)/√n</option>
+          <option value="osc">xₙ = (−1)ⁿ</option>
+          <option value="harmonic">xₙ = 1 + 1/2 + ··· + 1/n</option>
+        </select>
+      </label>
+
+      <label>
+        <span class="rowline"><span>Epsilon radius</span><span class="pill" id="epsText">ε = 0.25</span></span>
+        <input id="epsRange" type="range" min="0.03" max="1.5" step="0.01" value="0.25" />
+      </label>
+
+      <label>
+        <span class="rowline"><span>Tail starts at</span><span class="pill" id="NText">N = 5</span></span>
+        <input id="NRange" type="range" min="1" max="80" step="1" value="5" />
+      </label>
+
+      <label>
+        <span class="rowline"><span>Number of displayed terms</span><span class="pill" id="MText">80 terms</span></span>
+        <input id="MRange" type="range" min="20" max="160" step="1" value="80" />
+      </label>
+
+      <div class="slider-pair">
+        <button id="findNBtn">Find a valid N</button>
+        <button id="animateBtn">Animate tail</button>
+      </div>
+
+      <div class="notice" id="definitionNotice">
+        Choose ε. The task is to move N far enough so the whole tail lies inside the horizontal ε-band around L.
+      </div>
+    </div>
+  </aside>
+
+  <main class="card">
+    <nav class="tabs" aria-label="Modules">
+      <button class="tab active" data-tab="tail">ε–N tail</button>
+      <button class="tab" data-tab="unique">Uniqueness</button>
+      <button class="tab" data-tab="bounded">Boundedness</button>
+      <button class="tab" data-tab="algebra">Algebra of limits</button>
+      <button class="tab" data-tab="summary">Exam summary</button>
+    </nav>
+
+    <section id="tail" class="panel active">
+      <div class="two">
+        <div class="card plot-card" style="box-shadow:none">
+          <div class="module-head">
+            <div>
+              <div class="card-title" style="margin-bottom:4px"><h3>Main diagram: tail in the ε-tube</h3></div>
+              <div class="small">Blue points are the finite beginning. Green points are the selected tail. Red points violate the ε condition.</div>
+            </div>
+            <span class="pill" id="tailStatus">checking…</span>
+          </div>
+          <svg id="sequencePlot" viewBox="0 0 820 430" role="img" aria-label="Sequence convergence plot"></svg>
+          <div class="legend">
+            <span><span class="dot blue"></span>beginning n &lt; N</span>
+            <span><span class="dot"></span>tail inside ε</span>
+            <span><span class="dot bad"></span>tail outside ε</span>
+            <span><span class="dot warn"></span>limit L and ε-band</span>
+          </div>
+        </div>
+        <div class="stack">
+          <div class="card pad" style="box-shadow:none">
+            <div class="card-title"><h3>Number-line collapse</h3><span class="pill" id="insideCount">0/0</span></div>
+            <svg id="numberLinePlot" viewBox="0 0 420 210" role="img" aria-label="Number line tail diagram"></svg>
+          </div>
+          <div class="mini-grid">
+            <div class="stat"><b id="computedN">—</b><span class="small">sufficient N from the formula or a safe bound</span></div>
+            <div class="stat"><b id="maxDeviation">—</b><span class="small">largest displayed tail deviation</span></div>
+            <div class="stat"><b id="tailMeaning">—</b><span class="small">current ε–N statement</span></div>
+          </div>
+          <div class="callout" id="sequenceInterpretation"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="unique" class="panel">
+      <div class="two">
+        <div class="card plot-card" style="box-shadow:none">
+          <div class="module-head">
+            <div>
+              <div class="card-title" style="margin-bottom:4px"><h3>Uniqueness of limits</h3></div>
+              <div class="small">If two proposed limits are distinct, choose ε smaller than half their distance. Their neighborhoods cannot share the same eventual tail.</div>
+            </div>
+            <span class="pill" id="uniquePill">ε &lt; |A − B|/2</span>
+          </div>
+          <svg id="uniquenessPlot" viewBox="0 0 820 355" role="img" aria-label="Uniqueness of limits diagram"></svg>
+        </div>
+        <div class="stack">
+          <div class="card pad" style="box-shadow:none">
+            <div class="card-title"><h3>Move the fake limit</h3></div>
+            <label>
+              <span class="rowline"><span>Second candidate limit B</span><span class="pill" id="BText">B = 0.80</span></span>
+              <input id="BRange" type="range" min="-1.5" max="2" step="0.01" value="0.8" />
+            </label>
+            <div style="height:12px"></div>
+            <label>
+              <span class="rowline"><span>Neighborhood radius</span><span class="pill" id="uniqueEpsText">η = 0.25</span></span>
+              <input id="uniqueEpsRange" type="range" min="0.03" max="1" step="0.01" value="0.25" />
+            </label>
+          </div>
+          <div class="formula">
+            If x<sub>n</sub> → A and x<sub>n</sub> → B with A ≠ B, choose η = |A − B|/3.<br>
+            Eventually |x<sub>n</sub>−A| &lt; η and |x<sub>n</sub>−B| &lt; η.<br>
+            Then |A−B| ≤ |A−x<sub>n</sub>| + |x<sub>n</sub>−B| &lt; 2η &lt; |A−B|, contradiction.
+          </div>
+          <div class="notice" id="uniqueNotice"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="bounded" class="panel">
+      <div class="two">
+        <div class="card plot-card" style="box-shadow:none">
+          <div class="module-head">
+            <div>
+              <div class="card-title" style="margin-bottom:4px"><h3>Convergent sequence ⇒ bounded</h3></div>
+              <div class="small">The tail is trapped near L. The finite beginning may be wild, but finite sets have a maximum absolute size.</div>
+            </div>
+            <span class="pill" id="boundPill">M = —</span>
+          </div>
+          <svg id="boundedPlot" viewBox="0 0 820 380" role="img" aria-label="Boundedness of convergent sequence plot"></svg>
+        </div>
+        <div class="stack">
+          <div class="card pad" style="box-shadow:none">
+            <div class="card-title"><h3>Artificial early spike</h3><span class="pill" id="spikeText">spike = 3.0</span></div>
+            <label>
+              <span class="rowline"><span>Size of first-term spike</span><span></span></span>
+              <input id="spikeRange" type="range" min="0" max="8" step="0.1" value="3" />
+            </label>
+            <div style="height:12px"></div>
+            <label>
+              <span class="rowline"><span>Trap radius for tail</span><span class="pill" id="trapText">r = 0.50</span></span>
+              <input id="trapRange" type="range" min="0.1" max="2" step="0.01" value="0.5" />
+            </label>
+          </div>
+          <div class="formula">
+            x<sub>n</sub> → L ⇒ choose N with |x<sub>n</sub>−L| &lt; 1 for n ≥ N.<br>
+            Hence |x<sub>n</sub>| ≤ |L|+1 eventually.<br>
+            The first N−1 terms are finite, so one bound covers all terms.
+          </div>
+          <div class="notice" id="boundedNotice"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="algebra" class="panel">
+      <div class="two">
+        <div class="card plot-card" style="box-shadow:none">
+          <div class="module-head">
+            <div>
+              <div class="card-title" style="margin-bottom:4px"><h3>Limit algebra lab</h3></div>
+              <div class="small">Two convergent sequences are combined term-by-term. The operation is continuous, so the combined sequence converges to the combined limits.</div>
+            </div>
+            <span class="pill" id="algebraPill">zₙ → ?</span>
+          </div>
+          <svg id="algebraPlot" viewBox="0 0 820 410" role="img" aria-label="Algebra of limits plot"></svg>
+        </div>
+        <div class="stack">
+          <div class="card pad" style="box-shadow:none">
+            <div class="card-title"><h3>Choose operation</h3></div>
+            <label>
+              <span>Operation on sequences</span>
+              <select id="operationSelect">
+                <option value="sum">zₙ = xₙ + yₙ</option>
+                <option value="diff">zₙ = xₙ − yₙ</option>
+                <option value="prod">zₙ = xₙyₙ</option>
+                <option value="quot">zₙ = xₙ/yₙ</option>
+              </select>
+            </label>
+            <div style="height:12px"></div>
+            <label class="switch"><input id="showXY" type="checkbox" checked /> show xₙ and yₙ</label>
+          </div>
+          <div class="formula" id="algebraFormula"></div>
+          <table class="truth-table" aria-label="Limit algebra table">
+            <thead><tr><th>Object</th><th>Formula</th><th>Limit</th></tr></thead>
+            <tbody id="algebraTable"></tbody>
+          </table>
+          <div class="notice" id="algebraNotice"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="summary" class="panel">
+      <div class="two">
+        <div class="stack">
+          <div class="card pad" style="box-shadow:none">
+            <div class="card-title"><h3>What to notice</h3><span class="pill">visual logic</span></div>
+            <div class="exam">
+              <div><b>Convergence is eventual.</b> Finitely many early terms do not matter.</div>
+              <div><b>ε is chosen first.</b> N may depend on ε.</div>
+              <div><b>The tail must fit entirely.</b> It is not enough to have infinitely many terms near L.</div>
+              <div><b>Uniqueness is geometric.</b> Two distinct limits have disjoint small neighborhoods.</div>
+              <div><b>Boundedness follows from tail + finite beginning.</b></div>
+            </div>
+          </div>
+          <div class="card pad" style="box-shadow:none">
+            <div class="card-title"><h3>Common mistakes</h3></div>
+            <div class="exam">
+              <div>Do not write ∃ε. The definition requires ∀ε &gt; 0.</div>
+              <div>Do not let N depend on n. It depends on ε.</div>
+              <div>Do not prove only a subsequence converges. The whole tail must be trapped.</div>
+              <div>Do not confuse bounded with convergent. Every convergent sequence is bounded, but not conversely.</div>
+            </div>
+          </div>
+        </div>
+        <div class="stack">
+          <div class="formula">
+            <b>Exam core.</b><br><br>
+            x<sub>n</sub> → L ⇔ ∀ε&gt;0, ∃N∈ℕ : n≥N ⇒ |x<sub>n</sub>−L|&lt;ε.<br><br>
+            If x<sub>n</sub>→L and x<sub>n</sub>→M, then L=M.<br><br>
+            If x<sub>n</sub>→L, then (x<sub>n</sub>) is bounded.<br><br>
+            If x<sub>n</sub>→a and y<sub>n</sub>→b, then:<br>
+            x<sub>n</sub>±y<sub>n</sub>→a±b,<br>
+            x<sub>n</sub>y<sub>n</sub>→ab,<br>
+            x<sub>n</sub>/y<sub>n</sub>→a/b if b≠0 and y<sub>n</sub>≠0 eventually.
+          </div>
+          <div class="notice">
+            To prove convergence in an exam, start from |x<sub>n</sub>−L|, dominate it by a simple expression, and choose N so the expression is smaller than ε.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<footer>Single-file HTML app • no backend • diagrams update instantly</footer>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const root = document.body;
+
+  const state = {
+    sequence:'inv', eps:0.25, N:5, M:80,
+    B:0.8, uniqueEta:0.25,
+    spike:3, trap:0.5,
+    operation:'sum', showXY:true
+  };
+
+  const seqs = {
+    inv: {
+      name:'xₙ = 1/n', limit:0, converges:true,
+      formula:'x<sub>n</sub> = 1/n',
+      f:n=>1/n,
+      sufficientN:eps=>Math.floor(1/eps)+1,
+      text: eps => `For xₙ = 1/n, |xₙ−0| = 1/n. It is enough to choose N > 1/ε.`,
+    },
+    altinv: {
+      name:'xₙ = (−1)ⁿ/n', limit:0, converges:true,
+      formula:'x<sub>n</sub> = (−1)<sup>n</sup>/n',
+      f:n=>Math.pow(-1,n)/n,
+      sufficientN:eps=>Math.floor(1/eps)+1,
+      text: eps => `The sign oscillates, but the amplitude is 1/n. The whole oscillating tail is eventually inside every ε-band around 0.`,
+    },
+    shift: {
+      name:'xₙ = 1 + 2/n', limit:1, converges:true,
+      formula:'x<sub>n</sub> = 1 + 2/n',
+      f:n=>1+2/n,
+      sufficientN:eps=>Math.floor(2/eps)+1,
+      text: eps => `Here |xₙ−1| = 2/n. It is enough to choose N > 2/ε.`,
+    },
+    sinroot: {
+      name:'xₙ = sin(n)/√n', limit:0, converges:true,
+      formula:'x<sub>n</sub> = sin(n)/√n',
+      f:n=>Math.sin(n)/Math.sqrt(n),
+      sufficientN:eps=>Math.floor(1/(eps*eps))+1,
+      text: eps => `Since |sin n| ≤ 1, |xₙ| ≤ 1/√n. A safe choice is N > 1/ε².`,
+    },
+    osc: {
+      name:'xₙ = (−1)ⁿ', limit:0, converges:false,
+      formula:'x<sub>n</sub> = (−1)<sup>n</sup>',
+      f:n=>Math.pow(-1,n),
+      sufficientN:eps=>null,
+      text: eps => `This sequence has two permanent tails: even terms at 1 and odd terms at −1. No single L traps every tail for small ε.`,
+    },
+    harmonic: {
+      name:'xₙ = Hₙ', limit:null, converges:false,
+      formula:'x<sub>n</sub> = 1 + 1/2 + ··· + 1/n',
+      f:n=>{let s=0; for(let k=1;k<=n;k++) s+=1/k; return s;},
+      sufficientN:eps=>null,
+      text: eps => `The harmonic partial sums keep drifting upward. Boundedness fails, so convergence is impossible in ℝ.`,
+    }
+  };
+
+  function css(name){ return getComputedStyle(root).getPropertyValue(name).trim(); }
+  function fmt(x,d=3){
+    if(x === null || x === undefined || Number.isNaN(x)) return '—';
+    if(Math.abs(x)>999) return x.toExponential(2);
+    return Number(x).toFixed(d).replace(/\.?0+$/,'');
+  }
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+  function map(x,a,b,A,B){return A+(x-a)*(B-A)/(b-a || 1);}
+  function escape(s){return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+  function svgEl(tag, attrs={}, children=[]) {
+    const e=document.createElementNS('http://www.w3.org/2000/svg',tag);
+    for(const [k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+    for(const c of children) e.appendChild(c);
+    return e;
+  }
+  function clear(svg){ while(svg.firstChild) svg.removeChild(svg.firstChild); }
+  function text(x,y,str,attrs={}){ return svgEl('text',{x,y,...attrs},[document.createTextNode(str)]); }
+  function line(x1,y1,x2,y2,attrs={}){ return svgEl('line',{x1,y1,x2,y2,...attrs}); }
+  function rect(x,y,width,height,attrs={}){ return svgEl('rect',{x,y,width,height,...attrs}); }
+  function circle(cx,cy,r,attrs={}){ return svgEl('circle',{cx,cy,r,...attrs}); }
+  function path(d,attrs={}){ return svgEl('path',{d,...attrs}); }
+
+  function drawAxes(svg, W,H, margin, xMax, yMin, yMax, xLabel='n', yLabel='xₙ'){
+    const grid=css('--grid'), ink=css('--ink'), muted=css('--muted'), linec=css('--line');
+    const x0=margin.l, x1=W-margin.r, y0=H-margin.b, y1=margin.t;
+    svg.appendChild(rect(0,0,W,H,{fill:'transparent'}));
+    for(let i=0;i<=5;i++){
+      const x=map(i,0,5,x0,x1);
+      svg.appendChild(line(x,y0,x,y1,{stroke:grid,'stroke-width':1}));
+      const n=Math.round(map(i,0,5,1,xMax));
+      svg.appendChild(text(x,y0+24,String(n),{'text-anchor':'middle',fill:muted,'font-size':12}));
+    }
+    for(let i=0;i<=5;i++){
+      const y=map(i,0,5,y0,y1);
+      svg.appendChild(line(x0,y,x1,y,{stroke:grid,'stroke-width':1}));
+      const val=map(i,0,5,yMin,yMax);
+      svg.appendChild(text(x0-9,y+4,fmt(val,2),{'text-anchor':'end',fill:muted,'font-size':12}));
+    }
+    svg.appendChild(line(x0,y0,x1,y0,{stroke:linec,'stroke-width':1.2}));
+    svg.appendChild(line(x0,y0,x0,y1,{stroke:linec,'stroke-width':1.2}));
+    svg.appendChild(text(x1,y0+42,xLabel,{'text-anchor':'end',fill:muted,'font-size':13}));
+    svg.appendChild(text(x0-30,y1+6,yLabel,{'text-anchor':'middle',fill:muted,'font-size':13,transform:`rotate(-90 ${x0-30} ${y1+6})`}));
+  }
+
+  function getTerms(seqKey, M, spike=false){
+    const s=seqs[seqKey];
+    const arr=[];
+    for(let n=1;n<=M;n++){
+      let v=s.f(n);
+      if(spike && n===1) v += state.spike;
+      arr.push({n,v});
+    }
+    return arr;
+  }
+
+  function computeYDomain(terms, L, eps){
+    let vals=terms.map(t=>t.v);
+    if(L !== null && L !== undefined) vals.push(L-eps,L+eps,L);
+    let min=Math.min(...vals), max=Math.max(...vals);
+    if(!isFinite(min)||!isFinite(max)){min=-1;max=1;}
+    if(Math.abs(max-min)<.4){ const c=(max+min)/2; min=c-.4; max=c+.4; }
+    const pad=(max-min)*.18;
+    return [min-pad,max+pad];
+  }
+
+  function renderTail(){
+    const svg=$('sequencePlot'), W=820,H=430, margin={l:62,r:24,t:24,b:56}; clear(svg);
+    const seq=seqs[state.sequence], terms=getTerms(state.sequence,state.M), L=seq.limit;
+    const displayL = L ?? (state.sequence==='harmonic' ? terms[Math.floor(terms.length*.65)].v : 0);
+    const [yMin,yMax]=computeYDomain(terms,displayL,state.eps);
+    drawAxes(svg,W,H,margin,state.M,yMin,yMax);
+    const x=n=>map(n,1,state.M,margin.l,W-margin.r);
+    const y=v=>map(v,yMin,yMax,H-margin.b,margin.t);
+    const accent=css('--accent'), bad=css('--bad'), blue=css('--accent-3'), warn=css('--accent-2'), muted=css('--muted'), ink=css('--ink'), grid=css('--grid');
+
+    if(L !== null){
+      const top=y(L+state.eps), bottom=y(L-state.eps);
+      svg.appendChild(rect(margin.l,Math.min(top,bottom),W-margin.l-margin.r,Math.abs(bottom-top),{fill:warn,opacity:.13,rx:8}));
+      svg.appendChild(line(margin.l,y(L),W-margin.r,y(L),{stroke:warn,'stroke-width':2.3,'stroke-dasharray':'7 7'}));
+      svg.appendChild(text(W-margin.r-4,y(L)-8,`L = ${fmt(L,2)}`,{'text-anchor':'end',fill:warn,'font-size':13,'font-weight':700}));
+      svg.appendChild(text(W-margin.r-4,top-8,`L + ε`,{'text-anchor':'end',fill:muted,'font-size':11}));
+      svg.appendChild(text(W-margin.r-4,bottom+17,`L − ε`,{'text-anchor':'end',fill:muted,'font-size':11}));
+    } else {
+      svg.appendChild(text(W-margin.r-8,margin.t+20,'no finite candidate L',{'text-anchor':'end',fill:warn,'font-size':13,'font-weight':700}));
+    }
+    const nX=x(state.N);
+    svg.appendChild(line(nX,H-margin.b,nX,margin.t,{stroke:css('--line'),'stroke-width':2,'stroke-dasharray':'5 6'}));
+    svg.appendChild(text(nX+6,margin.t+16,`N=${state.N}`,{fill:muted,'font-size':12}));
+
+    let poly='';
+    terms.forEach((t,i)=>{ poly += `${i?'L':'M'} ${x(t.n)} ${y(t.v)} `; });
+    svg.appendChild(path(poly,{fill:'none',stroke:grid,'stroke-width':1.2}));
+
+    let tailTotal=0, tailInside=0, maxDev=0;
+    terms.forEach(t=>{
+      const isTail=t.n>=state.N;
+      const dev = L===null ? Infinity : Math.abs(t.v-L);
+      const inside = L!==null && dev < state.eps;
+      if(isTail){ tailTotal++; if(inside) tailInside++; if(isFinite(dev)) maxDev=Math.max(maxDev,dev); }
+      svg.appendChild(circle(x(t.n),y(t.v),isTail?4.4:3.4,{fill:isTail?(inside?accent:bad):blue,opacity:isTail?0.95:0.58,stroke:'var(--paper)','stroke-width':1}));
+    });
+
+    $('insideCount').textContent = `${tailInside}/${tailTotal} tail points`;
+    const validDisplayed = tailTotal>0 && tailInside===tailTotal && L!==null;
+    $('tailStatus').textContent = L===null ? 'not convergent' : validDisplayed ? 'displayed tail fits' : 'displayed tail fails';
+    $('tailStatus').style.color = L===null || !validDisplayed ? bad : accent;
+    const suff = seq.sufficientN(state.eps);
+    $('computedN').textContent = suff ? `N ≥ ${suff}` : 'no such N';
+    $('maxDeviation').textContent = isFinite(maxDev) ? fmt(maxDev,3) : 'unbounded';
+    $('tailMeaning').textContent = validDisplayed ? 'true on view' : 'not yet';
+    $('sequenceInterpretation').innerHTML = seq.text(state.eps);
+
+    renderNumberLine(terms,L);
+  }
+
+  function renderNumberLine(terms,L){
+    const svg=$('numberLinePlot'), W=420,H=210; clear(svg);
+    const accent=css('--accent'), bad=css('--bad'), blue=css('--accent-3'), warn=css('--accent-2'), muted=css('--muted'), linec=css('--line'), grid=css('--grid');
+    const tail=terms.filter(t=>t.n>=state.N);
+    let vals=tail.map(t=>t.v);
+    if(L!==null) vals.push(L-state.eps,L+state.eps,L);
+    if(vals.length===0) vals=[-1,1];
+    let min=Math.min(...vals), max=Math.max(...vals); if(max-min<.5){const c=(max+min)/2;min=c-.25;max=c+.25}
+    const pad=(max-min)*.16; min-=pad; max+=pad;
+    const x=v=>map(v,min,max,36,W-28), y0=112;
+    svg.appendChild(line(36,y0,W-28,y0,{stroke:linec,'stroke-width':1.4}));
+    for(let i=0;i<=4;i++){
+      const val=map(i,0,4,min,max), xx=x(val);
+      svg.appendChild(line(xx,y0-5,xx,y0+5,{stroke:linec}));
+      svg.appendChild(text(xx,y0+26,fmt(val,2),{'text-anchor':'middle',fill:muted,'font-size':11}));
+    }
+    if(L!==null){
+      svg.appendChild(rect(x(L-state.eps),54,Math.max(0,x(L+state.eps)-x(L-state.eps)),55,{fill:warn,opacity:.13,rx:12}));
+      svg.appendChild(line(x(L),42,x(L),143,{stroke:warn,'stroke-width':2,'stroke-dasharray':'6 6'}));
+      svg.appendChild(text(x(L),34,'L',{'text-anchor':'middle',fill:warn,'font-size':13,'font-weight':700}));
+      svg.appendChild(text(x(L-state.eps),51,'L−ε',{'text-anchor':'middle',fill:muted,'font-size':11}));
+      svg.appendChild(text(x(L+state.eps),51,'L+ε',{'text-anchor':'middle',fill:muted,'font-size':11}));
+    }
+    tail.slice(0,80).forEach((t,i)=>{
+      const dev=L===null?Infinity:Math.abs(t.v-L);
+      const inside=L!==null && dev < state.eps;
+      const yy=92 + ((i%5)-2)*9;
+      svg.appendChild(circle(x(t.v),yy,3.3,{fill:inside?accent:bad,opacity:.75}));
+    });
+    svg.appendChild(text(36,178,'The tail viewed as points on the value line.',{fill:muted,'font-size':12}));
+  }
+
+  function renderUniqueness(){
+    const svg=$('uniquenessPlot'), W=820,H=355; clear(svg);
+    const A=seqs[state.sequence].limit ?? 0;
+    const B=state.B, eta=state.uniqueEta;
+    const min=Math.min(A-eta,B-eta)-.5, max=Math.max(A+eta,B+eta)+.5;
+    const x=v=>map(v,min,max,62,W-38), y0=180;
+    const accent=css('--accent'), bad=css('--bad'), warn=css('--accent-2'), blue=css('--accent-3'), muted=css('--muted'), linec=css('--line');
+    svg.appendChild(line(62,y0,W-38,y0,{stroke:linec,'stroke-width':1.5}));
+    for(let i=0;i<=6;i++){
+      const val=map(i,0,6,min,max), xx=x(val);
+      svg.appendChild(line(xx,y0-5,xx,y0+5,{stroke:linec}));
+      svg.appendChild(text(xx,y0+26,fmt(val,2),{'text-anchor':'middle',fill:muted,'font-size':11}));
+    }
+    function interval(center, color, label, y, h){
+      const left=x(center-eta), right=x(center+eta);
+      svg.appendChild(rect(left,y,right-left,h,{fill:color,opacity:.18,rx:14}));
+      svg.appendChild(line(x(center),y-12,x(center),y+h+12,{stroke:color,'stroke-width':2.2,'stroke-dasharray':'6 6'}));
+      svg.appendChild(text(x(center),y-20,label,{'text-anchor':'middle',fill:color,'font-size':14,'font-weight':700}));
+      svg.appendChild(text(left,y+h+18,`${label}−η`,{'text-anchor':'middle',fill:muted,'font-size':11}));
+      svg.appendChild(text(right,y+h+18,`${label}+η`,{'text-anchor':'middle',fill:muted,'font-size':11}));
+    }
+    interval(A,accent,'A',78,62);
+    interval(B,bad,'B',204,62);
+    const overlap = Math.max(0, Math.min(A+eta,B+eta)-Math.max(A-eta,B-eta));
+    if(overlap>0){
+      svg.appendChild(rect(x(Math.max(A-eta,B-eta)),151,x(Math.min(A+eta,B+eta))-x(Math.max(A-eta,B-eta)),38,{fill:warn,opacity:.22,rx:9}));
+      svg.appendChild(text(W/2,326,'Neighborhoods overlap: choose smaller η to force contradiction.',{'text-anchor':'middle',fill:warn,'font-size':13}));
+    } else {
+      svg.appendChild(text(W/2,326,'Disjoint neighborhoods: one eventual tail cannot live in both.',{'text-anchor':'middle',fill:accent,'font-size':13,'font-weight':700}));
+    }
+    $('BText').textContent=`B = ${fmt(B,2)}`;
+    $('uniqueEpsText').textContent=`η = ${fmt(eta,2)}`;
+    const threshold=Math.abs(A-B)/2;
+    $('uniquePill').textContent = eta < threshold ? 'disjoint' : 'overlap';
+    $('uniquePill').style.color = eta < threshold ? accent : warn;
+    $('uniqueNotice').innerHTML = `Distance |A−B| = <b>${fmt(Math.abs(A-B),3)}</b>. Any radius η &lt; |A−B|/2 = <b>${fmt(threshold,3)}</b> makes the two limit-neighborhoods disjoint.`;
+  }
+
+  function renderBounded(){
+    const svg=$('boundedPlot'), W=820,H=380, margin={l:62,r:24,t:24,b:52}; clear(svg);
+    const terms=getTerms('inv',Math.max(state.M,60),true);
+    const L=0, r=state.trap;
+    const [yMin,yMax]=computeYDomain(terms,L,r);
+    drawAxes(svg,W,H,margin,terms.length,yMin,yMax,'n','xₙ');
+    const x=n=>map(n,1,terms.length,margin.l,W-margin.r), y=v=>map(v,yMin,yMax,H-margin.b,margin.t);
+    const accent=css('--accent'), bad=css('--bad'), blue=css('--accent-3'), warn=css('--accent-2'), muted=css('--muted');
+    const Ntrap=Math.floor(1/r)+1;
+    svg.appendChild(rect(margin.l,Math.min(y(L-r),y(L+r)),W-margin.l-margin.r,Math.abs(y(L-r)-y(L+r)),{fill:warn,opacity:.13,rx:8}));
+    svg.appendChild(line(margin.l,y(L),W-margin.r,y(L),{stroke:warn,'stroke-width':2,'stroke-dasharray':'7 7'}));
+    svg.appendChild(line(x(Ntrap),H-margin.b,x(Ntrap),margin.t,{stroke:css('--line'),'stroke-width':2,'stroke-dasharray':'5 6'}));
+    svg.appendChild(text(x(Ntrap)+6,margin.t+16,`tail starts`,{fill:muted,'font-size':12}));
+    let Mbound=0;
+    terms.forEach(t=> Mbound=Math.max(Mbound,Math.abs(t.v)));
+    svg.appendChild(line(margin.l,y(Mbound),W-margin.r,y(Mbound),{stroke:bad,'stroke-width':1.4,'stroke-dasharray':'4 5'}));
+    svg.appendChild(line(margin.l,y(-Mbound),W-margin.r,y(-Mbound),{stroke:bad,'stroke-width':1.4,'stroke-dasharray':'4 5'}));
+    svg.appendChild(text(W-margin.r-4,y(Mbound)-6,`+M`,{'text-anchor':'end',fill:bad,'font-size':12}));
+    svg.appendChild(text(W-margin.r-4,y(-Mbound)+16,`−M`,{'text-anchor':'end',fill:bad,'font-size':12}));
+    terms.forEach(t=>{
+      const isEarly=t.n<Ntrap;
+      svg.appendChild(circle(x(t.n),y(t.v),isEarly?4.2:3.8,{fill:isEarly?blue:accent,opacity:.9,stroke:'var(--paper)','stroke-width':1}));
+    });
+    $('spikeText').textContent=`spike = ${fmt(state.spike,1)}`;
+    $('trapText').textContent=`r = ${fmt(r,2)}`;
+    $('boundPill').textContent=`M = ${fmt(Mbound,2)}`;
+    $('boundedNotice').innerHTML = `The spike changes the bound M, but not the limit. Convergence ignores finitely many early terms; boundedness remembers them by taking a maximum over the finite beginning.`;
+  }
+
+  function algTerms(M=100){
+    const xs=[], ys=[], zs=[];
+    for(let n=1;n<=M;n++){
+      const x=2 + Math.pow(-1,n)*1.3/n;
+      const y=1 + 0.9/(n+1);
+      let z;
+      if(state.operation==='sum') z=x+y;
+      if(state.operation==='diff') z=x-y;
+      if(state.operation==='prod') z=x*y;
+      if(state.operation==='quot') z=x/y;
+      xs.push({n,v:x}); ys.push({n,v:y}); zs.push({n,v:z});
+    }
+    return {xs,ys,zs};
+  }
+  function algebraLimit(){
+    const a=2,b=1;
+    if(state.operation==='sum') return {symbol:'a + b', val:a+b, formula:'x<sub>n</sub> + y<sub>n</sub> → a+b'};
+    if(state.operation==='diff') return {symbol:'a − b', val:a-b, formula:'x<sub>n</sub> − y<sub>n</sub> → a−b'};
+    if(state.operation==='prod') return {symbol:'ab', val:a*b, formula:'x<sub>n</sub>y<sub>n</sub> → ab'};
+    return {symbol:'a/b', val:a/b, formula:'x<sub>n</sub>/y<sub>n</sub> → a/b, if b≠0 and y<sub>n</sub>≠0 eventually'};
+  }
+  function renderAlgebra(){
+    const svg=$('algebraPlot'), W=820,H=410, margin={l:62,r:24,t:24,b:54}; clear(svg);
+    const {xs,ys,zs}=algTerms(state.M);
+    const lim=algebraLimit();
+    let vals=zs.map(t=>t.v).concat([lim.val]);
+    if(state.showXY) vals=vals.concat(xs.map(t=>t.v),ys.map(t=>t.v),[2,1]);
+    let min=Math.min(...vals), max=Math.max(...vals); const pad=(max-min)*.2 || 1; min-=pad; max+=pad;
+    drawAxes(svg,W,H,margin,state.M,min,max,'n','value');
+    const x=n=>map(n,1,state.M,margin.l,W-margin.r), y=v=>map(v,min,max,H-margin.b,margin.t);
+    const accent=css('--accent'), blue=css('--accent-3'), warn=css('--accent-2'), muted=css('--muted'), linec=css('--line');
+    function drawSeries(arr,color,label,limit,opacity=.9){
+      let d=''; arr.forEach((t,i)=> d += `${i?'L':'M'} ${x(t.n)} ${y(t.v)} `);
+      svg.appendChild(path(d,{fill:'none',stroke:color,'stroke-width':1.5,opacity:.5}));
+      arr.forEach((t,i)=>{ if(i%2===0 || i<16) svg.appendChild(circle(x(t.n),y(t.v),3,{fill:color,opacity})); });
+      svg.appendChild(line(margin.l,y(limit),W-margin.r,y(limit),{stroke:color,'stroke-width':1.4,'stroke-dasharray':'6 7',opacity:.8}));
+      svg.appendChild(text(W-margin.r-4,y(limit)-6,label,{'text-anchor':'end',fill:color,'font-size':12,'font-weight':700}));
+    }
+    if(state.showXY){ drawSeries(xs,blue,'a=2',2,.52); drawSeries(ys,warn,'b=1',1,.52); }
+    drawSeries(zs,accent,`limit ${fmt(lim.val,2)}`,lim.val,.95);
+    $('algebraPill').textContent = `zₙ → ${fmt(lim.val,3)}`;
+    $('algebraFormula').innerHTML = `<b>${lim.formula}</b><br><br>Here x<sub>n</sub> = 2 + (−1)<sup>n</sup>1.3/n → 2 and y<sub>n</sub> = 1 + 0.9/(n+1) → 1.`;
+    const op = {sum:'xₙ+yₙ', diff:'xₙ−yₙ', prod:'xₙyₙ', quot:'xₙ/yₙ'}[state.operation];
+    $('algebraTable').innerHTML = `
+      <tr><td>x<sub>n</sub></td><td>2 + (−1)<sup>n</sup>1.3/n</td><td>2</td></tr>
+      <tr><td>y<sub>n</sub></td><td>1 + 0.9/(n+1)</td><td>1</td></tr>
+      <tr><td>z<sub>n</sub></td><td>${op}</td><td>${fmt(lim.val,3)}</td></tr>`;
+    $('algebraNotice').innerHTML = state.operation==='quot'
+      ? `Division needs an extra hypothesis: the denominator limit is nonzero, so yₙ stays away from zero eventually.`
+      : `The graph shows a new tail forming around the algebraic limit. Algebra of limits is an ε–N statement plus boundedness estimates.`;
+  }
+
+  function syncControls(){
+    $('epsText').textContent=`ε = ${fmt(state.eps,2)}`;
+    $('NText').textContent=`N = ${state.N}`;
+    $('MText').textContent=`${state.M} terms`;
+    const seq=seqs[state.sequence];
+    $('seqLimitPill').textContent = seq.limit===null ? 'no finite L' : `L = ${fmt(seq.limit,2)}`;
+    $('sequenceSelect').value=state.sequence;
+    $('epsRange').value=state.eps;
+    $('NRange').value=state.N;
+    $('MRange').value=state.M;
+    $('BRange').value=state.B;
+    $('uniqueEpsRange').value=state.uniqueEta;
+    $('spikeRange').value=state.spike;
+    $('trapRange').value=state.trap;
+    $('operationSelect').value=state.operation;
+    $('showXY').checked=state.showXY;
+  }
+
+  function renderAll(){ syncControls(); renderTail(); renderUniqueness(); renderBounded(); renderAlgebra(); }
+
+  $('themeBtn').addEventListener('click',()=>{
+    const dark=root.getAttribute('data-theme')==='dark';
+    root.setAttribute('data-theme',dark?'light':'dark');
+    $('themeBtn').textContent=dark?'Dark mode':'Light mode';
+    renderAll();
+  });
+  $('resetBtn').addEventListener('click',()=>{ Object.assign(state,{sequence:'inv',eps:0.25,N:5,M:80,B:0.8,uniqueEta:0.25,spike:3,trap:0.5,operation:'sum',showXY:true}); renderAll(); });
+  $('sequenceSelect').addEventListener('change',e=>{ state.sequence=e.target.value; const s=seqs[state.sequence]; state.N=s.sufficientN(state.eps)||5; state.N=clamp(state.N,1,80); renderAll(); });
+  $('epsRange').addEventListener('input',e=>{ state.eps=+e.target.value; renderAll(); });
+  $('NRange').addEventListener('input',e=>{ state.N=+e.target.value; renderAll(); });
+  $('MRange').addEventListener('input',e=>{ state.M=+e.target.value; renderAll(); });
+  $('findNBtn').addEventListener('click',()=>{ const N=seqs[state.sequence].sufficientN(state.eps); if(N){ state.N=clamp(N,1,80); } renderAll(); });
+  let anim=null;
+  $('animateBtn').addEventListener('click',()=>{
+    if(anim){ clearInterval(anim); anim=null; $('animateBtn').textContent='Animate tail'; return; }
+    state.N=1; $('animateBtn').textContent='Stop animation'; renderAll();
+    anim=setInterval(()=>{ state.N++; if(state.N>80){ clearInterval(anim); anim=null; $('animateBtn').textContent='Animate tail'; } renderAll(); },120);
+  });
+  $('BRange').addEventListener('input',e=>{ state.B=+e.target.value; renderUniqueness(); });
+  $('uniqueEpsRange').addEventListener('input',e=>{ state.uniqueEta=+e.target.value; renderUniqueness(); });
+  $('spikeRange').addEventListener('input',e=>{ state.spike=+e.target.value; renderBounded(); });
+  $('trapRange').addEventListener('input',e=>{ state.trap=+e.target.value; renderBounded(); });
+  $('operationSelect').addEventListener('change',e=>{ state.operation=e.target.value; renderAlgebra(); });
+  $('showXY').addEventListener('change',e=>{ state.showXY=e.target.checked; renderAlgebra(); });
+
+  document.querySelectorAll('.tab').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      $(btn.dataset.tab).classList.add('active');
+      renderAll();
+    });
+  });
+
+  renderAll();
+})();
+</script>
+</body>
+</html>

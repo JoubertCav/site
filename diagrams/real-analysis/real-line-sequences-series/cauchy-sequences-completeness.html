@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for Cauchy sequences and completeness.">
+<title>Cauchy Sequences and Completeness | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+:root{
+  --bg:#f7f2e9;
+  --paper:#fffdf8;
+  --paper2:#f0e8da;
+  --ink:#1e2628;
+  --muted:#64706d;
+  --line:rgba(33,42,44,.13);
+  --grid:rgba(33,42,44,.075);
+  --accent:#2e9c8f;
+  --accent2:#c17948;
+  --accent3:#6b7fd7;
+  --bad:#b75b62;
+  --good:#2e9c8f;
+  --shadow:0 18px 48px rgba(33,42,44,.09);
+  --soft:rgba(46,156,143,.13);
+  --soft2:rgba(193,121,72,.12);
+  --font:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --serif:Georgia, "Times New Roman", serif;
+}
+[data-theme="dark"]{
+  --bg:#0d1118;
+  --paper:#131a23;
+  --paper2:#182231;
+  --ink:#eef3ef;
+  --muted:#9daaa7;
+  --line:rgba(238,243,239,.12);
+  --grid:rgba(238,243,239,.075);
+  --accent:#59c6b9;
+  --accent2:#dfa16e;
+  --accent3:#9aa7ff;
+  --bad:#e2868d;
+  --good:#59c6b9;
+  --shadow:0 18px 54px rgba(0,0,0,.32);
+  --soft:rgba(89,198,185,.13);
+  --soft2:rgba(223,161,110,.13);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 12% 0%, var(--soft), transparent 30%),
+    radial-gradient(circle at 100% 12%, var(--soft2), transparent 32%),
+    var(--bg);
+  color:var(--ink);
+  font-family:var(--font);
+  line-height:1.45;
+}
+.app{max-width:1220px;margin:0 auto;padding:28px 18px 42px}
+header{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:18px;
+  align-items:start;
+  margin-bottom:18px;
+}
+.eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px}
+h1{margin:0;font-family:var(--serif);font-size:clamp(31px,5vw,58px);font-weight:500;line-height:1.02;letter-spacing:-.03em}
+.subtitle{max-width:780px;margin:12px 0 0;color:var(--muted);font-size:16px}
+.top-actions{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+button,.pill,select,input[type="range"]{font:inherit}
+button,.toggle{
+  border:1px solid var(--line);
+  background:var(--paper);
+  color:var(--ink);
+  box-shadow:0 10px 25px rgba(0,0,0,.04);
+  border-radius:999px;
+  padding:10px 13px;
+  cursor:pointer;
+  transition:.18s ease;
+  user-select:none;
+}
+button:hover,.toggle:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--accent),var(--line) 50%)}
+.grid{display:grid;grid-template-columns:360px 1fr;gap:16px;align-items:start}
+.card{
+  background:color-mix(in srgb,var(--paper),transparent 0%);
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+  border-radius:24px;
+  padding:18px;
+}
+.card.compact{padding:14px 16px}
+.card h2,.card h3{margin:0 0 11px;font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.card h2 strong,.card h3 strong{color:var(--ink)}
+.controls{position:sticky;top:16px;display:grid;gap:12px}
+.control{padding:13px 14px;border:1px solid var(--line);border-radius:18px;background:color-mix(in srgb,var(--paper2),transparent 30%)}
+.label-row{display:flex;justify-content:space-between;gap:8px;align-items:baseline;margin-bottom:8px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+.value{font-variant-numeric:tabular-nums;color:var(--ink);font-size:13px;letter-spacing:0;text-transform:none}
+select{
+  width:100%;
+  border:1px solid var(--line);
+  background:var(--paper);
+  color:var(--ink);
+  border-radius:14px;
+  padding:11px 12px;
+  outline:none;
+}
+input[type="range"]{width:100%;accent-color:var(--accent)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.badge{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:7px 10px;font-size:12px;color:var(--muted)}
+.badge.good{color:var(--good);background:color-mix(in srgb,var(--good),transparent 88%)}
+.badge.bad{color:var(--bad);background:color-mix(in srgb,var(--bad),transparent 88%)}
+.main{display:grid;gap:16px}
+.hero-grid{display:grid;grid-template-columns:1.45fr .9fr;gap:16px}
+.canvas-wrap{position:relative;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,color-mix(in srgb,var(--paper),transparent 0%),color-mix(in srgb,var(--paper2),transparent 42%));overflow:hidden;min-height:420px}
+canvas{display:block;width:100%;height:100%}
+#seqCanvas{height:420px}
+#lineCanvas{height:220px}
+#qCanvas{height:250px}
+.overlay-note{position:absolute;left:14px;top:12px;right:14px;display:flex;gap:8px;flex-wrap:wrap;pointer-events:none}
+.micro{font-size:12px;color:var(--muted);background:color-mix(in srgb,var(--paper),transparent 8%);border:1px solid var(--line);border-radius:999px;padding:6px 9px;backdrop-filter:blur(8px)}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.kpi{padding:12px;border:1px solid var(--line);background:color-mix(in srgb,var(--paper2),transparent 30%);border-radius:16px;min-height:80px}
+.kpi .num{font-size:24px;font-variant-numeric:tabular-nums;font-weight:760;letter-spacing:-.03em}
+.kpi .cap{font-size:12px;color:var(--muted);margin-top:3px}
+.formula{
+  font-family:var(--serif);
+  font-size:18px;
+  line-height:1.45;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--paper2),transparent 24%),color-mix(in srgb,var(--paper),transparent 10%));
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:14px 15px;
+  overflow:auto;
+}
+.formula small{font-family:var(--font);font-size:12px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.proof{display:grid;gap:10px}
+.step{display:grid;grid-template-columns:36px 1fr;gap:10px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:16px;background:color-mix(in srgb,var(--paper2),transparent 34%)}
+.step .dot{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--soft);color:var(--accent);font-weight:800;border:1px solid color-mix(in srgb,var(--accent),transparent 65%)}
+.step b{display:block;margin-bottom:2px}
+.step p{margin:0;color:var(--muted);font-size:14px}
+.matrix{display:grid;gap:3px;grid-template-columns:repeat(12,1fr);padding:12px;border:1px solid var(--line);border-radius:18px;background:color-mix(in srgb,var(--paper2),transparent 35%)}
+.cell{aspect-ratio:1;border-radius:6px;border:1px solid rgba(0,0,0,.03);display:grid;place-items:center;font-size:9px;color:transparent}
+.cell.ok{background:color-mix(in srgb,var(--good),transparent 23%)}
+.cell.no{background:color-mix(in srgb,var(--bad),transparent 52%)}
+.cell.diag{box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--ink),transparent 80%)}
+.law-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.law{padding:12px;border:1px solid var(--line);border-radius:16px;background:color-mix(in srgb,var(--paper2),transparent 32%)}
+.law .name{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:800;margin-bottom:7px}
+.law .txt{font-family:var(--serif);font-size:17px}
+.notice{border-left:4px solid var(--accent);padding:13px 14px;border-radius:16px;background:var(--soft);color:var(--ink)}
+.notice p{margin:0;color:var(--muted)}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.summary div{padding:13px;border:1px solid var(--line);border-radius:16px;background:color-mix(in srgb,var(--paper2),transparent 35%)}
+.summary b{display:block;margin-bottom:6px}.summary span{color:var(--muted);font-size:14px}
+.footer{margin-top:18px;color:var(--muted);font-size:12px;text-align:center}
+hr{border:0;border-top:1px solid var(--line);margin:14px 0}
+@media(max-width:980px){.grid,.hero-grid,.two{grid-template-columns:1fr}.controls{position:static}.summary,.law-grid{grid-template-columns:1fr 1fr}header{grid-template-columns:1fr}.top-actions{justify-content:flex-start}}
+@media(max-width:620px){.app{padding:18px 12px 32px}.row,.summary,.law-grid,.kpi-grid{grid-template-columns:1fr}.card{border-radius:20px;padding:14px}.canvas-wrap{min-height:320px}#seqCanvas{height:340px}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <header>
+    <div>
+      <div class="eyebrow">Real Analysis · Sequences</div>
+      <h1>Cauchy sequences and completeness</h1>
+      <p class="subtitle">A sequence is Cauchy when its tail becomes internally small. Completeness says that in \(\mathbb R\), every internally small tail has a real point to converge to. In \(\mathbb Q\), a hole can remain.</p>
+    </div>
+    <div class="top-actions">
+      <button id="themeBtn" aria-label="toggle theme">Dark mode</button>
+      <button id="findNBtn">Find first good N</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <aside class="controls">
+      <section class="card compact">
+        <h2><strong>Controls</strong></h2>
+        <div class="control">
+          <div class="label-row"><span>Sequence</span><span class="value" id="seqKindLabel"></span></div>
+          <select id="seqSelect">
+            <option value="oneOverN">xₙ = 1/n</option>
+            <option value="altOverN">xₙ = (-1)ⁿ/n</option>
+            <option value="sqrt2q">qₙ = floor(10ⁿ√2)/10ⁿ ∈ ℚ</option>
+            <option value="oscillate">xₙ = (-1)ⁿ</option>
+            <option value="linear">xₙ = n/8</option>
+            <option value="harmonic">xₙ = 1 + 1/2 + ⋯ + 1/n</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <div class="label-row"><span>ε threshold</span><span class="value" id="epsLabel"></span></div>
+          <input type="range" id="epsSlider" min="0" max="10" value="5" step="1" />
+        </div>
+
+        <div class="row">
+          <div class="control">
+            <div class="label-row"><span>N tail starts</span><span class="value" id="nLabel"></span></div>
+            <input type="range" id="nSlider" min="1" max="120" value="12" step="1" />
+          </div>
+          <div class="control">
+            <div class="label-row"><span>Terms shown</span><span class="value" id="termsLabel"></span></div>
+            <input type="range" id="termsSlider" min="30" max="160" value="90" step="1" />
+          </div>
+        </div>
+
+        <div class="control">
+          <div class="label-row"><span>View</span><span class="value">finite window</span></div>
+          <div class="badge-row">
+            <span class="badge" id="cauchyBadge">Cauchy?</span>
+            <span class="badge" id="convBadge">Convergent?</span>
+            <span class="badge" id="completeBadge">Ambient</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card compact">
+        <h2><strong>Definitions</strong></h2>
+        <div class="formula">
+          xₙ → L ⇔ ∀ ε &gt; 0, ∃ N ∈ ℕ : n ≥ N ⇒ |xₙ − L| &lt; ε
+        </div>
+        <div style="height:10px"></div>
+        <div class="formula">
+          (xₙ) Cauchy ⇔ ∀ ε &gt; 0, ∃ N ∈ ℕ : m,n ≥ N ⇒ |xₘ − xₙ| &lt; ε
+        </div>
+      </section>
+    </aside>
+
+    <main class="main">
+      <section class="card">
+        <h2><strong>Main diagram</strong> · tail diameter</h2>
+        <div class="hero-grid">
+          <div>
+            <div class="canvas-wrap">
+              <canvas id="seqCanvas"></canvas>
+              <div class="overlay-note">
+                <span class="micro" id="tailNote">tail</span>
+                <span class="micro" id="diamNote">diameter</span>
+                <span class="micro" id="statusNote">status</span>
+              </div>
+            </div>
+            <div class="kpi-grid">
+              <div class="kpi"><div class="num" id="diamKpi">—</div><div class="cap">sample tail diameter max − min</div></div>
+              <div class="kpi"><div class="num" id="firstGoodKpi">—</div><div class="cap">first N with diameter &lt; ε in window</div></div>
+              <div class="kpi"><div class="num" id="limitKpi">—</div><div class="cap">candidate limit in the chosen ambient space</div></div>
+            </div>
+          </div>
+          <div>
+            <div class="canvas-wrap" style="min-height:220px">
+              <canvas id="lineCanvas"></canvas>
+              <div class="overlay-note"><span class="micro">number-line tail</span></div>
+            </div>
+            <hr>
+            <h3><strong>Pairwise Cauchy test</strong></h3>
+            <p style="color:var(--muted);font-size:14px;margin-top:-4px">Each cell checks whether |xₘ − xₙ| &lt; ε for indices in the visible tail block.</p>
+            <div id="matrix" class="matrix" aria-label="pairwise distance matrix"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="two">
+        <div class="card">
+          <h2><strong>Proof microscope</strong> · convergent ⇒ Cauchy</h2>
+          <div class="proof">
+            <div class="step"><div class="dot">1</div><div><b>Assume convergence.</b><p>For a given ε, eventually |xₙ − L| &lt; ε/2.</p></div></div>
+            <div class="step"><div class="dot">2</div><div><b>Take two late terms.</b><p>If m,n ≥ N, then both xₘ and xₙ lie in the same ε/2-neighborhood of L.</p></div></div>
+            <div class="step"><div class="dot">3</div><div><b>Use the triangle inequality.</b><p>|xₘ − xₙ| ≤ |xₘ − L| + |xₙ − L| &lt; ε.</p></div></div>
+          </div>
+          <div class="notice" style="margin-top:12px"><p>Convergence is external: terms approach a named point L. Cauchy is internal: late terms approach each other.</p></div>
+        </div>
+
+        <div class="card">
+          <h2><strong>Completeness</strong> · why \(\mathbb R\) matters</h2>
+          <div class="formula">
+            \(\mathbb R\) complete ⇔ every Cauchy sequence of real numbers converges to a real number.
+          </div>
+          <div style="height:12px"></div>
+          <div class="formula">
+            \(\mathbb Q\) not complete: qₙ ∈ \(\mathbb Q\), qₙ → √2, but √2 ∉ \(\mathbb Q\).
+          </div>
+          <div class="notice" style="margin-top:12px"><p>A Cauchy sequence can describe a missing point. Completeness is the axiom that the missing point is actually present.</p></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><strong>Failure in \(\mathbb Q\)</strong> · a hole seen by a rational Cauchy sequence</h2>
+        <div class="hero-grid">
+          <div class="canvas-wrap" style="min-height:250px"><canvas id="qCanvas"></canvas><div class="overlay-note"><span class="micro">rational decimals approach √2</span></div></div>
+          <div>
+            <div class="proof">
+              <div class="step"><div class="dot">Q</div><div><b>Rational terms.</b><p>qₙ = floor(10ⁿ√2)/10ⁿ is a terminating decimal, hence rational.</p></div></div>
+              <div class="step"><div class="dot">C</div><div><b>Cauchy behavior.</b><p>The decimals agree more and more. The tail diameter tends to 0.</p></div></div>
+              <div class="step"><div class="dot">∉</div><div><b>No rational limit.</b><p>If qₙ converged in \(\mathbb Q\), its limit would be a rational x with x² = 2, impossible.</p></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><strong>What to notice</strong></h2>
+        <div class="law-grid">
+          <div class="law"><div class="name">Tail</div><div class="txt">Only late terms matter.</div></div>
+          <div class="law"><div class="name">Cauchy</div><div class="txt">tail diameter → 0.</div></div>
+          <div class="law"><div class="name">Convergent</div><div class="txt">tail collapses to L.</div></div>
+          <div class="law"><div class="name">Complete</div><div class="txt">collapse point belongs to the space.</div></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><strong>Exam-style summary</strong></h2>
+        <div class="summary">
+          <div><b>Definition</b><span>Cauchy means ∀ε &gt; 0, eventually all pairwise distances are &lt; ε.</span></div>
+          <div><b>Convergent ⇒ Cauchy</b><span>Use ε/2 and triangle inequality around the limit L.</span></div>
+          <div><b>Completeness of ℝ</b><span>Every real Cauchy sequence has a real limit.</span></div>
+          <div><b>Failure of ℚ</b><span>Rational Cauchy sequences may converge only to an irrational real.</span></div>
+        </div>
+      </section>
+
+      <div class="footer">Finite diagrams are visual evidence. The definitions and theorem statements are infinite.</div>
+    </main>
+  </div>
+</div>
+<script>
+(function(){
+  const root=document.documentElement;
+  const themeBtn=document.getElementById('themeBtn');
+  const seqSelect=document.getElementById('seqSelect');
+  const epsSlider=document.getElementById('epsSlider');
+  const nSlider=document.getElementById('nSlider');
+  const termsSlider=document.getElementById('termsSlider');
+  const findNBtn=document.getElementById('findNBtn');
+  const epsVals=[2,1,0.75,0.5,0.25,0.1,0.05,0.02,0.01,0.005,0.001];
+  const labels={
+    oneOverN:'real convergent', altOverN:'real convergent', sqrt2q:'rational Cauchy', oscillate:'bounded non-Cauchy', linear:'unbounded', harmonic:'divergent'
+  };
+  const theorem={
+    oneOverN:{cauchy:true,conv:true,limit:'0 ∈ ℝ',ambient:'ℝ complete'},
+    altOverN:{cauchy:true,conv:true,limit:'0 ∈ ℝ',ambient:'ℝ complete'},
+    sqrt2q:{cauchy:true,conv:false,limit:'√2 ∉ ℚ',ambient:'ℚ not complete'},
+    oscillate:{cauchy:false,conv:false,limit:'none',ambient:'ℝ'},
+    linear:{cauchy:false,conv:false,limit:'∞ is not a real limit',ambient:'ℝ'},
+    harmonic:{cauchy:false,conv:false,limit:'∞ is not a real limit',ambient:'ℝ'}
+  };
+  function css(name){return getComputedStyle(root).getPropertyValue(name).trim()}
+  function rgba(hex,alpha){
+    const c=hex.replace('#','');
+    const n=parseInt(c.length===3?c.split('').map(x=>x+x).join(''):c,16);
+    return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${alpha})`;
+  }
+  function dprCanvas(canvas){
+    const rect=canvas.getBoundingClientRect();
+    const dpr=window.devicePixelRatio||1;
+    canvas.width=Math.floor(rect.width*dpr);canvas.height=Math.floor(rect.height*dpr);
+    const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
+    return {ctx,w:rect.width,h:rect.height};
+  }
+  function seqVal(kind,n){
+    if(kind==='oneOverN') return 1/n;
+    if(kind==='altOverN') return (n%2===0?1:-1)/n;
+    if(kind==='oscillate') return n%2===0?1:-1;
+    if(kind==='linear') return n/8;
+    if(kind==='harmonic') {let s=0; for(let k=1;k<=n;k++)s+=1/k; return s;}
+    if(kind==='sqrt2q') { const d=Math.min(n,12); const p=Math.pow(10,d); return Math.floor(Math.sqrt(2)*p)/p; }
+    return 0;
+  }
+  function makeSeq(kind,M){return Array.from({length:M},(_,i)=>seqVal(kind,i+1));}
+  function tailStats(arr,N){
+    const t=arr.slice(N-1); let mn=Infinity,mx=-Infinity;
+    t.forEach(v=>{if(v<mn)mn=v;if(v>mx)mx=v});
+    return {min:mn,max:mx,diam:mx-mn};
+  }
+  function firstGood(arr,eps){
+    for(let N=1;N<=arr.length;N++){ if(tailStats(arr,N).diam < eps) return N; }
+    return null;
+  }
+  function fmt(x){
+    if(!isFinite(x))return '—';
+    if(Math.abs(x)>=100)return x.toFixed(0);
+    if(Math.abs(x)>=10)return x.toFixed(2);
+    if(Math.abs(x)>=1)return x.toFixed(3);
+    return x.toPrecision(3);
+  }
+  function niceRange(vals){
+    let mn=Math.min(...vals),mx=Math.max(...vals);
+    if(mn===mx){mn-=1;mx+=1}
+    const pad=(mx-mn)*.16+1e-9;
+    return [mn-pad,mx+pad];
+  }
+  function drawGrid(ctx,w,h,pad,xTicks,yTicks){
+    ctx.strokeStyle=css('--grid');ctx.lineWidth=1;
+    for(let i=0;i<=xTicks;i++){const x=pad.l+(w-pad.l-pad.r)*i/xTicks;ctx.beginPath();ctx.moveTo(x,pad.t);ctx.lineTo(x,h-pad.b);ctx.stroke();}
+    for(let j=0;j<=yTicks;j++){const y=pad.t+(h-pad.t-pad.b)*j/yTicks;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke();}
+  }
+  function drawSeq(arr,N,eps){
+    const canvas=document.getElementById('seqCanvas');
+    const {ctx,w,h}=dprCanvas(canvas); ctx.clearRect(0,0,w,h);
+    const pad={l:46,r:18,t:45,b:38};
+    const [ymin,ymax]=niceRange(arr.concat([0]));
+    const xScale=n=>pad.l+(n-1)/(arr.length-1)*(w-pad.l-pad.r);
+    const yScale=v=>h-pad.b-(v-ymin)/(ymax-ymin)*(h-pad.t-pad.b);
+    drawGrid(ctx,w,h,pad,8,6);
+    ctx.strokeStyle=css('--line'); ctx.lineWidth=1.25;
+    ctx.beginPath();ctx.moveTo(pad.l,h-pad.b);ctx.lineTo(w-pad.r,h-pad.b);ctx.stroke();
+    ctx.fillStyle=css('--muted');ctx.font='12px Inter,system-ui';
+    ctx.fillText('n',w-pad.r-10,h-14);ctx.fillText('xₙ',14,pad.t+4);
+
+    const xN=xScale(N);
+    ctx.fillStyle=rgba(css('--accent').startsWith('#')?css('--accent'):'#2e9c8f',.08);
+    ctx.fillRect(xN,pad.t,w-pad.r-xN,h-pad.t-pad.b);
+
+    const st=tailStats(arr,N);
+    const yMin=yScale(st.min), yMax=yScale(st.max);
+    ctx.fillStyle=rgba(css('--accent2').startsWith('#')?css('--accent2'):'#c17948',.14);
+    ctx.fillRect(xN,Math.min(yMin,yMax),w-pad.r-xN,Math.abs(yMax-yMin));
+    ctx.strokeStyle=css('--accent2');ctx.lineWidth=2;
+    ctx.setLineDash([5,5]);
+    ctx.beginPath();ctx.moveTo(xN,yScale(st.min));ctx.lineTo(w-pad.r,yScale(st.min));ctx.stroke();
+    ctx.beginPath();ctx.moveTo(xN,yScale(st.max));ctx.lineTo(w-pad.r,yScale(st.max));ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.strokeStyle=css('--accent');ctx.lineWidth=2.1;
+    ctx.beginPath(); arr.forEach((v,i)=>{const x=xScale(i+1),y=yScale(v); if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y)}); ctx.stroke();
+    arr.forEach((v,i)=>{
+      const n=i+1, x=xScale(n), y=yScale(v);
+      ctx.beginPath();
+      ctx.fillStyle=n>=N?css('--accent'):css('--muted');
+      ctx.globalAlpha=n>=N?1:.38;ctx.arc(x,y,n>=N?3.4:2.3,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+    });
+    ctx.strokeStyle=css('--accent'); ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(xN,pad.t);ctx.lineTo(xN,h-pad.b);ctx.stroke();
+    ctx.fillStyle=css('--ink');ctx.font='13px Inter,system-ui';
+    ctx.fillText('N = '+N,xN+8,pad.t+18);
+    ctx.fillStyle=css('--muted');ctx.font='12px Inter,system-ui';
+    ctx.fillText('sample tail diameter = '+fmt(st.diam),xN+8,pad.t+36);
+    ctx.fillText('ε = '+eps,pad.l+6,pad.t+18);
+  }
+  function drawLine(arr,N,kind){
+    const canvas=document.getElementById('lineCanvas');
+    const {ctx,w,h}=dprCanvas(canvas); ctx.clearRect(0,0,w,h);
+    const t=arr.slice(N-1), st=tailStats(arr,N);
+    let extras=[];
+    if(kind==='sqrt2q') extras=[Math.sqrt(2)];
+    if(kind==='oneOverN'||kind==='altOverN') extras=[0];
+    const [xmin,xmax]=niceRange(t.concat(extras));
+    const xScale=v=>40+(v-xmin)/(xmax-xmin)*(w-70);
+    const y=h*.55;
+    ctx.strokeStyle=css('--line');ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(30,y);ctx.lineTo(w-30,y);ctx.stroke();
+    for(let i=0;i<6;i++){const x=30+(w-60)*i/5;ctx.strokeStyle=css('--grid');ctx.beginPath();ctx.moveTo(x,y-7);ctx.lineTo(x,y+7);ctx.stroke();}
+    ctx.fillStyle=rgba(css('--accent2').startsWith('#')?css('--accent2'):'#c17948',.18);
+    ctx.fillRect(xScale(st.min),y-20,Math.max(2,xScale(st.max)-xScale(st.min)),40);
+    ctx.strokeStyle=css('--accent2');ctx.lineWidth=2;ctx.strokeRect(xScale(st.min),y-20,Math.max(2,xScale(st.max)-xScale(st.min)),40);
+    t.forEach((v,i)=>{ctx.beginPath();ctx.fillStyle=css('--accent');ctx.globalAlpha=Math.max(.16,1-i/t.length);ctx.arc(xScale(v),y+(i%5-2)*7,3.3,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;});
+    const known=theorem[kind].limit;
+    if(kind==='sqrt2q'){
+      const x=xScale(Math.sqrt(2));ctx.strokeStyle=css('--bad');ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,y-54);ctx.lineTo(x,y+54);ctx.stroke();ctx.fillStyle=css('--bad');ctx.font='13px Georgia,serif';ctx.fillText('√2 ∉ ℚ',x+7,y-38);
+    }
+    if(kind==='oneOverN'||kind==='altOverN'){
+      const x=xScale(0);ctx.strokeStyle=css('--good');ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,y-54);ctx.lineTo(x,y+54);ctx.stroke();ctx.fillStyle=css('--good');ctx.font='13px Georgia,serif';ctx.fillText('L = 0',x+7,y-38);
+    }
+    ctx.fillStyle=css('--muted');ctx.font='12px Inter,system-ui';ctx.fillText('tail projected on the real line',18,22);ctx.fillText('candidate: '+known,18,h-18);
+  }
+  function drawQ(){
+    const canvas=document.getElementById('qCanvas');
+    const {ctx,w,h}=dprCanvas(canvas);ctx.clearRect(0,0,w,h);
+    const vals=Array.from({length:13},(_,i)=>seqVal('sqrt2q',i+1));
+    const sqrt2=Math.sqrt(2), xmin=1.39, xmax=1.416;
+    const xScale=v=>46+(v-xmin)/(xmax-xmin)*(w-76);
+    const yBase=h-54;
+    ctx.strokeStyle=css('--line');ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(34,yBase);ctx.lineTo(w-28,yBase);ctx.stroke();
+    ctx.fillStyle=css('--muted');ctx.font='12px Inter,system-ui';ctx.fillText('terminating decimals in ℚ',18,24);
+    vals.forEach((v,i)=>{
+      const x=xScale(v), y=yBase-(i+1)*11;
+      ctx.strokeStyle=rgba(css('--accent').startsWith('#')?css('--accent'):'#2e9c8f',.25);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x,yBase);ctx.stroke();
+      ctx.fillStyle=css('--accent');ctx.beginPath();ctx.arc(x,y,3.5,0,Math.PI*2);ctx.fill();
+      if(i<6||i===12){ctx.fillStyle=css('--muted');ctx.font='11px Inter,system-ui';ctx.fillText('q'+(i+1),x+5,y+4)}
+    });
+    const x=xScale(sqrt2);ctx.strokeStyle=css('--bad');ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,36);ctx.lineTo(x,yBase+18);ctx.stroke();
+    ctx.fillStyle=css('--bad');ctx.font='14px Georgia,serif';ctx.fillText('√2',x+8,52);
+    ctx.fillStyle=css('--muted');ctx.font='12px Inter,system-ui';ctx.fillText('The sequence is Cauchy in ℚ, but the indicated limit is not in ℚ.',18,h-18);
+  }
+  function updateMatrix(arr,N,eps){
+    const box=document.getElementById('matrix');box.innerHTML='';
+    const start=N, len=12;
+    for(let i=0;i<len;i++)for(let j=0;j<len;j++){
+      const m=start+i,n=start+j;
+      const a=arr[m-1],b=arr[n-1];
+      const cell=document.createElement('div');
+      const ok=Math.abs(a-b)<eps;
+      cell.className='cell '+(ok?'ok':'no')+(i===j?' diag':'');
+      cell.title=`|x_${m} - x_${n}| = ${fmt(Math.abs(a-b))}`;
+      box.appendChild(cell);
+    }
+  }
+  function updateBadges(kind,st,eps){
+    const c=document.getElementById('cauchyBadge'),v=document.getElementById('convBadge'),a=document.getElementById('completeBadge');
+    const th=theorem[kind];
+    c.className='badge '+(th.cauchy?'good':'bad'); c.textContent=th.cauchy?'Cauchy: yes':'Cauchy: no';
+    v.className='badge '+(th.conv?'good':'bad'); v.textContent=th.conv?'Convergent: yes':'Convergent: no';
+    a.className='badge '+(kind==='sqrt2q'?'bad':'good'); a.textContent=th.ambient;
+    document.getElementById('statusNote').textContent=st.diam<eps?'visible tail passes ε':'visible tail fails ε';
+    document.getElementById('statusNote').style.color=st.diam<eps?css('--good'):css('--bad');
+  }
+  function render(){
+    const kind=seqSelect.value;
+    const M=+termsSlider.value;
+    if(+nSlider.max!==M){nSlider.max=M;if(+nSlider.value>M)nSlider.value=M;}
+    const N=+nSlider.value;
+    const eps=epsVals[+epsSlider.value];
+    const arr=makeSeq(kind,M);
+    const st=tailStats(arr,N); const fg=firstGood(arr,eps);
+    document.getElementById('seqKindLabel').textContent=labels[kind];
+    document.getElementById('epsLabel').textContent=eps;
+    document.getElementById('nLabel').textContent=N;
+    document.getElementById('termsLabel').textContent=M;
+    document.getElementById('tailNote').textContent=`tail: n ≥ ${N}`;
+    document.getElementById('diamNote').textContent=`diameter ${fmt(st.diam)} ${st.diam<eps?' < ':' ≥ '} ε`;
+    document.getElementById('diamKpi').textContent=fmt(st.diam);
+    document.getElementById('firstGoodKpi').textContent=fg?String(fg):'none';
+    document.getElementById('limitKpi').textContent=theorem[kind].limit;
+    updateBadges(kind,st,eps);
+    drawSeq(arr,N,eps);drawLine(arr,N,kind);drawQ();updateMatrix(arr,N,eps);
+  }
+  [seqSelect,epsSlider,nSlider,termsSlider].forEach(el=>el.addEventListener('input',render));
+  findNBtn.addEventListener('click',()=>{const arr=makeSeq(seqSelect.value,+termsSlider.value);const fg=firstGood(arr,epsVals[+epsSlider.value]);if(fg){nSlider.value=fg;render();}});
+  themeBtn.addEventListener('click',()=>{const dark=root.getAttribute('data-theme')==='dark';root.setAttribute('data-theme',dark?'light':'dark');themeBtn.textContent=dark?'Dark mode':'Light mode';render();});
+  window.addEventListener('resize',render);
+  root.setAttribute('data-theme','light');
+  render();
+})();
+</script>
+</body>
+</html>
