@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for series convergence tests.">
+<title>Series Convergence Tests | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+:root{
+  --bg:#f7f2e8;
+  --paper:#fffdf8;
+  --paper2:#f0eadf;
+  --ink:#1f2728;
+  --muted:#697373;
+  --line:rgba(31,39,40,.13);
+  --grid:rgba(31,39,40,.075);
+  --accent:#2f9b8f;
+  --accent2:#b7794b;
+  --accent3:#6f7fb7;
+  --good:#2f9b8f;
+  --warn:#b7794b;
+  --bad:#b85757;
+  --shadow:0 18px 42px rgba(31,39,40,.08);
+}
+[data-theme="dark"]{
+  --bg:#0d1117;
+  --paper:#131923;
+  --paper2:#18212d;
+  --ink:#ecf2ef;
+  --muted:#9aa8a5;
+  --line:rgba(236,242,239,.13);
+  --grid:rgba(236,242,239,.08);
+  --accent:#58c8bc;
+  --accent2:#d59a69;
+  --accent3:#9caaf0;
+  --good:#58c8bc;
+  --warn:#d59a69;
+  --bad:#e48787;
+  --shadow:0 18px 48px rgba(0,0,0,.30);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(47,155,143,.13), transparent 34%),
+    radial-gradient(circle at 85% 10%, rgba(183,121,75,.10), transparent 32%),
+    var(--bg);
+  color:var(--ink);
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+button,select,input{font:inherit;color:inherit}
+.app{max-width:1220px;margin:0 auto;padding:24px}
+.header{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:20px;
+  align-items:start;
+  margin-bottom:18px;
+}
+.eyebrow{
+  color:var(--accent);
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  font-size:12px;
+  font-weight:750;
+  margin-bottom:10px;
+}
+h1{font-family:Georgia, 'Times New Roman', serif;font-weight:650;line-height:1.02;font-size:clamp(34px,5vw,64px);margin:0 0 8px}
+.subtitle{max-width:780px;color:var(--muted);font-size:16px;line-height:1.6;margin:0}
+.top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.pill,button.pill{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.22);
+  color:var(--ink);
+  border-radius:999px;
+  padding:9px 13px;
+  cursor:pointer;
+  box-shadow:none;
+}
+[data-theme="dark"] .pill,[data-theme="dark"] button.pill{background:rgba(255,255,255,.04)}
+.grid{display:grid;grid-template-columns:340px 1fr;gap:16px;align-items:start}
+.card{
+  background:linear-gradient(180deg, color-mix(in srgb, var(--paper) 95%, transparent), var(--paper));
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+}
+.controls{padding:18px;position:sticky;top:18px}
+.card h2,.card h3{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+.card h3{font-size:12px;margin-top:16px}
+.symbol{
+  padding:14px 16px;
+  background:var(--paper2);
+  border:1px solid var(--line);
+  border-radius:18px;
+  line-height:1.55;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:13px;
+}
+.control{margin:15px 0}
+.control label{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted);margin-bottom:8px}
+.value{color:var(--ink);font-variant-numeric:tabular-nums}
+select{
+  width:100%;border:1px solid var(--line);background:var(--paper2);border-radius:14px;padding:10px 12px;outline:none;
+}
+input[type="range"]{width:100%;accent-color:var(--accent)}
+.switch-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.tiny-btn{
+  border:1px solid var(--line);
+  background:var(--paper2);
+  border-radius:14px;
+  padding:9px 10px;
+  cursor:pointer;
+  font-size:13px;
+}
+.tiny-btn.active{border-color:color-mix(in srgb, var(--accent) 70%, var(--line));box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent)}
+.content{display:grid;gap:16px}
+.hero{padding:18px}
+.hero-top{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-bottom:14px}
+.metric-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.metric{padding:12px;border:1px solid var(--line);background:var(--paper2);border-radius:18px;min-height:78px}
+.metric .label{font-size:11px;text-transform:uppercase;letter-spacing:.11em;color:var(--muted)}
+.metric .num{font-size:20px;margin-top:7px;font-variant-numeric:tabular-nums}
+.metric .small{font-size:12px;color:var(--muted);line-height:1.35;margin-top:4px}
+.svg-card{padding:14px;border:1px solid var(--line);background:var(--paper);border-radius:22px;overflow:hidden}
+svg{width:100%;height:auto;display:block}
+.axis text{fill:var(--muted);font-size:11px}
+.axis path,.axis line{stroke:var(--line)}
+.gridline{stroke:var(--grid);stroke-width:1}
+.curveA{fill:none;stroke:var(--accent);stroke-width:2.7;stroke-linecap:round;stroke-linejoin:round}
+.curveB{fill:none;stroke:var(--accent2);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.curveC{fill:none;stroke:var(--accent3);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:5 5}
+.pointA{fill:var(--accent);stroke:var(--paper);stroke-width:1.5}
+.pointB{fill:var(--accent2);stroke:var(--paper);stroke-width:1.5}
+.band{fill:color-mix(in srgb, var(--accent) 12%, transparent)}
+.termbar{fill:color-mix(in srgb, var(--accent) 64%, transparent)}
+.negbar{fill:color-mix(in srgb, var(--accent2) 68%, transparent)}
+.limit-line{stroke:var(--accent2);stroke-width:1.7;stroke-dasharray:6 5}
+.zero-line{stroke:var(--line);stroke-width:1.4}
+.annotation{fill:var(--muted);font-size:12px}
+.big-annotation{fill:var(--ink);font-size:14px;font-weight:650}
+.panel-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.panel{padding:16px}
+.panel p{margin:0;color:var(--muted);line-height:1.55;font-size:14px}
+.law-grid{display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:10px;margin-top:12px}
+.law{padding:12px 13px;border:1px solid var(--line);border-radius:16px;background:var(--paper2)}
+.law strong{display:block;font-size:13px;margin-bottom:6px}
+.law code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted);font-size:12px;line-height:1.5}
+.status{
+  display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:12px;margin-top:10px;background:var(--paper2);
+}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.dot.good{background:var(--good)}.dot.warn{background:var(--warn)}.dot.bad{background:var(--bad)}
+.notice{border-left:4px solid var(--accent);padding:14px 16px;background:var(--paper2);border-radius:16px;margin-top:12px;color:var(--muted);line-height:1.55;font-size:14px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tab{border:1px solid var(--line);background:var(--paper2);border-radius:999px;padding:8px 11px;cursor:pointer;font-size:12px;color:var(--muted)}
+.tab.active{color:var(--ink);border-color:color-mix(in srgb,var(--accent) 60%,var(--line));box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 13%,transparent)}
+.table{width:100%;border-collapse:separate;border-spacing:0 8px;font-size:13px}
+.table td{background:var(--paper2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px;color:var(--muted);vertical-align:top}
+.table td:first-child{border-left:1px solid var(--line);border-radius:14px 0 0 14px;color:var(--ink);font-weight:650;width:28%}
+.table td:last-child{border-right:1px solid var(--line);border-radius:0 14px 14px 0}
+.footer{color:var(--muted);font-size:12px;text-align:center;padding:18px 0 8px}
+@media (max-width: 980px){
+  .grid{grid-template-columns:1fr}.controls{position:relative;top:0}.hero-top,.panel-grid{grid-template-columns:1fr}.metric-row{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width: 560px){.app{padding:16px}.header{grid-template-columns:1fr}.top-actions{justify-content:flex-start}.metric-row,.law-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <header class="header">
+    <div>
+      <div class="eyebrow">Real Analysis · Series</div>
+      <h1>Series convergence tests</h1>
+      <p class="subtitle">Partial sums are the object. Tests are lenses that decide whether the sequence \(S_N=\sum_{n=1}^N a_n\) settles to a real number.</p>
+    </div>
+    <div class="top-actions">
+      <button class="pill" id="themeBtn">Dark mode</button>
+      <button class="pill" id="resetBtn">Reset</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <aside class="card controls">
+      <h2>Controls</h2>
+      <div class="symbol" id="formulaBox">aₙ = 1/nᵖ</div>
+
+      <div class="control">
+        <label>Series family</label>
+        <select id="family">
+          <option value="pseries">p-series · aₙ = 1/nᵖ</option>
+          <option value="geometric">geometric · aₙ = rⁿ⁻¹</option>
+          <option value="altp">alternating p-series · (-1)ⁿ⁺¹/nᵖ</option>
+          <option value="logseries">log series · 1/(n(log n)^α)</option>
+          <option value="exprpoly">exponential-polynomial · nᵠrⁿ</option>
+        </select>
+      </div>
+
+      <div class="control" id="pWrap">
+        <label><span>p</span><span class="value" id="pVal">1.40</span></label>
+        <input id="p" type="range" min="0.20" max="2.60" step="0.05" value="1.40" />
+      </div>
+
+      <div class="control" id="rWrap">
+        <label><span>r</span><span class="value" id="rVal">0.62</span></label>
+        <input id="r" type="range" min="0.10" max="1.20" step="0.01" value="0.62" />
+      </div>
+
+      <div class="control" id="alphaWrap">
+        <label><span>α</span><span class="value" id="alphaVal">1.30</span></label>
+        <input id="alpha" type="range" min="0.40" max="2.40" step="0.05" value="1.30" />
+      </div>
+
+      <div class="control" id="qWrap">
+        <label><span>q</span><span class="value" id="qVal">2.00</span></label>
+        <input id="q" type="range" min="0.00" max="5.00" step="0.25" value="2.00" />
+      </div>
+
+      <div class="control">
+        <label><span>Displayed terms N</span><span class="value" id="nVal">80</span></label>
+        <input id="N" type="range" min="12" max="220" step="1" value="80" />
+      </div>
+
+      <div class="control">
+        <label><span>ε tube around last value</span><span class="value" id="epsVal">0.08</span></label>
+        <input id="eps" type="range" min="0.01" max="0.50" step="0.01" value="0.08" />
+      </div>
+
+      <h3>Test lens</h3>
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-lens="overview">Overview</button>
+        <button class="tab" data-lens="absolute">Absolute</button>
+        <button class="tab" data-lens="comparison">Comparison</button>
+        <button class="tab" data-lens="ratioRoot">Ratio/root</button>
+        <button class="tab" data-lens="alternating">Alternating</button>
+        <button class="tab" data-lens="condensation">Condensation</button>
+      </div>
+
+      <div class="notice" id="controlNotice">Choose a family. The diagrams recompute the partial sums, term size, and the relevant test quantities.</div>
+    </aside>
+
+    <section class="content">
+      <div class="card hero">
+        <div class="hero-top">
+          <div>
+            <h2>Main diagram</h2>
+            <div class="svg-card"><svg id="sumSvg" viewBox="0 0 760 390" role="img" aria-label="Partial sums diagram"></svg></div>
+          </div>
+          <div>
+            <h2>Terms and test quantities</h2>
+            <div class="svg-card"><svg id="termSvg" viewBox="0 0 560 390" role="img" aria-label="Term and test diagram"></svg></div>
+          </div>
+        </div>
+        <div class="metric-row">
+          <div class="metric"><div class="label">Displayed S_N</div><div class="num" id="SN">—</div><div class="small">finite partial sum</div></div>
+          <div class="metric"><div class="label">a_N</div><div class="num" id="aN">—</div><div class="small">necessary condition: aₙ→0</div></div>
+          <div class="metric"><div class="label">Ratio/root lens</div><div class="num" id="RR">—</div><div class="small">finite estimates, not a proof alone</div></div>
+          <div class="metric"><div class="label">Verdict</div><div class="num" id="verdict">—</div><div class="small" id="verdictSmall">according to known theorem</div></div>
+        </div>
+      </div>
+
+      <div class="panel-grid">
+        <div class="card panel">
+          <h2>Symbolic core</h2>
+          <div class="symbol">
+            ∑aₙ converges ⇔ S_N = ∑ₙ₌₁ᴺ aₙ has a finite limit.<br>
+            Absolute convergence: ∑|aₙ| &lt; ∞ ⇒ ∑aₙ converges.<br>
+            Cauchy criterion: ∀ε&gt;0 ∃N: m&gt;n≥N ⇒ |aₙ₊₁+⋯+a_m|&lt;ε.
+          </div>
+          <div class="status" id="testStatus"><span class="dot"></span><span>Lens ready</span></div>
+          <div class="notice" id="interpretation">The graph of S_N is the sequence whose convergence we care about.</div>
+        </div>
+        <div class="card panel">
+          <h2>What to notice</h2>
+          <p id="noticeText">A series is not a curve; it is a sequence of partial sums. The terms may go to zero and the series may still diverge.</p>
+          <div class="law-grid">
+            <div class="law"><strong>Necessary test</strong><code>aₙ ↛ 0 ⇒ ∑aₙ diverges.</code></div>
+            <div class="law"><strong>Positive series</strong><code>convergence ⇔ partial sums bounded above.</code></div>
+            <div class="law"><strong>Absolute first</strong><code>∑|aₙ| convergent ⇒ ∑aₙ convergent.</code></div>
+            <div class="law"><strong>Conditional</strong><code>∑aₙ converges but ∑|aₙ| diverges.</code></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card panel">
+        <h2>Test microscope</h2>
+        <div class="svg-card"><svg id="lensSvg" viewBox="0 0 980 360" role="img" aria-label="Convergence test microscope"></svg></div>
+        <div class="notice" id="lensText">The selected test is displayed as a finite visual shadow of the theorem. The theorem itself is stated in the summary below.</div>
+      </div>
+
+      <div class="card panel">
+        <h2>Compact exam-style summary</h2>
+        <table class="table">
+          <tr><td>Partial sums</td><td>Study S_N=∑ₙ₌₁ᴺaₙ. The series converges iff (S_N) converges in ℝ.</td></tr>
+          <tr><td>Absolute convergence</td><td>If ∑|aₙ| converges, then ∑aₙ converges. If ∑aₙ converges but ∑|aₙ| diverges, convergence is conditional.</td></tr>
+          <tr><td>Comparison</td><td>For nonnegative terms: 0≤aₙ≤bₙ and ∑bₙ converges ⇒ ∑aₙ converges. If 0≤bₙ≤aₙ and ∑bₙ diverges ⇒ ∑aₙ diverges.</td></tr>
+          <tr><td>Ratio/root</td><td>L&lt;1 gives absolute convergence. L&gt;1 gives divergence. L=1 is inconclusive.</td></tr>
+          <tr><td>Alternating</td><td>If bₙ↓0, then ∑(-1)ⁿ⁺¹bₙ converges and |S−S_N|≤b_{N+1}.</td></tr>
+          <tr><td>Condensation</td><td>If aₙ≥0 is nonincreasing, then ∑aₙ converges iff ∑2ᵏa_{2ᵏ} converges.</td></tr>
+        </table>
+      </div>
+    </section>
+  </main>
+  <div class="footer">Self-contained HTML · no external libraries · diagrams computed from finite windows</div>
+</div>
+
+<script>
+(function(){
+  const root=document.documentElement;
+  const $=id=>document.getElementById(id);
+  const controls=['family','p','r','alpha','q','N','eps'];
+  let lens='overview';
+
+  const state=()=>({
+    family:$('family').value,
+    p:+$('p').value,
+    r:+$('r').value,
+    alpha:+$('alpha').value,
+    q:+$('q').value,
+    N:+$('N').value,
+    eps:+$('eps').value
+  });
+
+  function fmt(x, digits=4){
+    if(!Number.isFinite(x)) return '∞';
+    const ax=Math.abs(x);
+    if(ax>9999 || (ax>0 && ax<0.001)) return x.toExponential(2);
+    return x.toFixed(digits).replace(/\.0+$/,'').replace(/(\.\d*?)0+$/,'$1');
+  }
+
+  function term(n,s){
+    if(s.family==='pseries') return 1/Math.pow(n,s.p);
+    if(s.family==='geometric') return Math.pow(s.r,n-1);
+    if(s.family==='altp') return (n%2?1:-1)/Math.pow(n,s.p);
+    if(s.family==='logseries'){
+      const m=n+1;
+      return 1/(m*Math.pow(Math.log(m),s.alpha));
+    }
+    if(s.family==='exprpoly') return Math.pow(n,s.q)*Math.pow(s.r,n);
+    return 0;
+  }
+
+  function absTerm(n,s){return Math.abs(term(n,s));}
+
+  function seriesData(s){
+    const a=[], S=[], A=[];
+    let sum=0, abs=0;
+    for(let n=1;n<=s.N;n++){
+      const v=term(n,s); sum+=v; abs+=Math.abs(v);
+      a.push(v); S.push(sum); A.push(abs);
+    }
+    return {a,S,A};
+  }
+
+  function theoretical(s){
+    if(s.family==='pseries'){
+      return {type:s.p>1?'good':'bad', verdict:s.p>1?'converges':'diverges', detail:s.p>1?'p>1':'p≤1', formula:'aₙ = 1/nᵖ', limit: null};
+    }
+    if(s.family==='geometric'){
+      return {type:s.r<1?'good':'bad', verdict:s.r<1?'converges':'diverges', detail:s.r<1?'|r|<1':'r≥1', formula:'aₙ = rⁿ⁻¹', limit:s.r<1?1/(1-s.r):null};
+    }
+    if(s.family==='altp'){
+      const abs=s.p>1;
+      return {type:abs?'good':'warn', verdict:abs?'absolutely conv.':'conditionally conv.', detail:abs?'p>1':'0<p≤1', formula:'aₙ = (-1)ⁿ⁺¹/nᵖ', limit:null};
+    }
+    if(s.family==='logseries'){
+      return {type:s.alpha>1?'good':'bad', verdict:s.alpha>1?'converges':'diverges', detail:s.alpha>1?'α>1':'α≤1', formula:'aₙ = 1/((n+1)(log(n+1))ᵅ)', limit:null};
+    }
+    if(s.family==='exprpoly'){
+      return {type:s.r<1?'good':'bad', verdict:s.r<1?'converges':'diverges', detail:s.r<1?'exponential wins':'terms do not decay enough', formula:'aₙ = nᵠrⁿ', limit:null};
+    }
+  }
+
+  function ratioEstimate(s){
+    const n=Math.max(4,Math.floor(s.N*0.75));
+    const a=absTerm(n,s), b=absTerm(n+1,s);
+    return a===0?NaN:b/a;
+  }
+  function rootEstimate(s){
+    const n=s.N;
+    const a=absTerm(n,s);
+    return a<=0?NaN:Math.pow(a,1/n);
+  }
+
+  function updateLabels(s){
+    $('pVal').textContent=s.p.toFixed(2);
+    $('rVal').textContent=s.r.toFixed(2);
+    $('alphaVal').textContent=s.alpha.toFixed(2);
+    $('qVal').textContent=s.q.toFixed(2);
+    $('nVal').textContent=s.N;
+    $('epsVal').textContent=s.eps.toFixed(2);
+    $('formulaBox').textContent=theoretical(s).formula;
+    $('pWrap').style.display=(s.family==='pseries'||s.family==='altp')?'block':'none';
+    $('rWrap').style.display=(s.family==='geometric'||s.family==='exprpoly')?'block':'none';
+    $('alphaWrap').style.display=s.family==='logseries'?'block':'none';
+    $('qWrap').style.display=s.family==='exprpoly'?'block':'none';
+  }
+
+  function makeSvg(id){ const svg=$(id); svg.innerHTML=''; return svg; }
+  function E(name, attrs={}, parent){
+    const el=document.createElementNS('http://www.w3.org/2000/svg',name);
+    for(const k in attrs) el.setAttribute(k,attrs[k]);
+    if(parent) parent.appendChild(el);
+    return el;
+  }
+  function text(parent,x,y,str,cls='annotation',anchor='start'){
+    const t=E('text',{x,y,class:cls,'text-anchor':anchor},parent); t.textContent=str; return t;
+  }
+  function chartScales(vals,w,h,pad,count){
+    const xCount = count || vals.length;
+    let ymin=Math.min(...vals), ymax=Math.max(...vals);
+    if(!Number.isFinite(ymin)||!Number.isFinite(ymax)){ymin=0;ymax=1}
+    if(ymin===ymax){ymin-=1;ymax+=1}
+    const extra=(ymax-ymin)*0.08; ymin-=extra; ymax+=extra;
+    return {
+      x:n=>pad.l+(n-1)*(w-pad.l-pad.r)/(Math.max(1, xCount-1)),
+      y:v=>pad.t+(ymax-v)*(h-pad.t-pad.b)/(ymax-ymin),
+      ymin,ymax
+    };
+  }
+  function pathFrom(vals,sc){return vals.map((v,i)=>(i?'L':'M')+sc.x(i+1).toFixed(2)+','+sc.y(v).toFixed(2)).join(' ')}
+  function grid(svg,w,h,pad,sc){
+    for(let i=0;i<=4;i++){
+      const y=pad.t+i*(h-pad.t-pad.b)/4;
+      E('line',{x1:pad.l,x2:w-pad.r,y1:y,y2:y,class:'gridline'},svg);
+      const val=sc.ymax-i*(sc.ymax-sc.ymin)/4;
+      text(svg,pad.l-8,y+4,fmt(val,2),'annotation','end');
+    }
+    E('line',{x1:pad.l,x2:w-pad.r,y1:h-pad.b,y2:h-pad.b,class:'zero-line'},svg);
+    E('line',{x1:pad.l,x2:pad.l,y1:pad.t,y2:h-pad.b,class:'zero-line'},svg);
+  }
+
+  function drawPartialSums(s,d){
+    const svg=makeSvg('sumSvg'), w=760,h=390,pad={l:58,r:22,t:28,b:46};
+    const vals=d.S.slice();
+    const th=theoretical(s);
+    if(th.limit!==null){vals.push(th.limit, th.limit+s.eps, th.limit-s.eps)}
+    else {const last=d.S[d.S.length-1]; vals.push(last+s.eps,last-s.eps)}
+    const sc=chartScales(vals,w,h,pad,s.N); grid(svg,w,h,pad,sc);
+    const last=d.S[d.S.length-1];
+    const center=th.limit!==null?th.limit:last;
+    E('rect',{x:pad.l,y:sc.y(center+s.eps),width:w-pad.l-pad.r,height:Math.max(1,sc.y(center-s.eps)-sc.y(center+s.eps)),class:'band',rx:8},svg);
+    E('path',{d:pathFrom(d.S,sc),class:'curveA'},svg);
+    if(th.limit!==null){
+      E('line',{x1:pad.l,x2:w-pad.r,y1:sc.y(th.limit),y2:sc.y(th.limit),class:'limit-line'},svg);
+      text(svg,w-pad.r-5,sc.y(th.limit)-7,'limit = '+fmt(th.limit,3),'annotation','end');
+    } else {
+      E('line',{x1:pad.l,x2:w-pad.r,y1:sc.y(last),y2:sc.y(last),class:'limit-line'},svg);
+      text(svg,w-pad.r-5,sc.y(last)-7,'last displayed S_N','annotation','end');
+    }
+    const step=Math.max(1,Math.floor(s.N/28));
+    for(let i=0;i<d.S.length;i+=step) E('circle',{cx:sc.x(i+1),cy:sc.y(d.S[i]),r:2.7,class:'pointA'},svg);
+    E('circle',{cx:sc.x(s.N),cy:sc.y(last),r:5,class:'pointB'},svg);
+    text(svg,pad.l,18,'partial sums S_N = a₁+⋯+a_N','big-annotation');
+    text(svg,w/2,h-12,'N','annotation','middle');
+    text(svg,12,h/2,'S_N','annotation','middle').setAttribute('transform','rotate(-90 12 '+h/2+')');
+  }
+
+  function drawTerms(s,d){
+    const svg=makeSvg('termSvg'), w=560,h=390,pad={l:56,r:22,t:28,b:46};
+    if(lens==='ratioRoot') return drawRatioRootSmall(s);
+    if(lens==='condensation') return drawCondensationSmall(s);
+    const abs = lens==='absolute';
+    const vals=(abs?d.a.map(Math.abs):d.a).slice(); vals.push(0);
+    const sc=chartScales(vals,w,h,pad,s.N); grid(svg,w,h,pad,sc);
+    const barW=Math.max(1,(w-pad.l-pad.r)/s.N*.72);
+    for(let i=0;i<s.N;i++){
+      const v=abs?Math.abs(d.a[i]):d.a[i], x=sc.x(i+1)-barW/2, y=sc.y(Math.max(0,v));
+      const height=Math.abs(sc.y(v)-sc.y(0));
+      E('rect',{x,y,width:barW,height:Math.max(1,height),class:v>=0?'termbar':'negbar',rx:2},svg);
+    }
+    E('line',{x1:pad.l,x2:w-pad.r,y1:sc.y(0),y2:sc.y(0),class:'zero-line'},svg);
+    text(svg,pad.l,18,abs?'absolute terms |a_n|':'terms a_n','big-annotation');
+    text(svg,w/2,h-12,'n','annotation','middle');
+  }
+
+  function drawRatioRootSmall(s){
+    const svg=makeSvg('termSvg'), w=560,h=390,pad={l:56,r:22,t:28,b:46};
+    const ratios=[], roots=[];
+    for(let n=2;n<=s.N;n++){
+      const prev=absTerm(n-1,s), cur=absTerm(n,s);
+      ratios.push(prev===0?NaN:cur/prev);
+      const a=absTerm(n,s); roots.push(a>0?Math.pow(a,1/n):NaN);
+    }
+    const vals=ratios.concat(roots).filter(Number.isFinite); vals.push(1);
+    const sc=chartScales(vals,w,h,pad,ratios.length); grid(svg,w,h,pad,sc);
+    E('line',{x1:pad.l,x2:w-pad.r,y1:sc.y(1),y2:sc.y(1),class:'limit-line'},svg);
+    E('path',{d:pathFrom(ratios.map(v=>Number.isFinite(v)?v:0),sc),class:'curveB'},svg);
+    E('path',{d:pathFrom(roots.map(v=>Number.isFinite(v)?v:0),sc),class:'curveA'},svg);
+    text(svg,pad.l,18,'ratio |aₙ₊₁/aₙ| and root |aₙ|¹/ⁿ','big-annotation');
+    text(svg,w-pad.r-6,sc.y(1)-7,'threshold 1','annotation','end');
+  }
+
+  function drawCondensationSmall(s){
+    const svg=makeSvg('termSvg'), w=560,h=390,pad={l:48,r:22,t:28,b:46};
+    const K=Math.max(3,Math.floor(Math.log2(s.N)));
+    const vals=[];
+    for(let k=0;k<=K;k++) vals.push(Math.pow(2,k)*absTerm(Math.pow(2,k),s));
+    vals.push(0);
+    const sc=chartScales(vals,w,h,pad,K+1); grid(svg,w,h,pad,sc);
+    const bw=(w-pad.l-pad.r)/(K+1)*.68;
+    for(let k=0;k<=K;k++){
+      const x=sc.x(k+1)-bw/2;
+      const v=Math.pow(2,k)*absTerm(Math.pow(2,k),s);
+      E('rect',{x,y:sc.y(v),width:bw,height:Math.max(1,sc.y(0)-sc.y(v)),class:'termbar',rx:5},svg);
+      text(svg,x+bw/2,h-24,'2^'+k,'annotation','middle');
+    }
+    text(svg,pad.l,18,'condensed terms 2ᵏa₂ᵏ','big-annotation');
+  }
+
+  function drawLens(s,d){
+    const svg=makeSvg('lensSvg'), w=980,h=360,pad={l:58,r:28,t:32,b:48};
+    if(lens==='overview') return drawOverviewLens(svg,w,h,pad,s,d);
+    if(lens==='absolute') return drawAbsoluteLens(svg,w,h,pad,s,d);
+    if(lens==='comparison') return drawComparisonLens(svg,w,h,pad,s,d);
+    if(lens==='ratioRoot') return drawRatioRootLens(svg,w,h,pad,s,d);
+    if(lens==='alternating') return drawAlternatingLens(svg,w,h,pad,s,d);
+    if(lens==='condensation') return drawCondensationLens(svg,w,h,pad,s,d);
+  }
+
+  function drawOverviewLens(svg,w,h,pad,s,d){
+    const vals=d.S.concat(d.A); const sc=chartScales(vals,w,h,pad,s.N); grid(svg,w,h,pad,sc);
+    E('path',{d:pathFrom(d.S,sc),class:'curveA'},svg);
+    E('path',{d:pathFrom(d.A,sc),class:'curveB'},svg);
+    text(svg,pad.l,22,'S_N versus absolute partial sums A_N = ∑|a_n|','big-annotation');
+    text(svg,w-pad.r-10,sc.y(d.S[d.S.length-1])-8,'S_N','annotation','end');
+    text(svg,w-pad.r-10,sc.y(d.A[d.A.length-1])+16,'A_N','annotation','end');
+  }
+
+  function drawAbsoluteLens(svg,w,h,pad,s,d){
+    const vals=d.A; const sc=chartScales(vals,w,h,pad,s.N); grid(svg,w,h,pad,sc);
+    E('path',{d:pathFrom(d.A,sc),class:'curveB'},svg);
+    const step=Math.max(1,Math.floor(s.N/30));
+    for(let i=0;i<d.A.length;i+=step) E('circle',{cx:sc.x(i+1),cy:sc.y(d.A[i]),r:3,class:'pointB'},svg);
+    text(svg,pad.l,22,'absolute partial sums A_N = |a₁|+⋯+|a_N|','big-annotation');
+    text(svg,pad.l,48,'If A_N converges, then S_N converges. If A_N escapes, S_N may still converge conditionally.','annotation');
+  }
+
+  function benchmark(n,s){
+    if(s.family==='pseries') return 1/(n*n);
+    if(s.family==='logseries') return 1/(n*Math.pow(Math.log(Math.max(2,n)),1.1));
+    if(s.family==='exprpoly') return Math.pow((s.r+1)/2,n);
+    if(s.family==='geometric') return Math.pow(Math.min(.85,Math.max(.2,s.r)),n-1);
+    if(s.family==='altp') return 1/Math.pow(n,1.01);
+    return 1/n;
+  }
+
+  function drawComparisonLens(svg,w,h,pad,s,d){
+    const a=d.a.map(Math.abs), b=[]; for(let n=1;n<=s.N;n++) b.push(benchmark(n,s));
+    const vals=a.concat(b,0); const sc=chartScales(vals,w,h,pad,s.N); grid(svg,w,h,pad,sc);
+    E('path',{d:pathFrom(a,sc),class:'curveA'},svg);
+    E('path',{d:pathFrom(b,sc),class:'curveC'},svg);
+    text(svg,pad.l,22,'comparison lens: |a_n| against a benchmark b_n','big-annotation');
+    text(svg,w-pad.r-10,sc.y(a[a.length-1])-8,'|a_n|','annotation','end');
+    text(svg,w-pad.r-10,sc.y(b[b.length-1])+16,'b_n','annotation','end');
+  }
+
+  function drawRatioRootLens(svg,w,h,pad,s,d){
+    const ratios=[], roots=[];
+    for(let n=2;n<=s.N;n++){
+      const prev=absTerm(n-1,s), cur=absTerm(n,s);
+      ratios.push(prev===0?NaN:cur/prev);
+      const a=absTerm(n,s); roots.push(a>0?Math.pow(a,1/n):NaN);
+    }
+    const vals=ratios.concat(roots).filter(Number.isFinite); vals.push(1);
+    const sc=chartScales(vals,w,h,pad,ratios.length); grid(svg,w,h,pad,sc);
+    E('line',{x1:pad.l,x2:w-pad.r,y1:sc.y(1),y2:sc.y(1),class:'limit-line'},svg);
+    E('path',{d:pathFrom(ratios.map(v=>Number.isFinite(v)?v:0),sc),class:'curveB'},svg);
+    E('path',{d:pathFrom(roots.map(v=>Number.isFinite(v)?v:0),sc),class:'curveA'},svg);
+    text(svg,pad.l,22,'ratio test and root test: threshold at 1','big-annotation');
+    text(svg,pad.l,48,'L<1 ⇒ absolute convergence; L>1 ⇒ divergence; L=1 ⇒ inconclusive.','annotation');
+  }
+
+  function drawAlternatingLens(svg,w,h,pad,s,d){
+    const vals=d.S.slice(); const last=d.S[d.S.length-1]; const next=Math.abs(term(s.N+1,s)); vals.push(last-next,last+next);
+    const sc=chartScales(vals,w,h,pad,s.N); grid(svg,w,h,pad,sc);
+    E('rect',{x:pad.l,y:sc.y(last+next),width:w-pad.l-pad.r,height:Math.max(1,sc.y(last-next)-sc.y(last+next)),class:'band',rx:8},svg);
+    E('path',{d:pathFrom(d.S,sc),class:'curveA'},svg);
+    E('line',{x1:pad.l,x2:w-pad.r,y1:sc.y(last),y2:sc.y(last),class:'limit-line'},svg);
+    text(svg,pad.l,22,'alternating lens: even and odd partial sums squeeze the limit','big-annotation');
+    text(svg,pad.l,48,'When b_n↓0, the true error satisfies |S−S_N|≤b_{N+1}. The band shows this finite error scale.','annotation');
+  }
+
+  function drawCondensationLens(svg,w,h,pad,s,d){
+    const K=Math.max(4,Math.floor(Math.log2(s.N)));
+    const vals=[]; for(let k=0;k<=K;k++) vals.push(Math.pow(2,k)*absTerm(Math.pow(2,k),s)); vals.push(0);
+    const sc=chartScales(vals,w,h,pad,K+1); grid(svg,w,h,pad,sc);
+    const gap=(w-pad.l-pad.r)/(K+1);
+    for(let k=0;k<=K;k++){
+      const x=pad.l+k*gap+gap*.15, bw=gap*.55;
+      const n=Math.pow(2,k), v=n*absTerm(n,s);
+      E('rect',{x,y:sc.y(v),width:bw,height:Math.max(1,sc.y(0)-sc.y(v)),class:'termbar',rx:7},svg);
+      text(svg,x+bw/2,h-20,'k='+k,'annotation','middle');
+    }
+    text(svg,pad.l,22,'Cauchy condensation: compare ∑a_n with ∑2ᵏa₂ᵏ','big-annotation');
+    text(svg,pad.l,48,'Applies only to nonnegative nonincreasing a_n. The bars are condensed terms.','annotation');
+  }
+
+  function updateText(s,d){
+    const th=theoretical(s), rhat=ratioEstimate(s), roothat=rootEstimate(s);
+    $('SN').textContent=fmt(d.S[d.S.length-1],5);
+    $('aN').textContent=fmt(d.a[d.a.length-1],5);
+    $('RR').textContent='ρ≈'+fmt(rhat,3)+' · √≈'+fmt(roothat,3);
+    $('verdict').textContent=th.verdict;
+    $('verdictSmall').textContent=th.detail;
+    const dotClass=th.type==='good'?'good':th.type==='warn'?'warn':'bad';
+    $('testStatus').innerHTML='<span class="dot '+dotClass+'"></span><span>'+th.verdict+' · '+th.detail+'</span>';
+
+    let interp='The graph of S_N is the sequence whose convergence we care about.';
+    let notice='A series is not a curve; it is a sequence of partial sums. The terms may go to zero and the series may still diverge.';
+    let lensText='The selected test is displayed as a finite visual shadow of the theorem. Use the theorem conditions, not the picture alone.';
+    if(s.family==='pseries'){
+      interp=s.p>1?'For p>1, positive partial sums increase but remain bounded above.':'For p≤1, terms go to zero but the positive partial sums are unbounded.';
+      notice='The p-series is the classic warning: a_n→0 is necessary, not sufficient. The harmonic case p=1 diverges.';
+    }
+    if(s.family==='geometric'){
+      interp=s.r<1?'A fixed ratio below 1 makes the remaining tail shrink geometrically.':'When r≥1, the terms do not tend to zero, so the series diverges immediately.';
+      notice='The geometric series is the model case for the ratio test: the ratio is exactly r.';
+    }
+    if(s.family==='altp'){
+      interp='Alternation can make partial sums converge by cancellation. Absolute convergence still depends on the positive p-series.';
+      notice=s.p>1?'Here convergence is absolute: cancellation is not needed.':'Here convergence is conditional: ∑a_n converges, but ∑|a_n| diverges.';
+    }
+    if(s.family==='logseries'){
+      interp=s.alpha>1?'Condensation turns the logarithmic series into a p-series in k with exponent α>1.':'Condensation turns this into a divergent p-series in k with exponent α≤1.';
+      notice='Logarithmic factors are too weak at α≤1, but become strong enough when α>1.';
+    }
+    if(s.family==='exprpoly'){
+      interp=s.r<1?'Exponential decay dominates any polynomial growth n^q.':'If r≥1 and q≥0, the terms fail to decay to zero.';
+      notice='Ratio and root tests are built to detect exponential scale. Polynomial factors disappear in the limit.';
+    }
+    if(lens==='absolute') lensText='Absolute convergence asks whether A_N=∑|a_n| converges. This is stronger than convergence of S_N.';
+    if(lens==='comparison') lensText='Comparison is order-theoretic: once terms are nonnegative, inequalities between terms transfer boundedness of partial sums.';
+    if(lens==='ratioRoot') lensText='Ratio/root tests are decisive away from 1 and deliberately inconclusive at 1.';
+    if(lens==='alternating') lensText='Alternating convergence uses geometry of nested intervals between even and odd partial sums.';
+    if(lens==='condensation') lensText='Condensation groups dyadic blocks. It requires a_n≥0 and nonincreasing.';
+    $('interpretation').textContent=interp;
+    $('noticeText').textContent=notice;
+    $('lensText').textContent=lensText;
+    $('controlNotice').textContent='Current theorem verdict: '+th.verdict+' because '+th.detail+'. Displayed diagrams use N='+s.N+' terms.';
+  }
+
+  function render(){
+    const s=state(); updateLabels(s);
+    const d=seriesData(s);
+    drawPartialSums(s,d); drawTerms(s,d); drawLens(s,d); updateText(s,d);
+  }
+
+  controls.forEach(id=>$(id).addEventListener('input',render));
+  $('themeBtn').addEventListener('click',()=>{
+    const dark=root.getAttribute('data-theme')==='dark';
+    root.setAttribute('data-theme',dark?'light':'dark');
+    $('themeBtn').textContent=dark?'Dark mode':'Light mode';
+  });
+  $('resetBtn').addEventListener('click',()=>{
+    $('family').value='pseries'; $('p').value='1.40'; $('r').value='0.62'; $('alpha').value='1.30'; $('q').value='2.00'; $('N').value='80'; $('eps').value='0.08';
+    lens='overview'; document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.lens==='overview')); render();
+  });
+  document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{
+    lens=btn.dataset.lens; document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===btn)); render();
+  }));
+  render();
+})();
+</script>
+</body>
+</html>

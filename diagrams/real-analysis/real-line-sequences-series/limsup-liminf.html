@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for limsup and liminf.">
+<title>Limsup and Liminf | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+  :root{
+    --bg:#f7f1e7;
+    --paper:#fffdf8;
+    --paper2:#f1e9dc;
+    --ink:#1f2726;
+    --muted:#67726e;
+    --line:rgba(31,39,38,.14);
+    --grid:rgba(31,39,38,.075);
+    --accent:#2d9a8d;
+    --accent-soft:rgba(45,154,141,.12);
+    --upper:#bf7448;
+    --lower:#6179bd;
+    --bad:#b75555;
+    --shadow:0 18px 48px rgba(31,39,38,.09);
+    --radius:22px;
+  }
+  body[data-theme="dark"]{
+    --bg:#0d1219;
+    --paper:#141b24;
+    --paper2:#19222d;
+    --ink:#edf4f2;
+    --muted:#9aa9a5;
+    --line:rgba(237,244,242,.13);
+    --grid:rgba(237,244,242,.075);
+    --accent:#55c8b9;
+    --accent-soft:rgba(85,200,185,.13);
+    --upper:#daa06e;
+    --lower:#91a5ea;
+    --bad:#e08d8d;
+    --shadow:0 20px 54px rgba(0,0,0,.32);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
+  body{transition:background .25s ease,color .25s ease;}
+  .wrap{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:26px 0 44px;}
+  header{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:20px;}
+  .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.16em;color:var(--accent);font-weight:800;margin-bottom:10px;}
+  h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(32px,5vw,58px);letter-spacing:-.04em;line-height:.95;margin:0 0 10px;font-weight:500;}
+  .subtitle{max-width:760px;color:var(--muted);font-size:15px;line-height:1.65;}
+  .top-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;}
+  button,select,input[type="range"]{font:inherit;}
+  button,select{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:10px 13px;box-shadow:0 8px 22px rgba(0,0,0,.04);outline:none;}
+  button{cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease;}
+  button:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--accent),var(--line) 35%);}
+  button.primary{background:var(--accent);border-color:transparent;color:#071412;font-weight:800;}
+  .grid{display:grid;grid-template-columns:320px minmax(0,1fr);gap:18px;align-items:start;}
+  .card{background:linear-gradient(180deg,var(--paper),color-mix(in srgb,var(--paper),var(--paper2) 28%));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+  .pad{padding:18px;}
+  .controls{position:sticky;top:16px;}
+  .section-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;}
+  .section-title h2,.section-title h3{margin:0;font-family:Georgia,"Times New Roman",serif;font-weight:500;letter-spacing:-.02em;}
+  .section-title h2{font-size:23px}.section-title h3{font-size:18px}
+  .pill{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:6px 10px;background:var(--paper2);color:var(--muted);font-size:12px;white-space:nowrap;}
+  .control{padding:14px 0;border-top:1px solid var(--line);}
+  .control:first-of-type{border-top:0;}
+  label{display:flex;justify-content:space-between;gap:10px;align-items:center;color:var(--muted);font-size:13px;margin-bottom:10px;}
+  .value{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink);font-size:12px;border:1px solid var(--line);background:var(--paper2);padding:4px 8px;border-radius:999px;}
+  input[type="range"]{width:100%;accent-color:var(--accent);}
+  select{width:100%;border-radius:14px;padding:12px;background:var(--paper2);}
+  .formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--paper2);border:1px solid var(--line);border-radius:16px;padding:14px;color:var(--ink);line-height:1.55;font-size:13px;}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px;}
+  .tab{box-shadow:none;padding:9px 12px;font-size:13px;color:var(--muted);background:var(--paper);}
+  .tab.active{background:var(--accent);border-color:transparent;color:#071412;font-weight:800;}
+  .panel{display:none;}.panel.active{display:block;}
+  .module-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:14px;}
+  .module-head h2{font-family:Georgia,"Times New Roman",serif;font-size:28px;font-weight:500;letter-spacing:-.03em;margin:0 0 6px;}
+  .muted{color:var(--muted);line-height:1.55;font-size:14px;}
+  .plot{min-height:430px;padding:10px;}
+  .mini-plot{min-height:220px;padding:10px;}
+  svg{display:block;width:100%;height:auto;}
+  .two{display:grid;grid-template-columns:1.4fr .9fr;gap:16px;align-items:stretch;}
+  .stack{display:grid;gap:16px;}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;}
+  .stat{background:var(--paper2);border:1px solid var(--line);border-radius:16px;padding:12px;}
+  .stat .small{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px;}
+  .stat .big{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:18px;}
+  .notice{border:1px solid color-mix(in srgb,var(--accent),var(--line) 45%);background:var(--accent-soft);border-radius:18px;padding:14px;color:var(--ink);line-height:1.55;font-size:14px;}
+  .warning{border-color:color-mix(in srgb,var(--bad),var(--line) 35%);background:color-mix(in srgb,var(--bad),transparent 88%);}
+  .exam{display:grid;gap:8px;font-size:13px;line-height:1.5;}
+  .exam div{padding:9px 10px;background:var(--paper2);border:1px solid var(--line);border-radius:13px;}
+  .legend{display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12px;padding:0 8px 10px;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:9px;height:9px;border-radius:99px;background:var(--accent);display:inline-block;}
+  .dot.upper{background:var(--upper)}.dot.lower{background:var(--lower)}.dot.gray{background:var(--muted)}
+  table{width:100%;border-collapse:separate;border-spacing:0 7px;font-size:12px;}
+  th{color:var(--muted);font-weight:700;text-align:left;padding:0 8px;}
+  td{background:var(--paper2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:9px 8px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  td:first-child{border-left:1px solid var(--line);border-radius:10px 0 0 10px;}td:last-child{border-right:1px solid var(--line);border-radius:0 10px 10px 0;}
+  .footer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px;}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  @media (max-width:900px){header,.module-head{display:block}.grid,.two,.footer-grid{grid-template-columns:1fr}.controls{position:static}.top-actions{justify-content:flex-start;margin-top:14px}.stats{grid-template-columns:1fr}.plot{min-height:360px}}
+</style>
+</head>
+<body data-theme="light">
+<div class="wrap">
+  <header>
+    <div>
+      <div class="kicker">Real Analysis · sequences</div>
+      <h1>Limsup and liminf</h1>
+      <div class="subtitle">Tail suprema, tail infima, oscillation, subsequential limits, and the convergence criterion. The app computes finite-window shadows, while the formulas state the infinite objects.</div>
+    </div>
+    <div class="top-actions">
+      <button id="themeBtn">Dark mode</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <aside class="card pad controls">
+      <div class="section-title"><h2>Controls</h2><span class="pill">finite window</span></div>
+      <div class="control">
+        <label for="sequenceSelect">Sequence</label>
+        <select id="sequenceSelect">
+          <option value="alt" selected>xₙ = (-1)ⁿ + 1/n</option>
+          <option value="inv">xₙ = 1/n</option>
+          <option value="decayosc">xₙ = sin(n)/√n</option>
+          <option value="sin">xₙ = sin(n)</option>
+          <option value="escape">xₙ = √n</option>
+        </select>
+      </div>
+      <div class="control">
+        <label>Number of displayed terms <span class="value" id="MText">M = 120</span></label>
+        <input id="MRange" type="range" min="30" max="260" value="120" step="1" />
+      </div>
+      <div class="control">
+        <label>Tail begins at <span class="value" id="NText">N = 18</span></label>
+        <input id="NRange" type="range" min="1" max="120" value="18" step="1" />
+      </div>
+      <div class="control">
+        <label>Witness tolerance <span class="value" id="epsText">ε = 0.15</span></label>
+        <input id="epsRange" type="range" min="0.03" max="0.6" value="0.15" step="0.01" />
+      </div>
+      <div class="control" style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="primary" id="advanceBtn">Advance N</button>
+        <button id="animateBtn">Animate tail</button>
+      </div>
+      <div class="formula" id="definitionBox">
+        sₙ = sup { xₖ : k ≥ n }<br>
+        iₙ = inf { xₖ : k ≥ n }<br>
+        limsup xₙ = lim sₙ<br>
+        liminf xₙ = lim iₙ
+      </div>
+    </aside>
+
+    <main>
+      <div class="tabs">
+        <button class="tab active" data-tab="tails">Tail envelopes</button>
+        <button class="tab" data-tab="intervals">Tail intervals</button>
+        <button class="tab" data-tab="subseq">Subsequences</button>
+        <button class="tab" data-tab="criterion">Criterion</button>
+      </div>
+
+      <section id="tails" class="panel active">
+        <div class="module-head">
+          <div>
+            <h2>Moving tail envelopes</h2>
+            <div class="muted">For each N, ignore the first N−1 terms. The remaining tail has a finite-window maximum and minimum. In the theorem, these are infinite-tail suprema and infima.</div>
+          </div>
+          <span class="pill" id="formulaPill">xₙ = (-1)ⁿ + 1/n</span>
+        </div>
+        <div class="card plot" id="mainPlot"></div>
+        <div class="legend"><span><span class="dot"></span>selected tail</span><span><span class="dot upper"></span>finite tail supremum</span><span><span class="dot lower"></span>finite tail infimum</span><span><span class="dot gray"></span>early terms</span></div>
+        <div class="stats">
+          <div class="stat"><div class="small">selected term</div><div class="big" id="xNStat">—</div></div>
+          <div class="stat"><div class="small">sᴹ_N</div><div class="big" id="supStat">—</div></div>
+          <div class="stat"><div class="small">iᴹ_N</div><div class="big" id="infStat">—</div></div>
+        </div>
+        <div style="height:14px"></div>
+        <div class="notice" id="interpretationBox"></div>
+      </section>
+
+      <section id="intervals" class="panel">
+        <div class="module-head">
+          <div>
+            <h2>Nested tail intervals</h2>
+            <div class="muted">The tail after n lives inside [iₙ, sₙ]. If the lengths sₙ−iₙ shrink to 0, the sequence has no room to oscillate.</div>
+          </div>
+          <span class="pill">[inf tail, sup tail]</span>
+        </div>
+        <div class="two">
+          <div class="card plot" id="intervalPlot"></div>
+          <div class="stack">
+            <div class="card mini-plot" id="oscPlot"></div>
+            <div class="card pad"><div class="section-title"><h3>Interpretation</h3></div><div class="muted" id="intervalText"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="subseq" class="panel">
+        <div class="module-head">
+          <div>
+            <h2>Subsequential witnesses</h2>
+            <div class="muted">Upper witnesses approach the limsup; lower witnesses approach the liminf. For oscillating bounded sequences, these are different cluster behaviors.</div>
+          </div>
+          <span class="pill">cluster values</span>
+        </div>
+        <div class="two">
+          <div class="card plot" id="subseqPlot"></div>
+          <div class="stack">
+            <div class="card pad"><div class="section-title"><h3>Witness table</h3></div><table id="subseqTable"></table></div>
+            <div class="card pad"><div class="section-title"><h3>Reading</h3></div><div class="muted" id="subseqText"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="criterion" class="panel">
+        <div class="module-head">
+          <div>
+            <h2>Convergence criterion</h2>
+            <div class="muted">For a bounded real sequence, convergence is exactly collapse of upper and lower tail limits.</div>
+          </div>
+          <span class="pill" id="diagnosisPill">—</span>
+        </div>
+        <div class="two">
+          <div class="card plot" id="criterionPlot"></div>
+          <div class="stack">
+            <div class="card pad"><div class="section-title"><h3>Exact theorem</h3></div><div class="formula">xₙ → L<br>⇔ limsup xₙ = liminf xₙ = L<br><br>For bounded (xₙ):<br>cluster set is squeezed into one point.</div></div>
+            <div class="notice" id="diagnosisText"></div>
+            <div class="card pad"><div class="section-title"><h3>Exam summary</h3></div><div class="exam"><div>Define sₙ = sup{xₖ:k≥n}; then sₙ decreases.</div><div>Define iₙ = inf{xₖ:k≥n}; then iₙ increases.</div><div>limsup xₙ = infₙ sₙ and liminf xₙ = supₙ iₙ.</div><div>xₙ converges ⇔ limsup xₙ = liminf xₙ.</div></div></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+<script>
+(function(){
+  'use strict';
+  const $ = id => document.getElementById(id);
+  let timer = null;
+
+  const seqs = {
+    inv:{
+      formula:'xₙ = 1/n', exact:'limsup = liminf = 0', limsup:0, liminf:0, bounded:true, converges:true, cluster:'{0}',
+      f:n=>1/n,
+      note:'Every sufficiently late term is close to 0. The upper and lower tail envelopes both collapse to the same point.',
+      witness:(M)=>({hi:range(Math.max(1,M-11),M),lo:range(Math.max(1,M-11),M)})
+    },
+    alt:{
+      formula:'xₙ = (-1)ⁿ + 1/n', exact:'limsup = 1, liminf = −1', limsup:1, liminf:-1, bounded:true, converges:false, cluster:'{−1, 1}',
+      f:n=>(n%2===0?1:-1)+1/n,
+      note:'The sequence has two persistent tails: even terms approach 1 and odd terms approach −1. The tail gap does not vanish.',
+      witness:(M)=>({hi:range(1,M).filter(n=>n%2===0).slice(-12),lo:range(1,M).filter(n=>n%2===1).slice(-12)})
+    },
+    decayosc:{
+      formula:'xₙ = sin(n)/√n', exact:'limsup = liminf = 0', limsup:0, liminf:0, bounded:true, converges:true, cluster:'{0}',
+      f:n=>Math.sin(n)/Math.sqrt(n),
+      note:'The terms oscillate, but the amplitude decays. The tail interval eventually becomes tiny around 0.',
+      witness:(M)=>({hi:blockExtremes(M,10,n=>Math.sin(n)/Math.sqrt(n),'max'),lo:blockExtremes(M,10,n=>Math.sin(n)/Math.sqrt(n),'min')})
+    },
+    sin:{
+      formula:'xₙ = sin(n)', exact:'limsup = 1, liminf = −1', limsup:1, liminf:-1, bounded:true, converges:false, cluster:'[−1,1]',
+      f:n=>Math.sin(n),
+      note:'Because integer angles wander densely modulo 2π, the sequence has subsequences close to every value in [−1,1].',
+      witness:(M)=>({hi:topIndices(M,n=>Math.sin(n),12,true),lo:topIndices(M,n=>Math.sin(n),12,false)})
+    },
+    escape:{
+      formula:'xₙ = √n', exact:'limsup = liminf = +∞', limsup:Infinity, liminf:Infinity, bounded:false, converges:false, cluster:'no real cluster value',
+      f:n=>Math.sqrt(n),
+      note:'The sequence is monotone but unbounded. It has no real subsequential limit and no real limsup/liminf.',
+      witness:(M)=>({hi:range(Math.max(1,M-11),M),lo:range(1,Math.min(12,M))})
+    }
+  };
+
+  function range(a,b){const r=[];for(let n=Math.max(1,a);n<=b;n++)r.push(n);return r;}
+  function values(seq,M){const a=[];for(let n=1;n<=M;n++)a.push(seq.f(n));return a;}
+  function tailExtremes(a){
+    const M=a.length, sup=new Array(M), inf=new Array(M); let hi=-Infinity, lo=Infinity;
+    for(let i=M-1;i>=0;i--){ if(a[i]>hi)hi=a[i]; if(a[i]<lo)lo=a[i]; sup[i]=hi; inf[i]=lo; }
+    return {sup,inf};
+  }
+  function fmt(x){
+    if(x===Infinity)return '+∞'; if(x===-Infinity)return '−∞'; if(Number.isNaN(x))return '—';
+    const y=Math.abs(x)<1e-10?0:x; return (Math.round(y*1000)/1000).toString().replace('-', '−');
+  }
+  function topIndices(M,f,count,largest){
+    return range(1,M).map(n=>({n,v:f(n)})).sort((a,b)=>largest?b.v-a.v:a.v-b.v).slice(0,count).map(o=>o.n).sort((a,b)=>a-b);
+  }
+  function blockExtremes(M,blocks,f,type){
+    const ans=[]; const size=Math.max(1,Math.floor(M/blocks));
+    for(let start=1;start<=M;start+=size){
+      let best=start, val=f(start);
+      for(let n=start;n<=Math.min(M,start+size-1);n++){
+        const v=f(n); if(type==='max'?v>val:v<val){val=v; best=n;}
+      }
+      ans.push(best);
+    }
+    return ans.slice(-12);
+  }
+  function palette(){
+    const s=getComputedStyle(document.body);
+    return {
+      bg:s.getPropertyValue('--paper').trim(), paper2:s.getPropertyValue('--paper2').trim(), ink:s.getPropertyValue('--ink').trim(), muted:s.getPropertyValue('--muted').trim(), line:s.getPropertyValue('--line').trim(), grid:s.getPropertyValue('--grid').trim(), accent:s.getPropertyValue('--accent').trim(), accentSoft:s.getPropertyValue('--accent-soft').trim(), upper:s.getPropertyValue('--upper').trim(), lower:s.getPropertyValue('--lower').trim(), bad:s.getPropertyValue('--bad').trim()
+    };
+  }
+  function safeExtent(arrays,pad=0.12){
+    const flat=arrays.flat().filter(Number.isFinite); if(!flat.length)return [0,1];
+    let lo=Math.min(...flat), hi=Math.max(...flat); if(lo===hi){lo-=1;hi+=1;}
+    const d=hi-lo; return [lo-pad*d,hi+pad*d];
+  }
+  function scales(M,yMin,yMax,w,h,m){
+    const x=n=>m.l+(n-1)/(Math.max(1,M-1))*(w-m.l-m.r);
+    const y=v=>m.t+(yMax-v)/(yMax-yMin)*(h-m.t-m.b);
+    return {x,y};
+  }
+  function linePath(points){return points.map((p,i)=>(i?'L':'M')+p[0].toFixed(2)+' '+p[1].toFixed(2)).join(' ');}
+  function grid(w,h,m,yMin,yMax,c){
+    let s='';
+    for(let j=0;j<=5;j++){
+      const y=m.t+j*(h-m.t-m.b)/5; const val=yMax-j*(yMax-yMin)/5;
+      s += `<line x1="${m.l}" x2="${w-m.r}" y1="${y}" y2="${y}" stroke="${c.grid}"/>`;
+      s += `<text x="${m.l-9}" y="${y+4}" text-anchor="end" fill="${c.muted}" font-size="11">${fmt(val)}</text>`;
+    }
+    for(let j=0;j<=4;j++){
+      const x=m.l+j*(w-m.l-m.r)/4; const n=1+Math.round(j*(current().M-1)/4);
+      s += `<line x1="${x}" x2="${x}" y1="${m.t}" y2="${h-m.b}" stroke="${c.grid}"/>`;
+      s += `<text x="${x}" y="${h-10}" text-anchor="middle" fill="${c.muted}" font-size="11">${n}</text>`;
+    }
+    s += `<line x1="${m.l}" x2="${w-m.r}" y1="${h-m.b}" y2="${h-m.b}" stroke="${c.line}"/>`;
+    s += `<line x1="${m.l}" x2="${m.l}" y1="${m.t}" y2="${h-m.b}" stroke="${c.line}"/>`;
+    return s;
+  }
+  function current(){
+    let M=Number($('MRange').value); let N=Number($('NRange').value);
+    $('NRange').max=String(M); if(N>M){N=M; $('NRange').value=String(N);}
+    return {key:$('sequenceSelect').value,M,N,eps:Number($('epsRange').value)};
+  }
+  function drawMain(st,seq,a,te){
+    const c=palette(), w=820,h=430,m={l:58,r:24,t:26,b:44};
+    const [yMin,yMax]=safeExtent([a,te.sup,te.inf],.14), sc=scales(st.M,yMin,yMax,w,h,m);
+    const sx=sc.x(st.N), ySup=sc.y(te.sup[st.N-1]), yInf=sc.y(te.inf[st.N-1]);
+    let html=`<svg viewBox="0 0 ${w} ${h}" aria-label="sequence with tail envelopes">`;
+    html+=`<rect width="${w}" height="${h}" rx="20" fill="${c.bg}"/>`+grid(w,h,m,yMin,yMax,c);
+    html+=`<rect x="${sx}" y="${m.t}" width="${w-m.r-sx}" height="${h-m.t-m.b}" fill="${c.accent}" opacity="0.08"/>`;
+    html+=`<line x1="${sx}" x2="${sx}" y1="${m.t}" y2="${h-m.b}" stroke="${c.accent}" stroke-dasharray="5 5"/>`;
+    html+=`<path d="${linePath(te.sup.map((v,i)=>[sc.x(i+1),sc.y(v)]))}" fill="none" stroke="${c.upper}" stroke-width="2.4"/>`;
+    html+=`<path d="${linePath(te.inf.map((v,i)=>[sc.x(i+1),sc.y(v)]))}" fill="none" stroke="${c.lower}" stroke-width="2.4"/>`;
+    html+=`<line x1="${m.l}" x2="${w-m.r}" y1="${ySup}" y2="${ySup}" stroke="${c.upper}" stroke-dasharray="7 6" opacity=".7"/>`;
+    html+=`<line x1="${m.l}" x2="${w-m.r}" y1="${yInf}" y2="${yInf}" stroke="${c.lower}" stroke-dasharray="7 6" opacity=".7"/>`;
+    for(let i=0;i<a.length;i++){
+      const n=i+1; const active=n>=st.N; const selected=n===st.N;
+      html+=`<circle cx="${sc.x(n)}" cy="${sc.y(a[i])}" r="${selected?5.3:active?3.2:2.45}" fill="${selected?c.accent:active?c.ink:c.muted}" opacity="${selected?1:active?.76:.28}"/>`;
+    }
+    html+=`<text x="${sx+8}" y="${m.t+17}" fill="${c.accent}" font-size="12" font-family="monospace">tail k ≥ ${st.N}</text>`;
+    html+=`<text x="${w-m.r-8}" y="${ySup-8}" text-anchor="end" fill="${c.upper}" font-size="12">sᴹ_N</text>`;
+    html+=`<text x="${w-m.r-8}" y="${yInf+17}" text-anchor="end" fill="${c.lower}" font-size="12">iᴹ_N</text>`;
+    html+=`<text x="${w/2}" y="${h-7}" text-anchor="middle" fill="${c.muted}" font-size="11">index n</text></svg>`;
+    $('mainPlot').innerHTML=html;
+  }
+  function drawIntervals(st,seq,a,te){
+    const c=palette(), w=780,h=430,m={l:64,r:28,t:30,b:42};
+    const [yMin,yMax]=safeExtent([a,te.sup,te.inf],.16); const x=v=>m.l+(v-yMin)/(yMax-yMin)*(w-m.l-m.r);
+    const rows=chooseRows(st.M,10,st.N); let html=`<svg viewBox="0 0 ${w} ${h}">`;
+    html+=`<rect width="${w}" height="${h}" rx="20" fill="${c.bg}"/>`;
+    html+=`<line x1="${m.l}" x2="${w-m.r}" y1="${h-m.b}" y2="${h-m.b}" stroke="${c.line}"/>`;
+    for(let j=0;j<=5;j++){const val=yMin+j*(yMax-yMin)/5, xx=x(val); html+=`<line x1="${xx}" x2="${xx}" y1="${m.t}" y2="${h-m.b}" stroke="${c.grid}"/><text x="${xx}" y="${h-13}" text-anchor="middle" fill="${c.muted}" font-size="11">${fmt(val)}</text>`;}
+    rows.forEach((n,idx)=>{const y=m.t+idx*((h-m.t-m.b-26)/(rows.length-1||1)); const lo=te.inf[n-1],hi=te.sup[n-1]; html+=`<text x="${m.l-10}" y="${y+4}" text-anchor="end" fill="${c.muted}" font-size="12">n=${n}</text><line x1="${x(lo)}" x2="${x(hi)}" y1="${y}" y2="${y}" stroke="${c.accent}" stroke-width="8" stroke-linecap="round" opacity="${n===st.N?.88:.36}"/><circle cx="${x(lo)}" cy="${y}" r="5" fill="${c.lower}"/><circle cx="${x(hi)}" cy="${y}" r="5" fill="${c.upper}"/>`;});
+    html+=`<text x="${w/2}" y="${h-7}" text-anchor="middle" fill="${c.muted}" font-size="11">value line</text></svg>`;
+    $('intervalPlot').innerHTML=html;
+
+    const osc=te.sup.map((v,i)=>v-te.inf[i]); const W=440,H=230,mm={l:52,r:18,t:22,b:36}; const max=Math.max(...osc.filter(Number.isFinite),1e-9); const sc=scales(st.M,0,max*1.1,W,H,mm);
+    let htm=`<svg viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" rx="18" fill="${c.bg}"/>`+gridSmall(W,H,mm,0,max*1.1,c);
+    htm+=`<path d="${linePath(osc.map((v,i)=>[sc.x(i+1),sc.y(v)]))}" fill="none" stroke="${c.accent}" stroke-width="2.6"/>`;
+    htm+=`<circle cx="${sc.x(st.N)}" cy="${sc.y(osc[st.N-1])}" r="5" fill="${c.upper}"/><text x="${W/2}" y="${H-7}" text-anchor="middle" fill="${c.muted}" font-size="11">n</text></svg>`;
+    htm+=`<div class="muted" style="font-size:12px;margin:8px 4px 0">ωᴹ_N = sᴹ_N − iᴹ_N = <span class="mono">${fmt(osc[st.N-1])}</span></div>`;
+    $('oscPlot').innerHTML=htm;
+  }
+  function gridSmall(w,h,m,yMin,yMax,c){let s='';for(let j=0;j<=4;j++){const y=m.t+j*(h-m.t-m.b)/4;const val=yMax-j*(yMax-yMin)/4;s+=`<line x1="${m.l}" x2="${w-m.r}" y1="${y}" y2="${y}" stroke="${c.grid}"/><text x="${m.l-8}" y="${y+4}" text-anchor="end" fill="${c.muted}" font-size="10">${fmt(val)}</text>`;}s+=`<line x1="${m.l}" x2="${w-m.r}" y1="${h-m.b}" y2="${h-m.b}" stroke="${c.line}"/>`;return s;}
+  function chooseRows(M,count,N){const set=new Set([1,N,M]);for(let j=0;j<count;j++)set.add(1+Math.round(j*(M-1)/(count-1||1)));return [...set].filter(n=>n>=1&&n<=M).sort((a,b)=>a-b).slice(0,count+2);}
+  function drawSubseq(st,seq,a){
+    const c=palette(), w=780,h=430,m={l:58,r:24,t:26,b:44}; const [yMin,yMax]=safeExtent([a],.16); const sc=scales(st.M,yMin,yMax,w,h,m); const sub=seq.witness(st.M); const hi=new Set(sub.hi), lo=new Set(sub.lo);
+    let html=`<svg viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" rx="20" fill="${c.bg}"/>`+grid(w,h,m,yMin,yMax,c);
+    if(Number.isFinite(seq.limsup)) html+=`<line x1="${m.l}" x2="${w-m.r}" y1="${sc.y(seq.limsup)}" y2="${sc.y(seq.limsup)}" stroke="${c.upper}" stroke-dasharray="6 6"/>`;
+    if(Number.isFinite(seq.liminf)) html+=`<line x1="${m.l}" x2="${w-m.r}" y1="${sc.y(seq.liminf)}" y2="${sc.y(seq.liminf)}" stroke="${c.lower}" stroke-dasharray="6 6"/>`;
+    for(let i=0;i<a.length;i++){const n=i+1; let col=c.muted,r=2.35,op=.27; if(hi.has(n)){col=c.upper;r=4.8;op=.96;} if(lo.has(n)){col=c.lower;r=4.8;op=.96;} html+=`<circle cx="${sc.x(n)}" cy="${sc.y(a[i])}" r="${r}" fill="${col}" opacity="${op}"/>`;}
+    html+=`<text x="${w/2}" y="${h-7}" text-anchor="middle" fill="${c.muted}" font-size="11">index n</text></svg>`; $('subseqPlot').innerHTML=html;
+    const rows=Math.max(sub.hi.length,sub.lo.length,1); let tbl='<tr><th>j</th><th>upper nⱼ</th><th>xₙⱼ</th><th>lower mⱼ</th><th>xₘⱼ</th></tr>';
+    for(let j=0;j<Math.min(12,rows);j++){const hn=sub.hi[j],ln=sub.lo[j]; tbl+=`<tr><td>${j+1}</td><td>${hn??'—'}</td><td>${hn?fmt(seq.f(hn)):'—'}</td><td>${ln??'—'}</td><td>${ln?fmt(seq.f(ln)):'—'}</td></tr>`;}
+    $('subseqTable').innerHTML=tbl;
+  }
+  function drawCriterion(st,seq,a,te){
+    const c=palette(), w=780,h=430,m={l:58,r:24,t:26,b:44}; const [yMin,yMax]=safeExtent([a,te.sup,te.inf],.14); const sc=scales(st.M,yMin,yMax,w,h,m); const osc=te.sup.map((v,i)=>v-te.inf[i]);
+    let html=`<svg viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" rx="20" fill="${c.bg}"/>`+grid(w,h,m,yMin,yMax,c);
+    html+=`<path d="${linePath(te.sup.map((v,i)=>[sc.x(i+1),sc.y(v)]))}" fill="none" stroke="${c.upper}" stroke-width="2.5"/><path d="${linePath(te.inf.map((v,i)=>[sc.x(i+1),sc.y(v)]))}" fill="none" stroke="${c.lower}" stroke-width="2.5"/>`;
+    const N=st.N; html+=`<line x1="${sc.x(N)}" x2="${sc.x(N)}" y1="${sc.y(te.sup[N-1])}" y2="${sc.y(te.inf[N-1])}" stroke="${c.accent}" stroke-width="6" stroke-linecap="round" opacity=".75"/><circle cx="${sc.x(N)}" cy="${sc.y(te.sup[N-1])}" r="5" fill="${c.upper}"/><circle cx="${sc.x(N)}" cy="${sc.y(te.inf[N-1])}" r="5" fill="${c.lower}"/><text x="${sc.x(N)+9}" y="${(sc.y(te.sup[N-1])+sc.y(te.inf[N-1]))/2}" fill="${c.accent}" font-size="12">gap = ${fmt(osc[N-1])}</text>`;
+    html+=`<text x="${w/2}" y="${h-7}" text-anchor="middle" fill="${c.muted}" font-size="11">index n</text></svg>`; $('criterionPlot').innerHTML=html;
+  }
+  function update(){
+    const st=current(), seq=seqs[st.key], a=values(seq,st.M), te=tailExtremes(a);
+    $('MText').textContent='M = '+st.M; $('NText').textContent='N = '+st.N; $('epsText').textContent='ε = '+fmt(st.eps); $('formulaPill').textContent=seq.formula;
+    $('xNStat').textContent=fmt(a[st.N-1]); $('supStat').textContent=fmt(te.sup[st.N-1]); $('infStat').textContent=fmt(te.inf[st.N-1]);
+    $('interpretationBox').innerHTML=`<b>${seq.exact}</b><br>${seq.note}<br><br><span class="muted">Current finite-window gap:</span> <span class="mono">sᴹ_N − iᴹ_N = ${fmt(te.sup[st.N-1]-te.inf[st.N-1])}</span>.`;
+    $('intervalText').innerHTML=`For this example, <b>${seq.exact}</b>. The displayed [iᴹ_n, sᴹ_n] are finite-window shadows of [i_n, s_n]. In the actual theorem, the supremum and infimum are taken over all k ≥ n.`;
+    $('subseqText').innerHTML=seq.bounded?`The theoretical cluster picture is <span class="mono">${seq.cluster}</span>. A subsequential limit is a value reached by some subsequence, not necessarily by the whole sequence.`:`This sequence is not bounded. Bolzano–Weierstrass does not apply in ℝ; the displayed points drift right/up without real cluster value.`;
+    $('diagnosisPill').textContent=seq.converges?'convergent':'not convergent in ℝ';
+    $('diagnosisText').className='notice '+(seq.converges?'':'warning');
+    $('diagnosisText').innerHTML=seq.converges?`The two infinite tail limits agree: <b>${seq.exact}</b>. Hence every sufficiently late tail is trapped near one real number.`:(!seq.bounded?`The sequence is unbounded. Extended notation says <b>${seq.exact}</b>, but there is no real limit.`:`The infinite tail limits remain separated: <b>${seq.exact}</b>. Therefore the sequence cannot converge.`);
+    drawMain(st,seq,a,te); drawIntervals(st,seq,a,te); drawSubseq(st,seq,a); drawCriterion(st,seq,a,te);
+  }
+  document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));btn.classList.add('active');$(btn.dataset.tab).classList.add('active');update();}));
+  ['sequenceSelect','MRange','NRange','epsRange'].forEach(id=>$(id).addEventListener('input',update));
+  $('themeBtn').addEventListener('click',()=>{const isDark=document.body.getAttribute('data-theme')==='dark';document.body.setAttribute('data-theme',isDark?'light':'dark');$('themeBtn').textContent=isDark?'Dark mode':'Light mode';update();});
+  $('resetBtn').addEventListener('click',()=>{$('sequenceSelect').value='alt';$('MRange').value='120';$('NRange').value='18';$('epsRange').value='0.15';update();});
+  $('advanceBtn').addEventListener('click',()=>{const M=Number($('MRange').value);let N=Number($('NRange').value);N=N>=M?1:N+1;$('NRange').value=String(N);update();});
+  $('animateBtn').addEventListener('click',()=>{if(timer){clearInterval(timer);timer=null;$('animateBtn').textContent='Animate tail';return;}$('animateBtn').textContent='Stop';timer=setInterval(()=>{const M=Number($('MRange').value);let N=Number($('NRange').value);N=N>=M?1:N+1;$('NRange').value=String(N);update();},260);});
+  update();
+})();
+</script>
+</body>
+</html>

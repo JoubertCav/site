@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for power series and radius of convergence.">
+<title>Power Series and Radius of Convergence | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+  :root{
+    --bg:#f7f2e8;
+    --paper:#fffdf8;
+    --paper2:#f0e8dc;
+    --ink:#202628;
+    --muted:#66706d;
+    --line:rgba(32,38,40,.14);
+    --grid:rgba(32,38,40,.08);
+    --accent:#2e9d91;
+    --accent-weak:rgba(46,157,145,.16);
+    --accent-mid:rgba(46,157,145,.34);
+    --gold:#b98945;
+    --red:#b85c5c;
+    --blue:#547aa5;
+    --shadow:0 22px 60px rgba(50,42,28,.09);
+    --radius:24px;
+    --mono:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    --serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  [data-theme="dark"]{
+    --bg:#0d1117;
+    --paper:#131922;
+    --paper2:#18212b;
+    --ink:#edf4f2;
+    --muted:#9aa8a4;
+    --line:rgba(237,244,242,.13);
+    --grid:rgba(237,244,242,.075);
+    --accent:#58cbbb;
+    --accent-weak:rgba(88,203,187,.14);
+    --accent-mid:rgba(88,203,187,.30);
+    --gold:#d1aa67;
+    --red:#dd8585;
+    --blue:#8ab2dc;
+    --shadow:0 22px 64px rgba(0,0,0,.32);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 12% 5%, var(--accent-weak), transparent 28rem),
+      radial-gradient(circle at 85% 12%, rgba(184,137,69,.12), transparent 24rem),
+      var(--bg);
+    font-family:var(--sans);
+    line-height:1.45;
+  }
+  .wrap{max-width:1240px;margin:0 auto;padding:28px 18px 46px}
+  header{
+    display:grid;
+    grid-template-columns:1.35fr .65fr;
+    gap:18px;
+    align-items:stretch;
+    margin-bottom:18px;
+  }
+  .hero,.card{
+    background:linear-gradient(180deg, rgba(255,255,255,.18), transparent), var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  .hero{padding:30px 30px 24px;position:relative;overflow:hidden}
+  .hero:after{
+    content:""; position:absolute; inset:auto -80px -120px auto; width:260px; height:260px;
+    background:radial-gradient(circle, var(--accent-weak), transparent 68%);
+    pointer-events:none;
+  }
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:760;margin-bottom:10px}
+  h1{font-family:var(--serif);font-weight:650;letter-spacing:-.035em;font-size:clamp(34px,5vw,62px);line-height:.96;margin:0 0 12px}
+  .subtitle{max-width:860px;color:var(--muted);font-size:16px;margin:0}
+  .topcard{padding:22px;display:flex;flex-direction:column;justify-content:space-between;gap:14px}
+  .themeRow{display:flex;gap:10px;align-items:center;justify-content:space-between}
+  button,.pill,select,input[type="range"]{font:inherit}
+  button,.pill{
+    border:1px solid var(--line); background:var(--paper2); color:var(--ink);
+    border-radius:999px; padding:10px 14px; cursor:pointer;
+  }
+  button:hover{border-color:var(--accent);color:var(--accent)}
+  .formulaBox{
+    border:1px solid var(--line);border-radius:18px;background:rgba(127,127,127,.045);padding:14px 15px;
+    font-family:var(--serif);font-size:19px;line-height:1.55;
+  }
+  .formulaBox .small{font-family:var(--sans);font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-weight:750;margin-bottom:7px}
+  .grid{display:grid;grid-template-columns:320px 1fr;gap:18px;align-items:start}
+  .controls{position:sticky;top:16px;padding:18px}
+  .controlTitle{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .controlTitle h2{font-size:16px;margin:0;letter-spacing:-.01em}
+  .group{padding:14px;border:1px solid var(--line);border-radius:18px;background:rgba(127,127,127,.035);margin-bottom:12px}
+  label{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:13px;color:var(--muted);margin-bottom:8px}
+  .value{font-family:var(--mono);color:var(--ink);font-size:12px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:3px 8px;white-space:nowrap}
+  select{width:100%;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:14px;padding:10px 11px;outline:none}
+  input[type="range"]{width:100%;accent-color:var(--accent)}
+  .toggleSet{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:8px}
+  .toggleSet button{border-radius:14px;padding:9px 8px;font-size:12px}
+  .toggleSet button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  .main{display:grid;gap:18px}
+  .card{padding:20px;overflow:hidden}
+  .cardHead{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:14px}
+  h2{font-size:19px;letter-spacing:-.02em;margin:0 0 5px}
+  h3{font-size:15px;margin:0 0 8px;letter-spacing:-.01em}
+  .hint{color:var(--muted);font-size:13px;margin:0;max-width:680px}
+  .badge{font-family:var(--mono);font-size:12px;color:var(--accent);border:1px solid var(--line);background:var(--accent-weak);border-radius:999px;padding:6px 9px;white-space:nowrap}
+  svg{width:100%;height:auto;display:block;overflow:visible}
+  .svgBox{border:1px solid var(--line);background:linear-gradient(180deg,rgba(127,127,127,.035),transparent);border-radius:20px;padding:8px;min-height:230px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .mini{border:1px solid var(--line);background:rgba(127,127,127,.035);border-radius:18px;padding:14px}
+  .mini .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-weight:780;margin-bottom:7px}
+  .mini .v{font-family:var(--serif);font-size:20px;line-height:1.25}
+  .mini p{font-size:13px;color:var(--muted);margin:8px 0 0}
+  .status{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px}
+  .status .mini{min-height:112px}
+  .lawGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .law{padding:13px;border:1px solid var(--line);border-radius:18px;background:rgba(127,127,127,.035)}
+  .law strong{display:block;font-size:13px;margin-bottom:5px}
+  .law code,.mono{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .notice{border-left:4px solid var(--accent);background:var(--accent-weak);border-radius:18px;padding:14px 15px;color:var(--ink)}
+  .notice ul{margin:8px 0 0 18px;padding:0;color:var(--muted);font-size:14px}
+  .summary{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .summary .law{background:linear-gradient(180deg, rgba(46,157,145,.08), transparent), rgba(127,127,127,.035)}
+  .axis text,.labelText{font-family:var(--mono);font-size:12px;fill:var(--muted)}
+  .math{font-family:var(--serif)}
+  .tiny{font-size:12px;color:var(--muted)}
+  .sep{height:1px;background:var(--line);margin:12px 0}
+  @media (max-width:980px){
+    header,.grid,.two,.summary{grid-template-columns:1fr}
+    .controls{position:relative;top:auto}
+  }
+  @media (max-width:680px){
+    .wrap{padding:16px 10px 32px}.hero{padding:24px 18px}.status,.three{grid-template-columns:1fr}.card{padding:15px}.cardHead{display:block}.badge{display:inline-block;margin-top:8px}
+  }
+</style>
+</head>
+<body data-theme="light">
+<div class="wrap">
+  <header>
+    <section class="hero">
+      <div class="eyebrow">Real Analysis · Power Series</div>
+      <h1>Power series and radius of convergence</h1>
+      <p class="subtitle">Coefficient growth determines a symmetric open interval of absolute convergence. Endpoint behavior is a separate one-dimensional series problem.</p>
+    </section>
+    <aside class="topcard card">
+      <div class="themeRow">
+        <span class="pill">single HTML · no libraries</span>
+        <button id="themeBtn" type="button">Dark mode</button>
+      </div>
+      <div class="formulaBox">
+        <div class="small">central object</div>
+        <div>∑<sub>n≥0</sub> a<sub>n</sub>(x−c)<sup>n</sup>, &nbsp; R = 1 / limsup<sub>n→∞</sub> |a<sub>n</sub>|<sup>1/n</sup></div>
+      </div>
+    </aside>
+  </header>
+
+  <div class="grid">
+    <aside class="controls card">
+      <div class="controlTitle">
+        <h2>Controls</h2>
+        <span class="badge" id="radiusBadge">R = 1</span>
+      </div>
+
+      <div class="group">
+        <label for="model"><span>Coefficient family</span></label>
+        <select id="model">
+          <option value="pBoundary">aₙ = 1/(nᵖ R₀ⁿ), n≥1</option>
+          <option value="alternatingP">aₙ = (−1)ⁿ/(nᵖ R₀ⁿ), n≥1</option>
+          <option value="geometric">aₙ = 1/R₀ⁿ</option>
+          <option value="exp">aₙ = 1/n!  · entire</option>
+          <option value="factorial">aₙ = n!  · zero radius</option>
+        </select>
+      </div>
+
+      <div class="group">
+        <label><span>Base radius R₀</span><span class="value" id="R0Val">2.00</span></label>
+        <input id="R0" type="range" min="0.5" max="5" step="0.05" value="2" />
+        <label><span>Endpoint exponent p</span><span class="value" id="pVal">1.50</span></label>
+        <input id="p" type="range" min="0.1" max="3" step="0.05" value="1.5" />
+        <label><span>Center c</span><span class="value" id="cVal">0.00</span></label>
+        <input id="center" type="range" min="-3" max="3" step="0.05" value="0" />
+      </div>
+
+      <div class="group">
+        <label><span>Probe position x = c + qR</span><span class="value" id="qVal">0.70R</span></label>
+        <input id="q" type="range" min="-1.6" max="1.6" step="0.01" value="0.7" />
+        <label><span>Partial sum order N</span><span class="value" id="NVal">32</span></label>
+        <input id="N" type="range" min="4" max="120" step="1" value="32" />
+        <label><span>Diagram window</span><span class="value" id="zoomVal">2.20R</span></label>
+        <input id="zoom" type="range" min="1.2" max="3.8" step="0.05" value="2.2" />
+      </div>
+
+      <div class="group">
+        <label><span>Displayed series</span><span class="value" id="opVal">original</span></label>
+        <div class="toggleSet">
+          <button data-op="original" class="active" type="button">f</button>
+          <button data-op="derivative" type="button">f′</button>
+          <button data-op="integral" type="button">∫f</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="card">
+        <div class="cardHead">
+          <div>
+            <h2>1. The convergence interval</h2>
+            <p class="hint">The radius is centered at c. Inside: absolute convergence. Outside: terms do not tend to zero. At the boundary: retest endpoints.</p>
+          </div>
+          <span class="badge" id="probeBadge">probe</span>
+        </div>
+        <div class="svgBox"><svg id="lineSvg" viewBox="0 0 920 250" role="img" aria-label="Convergence interval diagram"></svg></div>
+        <div class="status">
+          <div class="mini"><div class="k">inside</div><div class="v">|x−c| &lt; R</div><p>Root test gives absolute convergence.</p></div>
+          <div class="mini"><div class="k">outside</div><div class="v">|x−c| &gt; R</div><p>Terms cannot approach 0 fast enough.</p></div>
+          <div class="mini"><div class="k">boundary</div><div class="v">|x−c| = R</div><p>Ratio/root tests are usually inconclusive.</p></div>
+        </div>
+      </section>
+
+      <section class="two">
+        <div class="card">
+          <div class="cardHead">
+            <div>
+              <h2>2. Coefficient growth</h2>
+              <p class="hint">Cauchy–Hadamard: the upper envelope of |aₙ|<sup>1/n</sup> fixes the radius.</p>
+            </div>
+            <span class="badge" id="rootBadge">limsup</span>
+          </div>
+          <div class="svgBox"><svg id="rootSvg" viewBox="0 0 920 310" role="img" aria-label="Root profile diagram"></svg></div>
+        </div>
+        <div class="card">
+          <div class="cardHead">
+            <div>
+              <h2>3. Partial sums</h2>
+              <p class="hint">The polynomial S<sub>N</sub>(x)=∑<sub>n≤N</sub>aₙ(x−c)<sup>n</sup> behaves well inside the radius and becomes unstable beyond it.</p>
+            </div>
+            <span class="badge" id="sumBadge">S_N</span>
+          </div>
+          <div class="svgBox"><svg id="sumSvg" viewBox="0 0 920 340" role="img" aria-label="Partial sum graph"></svg></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="cardHead">
+          <div>
+            <h2>4. Endpoint behavior</h2>
+            <p class="hint">After the radius is known, plug in x=c−R and x=c+R. Each endpoint becomes an ordinary numerical series.</p>
+          </div>
+          <span class="badge">endpoint tests</span>
+        </div>
+        <div class="two">
+          <div class="mini" id="leftEndpoint"><div class="k">left endpoint</div><div class="v">—</div><p>—</p></div>
+          <div class="mini" id="rightEndpoint"><div class="k">right endpoint</div><div class="v">—</div><p>—</p></div>
+        </div>
+        <div class="sep"></div>
+        <div class="lawGrid">
+          <div class="law"><strong>Root test lens</strong><code id="rootTestText">—</code></div>
+          <div class="law"><strong>Ratio test lens</strong><code id="ratioTestText">—</code></div>
+          <div class="law"><strong>Comparison lens</strong><code id="comparisonText">—</code></div>
+          <div class="law"><strong>Alternating / condensation lens</strong><code id="altText">—</code></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="cardHead">
+          <div>
+            <h2>5. Termwise operations</h2>
+            <p class="hint">Differentiation and integration preserve the same open radius of convergence. Endpoints can change and must be checked again.</p>
+          </div>
+          <span class="badge">same radius</span>
+        </div>
+        <div class="three">
+          <div class="mini"><div class="k">original</div><div class="v">∑ aₙ(x−c)ⁿ</div><p>Radius R from coefficient growth.</p></div>
+          <div class="mini"><div class="k">derivative</div><div class="v">∑ (n+1)aₙ₊₁(x−c)ⁿ</div><p>Same R, because polynomial factors do not change nth-root growth.</p></div>
+          <div class="mini"><div class="k">integral</div><div class="v">C + ∑ aₙ(x−c)ⁿ⁺¹/(n+1)</div><p>Same R; endpoints may improve.</p></div>
+        </div>
+      </section>
+
+      <section class="two">
+        <div class="card">
+          <h2>What to notice</h2>
+          <div class="notice">
+            <strong>The radius is not an endpoint theorem.</strong>
+            <ul>
+              <li>The open interval (c−R,c+R) is decided by coefficient growth.</li>
+              <li>The boundary points are decided by separate series tests.</li>
+              <li>Absolute convergence inside the interval implies ordinary convergence there.</li>
+              <li>Termwise operations keep the same open interval but can alter endpoint behavior.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Exam-style summary</h2>
+          <div class="summary">
+            <div class="law"><strong>1. Radius</strong><code>R = 1 / limsup |a_n|^{1/n}</code></div>
+            <div class="law"><strong>2. Interior</strong><code>|x-c| &lt; R ⇒ absolute convergence</code></div>
+            <div class="law"><strong>3. Exterior</strong><code>|x-c| &gt; R ⇒ divergence</code></div>
+            <div class="law"><strong>4. Endpoints</strong><code>x=c±R ⇒ test separately</code></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const state = { op:'original' };
+  const MAX = 500;
+  const logFact = Array(MAX+2).fill(0);
+  for(let i=1;i<logFact.length;i++) logFact[i]=logFact[i-1]+Math.log(i);
+
+  function css(name){return getComputedStyle(document.body).getPropertyValue(name).trim();}
+  function fmt(x,d=3){
+    if(x===Infinity) return '∞';
+    if(x===-Infinity) return '−∞';
+    if(Number.isNaN(x)) return '—';
+    if(Math.abs(x)>=1000 || (Math.abs(x)>0 && Math.abs(x)<.001)) return x.toExponential(2).replace('e','×10^');
+    return Number(x).toFixed(d).replace(/\.0+$/,'').replace(/(\.\d*?)0+$/,'$1');
+  }
+  function params(){
+    const model=$('model').value;
+    const R0=+$('R0').value;
+    const p=+$('p').value;
+    const c=+$('center').value;
+    const q=+$('q').value;
+    const N=+$('N').value;
+    const zoom=+$('zoom').value;
+    const R = model==='exp' ? Infinity : (model==='factorial' ? 0 : R0);
+    const t = R===Infinity ? q*2.2 : (R===0 ? q : q*R);
+    const x = c + t;
+    return {model,R0,p,c,q,N,zoom,R,t,x,op:state.op};
+  }
+  function logAbsA(n,s){
+    if(n===0) return 0;
+    if(s.model==='geometric') return -n*Math.log(s.R0);
+    if(s.model==='pBoundary' || s.model==='alternatingP') return -s.p*Math.log(n)-n*Math.log(s.R0);
+    if(s.model==='exp') return -logFact[n];
+    if(s.model==='factorial') return logFact[n];
+    return 0;
+  }
+  function signA(n,s){
+    if(s.model==='alternatingP') return n%2===0?1:-1;
+    return 1;
+  }
+  function logAbsB(n,s){
+    if(s.op==='original') return logAbsA(n,s);
+    if(s.op==='derivative') return Math.log(n+1)+logAbsA(n+1,s);
+    if(s.op==='integral') return n===0 ? -Infinity : logAbsA(n-1,s)-Math.log(n);
+    return logAbsA(n,s);
+  }
+  function signB(n,s){
+    if(s.op==='original') return signA(n,s);
+    if(s.op==='derivative') return signA(n+1,s);
+    if(s.op==='integral') return n===0 ? 0 : signA(n-1,s);
+    return 1;
+  }
+  function coeffTerm(n,t,s){
+    if(t===0 && n===0) return signB(0,s)*Math.exp(logAbsB(0,s));
+    if(t===0) return 0;
+    const la=logAbsB(n,s);
+    if(!Number.isFinite(la)) return 0;
+    const lm=la+n*Math.log(Math.abs(t));
+    if(lm>18) return signB(n,s)*(t<0 && n%2 ? -1:1)*Math.exp(18);
+    if(lm<-745) return 0;
+    return signB(n,s)*(t<0 && n%2 ? -1:1)*Math.exp(lm);
+  }
+  function partial(t,N,s){
+    let sum=0;
+    for(let n=0;n<=N;n++){
+      sum+=coeffTerm(n,t,s);
+      if(!Number.isFinite(sum)) return sum>0?1e9:-1e9;
+      if(Math.abs(sum)>1e8) return Math.sign(sum)*1e8;
+    }
+    return sum;
+  }
+  function make(tag,attrs={},txt=''){
+    const el=document.createElementNS('http://www.w3.org/2000/svg',tag);
+    for(const k in attrs) el.setAttribute(k,attrs[k]);
+    if(txt) el.textContent=txt;
+    return el;
+  }
+  function clear(svg){while(svg.firstChild) svg.removeChild(svg.firstChild);}
+  function add(svg,tag,attrs,txt){const el=make(tag,attrs,txt);svg.appendChild(el);return el;}
+  function baseSvg(svg){
+    clear(svg);
+    const defs=add(svg,'defs',{});
+    const pat=make('pattern',{id:'gridPattern',width:40,height:40,patternUnits:'userSpaceOnUse'});
+    pat.appendChild(make('path',{d:'M 40 0 L 0 0 0 40',fill:'none',stroke:css('--grid'),'stroke-width':1}));
+    defs.appendChild(pat);
+    add(svg,'rect',{x:0,y:0,width:920,height:360,fill:'url(#gridPattern)',opacity:.85});
+  }
+  function xMap(x,min,max,w=820,l=55){return l+(x-min)/(max-min)*w;}
+  function yMap(y,min,max,h=240,t=40){return t+(max-y)/(max-min)*h;}
+
+  function endpointClass(s,side){
+    if(s.R===Infinity) return {title:'no finite endpoint', body:'R=∞: the interval is all real numbers.'};
+    if(s.R===0) return {title: side<0?'left collapses':'right collapses', body:'R=0: only x=c is guaranteed; any x≠c diverges.'};
+    const p=s.p;
+    if(s.model==='geometric') return {title:'diverges', body:'Endpoint terms do not tend to 0.'};
+    if(s.model==='pBoundary'){
+      if(side>0){
+        if(p>1) return {title:'converges absolutely', body:'Right endpoint gives ∑1/nᵖ with p>1.'};
+        return {title:'diverges', body:p>0?'Right endpoint gives the divergent p-series ∑1/nᵖ with p≤1.':'Terms fail to go to 0.'};
+      }else{
+        if(p>1) return {title:'converges absolutely', body:'Left endpoint gives ∑(−1)ⁿ/nᵖ and also ∑1/nᵖ converges.'};
+        if(p>0) return {title:'converges conditionally', body:'Alternating test applies, but absolute p-series diverges.'};
+        return {title:'diverges', body:'Terms fail to go to 0.'};
+      }
+    }
+    if(s.model==='alternatingP'){
+      if(side>0){
+        if(p>1) return {title:'converges absolutely', body:'Alternating signs plus absolute p-series with p>1.'};
+        if(p>0) return {title:'converges conditionally', body:'Alternating test applies; absolute p-series diverges.'};
+        return {title:'diverges', body:'Terms fail to go to 0.'};
+      }else{
+        if(p>1) return {title:'converges absolutely', body:'Signs cancel into positive ∑1/nᵖ with p>1.'};
+        return {title:'diverges', body:p>0?'Signs cancel into divergent ∑1/nᵖ with p≤1.':'Terms fail to go to 0.'};
+      }
+    }
+    return {title:'retest needed', body:'Plug in the endpoint and use an ordinary series test.'};
+  }
+  function statusAtProbe(s){
+    const d=Math.abs(s.t);
+    if(s.R===Infinity) return 'absolute convergence for every real x';
+    if(s.R===0) return d<1e-10 ? 'converges at the center x=c' : 'diverges: outside the zero-radius point';
+    if(d<s.R-1e-9) return 'absolute convergence: probe is inside the radius';
+    if(d>s.R+1e-9) return 'divergence: probe is outside the radius';
+    if(s.op!=='original') return 'endpoint: same radius, but retest this operated series';
+    return 'endpoint: '+endpointClass(s, s.t>=0?1:-1).title;
+  }
+
+  function drawLine(s){
+    const svg=$('lineSvg'); baseSvg(svg);
+    const accent=css('--accent'), muted=css('--muted'), line=css('--line'), ink=css('--ink'), gold=css('--gold'), red=css('--red');
+    const span = s.R===Infinity ? 7 : (s.R===0 ? Math.max(3,s.zoom) : Math.max(2.4, s.zoom*s.R));
+    const min=s.c-span, max=s.c+span, y=125;
+    add(svg,'line',{x1:55,y1:y,x2:875,y2:y,stroke:line,'stroke-width':3,'stroke-linecap':'round'});
+    for(let k=Math.ceil(min);k<=Math.floor(max);k++){
+      const X=xMap(k,min,max); add(svg,'line',{x1:X,y1:y-7,x2:X,y2:y+7,stroke:line,'stroke-width':1});
+      add(svg,'text',{x:X,y:y+28,'text-anchor':'middle',class:'labelText'},fmt(k,0));
+    }
+    if(s.R===Infinity){
+      add(svg,'line',{x1:75,y1:y,x2:855,y2:y,stroke:accent,'stroke-width':15,'stroke-linecap':'round',opacity:.28});
+      add(svg,'text',{x:465,y:66,'text-anchor':'middle',class:'labelText'},'R = ∞: absolute convergence on the whole real line');
+    }else if(s.R===0){
+      const C=xMap(s.c,min,max);
+      add(svg,'circle',{cx:C,cy:y,r:16,fill:accent,opacity:.25});
+      add(svg,'circle',{cx:C,cy:y,r:6,fill:accent});
+      add(svg,'text',{x:C,y:72,'text-anchor':'middle',class:'labelText'},'R=0: interval collapses to the center');
+    }else{
+      const L=xMap(s.c-s.R,min,max), C=xMap(s.c,min,max), R=xMap(s.c+s.R,min,max);
+      add(svg,'line',{x1:L,y1:y,x2:R,y2:y,stroke:accent,'stroke-width':16,'stroke-linecap':'round',opacity:.25});
+      add(svg,'line',{x1:L,y1:y,x2:R,y2:y,stroke:accent,'stroke-width':4,'stroke-linecap':'round'});
+      const left=endpointClass(s,-1), right=endpointClass(s,1);
+      const leftColor=left.title.includes('diverge')?red:gold;
+      const rightColor=right.title.includes('diverge')?red:gold;
+      add(svg,'circle',{cx:L,cy:y,r:9,fill:'var(--paper)',stroke:leftColor,'stroke-width':3});
+      add(svg,'circle',{cx:R,cy:y,r:9,fill:'var(--paper)',stroke:rightColor,'stroke-width':3});
+      add(svg,'line',{x1:C,y1:y-38,x2:C,y2:y+38,stroke:accent,'stroke-width':2,'stroke-dasharray':'4 5'});
+      add(svg,'text',{x:L,y:y-22,'text-anchor':'middle',class:'labelText'},'c−R');
+      add(svg,'text',{x:C,y:y-48,'text-anchor':'middle',class:'labelText'},'c');
+      add(svg,'text',{x:R,y:y-22,'text-anchor':'middle',class:'labelText'},'c+R');
+    }
+    const X=xMap(Math.max(min,Math.min(max,s.x)),min,max);
+    add(svg,'line',{x1:X,y1:y-55,x2:X,y2:y+55,stroke:gold,'stroke-width':2});
+    add(svg,'circle',{cx:X,cy:y,r:7,fill:gold});
+    add(svg,'text',{x:X,y:y-68,'text-anchor':'middle',class:'labelText'},'x = '+fmt(s.x,2));
+    add(svg,'text',{x:460,y:220,'text-anchor':'middle',class:'labelText'},'status: '+statusAtProbe(s));
+  }
+
+  function drawRoot(s){
+    const svg=$('rootSvg'); baseSvg(svg);
+    const accent=css('--accent'), gold=css('--gold'), muted=css('--muted'), line=css('--line'), red=css('--red'), blue=css('--blue');
+    const N=Math.min(s.N,120);
+    let pts=[];
+    for(let n=1;n<=N;n++){
+      const l=logAbsB(n,s);
+      let r = !Number.isFinite(l) ? 0 : Math.exp(l/n);
+      if(!Number.isFinite(r)) r=1e6;
+      pts.push({n,r:Math.min(r,50)});
+    }
+    let yMax=Math.max(...pts.map(p=>p.r), s.R>0&&Number.isFinite(s.R)?1/s.R:0, Math.abs(s.t)>1e-9?1/Math.abs(s.t):0);
+    if(!Number.isFinite(yMax)||yMax<=0)yMax=1;
+    yMax=Math.min(Math.max(yMax*1.15,.8),50);
+    const x0=60,y0=260,w=805,h=205;
+    add(svg,'line',{x1:x0,y1:y0,x2:x0+w,y2:y0,stroke:line,'stroke-width':2});
+    add(svg,'line',{x1:x0,y1:y0,x2:x0,y2:y0-h,stroke:line,'stroke-width':2});
+    for(let i=0;i<=4;i++){
+      const yy=y0-i*h/4;
+      add(svg,'line',{x1:x0,y1:yy,x2:x0+w,y2:yy,stroke:css('--grid'),'stroke-width':1});
+      add(svg,'text',{x:x0-8,y:yy+4,'text-anchor':'end',class:'labelText'},fmt(yMax*i/4,2));
+    }
+    let d='';
+    pts.forEach((p,i)=>{
+      const X=x0+(p.n-1)/(N-1)*w, Y=y0-(p.r/yMax)*h;
+      d+=(i?'L':'M')+X+' '+Y+' ';
+    });
+    add(svg,'path',{d,fill:'none',stroke:accent,'stroke-width':3,'stroke-linejoin':'round'});
+    pts.forEach((p,i)=>{ if(i%Math.max(1,Math.floor(N/16))===0) add(svg,'circle',{cx:x0+(p.n-1)/(N-1)*w,cy:y0-(p.r/yMax)*h,r:3,fill:accent,opacity:.85}); });
+    if(Number.isFinite(s.R) && s.R>0){
+      const L=1/s.R, Y=y0-(L/yMax)*h;
+      add(svg,'line',{x1:x0,y1:Y,x2:x0+w,y2:Y,stroke:blue,'stroke-width':2,'stroke-dasharray':'7 6'});
+      add(svg,'text',{x:x0+w-5,y:Y-8,'text-anchor':'end',class:'labelText'},'limsup = 1/R = '+fmt(L,2));
+    }else if(s.R===Infinity){
+      add(svg,'text',{x:x0+w-4,y:y0-h+20,'text-anchor':'end',class:'labelText'},'limsup = 0, so R=∞');
+    }else{
+      add(svg,'text',{x:x0+w-4,y:y0-h+20,'text-anchor':'end',class:'labelText'},'root profile unbounded, so R=0');
+    }
+    if(Math.abs(s.t)>1e-8){
+      const T=1/Math.abs(s.t);
+      if(T<=yMax){
+        const Y=y0-(T/yMax)*h;
+        add(svg,'line',{x1:x0,y1:Y,x2:x0+w,y2:Y,stroke:gold,'stroke-width':2,'stroke-dasharray':'3 6'});
+        add(svg,'text',{x:x0+6,y:Y-8,class:'labelText'},'threshold 1/|x−c| = '+fmt(T,2));
+      }
+    }
+    add(svg,'text',{x:x0+w/2,y:294,'text-anchor':'middle',class:'labelText'},'n');
+    add(svg,'text',{x:22,y:42,class:'labelText'},'|coefficient|^{1/n}');
+  }
+
+  function quantile(arr,q){
+    const a=arr.filter(Number.isFinite).sort((a,b)=>a-b); if(!a.length)return 0;
+    return a[Math.min(a.length-1,Math.max(0,Math.floor(q*(a.length-1))))];
+  }
+  function drawSums(s){
+    const svg=$('sumSvg'); baseSvg(svg);
+    const accent=css('--accent'), gold=css('--gold'), line=css('--line'), red=css('--red');
+    const span = s.R===Infinity ? 5.2 : (s.R===0 ? Math.max(2.5,s.zoom) : Math.max(2.3, s.zoom*s.R));
+    const min=s.c-span,max=s.c+span;
+    const data=[];
+    const G=220;
+    for(let i=0;i<=G;i++){
+      const x=min+(max-min)*i/G;
+      data.push({x,y:partial(x-s.c,s.N,s)});
+    }
+    const finite=data.map(d=>d.y).filter(y=>Number.isFinite(y) && Math.abs(y)<1e7);
+    let yMin=quantile(finite,.04), yMax=quantile(finite,.96);
+    if(yMin===yMax){yMin-=1;yMax+=1;}
+    const pad=.15*(yMax-yMin); yMin-=pad;yMax+=pad;
+    if(yMin>0)yMin=0; if(yMax<0)yMax=0;
+    const x0=60,y0=275,w=805,h=225;
+    if(Number.isFinite(s.R) && s.R>0){
+      const L=xMap(s.c-s.R,min,max,w,x0), R=xMap(s.c+s.R,min,max,w,x0);
+      add(svg,'rect',{x:L,y:y0-h,width:R-L,height:h,fill:accent,opacity:.12,rx:10});
+    }else if(s.R===Infinity){
+      add(svg,'rect',{x:x0,y:y0-h,width:w,height:h,fill:accent,opacity:.10,rx:10});
+    }
+    add(svg,'line',{x1:x0,y1:y0,x2:x0+w,y2:y0,stroke:line,'stroke-width':2});
+    add(svg,'line',{x1:x0,y1:y0,x2:x0,y2:y0-h,stroke:line,'stroke-width':2});
+    const yZero=yMap(0,yMin,yMax,h,y0-h);
+    if(yZero>=y0-h && yZero<=y0) add(svg,'line',{x1:x0,y1:yZero,x2:x0+w,y2:yZero,stroke:line,'stroke-width':1.5,'stroke-dasharray':'5 5'});
+    const cX=xMap(s.c,min,max,w,x0); add(svg,'line',{x1:cX,y1:y0-h,x2:cX,y2:y0,stroke:line,'stroke-width':1.5,'stroke-dasharray':'4 6'});
+    let d=''; let started=false;
+    data.forEach(pt=>{
+      if(!Number.isFinite(pt.y)) {started=false; return;}
+      const X=xMap(pt.x,min,max,w,x0), Y=yMap(Math.max(yMin,Math.min(yMax,pt.y)),yMin,yMax,h,y0-h);
+      d+=(started?'L':'M')+X+' '+Y+' '; started=true;
+    });
+    add(svg,'path',{d,fill:'none',stroke:accent,'stroke-width':3,'stroke-linejoin':'round'});
+    const px=xMap(Math.max(min,Math.min(max,s.x)),min,max,w,x0);
+    const py=partial(s.t,s.N,s);
+    const pyc=yMap(Math.max(yMin,Math.min(yMax,py)),yMin,yMax,h,y0-h);
+    add(svg,'line',{x1:px,y1:y0-h,x2:px,y2:y0,stroke:gold,'stroke-width':2});
+    add(svg,'circle',{cx:px,cy:pyc,r:6,fill:gold,stroke:'var(--paper)','stroke-width':2});
+    for(let i=0;i<=4;i++){
+      const xx=x0+i*w/4, val=min+(max-min)*i/4;
+      add(svg,'text',{x:xx,y:304,'text-anchor':'middle',class:'labelText'},fmt(val,2));
+    }
+    add(svg,'text',{x:x0+w/2,y:330,'text-anchor':'middle',class:'labelText'},'x');
+    add(svg,'text',{x:18,y:45,class:'labelText'},s.op==='original'?'S_N(x)':s.op==='derivative'?"S_N'(x)":'integrated partial sum');
+    add(svg,'text',{x:x0+w-5,y:38,'text-anchor':'end',class:'labelText'},'probe value ≈ '+fmt(py,3));
+  }
+
+  function updateTexts(s){
+    $('R0Val').textContent=fmt(s.R0,2);
+    $('pVal').textContent=fmt(s.p,2);
+    $('cVal').textContent=fmt(s.c,2);
+    $('qVal').textContent=s.R===Infinity?fmt(s.t,2):fmt(s.q,2)+'R';
+    $('NVal').textContent=s.N;
+    $('zoomVal').textContent=fmt(s.zoom,2)+(s.R===Infinity?' units':'R');
+    $('opVal').textContent=s.op;
+    $('radiusBadge').textContent='R = '+fmt(s.R,2);
+    $('probeBadge').textContent='x = '+fmt(s.x,3)+' · '+statusAtProbe(s);
+    const lim = s.R===Infinity ? 0 : (s.R===0 ? Infinity : 1/s.R);
+    $('rootBadge').textContent='limsup ≈ '+fmt(lim,3);
+    $('sumBadge').textContent='N = '+s.N;
+    const left=endpointClass(s,-1), right=endpointClass(s,1);
+    $('leftEndpoint').innerHTML='<div class="k">left endpoint x=c−R</div><div class="v">'+left.title+'</div><p>'+left.body+'</p>';
+    $('rightEndpoint').innerHTML='<div class="k">right endpoint x=c+R</div><div class="v">'+right.title+'</div><p>'+right.body+'</p>';
+    if(s.R===Infinity){
+      $('rootTestText').textContent='limsup |a_n|^{1/n}=0, hence R=∞.';
+      $('ratioTestText').textContent='Typical ratio tends to 0 for fixed x−c.';
+      $('comparisonText').textContent='Factorial denominator dominates every geometric power.';
+      $('altText').textContent='No endpoint tests: the interval is all R.';
+    }else if(s.R===0){
+      $('rootTestText').textContent='limsup |a_n|^{1/n}=∞, hence R=0.';
+      $('ratioTestText').textContent='Terms grow too fast unless x=c.';
+      $('comparisonText').textContent='Factorial growth beats every geometric decay.';
+      $('altText').textContent='There are no nontrivial endpoints around c.';
+    }else{
+      $('rootTestText').textContent='For t=x−c: limsup |a_n t^n|^{1/n}=|t|/R. Converges if <1; diverges if >1.';
+      $('ratioTestText').textContent='For these families the ratio behaves like |t|/R. At |t|=R it equals 1, so the test is inconclusive.';
+      if(s.model==='geometric') $('comparisonText').textContent='At the boundary the terms do not tend to zero.';
+      else $('comparisonText').textContent='At the boundary the absolute series is comparable to ∑1/n^p.';
+      if(s.model==='pBoundary') $('altText').textContent='Left endpoint is alternating; right endpoint is positive p-series. Condensation: ∑1/n^p converges exactly when p>1.';
+      else if(s.model==='alternatingP') $('altText').textContent='Right endpoint is alternating; left endpoint is positive p-series. Conditional convergence occurs for 0<p≤1 on the alternating side.';
+      else $('altText').textContent='No alternating decay at the boundary; the nth-term test detects divergence.';
+    }
+  }
+
+  function update(){
+    const s=params();
+    updateTexts(s); drawLine(s); drawRoot(s); drawSums(s);
+  }
+  ['model','R0','p','center','q','N','zoom'].forEach(id=>$(id).addEventListener('input',update));
+  document.querySelectorAll('[data-op]').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('[data-op]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); state.op=btn.dataset.op; update();
+  }));
+  $('themeBtn').addEventListener('click',()=>{
+    const body=document.body;
+    const dark=body.getAttribute('data-theme')==='dark';
+    body.setAttribute('data-theme',dark?'light':'dark');
+    $('themeBtn').textContent=dark?'Dark mode':'Light mode';
+    update();
+  });
+  update();
+})();
+</script>
+</body>
+</html>
