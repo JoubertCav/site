@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive real analysis diagram for set operations and Boolean algebra.">
+  <title>Set Operations and Boolean Algebra | Real Analysis Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+  <style>
+    :root{
+      --bg:#f5f0e7;
+      --paper:#fffdf8;
+      --paper-2:#fbf7ef;
+      --paper-3:#eee7db;
+      --text:#1f292b;
+      --muted:#697574;
+      --line:rgba(38,48,50,.13);
+      --line-strong:rgba(38,48,50,.2);
+      --accent:#2a9d8f;
+      --accent-2:#c27b4b;
+      --accent-3:#6677cc;
+      --good:#2a9d8f;
+      --bad:#bd6b61;
+      --shadow:0 22px 60px rgba(31,41,43,.08);
+      --shadow-soft:0 12px 35px rgba(31,41,43,.06);
+      --radius:24px;
+      --mono:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      --serif:Georgia, "Times New Roman", serif;
+      --sans:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    html[data-theme="dark"]{
+      --bg:#0c1117;
+      --paper:#121922;
+      --paper-2:#161f2a;
+      --paper-3:#1c2632;
+      --text:#ecf2ef;
+      --muted:#98a7a3;
+      --line:rgba(236,242,239,.12);
+      --line-strong:rgba(236,242,239,.2);
+      --accent:#52c7b9;
+      --accent-2:#daa06c;
+      --accent-3:#9aa8ff;
+      --good:#52c7b9;
+      --bad:#e08a82;
+      --shadow:0 24px 70px rgba(0,0,0,.34);
+      --shadow-soft:0 14px 40px rgba(0,0,0,.24);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:
+        radial-gradient(circle at 10% 0%, color-mix(in srgb,var(--accent) 14%,transparent), transparent 32%),
+        radial-gradient(circle at 88% 8%, color-mix(in srgb,var(--accent-2) 12%,transparent), transparent 34%),
+        var(--bg);
+      color:var(--text);
+      font-family:var(--sans);
+      letter-spacing:-.01em;
+    }
+
+    .wrap{width:min(1220px, calc(100% - 32px)); margin:0 auto; padding:28px 0 42px}
+
+    header{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:18px;
+      align-items:start;
+      margin-bottom:18px;
+    }
+
+    .hero{
+      background:linear-gradient(135deg, color-mix(in srgb,var(--paper) 96%,var(--accent)), var(--paper));
+      border:1px solid var(--line);
+      border-radius:calc(var(--radius) + 4px);
+      box-shadow:var(--shadow);
+      padding:28px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero:after{
+      content:"";
+      position:absolute;
+      inset:auto -80px -100px auto;
+      width:260px;
+      height:260px;
+      border-radius:50%;
+      background:radial-gradient(circle, color-mix(in srgb,var(--accent) 18%,transparent), transparent 65%);
+      pointer-events:none;
+    }
+
+    .eyebrow{display:flex; gap:9px; flex-wrap:wrap; align-items:center; color:var(--muted); font-size:.86rem; margin-bottom:14px}
+    .pill{
+      border:1px solid var(--line);
+      background:color-mix(in srgb,var(--paper-2) 88%,transparent);
+      border-radius:999px;
+      padding:7px 10px;
+      line-height:1;
+    }
+
+    h1{font-family:var(--serif); font-weight:500; font-size:clamp(2.1rem, 4vw, 4rem); line-height:.98; margin:0 0 12px}
+    .subtitle{max-width:760px; color:var(--muted); font-size:1.04rem; line-height:1.55; margin:0}
+
+    .theme-card{
+      min-width:210px;
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:16px;
+      box-shadow:var(--shadow-soft);
+    }
+    .theme-card .small{font-size:.79rem; color:var(--muted); margin-bottom:10px}
+    .theme-toggle{
+      width:100%;
+      border:1px solid var(--line-strong);
+      color:var(--text);
+      background:linear-gradient(180deg,var(--paper-2),var(--paper));
+      border-radius:18px;
+      padding:12px 14px;
+      cursor:pointer;
+      font-weight:650;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1.45fr .75fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    .card{
+      background:color-mix(in srgb,var(--paper) 96%,transparent);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-soft);
+      overflow:hidden;
+    }
+
+    .card-pad{padding:20px}
+    .card-head{
+      padding:18px 20px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .card-title{font-family:var(--serif); font-size:1.35rem; font-weight:500; margin:0}
+    .card-note{font-size:.84rem; color:var(--muted); margin:4px 0 0; line-height:1.4}
+
+    .formula{
+      font-family:var(--serif);
+      font-size:1.12rem;
+      line-height:1.58;
+      background:linear-gradient(180deg,var(--paper-2),color-mix(in srgb,var(--paper) 96%,var(--accent)));
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:15px 16px;
+    }
+    .formula .mono{font-family:var(--mono); font-size:.92em}
+    .mathline{display:block; margin:3px 0}
+    .math-large{font-size:1.42rem; color:var(--accent)}
+
+    .diagram-shell{padding:14px; background:linear-gradient(180deg,var(--paper-2),var(--paper));}
+    .canvas-wrap{
+      position:relative;
+      height:520px;
+      border-radius:22px;
+      border:1px solid var(--line);
+      overflow:hidden;
+      background:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg,var(--line) 1px, transparent 1px),
+        radial-gradient(circle at 50% 35%, color-mix(in srgb,var(--accent) 5%,transparent), transparent 55%),
+        var(--paper);
+      background-size:34px 34px, 34px 34px, auto, auto;
+    }
+    canvas{display:block; width:100%; height:100%}
+
+    .floating-readout{
+      position:absolute;
+      left:16px;
+      bottom:16px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:9px;
+      pointer-events:none;
+    }
+    .chip{
+      font-size:.78rem;
+      color:var(--text);
+      background:color-mix(in srgb,var(--paper) 86%,transparent);
+      border:1px solid var(--line);
+      backdrop-filter:blur(10px);
+      border-radius:999px;
+      padding:8px 10px;
+      box-shadow:0 8px 20px rgba(0,0,0,.06);
+    }
+    .chip strong{color:var(--accent)}
+
+    .controls{
+      display:grid;
+      gap:12px;
+    }
+    label.control{
+      display:grid;
+      gap:8px;
+      padding:13px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:var(--paper-2);
+    }
+    .control-top{display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:.9rem}
+    .control-top span:first-child{font-weight:650}
+    .value{font-family:var(--mono); color:var(--accent); font-size:.82rem}
+    input[type="range"]{width:100%; accent-color:var(--accent)}
+    select{
+      width:100%;
+      border:1px solid var(--line-strong);
+      border-radius:14px;
+      padding:11px 12px;
+      color:var(--text);
+      background:var(--paper);
+      font:inherit;
+      outline:none;
+    }
+    select:focus{border-color:color-mix(in srgb,var(--accent) 70%,var(--line-strong)); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent)}
+
+    .two-col{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    .truth-table{width:100%; border-collapse:separate; border-spacing:0 8px; font-size:.9rem}
+    .truth-table th{font-size:.76rem; color:var(--muted); font-weight:650; text-align:center; padding:0 6px 2px}
+    .truth-table td{
+      background:var(--paper-2);
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      text-align:center;
+      padding:10px 8px;
+      font-family:var(--mono);
+    }
+    .truth-table td:first-child{border-left:1px solid var(--line); border-radius:14px 0 0 14px}
+    .truth-table td:last-child{border-right:1px solid var(--line); border-radius:0 14px 14px 0}
+    .truth-table tr.active td{background:color-mix(in srgb,var(--accent) 16%,var(--paper-2)); border-color:color-mix(in srgb,var(--accent) 38%,var(--line))}
+    .truth-table .true{color:var(--good); font-weight:800}
+    .truth-table .false{color:var(--muted)}
+
+    .atoms{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    .atom{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:var(--paper-2);
+      padding:12px;
+      min-height:82px;
+    }
+    .atom .name{font-family:var(--serif); font-size:1.07rem; margin-bottom:7px}
+    .atom .desc{font-size:.8rem; color:var(--muted); line-height:1.35}
+    .atom.on{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 15%,var(--paper-2)),var(--paper-2)); border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+
+    .law-panel{display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:14px}
+    .mini{
+      border:1px solid var(--line);
+      border-radius:20px;
+      background:var(--paper);
+      overflow:hidden;
+      min-width:0;
+    }
+    .mini-head{padding:12px 13px; border-bottom:1px solid var(--line)}
+    .mini-head .side{font-size:.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-bottom:5px}
+    .mini-head .expr{font-family:var(--serif); font-size:1.05rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+    .mini-canvas{height:230px}
+
+    .proof-strip{
+      margin:0 14px 14px;
+      border:1px solid var(--line);
+      border-radius:20px;
+      background:linear-gradient(180deg,var(--paper-2),var(--paper));
+      padding:14px;
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:12px;
+      align-items:center;
+    }
+    .proof-strip .txt{font-size:.93rem; color:var(--muted); line-height:1.45}
+    .badge{
+      border-radius:999px;
+      background:color-mix(in srgb,var(--good) 16%,var(--paper));
+      color:var(--good);
+      border:1px solid color-mix(in srgb,var(--good) 42%,var(--line));
+      padding:8px 10px;
+      font-weight:750;
+      font-size:.8rem;
+      white-space:nowrap;
+    }
+
+    .notice{
+      display:grid;
+      gap:10px;
+    }
+    .notice-item{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:10px;
+      align-items:start;
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:var(--paper-2);
+      font-size:.92rem;
+      line-height:1.42;
+    }
+    .dot{width:9px; height:9px; border-radius:50%; background:var(--accent); margin-top:6px; box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 14%,transparent)}
+
+    .summary{
+      display:grid;
+      gap:8px;
+      font-family:var(--serif);
+      font-size:1.02rem;
+      line-height:1.55;
+    }
+    .summary div{
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:var(--paper-2);
+    }
+
+    .footer-note{color:var(--muted); font-size:.82rem; text-align:center; margin-top:18px}
+
+    @media (max-width: 980px){
+      header,.grid{grid-template-columns:1fr}
+      .theme-card{min-width:0}
+      .canvas-wrap{height:430px}
+    }
+    @media (max-width: 640px){
+      .wrap{width:min(100% - 20px, 1220px); padding-top:14px}
+      .hero{padding:22px}
+      .two-col,.law-panel,.atoms{grid-template-columns:1fr}
+      .proof-strip{grid-template-columns:1fr}
+      .canvas-wrap{height:370px}
+      .mini-canvas{height:200px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <section class="hero">
+        <div class="eyebrow">
+          <span class="pill">Real Analysis Notebook</span>
+          <span class="pill">Sets as predicates</span>
+          <span class="pill">Boolean algebra on 𝒫(U)</span>
+        </div>
+        <h1>Set Operations<br/>and Boolean Algebra</h1>
+        <p class="subtitle">A set is a truth region inside a fixed universe. Boolean laws are not mysterious identities: they are pointwise logical equivalences, visible atom by atom.</p>
+      </section>
+      <aside class="theme-card">
+        <div class="small">Interface</div>
+        <button id="themeToggle" class="theme-toggle" type="button"><span>Light mode</span><span>◐</span></button>
+      </aside>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Main diagram</h2>
+            <p class="card-note">Move the point x. The shaded region is exactly the selected proposition.</p>
+          </div>
+        </div>
+        <div class="diagram-shell">
+          <div class="canvas-wrap">
+            <canvas id="mainCanvas"></canvas>
+            <div class="floating-readout" id="readout"></div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Controls</h2>
+            <p class="card-note">Only the parameters that change the geometry.</p>
+          </div>
+        </div>
+        <div class="card-pad controls">
+          <label class="control">
+            <div class="control-top"><span>Operation</span><span class="value" id="opSymbol">A ∪ B</span></div>
+            <select id="operation">
+              <option value="union">Union: A ∪ B</option>
+              <option value="intersection">Intersection: A ∩ B</option>
+              <option value="Ac">Complement: Aᶜ</option>
+              <option value="Bc">Complement: Bᶜ</option>
+              <option value="AdiffB">Difference: A ∖ B</option>
+              <option value="BdiffA">Difference: B ∖ A</option>
+              <option value="symdiff">Symmetric difference: A △ B</option>
+            </select>
+          </label>
+
+          <div class="two-col">
+            <label class="control">
+              <div class="control-top"><span>Radius</span><span class="value" id="radiusVal">0.30</span></div>
+              <input id="radius" type="range" min="0.20" max="0.40" step="0.01" value="0.31" />
+            </label>
+            <label class="control">
+              <div class="control-top"><span>Separation</span><span class="value" id="sepVal">0.30</span></div>
+              <input id="separation" type="range" min="0.10" max="0.58" step="0.01" value="0.34" />
+            </label>
+          </div>
+
+          <div class="two-col">
+            <label class="control">
+              <div class="control-top"><span>Point x-coordinate</span><span class="value" id="xVal">0.43</span></div>
+              <input id="pointX" type="range" min="0.04" max="0.96" step="0.01" value="0.43" />
+            </label>
+            <label class="control">
+              <div class="control-top"><span>Point y-coordinate</span><span class="value" id="yVal">0.50</span></div>
+              <input id="pointY" type="range" min="0.06" max="0.94" step="0.01" value="0.50" />
+            </label>
+          </div>
+
+          <div class="formula" id="definitionBox"></div>
+        </div>
+      </aside>
+
+      <section class="card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Boolean law comparator</h2>
+            <p class="card-note">Both sides shade the same subset of U. Equality means no atom differs.</p>
+          </div>
+          <select id="law" style="max-width:310px">
+            <option value="demorgan_union">De Morgan: (A ∪ B)ᶜ</option>
+            <option value="demorgan_intersection">De Morgan: (A ∩ B)ᶜ</option>
+            <option value="dist_inter">Distributivity: ∩ over ∪</option>
+            <option value="dist_union">Distributivity: ∪ over ∩</option>
+            <option value="difference">Difference identity</option>
+            <option value="symdiff">Symmetric difference identity</option>
+            <option value="absorption_inter">Absorption: A ∩ (A ∪ B)</option>
+            <option value="absorption_union">Absorption: A ∪ (A ∩ B)</option>
+          </select>
+        </div>
+        <div class="law-panel">
+          <div class="mini">
+            <div class="mini-head"><div class="side">left side</div><div class="expr" id="leftExpr"></div></div>
+            <div class="mini-canvas"><canvas id="leftCanvas"></canvas></div>
+          </div>
+          <div class="mini">
+            <div class="mini-head"><div class="side">right side</div><div class="expr" id="rightExpr"></div></div>
+            <div class="mini-canvas"><canvas id="rightCanvas"></canvas></div>
+          </div>
+        </div>
+        <div class="proof-strip">
+          <div class="txt" id="lawText"></div>
+          <div class="badge" id="lawBadge">0 differing atoms</div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Truth table</h2>
+            <p class="card-note">A set operation is a Boolean function of membership.</p>
+          </div>
+        </div>
+        <div class="card-pad">
+          <table class="truth-table" id="truthTable">
+            <thead><tr><th>A(x)</th><th>B(x)</th><th id="resHead">A ∪ B</th><th>atom</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </aside>
+
+      <section class="card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Atoms of the universe</h2>
+            <p class="card-note">For two sets, every point belongs to exactly one atom.</p>
+          </div>
+        </div>
+        <div class="card-pad atoms" id="atoms"></div>
+      </section>
+
+      <aside class="card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">What to notice</h2>
+          </div>
+        </div>
+        <div class="card-pad notice">
+          <div class="notice-item"><span class="dot"></span><span><b>The universe is fixed.</b> Complements are always relative to U, not to the whole plane.</span></div>
+          <div class="notice-item"><span class="dot"></span><span><b>Membership is logical.</b> x ∈ A ∪ B means A(x) ∨ B(x).</span></div>
+          <div class="notice-item"><span class="dot"></span><span><b>Laws are pointwise.</b> Two sets are equal iff every point has the same truth value on both sides.</span></div>
+          <div class="notice-item"><span class="dot"></span><span><b>Atoms explain everything.</b> If each atom is classified identically, the identities hold globally.</span></div>
+        </div>
+      </aside>
+
+      <section class="card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Compact exam summary</h2>
+          </div>
+        </div>
+        <div class="card-pad summary">
+          <div>A ∪ B = {x ∈ U : A(x) ∨ B(x)}, &nbsp; A ∩ B = {x ∈ U : A(x) ∧ B(x)}.</div>
+          <div>Aᶜ = U ∖ A = {x ∈ U : ¬A(x)}, &nbsp; A ∖ B = A ∩ Bᶜ.</div>
+          <div>A △ B = (A ∖ B) ∪ (B ∖ A) = {x ∈ U : A(x) ⊕ B(x)}.</div>
+          <div>De Morgan: (A ∪ B)ᶜ = Aᶜ ∩ Bᶜ, &nbsp; (A ∩ B)ᶜ = Aᶜ ∪ Bᶜ.</div>
+          <div>Distributivity: A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C), &nbsp; A ∪ (B ∩ C) = (A ∪ B) ∩ (A ∪ C).</div>
+          <div>Method of proof: take arbitrary x ∈ U, translate membership into logic, simplify the proposition, translate back into sets.</div>
+        </div>
+      </section>
+    </main>
+
+    <div class="footer-note">Pure HTML + CSS + JavaScript. No backend. No external files.</div>
+  </div>
+
+<script>
+const $ = (id)=>document.getElementById(id);
+const root = document.documentElement;
+
+const controls = {
+  operation: $('operation'), law: $('law'), radius: $('radius'), separation: $('separation'),
+  pointX: $('pointX'), pointY: $('pointY')
+};
+
+const mainCanvas = $('mainCanvas');
+const leftCanvas = $('leftCanvas');
+const rightCanvas = $('rightCanvas');
+
+const css = (name)=>getComputedStyle(root).getPropertyValue(name).trim();
+function rgba(hexOrVar, a){
+  const col = hexOrVar.startsWith('--') ? css(hexOrVar) : hexOrVar;
+  const tmp = document.createElement('div');
+  tmp.style.color = col; document.body.appendChild(tmp);
+  const rgb = getComputedStyle(tmp).color.match(/\d+/g).slice(0,3).map(Number);
+  tmp.remove();
+  return `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})`;
+}
+
+function setupCanvas(canvas){
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.max(1, Math.floor(rect.width*dpr));
+  canvas.height = Math.max(1, Math.floor(rect.height*dpr));
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  return {ctx,w:rect.width,h:rect.height};
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  const rr = Math.min(r,w/2,h/2);
+  ctx.beginPath();
+  ctx.moveTo(x+rr,y);
+  ctx.arcTo(x+w,y,x+w,y+h,rr);
+  ctx.arcTo(x+w,y+h,x,y+h,rr);
+  ctx.arcTo(x,y+h,x,y,rr);
+  ctx.arcTo(x,y,x+w,y,rr);
+  ctx.closePath();
+}
+
+function opMeta(op){
+  return {
+    union:{symbol:'A ∪ B', formula:'A ∪ B = { x ∈ U : A(x) ∨ B(x) }', text:'true when x belongs to A, to B, or to both.'},
+    intersection:{symbol:'A ∩ B', formula:'A ∩ B = { x ∈ U : A(x) ∧ B(x) }', text:'true only on the common region.'},
+    Ac:{symbol:'Aᶜ', formula:'Aᶜ = U ∖ A = { x ∈ U : ¬A(x) }', text:'everything in U outside A.'},
+    Bc:{symbol:'Bᶜ', formula:'Bᶜ = U ∖ B = { x ∈ U : ¬B(x) }', text:'everything in U outside B.'},
+    AdiffB:{symbol:'A ∖ B', formula:'A ∖ B = A ∩ Bᶜ = { x ∈ U : A(x) ∧ ¬B(x) }', text:'points of A after removing the part also in B.'},
+    BdiffA:{symbol:'B ∖ A', formula:'B ∖ A = B ∩ Aᶜ = { x ∈ U : B(x) ∧ ¬A(x) }', text:'points of B after removing the part also in A.'},
+    symdiff:{symbol:'A △ B', formula:'A △ B = { x ∈ U : A(x) ⊕ B(x) }', text:'true when membership differs: in exactly one set.'}
+  }[op];
+}
+
+function evalOp(op,A,B){
+  switch(op){
+    case 'union': return A||B;
+    case 'intersection': return A&&B;
+    case 'Ac': return !A;
+    case 'Bc': return !B;
+    case 'AdiffB': return A&&!B;
+    case 'BdiffA': return B&&!A;
+    case 'symdiff': return A!==B;
+  }
+}
+
+function geomTwo(w,h){
+  const margin = Math.max(26, Math.min(w,h)*.07);
+  const U = {x:margin,y:margin,w:w-2*margin,h:h-2*margin,r:24};
+  const m = Math.min(U.w,U.h);
+  const r = Number(controls.radius.value)*m;
+  const sep = Number(controls.separation.value)*U.w;
+  const cy = U.y + U.h*.51;
+  const cx = U.x + U.w*.5;
+  return {
+    U,
+    A:{x:cx-sep/2,y:cy,r},
+    B:{x:cx+sep/2,y:cy,r},
+    C:{x:cx,y:cy-r*.64,r:r*.92}
+  };
+}
+
+function insideCircle(p,c){return (p.x-c.x)**2 + (p.y-c.y)**2 <= c.r**2;}
+function insideU(p,U){return p.x>=U.x && p.x<=U.x+U.w && p.y>=U.y && p.y<=U.y+U.h;}
+
+function drawSets(ctx,g,opts={}){
+  const {A,B,C,U}=g;
+  const useC = opts.useC;
+  ctx.save();
+  ctx.globalCompositeOperation='source-over';
+  ctx.lineWidth=2;
+
+  function fillCircle(c, fill, stroke, label, dx=0, dy=0){
+    ctx.beginPath(); ctx.arc(c.x,c.y,c.r,0,Math.PI*2);
+    ctx.fillStyle=fill; ctx.fill();
+    ctx.strokeStyle=stroke; ctx.stroke();
+    ctx.fillStyle=css('--text');
+    ctx.font='600 16px Georgia, serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(label, c.x+dx, c.y+dy);
+  }
+
+  fillCircle(A, rgba('--accent',.075), rgba('--accent',.72), 'A', -A.r*.48, -A.r*.58);
+  fillCircle(B, rgba('--accent-2',.075), rgba('--accent-2',.72), 'B', B.r*.48, -B.r*.58);
+  if(useC) fillCircle(C, rgba('--accent-3',.068), rgba('--accent-3',.68), 'C', 0, -C.r*.72);
+
+  ctx.strokeStyle=rgba('--text',.48);
+  ctx.lineWidth=1.2;
+  roundRect(ctx,U.x,U.y,U.w,U.h,U.r);
+  ctx.stroke();
+  ctx.fillStyle=css('--muted');
+  ctx.font='500 13px system-ui, sans-serif';
+  ctx.textAlign='left'; ctx.textBaseline='top';
+  ctx.fillText('Universe U', U.x+14, U.y+12);
+  ctx.restore();
+}
+
+function shadeByPredicate(ctx,g,pred,opts={}){
+  const {U,A,B,C}=g;
+  const cell = opts.cell || 5.5;
+  ctx.save();
+  roundRect(ctx,U.x,U.y,U.w,U.h,U.r);
+  ctx.clip();
+  ctx.fillStyle = opts.fill || rgba('--accent',.33);
+  for(let y=U.y+cell/2; y<U.y+U.h; y+=cell){
+    for(let x=U.x+cell/2; x<U.x+U.w; x+=cell){
+      const p={x,y};
+      if(pred({A:insideCircle(p,A),B:insideCircle(p,B),C:insideCircle(p,C),x,y,p})){ 
+        ctx.fillRect(x-cell*.43,y-cell*.43,cell*.86,cell*.86);
+      }
+    }
+  }
+  ctx.restore();
+}
+
+function drawMain(){
+  const {ctx,w,h}=setupCanvas(mainCanvas);
+  const g = geomTwo(w,h);
+  ctx.clearRect(0,0,w,h);
+
+  ctx.save();
+  roundRect(ctx,g.U.x,g.U.y,g.U.w,g.U.h,g.U.r);
+  ctx.fillStyle=rgba('--paper',.96); ctx.fill();
+  ctx.strokeStyle=css('--line'); ctx.stroke();
+  ctx.restore();
+
+  const op=controls.operation.value;
+  shadeByPredicate(ctx,g,({A,B})=>evalOp(op,A,B),{cell:5.2, fill:rgba('--accent',.34)});
+  drawSets(ctx,g,{useC:false});
+
+  const px = g.U.x + Number(controls.pointX.value)*g.U.w;
+  const py = g.U.y + Number(controls.pointY.value)*g.U.h;
+  const point={x:px,y:py};
+  const A=insideCircle(point,g.A), B=insideCircle(point,g.B), R=evalOp(op,A,B);
+
+  ctx.save();
+  ctx.beginPath(); ctx.arc(px,py,7.5,0,Math.PI*2);
+  ctx.fillStyle=R ? css('--accent') : css('--paper'); ctx.fill();
+  ctx.lineWidth=2.5; ctx.strokeStyle=R ? '#ffffff' : css('--accent'); ctx.stroke();
+  ctx.beginPath(); ctx.arc(px,py,13,0,Math.PI*2);
+  ctx.strokeStyle=rgba('--accent',.3); ctx.lineWidth=1.5; ctx.stroke();
+  ctx.fillStyle=css('--text'); ctx.font='600 13px system-ui, sans-serif';
+  ctx.fillText('x',px+13,py-12);
+  ctx.restore();
+
+  updateReadout(A,B,R);
+}
+
+function updateReadout(A,B,R){
+  const meta=opMeta(controls.operation.value);
+  $('readout').innerHTML = `
+    <span class="chip">A(x)=<strong>${A?'1':'0'}</strong></span>
+    <span class="chip">B(x)=<strong>${B?'1':'0'}</strong></span>
+    <span class="chip">${meta.symbol}=<strong>${R?'true':'false'}</strong></span>
+  `;
+}
+
+function updateControlsText(){
+  $('radiusVal').textContent=Number(controls.radius.value).toFixed(2);
+  $('sepVal').textContent=Number(controls.separation.value).toFixed(2);
+  $('xVal').textContent=Number(controls.pointX.value).toFixed(2);
+  $('yVal').textContent=Number(controls.pointY.value).toFixed(2);
+  const meta=opMeta(controls.operation.value);
+  $('opSymbol').textContent=meta.symbol;
+  $('definitionBox').innerHTML=`<span class="mathline math-large">${meta.symbol}</span><span class="mathline">${meta.formula}</span><span class="mathline" style="color:var(--muted); font-family:var(--sans); font-size:.92rem">Geometric reading: ${meta.text}</span>`;
+  $('resHead').textContent=meta.symbol;
+}
+
+const atomInfo = [
+  {A:true,B:true, name:'A ∩ B', desc:'inside both sets'},
+  {A:true,B:false, name:'A ∩ Bᶜ', desc:'inside A only'},
+  {A:false,B:true, name:'Aᶜ ∩ B', desc:'inside B only'},
+  {A:false,B:false, name:'Aᶜ ∩ Bᶜ', desc:'outside both, but still inside U'}
+];
+
+function updateTables(){
+  const op=controls.operation.value;
+  const body=$('truthTable').querySelector('tbody');
+  const px=Number(controls.pointX.value), py=Number(controls.pointY.value);
+  const rect = mainCanvas.getBoundingClientRect();
+  const g=geomTwo(rect.width, rect.height);
+  const point={x:g.U.x+px*g.U.w,y:g.U.y+py*g.U.h};
+  const curA=insideCircle(point,g.A), curB=insideCircle(point,g.B);
+  body.innerHTML=atomInfo.map(row=>{
+    const res=evalOp(op,row.A,row.B);
+    const active=(row.A===curA && row.B===curB);
+    return `<tr class="${active?'active':''}">
+      <td class="${row.A?'true':'false'}">${row.A?'1':'0'}</td>
+      <td class="${row.B?'true':'false'}">${row.B?'1':'0'}</td>
+      <td class="${res?'true':'false'}">${res?'1':'0'}</td>
+      <td>${row.name}</td>
+    </tr>`;
+  }).join('');
+
+  $('atoms').innerHTML=atomInfo.map(row=>{
+    const res=evalOp(op,row.A,row.B);
+    return `<div class="atom ${res?'on':''}"><div class="name">${row.name}</div><div class="desc">${row.desc}<br/>${opMeta(op).symbol}: <b style="color:${res?'var(--good)':'var(--muted)'}">${res?'included':'excluded'}</b></div></div>`;
+  }).join('');
+}
+
+const laws = {
+  demorgan_union:{
+    left:'(A ∪ B)ᶜ', right:'Aᶜ ∩ Bᶜ', useC:false,
+    L:({A,B})=>!(A||B), R:({A,B})=>(!A)&&(!B),
+    text:'Pointwise: ¬(A(x) ∨ B(x)) ⇔ ¬A(x) ∧ ¬B(x).'
+  },
+  demorgan_intersection:{
+    left:'(A ∩ B)ᶜ', right:'Aᶜ ∪ Bᶜ', useC:false,
+    L:({A,B})=>!(A&&B), R:({A,B})=>(!A)||(!B),
+    text:'Pointwise: ¬(A(x) ∧ B(x)) ⇔ ¬A(x) ∨ ¬B(x).'
+  },
+  dist_inter:{
+    left:'A ∩ (B ∪ C)', right:'(A ∩ B) ∪ (A ∩ C)', useC:true,
+    L:({A,B,C})=>A&&(B||C), R:({A,B,C})=>(A&&B)||(A&&C),
+    text:'Pointwise: A(x) ∧ (B(x) ∨ C(x)) ⇔ (A(x) ∧ B(x)) ∨ (A(x) ∧ C(x)).'
+  },
+  dist_union:{
+    left:'A ∪ (B ∩ C)', right:'(A ∪ B) ∩ (A ∪ C)', useC:true,
+    L:({A,B,C})=>A||(B&&C), R:({A,B,C})=>(A||B)&&(A||C),
+    text:'Pointwise: A(x) ∨ (B(x) ∧ C(x)) ⇔ (A(x) ∨ B(x)) ∧ (A(x) ∨ C(x)).'
+  },
+  difference:{
+    left:'A ∖ B', right:'A ∩ Bᶜ', useC:false,
+    L:({A,B})=>A&&!B, R:({A,B})=>A&&(!B),
+    text:'Difference is not a new primitive: it is intersection with the complement.'
+  },
+  symdiff:{
+    left:'A △ B', right:'(A ∖ B) ∪ (B ∖ A)', useC:false,
+    L:({A,B})=>A!==B, R:({A,B})=>(A&&!B)||(B&&!A),
+    text:'Symmetric difference is exclusive-or: true exactly when memberships disagree.'
+  },
+  absorption_inter:{
+    left:'A ∩ (A ∪ B)', right:'A', useC:false,
+    L:({A,B})=>A&&(A||B), R:({A})=>A,
+    text:'Absorption: once A(x) is required, adding “or B(x)” changes nothing.'
+  },
+  absorption_union:{
+    left:'A ∪ (A ∩ B)', right:'A', useC:false,
+    L:({A,B})=>A||(A&&B), R:({A})=>A,
+    text:'Absorption: A already contains the smaller condition A ∧ B.'
+  }
+};
+
+function geomMini(w,h,useC){
+  const margin = Math.max(18, Math.min(w,h)*.08);
+  const U = {x:margin,y:margin,w:w-2*margin,h:h-2*margin,r:18};
+  const m=Math.min(U.w,U.h);
+  const r= useC ? m*.31 : m*.35;
+  if(useC){
+    return {U,
+      A:{x:U.x+U.w*.41,y:U.y+U.h*.59,r},
+      B:{x:U.x+U.w*.59,y:U.y+U.h*.59,r},
+      C:{x:U.x+U.w*.50,y:U.y+U.h*.39,r}
+    };
+  }
+  return {U,
+    A:{x:U.x+U.w*.43,y:U.y+U.h*.52,r},
+    B:{x:U.x+U.w*.57,y:U.y+U.h*.52,r},
+    C:{x:U.x+U.w*.50,y:U.y+U.h*.38,r:r*.85}
+  };
+}
+
+function drawMini(canvas,pred,useC){
+  const {ctx,w,h}=setupCanvas(canvas);
+  const g=geomMini(w,h,useC);
+  ctx.clearRect(0,0,w,h);
+  ctx.save();
+  roundRect(ctx,g.U.x,g.U.y,g.U.w,g.U.h,g.U.r);
+  ctx.fillStyle=rgba('--paper',.96); ctx.fill();
+  ctx.strokeStyle=css('--line'); ctx.stroke();
+  ctx.restore();
+  shadeByPredicate(ctx,g,pred,{cell:4.3, fill:rgba('--accent',.35)});
+  drawSets(ctx,g,{useC});
+}
+
+function countLawDiff(law){
+  const combos = law.useC ?
+    [[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]] :
+    [[0,0],[0,1],[1,0],[1,1]];
+  return combos.reduce((acc,c)=>{
+    const v={A:!!c[0],B:!!c[1],C:!!c[2]};
+    return acc + (law.L(v)!==law.R(v) ? 1 : 0);
+  },0);
+}
+
+function updateLaw(){
+  const law=laws[controls.law.value];
+  $('leftExpr').textContent=law.left;
+  $('rightExpr').textContent=law.right;
+  $('lawText').textContent=law.text;
+  const diff=countLawDiff(law);
+  $('lawBadge').textContent = `${diff} differing atom${diff===1?'':'s'}`;
+  drawMini(leftCanvas, law.L, law.useC);
+  drawMini(rightCanvas, law.R, law.useC);
+}
+
+function renderAll(){
+  updateControlsText();
+  drawMain();
+  updateTables();
+  updateLaw();
+}
+
+Object.values(controls).forEach(el=>el.addEventListener('input', renderAll));
+window.addEventListener('resize', renderAll);
+
+$('themeToggle').addEventListener('click',()=>{
+  const dark=root.getAttribute('data-theme')==='dark';
+  root.setAttribute('data-theme', dark?'light':'dark');
+  $('themeToggle').firstElementChild.textContent=dark?'Light mode':'Dark mode';
+  renderAll();
+});
+
+renderAll();
+</script>
+</body>
+</html>

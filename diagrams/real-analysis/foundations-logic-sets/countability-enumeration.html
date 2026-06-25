@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for countability and enumeration.">
+<title>Countability and Enumeration | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+:root{
+  --bg:#f7f3ea;
+  --paper:#fffdf8;
+  --paper2:#f1eadf;
+  --ink:#1f2527;
+  --muted:#687270;
+  --line:rgba(31,37,39,.14);
+  --soft:rgba(31,37,39,.055);
+  --grid:rgba(31,37,39,.075);
+  --accent:#2f9a8f;
+  --accent-2:#c07a45;
+  --accent-3:#6f7fb8;
+  --ok:#2f9a8f;
+  --warn:#c07a45;
+  --shadow:0 20px 50px rgba(31,37,39,.08);
+  --radius:22px;
+}
+html[data-theme="dark"]{
+  --bg:#0d1117;
+  --paper:#131922;
+  --paper2:#18202b;
+  --ink:#ecf2f0;
+  --muted:#9aa8a4;
+  --line:rgba(236,242,240,.13);
+  --soft:rgba(236,242,240,.055);
+  --grid:rgba(236,242,240,.08);
+  --accent:#58c9bb;
+  --accent-2:#d59a68;
+  --accent-3:#9ba9e8;
+  --ok:#58c9bb;
+  --warn:#d59a68;
+  --shadow:0 22px 56px rgba(0,0,0,.30);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, var(--accent) 13%, transparent), transparent 34rem),
+    radial-gradient(circle at top right, color-mix(in srgb, var(--accent-2) 12%, transparent), transparent 30rem),
+    var(--bg);
+  color:var(--ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height:1.45;
+}
+.app{width:min(1180px, calc(100% - 32px)); margin:0 auto; padding:34px 0 50px}
+header{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:18px;
+  align-items:start;
+  margin-bottom:20px;
+}
+.eyebrow{font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:700; margin-bottom:8px}
+h1{font-family: ui-serif, Georgia, "Times New Roman", serif; font-size:clamp(2.1rem, 5vw, 4.2rem); line-height:.98; margin:0; letter-spacing:-.045em; font-weight:650}
+.subtitle{max-width:760px; color:var(--muted); margin:14px 0 0; font-size:1.05rem}
+.toolbar{display:flex; gap:10px; align-items:center; justify-content:flex-end; flex-wrap:wrap}
+button,.select,input[type="range"]{font:inherit}
+.theme, .pillbtn{
+  border:1px solid var(--line);
+  color:var(--ink);
+  background:color-mix(in srgb, var(--paper) 86%, transparent);
+  border-radius:999px;
+  padding:10px 14px;
+  cursor:pointer;
+  box-shadow:0 8px 22px rgba(0,0,0,.04);
+}
+.theme:hover,.pillbtn:hover{border-color:color-mix(in srgb, var(--accent) 45%, var(--line))}
+.grid{display:grid; grid-template-columns:1.05fr .95fr; gap:18px; align-items:start}
+.stack{display:grid; gap:18px}
+.card{
+  background:color-mix(in srgb, var(--paper) 94%, transparent);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.card.pad{padding:22px}
+.cardhead{padding:20px 22px 0}
+.card h2{font-family:ui-serif, Georgia, serif; font-size:1.35rem; margin:0 0 4px; letter-spacing:-.02em}
+.card p{margin:.4rem 0; color:var(--muted)}
+.eq{
+  margin-top:14px;
+  border:1px solid var(--line);
+  background:linear-gradient(180deg, color-mix(in srgb, var(--paper2) 72%, transparent), color-mix(in srgb, var(--paper) 95%, transparent));
+  border-radius:18px;
+  padding:14px 16px;
+  font-family:ui-serif, Georgia, serif;
+  font-size:1.05rem;
+  overflow:auto;
+}
+.eq .line{display:block; padding:4px 0; white-space:nowrap}
+.math{font-family:ui-serif, Georgia, "Times New Roman", serif}
+.controls{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px; padding:18px 22px; border-top:1px solid var(--line); background:color-mix(in srgb, var(--paper2) 42%, transparent)}
+.control{display:grid; gap:6px}
+.control label{font-size:.78rem; color:var(--muted); letter-spacing:.05em; text-transform:uppercase; font-weight:700; display:flex; justify-content:space-between; gap:10px}
+input[type="range"]{width:100%; accent-color:var(--accent)}
+select{
+  width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:14px; background:var(--paper); color:var(--ink); outline:none
+}
+.canvas{padding:18px 22px 22px}
+.panel{
+  border:1px solid var(--line);
+  background:color-mix(in srgb, var(--paper) 76%, transparent);
+  border-radius:18px;
+  padding:14px;
+}
+.small{font-size:.92rem; color:var(--muted)}
+.badges{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+.badge{border:1px solid var(--line); background:var(--soft); border-radius:999px; padding:7px 10px; font-size:.83rem; color:var(--muted)}
+.badge strong{color:var(--ink)}
+.numberline{
+  min-height:130px;
+  position:relative;
+  border-radius:18px;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--paper2) 60%, transparent), transparent);
+  border:1px solid var(--line);
+  overflow:hidden;
+}
+.axis{position:absolute; left:36px; right:36px; top:67px; height:2px; background:var(--line)}
+.dot{position:absolute; top:55px; width:24px; height:24px; margin-left:-12px; border-radius:50%; border:2px solid var(--accent); background:var(--paper); display:grid; place-items:center; font-size:.72rem; color:var(--ink); box-shadow:0 5px 14px rgba(0,0,0,.08)}
+.dot.filled{background:var(--accent); color:#fff; border-color:var(--accent)}
+.dotlabel{position:absolute; top:86px; transform:translateX(-50%); font-size:.74rem; color:var(--muted)}
+.enumeration{display:grid; grid-template-columns:repeat(var(--n), minmax(32px,1fr)); gap:6px; padding:4px; max-width:100%; overflow:auto}
+.cell{
+  aspect-ratio:1/1;
+  min-width:32px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  background:color-mix(in srgb, var(--paper) 90%, transparent);
+  position:relative;
+  font-size:.74rem;
+  color:var(--muted);
+}
+.cell.on{background:color-mix(in srgb, var(--accent) 18%, var(--paper)); border-color:color-mix(in srgb, var(--accent) 48%, var(--line)); color:var(--ink)}
+.cell.current{outline:3px solid color-mix(in srgb, var(--accent-2) 70%, transparent); background:color-mix(in srgb, var(--accent-2) 20%, var(--paper)); color:var(--ink)}
+.cell .pair{font-family:ui-serif, Georgia, serif; font-size:.82rem}
+.cell .rank{position:absolute; right:5px; bottom:3px; font-size:.62rem; color:var(--muted)}
+.matrixWrap{overflow:auto; border:1px solid var(--line); border-radius:18px; background:var(--paper); padding:10px}
+table{border-collapse:separate; border-spacing:5px; width:100%}
+th,td{text-align:center; white-space:nowrap}
+th{font-size:.72rem; color:var(--muted); font-weight:700}
+td.bit,td.entry{
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:7px 8px;
+  min-width:34px;
+  background:color-mix(in srgb, var(--paper2) 42%, transparent);
+  font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+td.diag{background:color-mix(in srgb, var(--accent-2) 20%, var(--paper)); border-color:color-mix(in srgb, var(--accent-2) 50%, var(--line))}
+td.flip{background:color-mix(in srgb, var(--accent) 22%, var(--paper)); border-color:color-mix(in srgb, var(--accent) 54%, var(--line)); color:var(--ink)}
+.legend{display:flex; gap:9px; align-items:center; flex-wrap:wrap; margin-top:10px; color:var(--muted); font-size:.84rem}
+.key{width:13px; height:13px; border-radius:4px; display:inline-block; border:1px solid var(--line); vertical-align:-2px; margin-right:5px}
+.k1{background:color-mix(in srgb, var(--accent) 22%, var(--paper))}.k2{background:color-mix(in srgb, var(--accent-2) 20%, var(--paper))}.k3{background:var(--soft)}
+.split{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.resultBox{border:1px solid var(--line); border-radius:18px; padding:15px; background:color-mix(in srgb, var(--paper2) 38%, transparent)}
+.resultBox h3{margin:0 0 7px; font-size:1rem; font-family:ui-serif, Georgia, serif}
+.verdict{font-size:1.35rem; color:var(--accent); font-family:ui-serif, Georgia, serif; margin:8px 0 4px}
+.steps{display:grid; gap:7px; margin-top:10px}
+.step{display:grid; grid-template-columns:auto 1fr; gap:9px; align-items:start; padding:8px; border-radius:13px; background:var(--soft); color:var(--muted); font-size:.9rem}
+.step b{color:var(--accent)}
+.notice{border-left:4px solid var(--accent); padding:12px 14px; background:color-mix(in srgb, var(--accent) 9%, transparent); border-radius:14px; color:var(--muted)}
+.summary{display:grid; gap:8px; margin-top:8px}
+.summary div{display:grid; grid-template-columns:28px 1fr; gap:8px; align-items:start; padding:8px 0; border-bottom:1px solid var(--line)}
+.summary div:last-child{border-bottom:0}
+.summary b{color:var(--accent)}
+.footer{margin-top:18px; color:var(--muted); text-align:center; font-size:.86rem}
+.svgbox{width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:18px; background:linear-gradient(180deg, color-mix(in srgb, var(--paper2) 45%, transparent), color-mix(in srgb, var(--paper) 92%, transparent))}
+.pathline{fill:none; stroke:var(--accent); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round}.ghost{stroke:var(--line); stroke-width:1}.node{fill:var(--paper); stroke:var(--line); stroke-width:1.3}.node.on{fill:color-mix(in srgb, var(--accent) 25%, var(--paper)); stroke:var(--accent)}.node.current{fill:color-mix(in srgb, var(--accent-2) 30%, var(--paper)); stroke:var(--accent-2); stroke-width:2}.svgtxt{font-family:ui-serif, Georgia, serif; fill:var(--ink); font-size:13px}.svgtiny{fill:var(--muted); font-size:11px; font-family:ui-sans-serif, system-ui}
+@media (max-width:960px){.grid{grid-template-columns:1fr}.controls{grid-template-columns:1fr}.split{grid-template-columns:1fr}header{grid-template-columns:1fr}.toolbar{justify-content:flex-start}}
+@media (max-width:560px){.app{width:min(100% - 22px,1180px);padding-top:22px}.card.pad,.canvas{padding:16px}.cardhead{padding:16px 16px 0}.controls{padding:14px 16px}.cell{min-width:30px}.subtitle{font-size:.98rem}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div>
+      <div class="eyebrow">Real Analysis · Set size</div>
+      <h1>Countability and enumeration</h1>
+      <p class="subtitle">A set is countable when its elements can be listed without missing any. The geometry is not size in space, but the existence of an ordering path.</p>
+    </div>
+    <div class="toolbar">
+      <button class="theme" id="themeBtn">Dark mode</button>
+      <button class="pillbtn" id="animateBtn">Animate diagonal</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="stack">
+      <article class="card pad">
+        <h2>Symbolic core</h2>
+        <p>Enumeration means replacing a set by an ordered list indexed by natural numbers.</p>
+        <div class="eq">
+          <span class="line"><b>finite</b>: &nbsp; A ≅ {1,…,m}</span>
+          <span class="line"><b>countably infinite</b>: &nbsp; A ≅ ℕ</span>
+          <span class="line"><b>at most countable</b>: &nbsp; ∃ surjection e: ℕ → A</span>
+          <span class="line"><b>uncountable</b>: &nbsp; no enumeration e: ℕ → A exists</span>
+        </div>
+        <div class="badges">
+          <span class="badge"><strong>list</strong> = surjection ℕ → A</span>
+          <span class="badge"><strong>perfect list</strong> = bijection ℕ ↔ A</span>
+          <span class="badge"><strong>diagonal</strong> = path through two indices</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="cardhead">
+          <h2>Finite sets as initial segments</h2>
+          <p>Finite means the list stops. Countable means the list may continue forever.</p>
+        </div>
+        <div class="controls">
+          <div class="control">
+            <label>finite size <span id="finiteVal">8</span></label>
+            <input id="finiteSize" type="range" min="1" max="14" value="8" />
+          </div>
+          <div class="control">
+            <label>selected index <span id="finiteIndexVal">5</span></label>
+            <input id="finiteIndex" type="range" min="1" max="14" value="5" />
+          </div>
+        </div>
+        <div class="canvas">
+          <div class="numberline" id="finiteLine"></div>
+          <div class="notice" id="finiteNotice" style="margin-top:12px"></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="cardhead">
+          <h2>Diagonal enumeration of ℕ × ℕ</h2>
+          <p>A two-dimensional grid can still be listed by sweeping finite diagonals.</p>
+        </div>
+        <div class="controls">
+          <div class="control">
+            <label>grid depth <span id="gridDepthVal">7</span></label>
+            <input id="gridDepth" type="range" min="3" max="10" value="7" />
+          </div>
+          <div class="control">
+            <label>enumeration step <span id="stepVal">18</span></label>
+            <input id="diagStep" type="range" min="1" max="100" value="18" />
+          </div>
+        </div>
+        <div class="canvas">
+          <svg class="svgbox" id="diagSvg" viewBox="0 0 720 430" role="img" aria-label="Diagonal enumeration of N times N"></svg>
+          <div class="legend">
+            <span><i class="key k1"></i>already listed</span>
+            <span><i class="key k2"></i>current pair</span>
+            <span><i class="key k3"></i>not yet listed in view</span>
+          </div>
+          <div class="eq" id="diagFormula"></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="cardhead">
+          <h2>Countable union of countable sets</h2>
+          <p>If each row is listable, list the whole family by diagonals and skip repetitions.</p>
+        </div>
+        <div class="controls">
+          <div class="control">
+            <label>rows shown <span id="rowsVal">6</span></label>
+            <input id="unionRows" type="range" min="3" max="9" value="6" />
+          </div>
+          <div class="control">
+            <label>columns shown <span id="colsVal">7</span></label>
+            <input id="unionCols" type="range" min="3" max="10" value="7" />
+          </div>
+        </div>
+        <div class="canvas">
+          <div class="matrixWrap"><div id="unionGrid"></div></div>
+          <div class="eq">
+            <span class="line">A₁, A₂, … countable, &nbsp; Aᵢ = {aᵢ₁, aᵢ₂, …}</span>
+            <span class="line">⋃ᵢ Aᵢ is listed by: a₁₁; a₁₂,a₂₁; a₁₃,a₂₂,a₃₁; …</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <aside class="stack">
+      <article class="card">
+        <div class="cardhead">
+          <h2>Classifier</h2>
+          <p>Choose a set and read the correct enumeration principle.</p>
+        </div>
+        <div class="controls" style="grid-template-columns:1fr">
+          <div class="control">
+            <label>example set</label>
+            <select id="exampleSet">
+              <option value="finite">{2,4,6,8}</option>
+              <option value="N">ℕ</option>
+              <option value="Z">ℤ</option>
+              <option value="NxN">ℕ × ℕ</option>
+              <option value="Q">ℚ</option>
+              <option value="union">countable union of countable sets</option>
+              <option value="R">ℝ</option>
+              <option value="interval">[0,1]</option>
+              <option value="P">𝒫(ℕ)</option>
+            </select>
+          </div>
+        </div>
+        <div class="canvas">
+          <div class="resultBox">
+            <h3 id="classTitle">ℕ</h3>
+            <div class="verdict" id="classVerdict">countably infinite</div>
+            <p id="classReason"></p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="cardhead">
+          <h2>Cantor diagonal</h2>
+          <p>A proposed list of binary sequences creates a new sequence not on the list.</p>
+        </div>
+        <div class="controls">
+          <div class="control">
+            <label>rows <span id="cantorRowsVal">7</span></label>
+            <input id="cantorRows" type="range" min="4" max="10" value="7" />
+          </div>
+          <div class="control">
+            <label>columns <span id="cantorColsVal">9</span></label>
+            <input id="cantorCols" type="range" min="5" max="12" value="9" />
+          </div>
+          <div class="control" style="grid-column:1/-1">
+            <label>pattern family</label>
+            <select id="cantorPattern">
+              <option value="mixed">mixed deterministic list</option>
+              <option value="periodic">periodic rows</option>
+              <option value="sparse">sparse rows</option>
+            </select>
+          </div>
+        </div>
+        <div class="canvas">
+          <div class="matrixWrap" id="cantorWrap"></div>
+          <div class="eq" id="cantorEq"></div>
+          <div class="notice" style="margin-top:12px">The displayed table is finite, but the proof is not. For any infinite list x¹,x²,… define yₙ = 1 − xⁿₙ. Then y differs from row n at coordinate n.</div>
+        </div>
+      </article>
+
+      <article class="card pad">
+        <h2>What to notice</h2>
+        <div class="steps">
+          <div class="step"><b>1</b><span>A countable set is not “small” geometrically; it is listable.</span></div>
+          <div class="step"><b>2</b><span>ℕ×ℕ is countable because every diagonal i+j=s is finite.</span></div>
+          <div class="step"><b>3</b><span>Countable unions use the same grid idea: row index + position in row.</span></div>
+          <div class="step"><b>4</b><span>Cantor diagonal proves failure of every possible list, not just the visible one.</span></div>
+        </div>
+      </article>
+
+      <article class="card pad">
+        <h2>Exam-style summary</h2>
+        <div class="summary">
+          <div><b>F</b><span>Finite: A ≅ {1,…,m}.</span></div>
+          <div><b>C</b><span>Countable: A finite or A ≅ ℕ; equivalently A is the range of a sequence.</span></div>
+          <div><b>×</b><span>ℕ×ℕ is countable by diagonal enumeration.</span></div>
+          <div><b>∪</b><span>A countable union of countable sets is countable.</span></div>
+          <div><b>D</b><span>{0,1}<sup>ℕ</sup> is uncountable by Cantor diagonalization.</span></div>
+          <div><b>R</b><span>[0,1] and ℝ are uncountable because binary/decimal sequences cannot be fully enumerated.</span></div>
+        </div>
+      </article>
+    </aside>
+  </main>
+  <div class="footer">The object is not cardinality as magnitude. The object is the existence or impossibility of a listing rule.</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const html = document.documentElement;
+const themeBtn = $('themeBtn');
+themeBtn.addEventListener('click',()=>{
+  const dark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', dark ? 'light' : 'dark');
+  themeBtn.textContent = dark ? 'Dark mode' : 'Light mode';
+  renderAll();
+});
+
+function diagOrder(limit){
+  const pairs=[];
+  for(let s=2; s<=2*limit; s++){
+    for(let i=1; i<=limit; i++){
+      const j=s-i;
+      if(j>=1 && j<=limit) pairs.push([i,j]);
+    }
+  }
+  return pairs;
+}
+function fullDiagPairs(maxSum){
+  const pairs=[];
+  for(let s=2; s<=maxSum; s++){
+    for(let i=1; i<=s-1; i++) pairs.push([i, s-i]);
+  }
+  return pairs;
+}
+function cssVar(name){return getComputedStyle(document.documentElement).getPropertyValue(name).trim();}
+
+function renderFinite(){
+  const m = +$('finiteSize').value;
+  let k = +$('finiteIndex').value;
+  $('finiteIndex').max = m;
+  if(k>m){k=m; $('finiteIndex').value=m;}
+  $('finiteVal').textContent=m; $('finiteIndexVal').textContent=k;
+  const line = $('finiteLine');
+  line.innerHTML='<div class="axis"></div>';
+  const left=50, right=92;
+  for(let i=1;i<=m;i++){
+    const x = left + (i-1)*(right-left)/(Math.max(1,m-1));
+    const d=document.createElement('div');
+    d.className='dot '+(i<=k?'filled':'');
+    d.style.left=x+'%';
+    d.textContent=i;
+    line.appendChild(d);
+    const lab=document.createElement('div');
+    lab.className='dotlabel'; lab.style.left=x+'%'; lab.textContent='a'+i;
+    line.appendChild(lab);
+  }
+  $('finiteNotice').innerHTML = `<span class="math">A = {a₁,…,a<sub>${m}</sub>}</span>. After index <span class="math">${m}</span>, there is no new element. This is exactly a bijection <span class="math">{1,…,${m}} ↔ A</span>.`;
+}
+
+function renderDiag(){
+  const n=+$('gridDepth').value;
+  const max=n*n;
+  $('diagStep').max=max;
+  let step=+$('diagStep').value; if(step>max){step=max; $('diagStep').value=max;}
+  $('gridDepthVal').textContent=n; $('stepVal').textContent=step;
+  const pairs=diagOrder(n);
+  const rank = new Map(); pairs.forEach((p,idx)=>rank.set(p[0]+','+p[1],idx+1));
+  const svg=$('diagSvg'); svg.innerHTML='';
+  const W=720,H=430, margin=52;
+  const dx=(W-2*margin)/(n-1), dy=(H-2*margin)/(n-1);
+  for(let i=1;i<=n;i++){
+    const x=margin+(i-1)*dx;
+    const y=H-margin;
+    svg.insertAdjacentHTML('beforeend',`<text x="${x}" y="${y+34}" class="svgtiny" text-anchor="middle">${i}</text>`);
+    svg.insertAdjacentHTML('beforeend',`<line x1="${x}" y1="${margin-14}" x2="${x}" y2="${H-margin+8}" class="ghost"/>`);
+  }
+  for(let j=1;j<=n;j++){
+    const y=H-margin-(j-1)*dy;
+    svg.insertAdjacentHTML('beforeend',`<text x="${margin-31}" y="${y+4}" class="svgtiny" text-anchor="middle">${j}</text>`);
+    svg.insertAdjacentHTML('beforeend',`<line x1="${margin-8}" y1="${y}" x2="${W-margin+14}" y2="${y}" class="ghost"/>`);
+  }
+  svg.insertAdjacentHTML('beforeend',`<text x="${W/2}" y="25" class="svgtiny" text-anchor="middle">enumerating pairs (i,j) by finite diagonals i+j = constant</text>`);
+  let path='';
+  pairs.slice(0,step).forEach((p,idx)=>{
+    const x=margin+(p[0]-1)*dx, y=H-margin-(p[1]-1)*dy;
+    path += (idx===0?'M':' L')+x+' '+y;
+  });
+  if(path) svg.insertAdjacentHTML('beforeend',`<path d="${path}" class="pathline"/>`);
+  for(let j=n;j>=1;j--){
+    for(let i=1;i<=n;i++){
+      const r=rank.get(i+','+j);
+      const x=margin+(i-1)*dx, y=H-margin-(j-1)*dy;
+      const cls=r<step?'node on':(r===step?'node current':'node');
+      svg.insertAdjacentHTML('beforeend',`<circle cx="${x}" cy="${y}" r="15" class="${cls}"/>`);
+      svg.insertAdjacentHTML('beforeend',`<text x="${x}" y="${y+4}" text-anchor="middle" class="svgtxt">${i},${j}</text>`);
+      if(r<=step) svg.insertAdjacentHTML('beforeend',`<text x="${x+18}" y="${y-15}" class="svgtiny">#${r}</text>`);
+    }
+  }
+  const cur=pairs[step-1];
+  $('diagFormula').innerHTML = `<span class="line">current: <b>e(${step}) = (${cur[0]},${cur[1]})</b></span><span class="line">principle: for each s, enumerate all pairs with i+j=s; each diagonal is finite.</span>`;
+}
+
+function renderUnion(){
+  const rows=+$('unionRows').value, cols=+$('unionCols').value;
+  $('rowsVal').textContent=rows; $('colsVal').textContent=cols;
+  const order=[];
+  for(let s=2; s<=rows+cols; s++){
+    for(let i=1;i<=rows;i++){
+      const j=s-i;
+      if(j>=1 && j<=cols) order.push([i,j]);
+    }
+  }
+  const rank=new Map(); order.forEach((p,idx)=>rank.set(p[0]+','+p[1],idx+1));
+  let html='<table><thead><tr><th></th>';
+  for(let c=1;c<=cols;c++) html+=`<th>k=${c}</th>`;
+  html+='</tr></thead><tbody>';
+  for(let r=1;r<=rows;r++){
+    html+=`<tr><th>A${r}</th>`;
+    for(let c=1;c<=cols;c++){
+      const num=rank.get(r+','+c);
+      const special = (r+c<=Math.min(rows,cols)+2) ? 'flip' : '';
+      html+=`<td class="entry ${special}"><span class="math">a<sub>${r}${c}</sub></span><br><span class="small">#${num}</span></td>`;
+    }
+    html+='</tr>';
+  }
+  html+='</tbody></table>';
+  $('unionGrid').innerHTML=html;
+}
+
+function bitValue(r,c,pattern){
+  if(pattern==='periodic') return ((r+c)%3===0 || c%((r%3)+2)===0) ? 1 : 0;
+  if(pattern==='sparse') return (c===r || c===r+2 || (r*c)%7===0) ? 1 : 0;
+  return (((r*37 + c*19 + r*c*7) % 11) < 5) ? 1 : 0;
+}
+function renderCantor(){
+  const rows=+$('cantorRows').value, cols=+$('cantorCols').value, pattern=$('cantorPattern').value;
+  $('cantorRowsVal').textContent=rows; $('cantorColsVal').textContent=cols;
+  let html='<table><thead><tr><th></th>';
+  for(let c=1;c<=cols;c++) html+=`<th>${c}</th>`;
+  html+='<th>sequence</th></tr></thead><tbody>';
+  const diag=[], flip=[];
+  for(let r=1;r<=rows;r++){
+    let seq=''; html+=`<tr><th>x<sup>${r}</sup></th>`;
+    for(let c=1;c<=cols;c++){
+      const b=bitValue(r,c,pattern); seq+=b;
+      const d = r===c;
+      if(d){diag.push(b); flip.push(1-b)}
+      html+=`<td class="bit ${d?'diag':''}">${b}</td>`;
+    }
+    html+=`<td class="entry">${seq}${cols<12?'…':''}</td></tr>`;
+  }
+  html+='<tr><th>y</th>';
+  for(let c=1;c<=cols;c++){
+    const val = c<=flip.length ? flip[c-1] : '·';
+    html+=`<td class="bit ${c<=flip.length?'flip':''}">${val}</td>`;
+  }
+  html+=`<td class="entry">${flip.join('')}${cols>flip.length?'···':'…'}</td></tr>`;
+  html+='</tbody></table>';
+  $('cantorWrap').innerHTML=html;
+  $('cantorEq').innerHTML = `<span class="line">diagonal: d = ${diag.join('')}</span><span class="line">new sequence: y<sub>n</sub> = 1 − x<sup>n</sup><sub>n</sub> = ${flip.join('')}</span><span class="line">therefore y ≠ x<sup>n</sup> for every n, because they differ at coordinate n.</span>`;
+}
+
+const examples={
+  finite:['{2,4,6,8}','finite','A bijection {1,2,3,4} → A is enough: 1↦2, 2↦4, 3↦6, 4↦8.'],
+  N:['ℕ','countably infinite','The identity map n ↦ n is a bijection ℕ ↔ ℕ.'],
+  Z:['ℤ','countably infinite','List 0,1,−1,2,−2,3,−3,… . Every integer appears once.'],
+  NxN:['ℕ × ℕ','countably infinite','Enumerate pairs by diagonals i+j=s. Each diagonal is finite, and every pair lies on one diagonal.'],
+  Q:['ℚ','countably infinite','Write rationals as p/q with integers p and q≠0, enumerate ℤ×ℕ, and skip duplicates.'],
+  union:['⋃ₙ Aₙ, with every Aₙ countable','at most countable','Choose enumerations Aᵢ={aᵢ₁,aᵢ₂,…}. Then enumerate the grid (i,k) diagonally and skip repeats.'],
+  R:['ℝ','uncountable','Since [0,1]⊂ℝ is uncountable by diagonalization, ℝ cannot be countable.'],
+  interval:['[0,1]','uncountable','Binary sequences embed into [0,1], and Cantor diagonalization prevents a complete list.'],
+  P:['𝒫(ℕ)','uncountable','Identify each subset A⊂ℕ with its indicator sequence 1_A∈{0,1}^ℕ. Cantor diagonal applies.']
+};
+function renderClassifier(){
+  const [title, verdict, reason]=examples[$('exampleSet').value];
+  $('classTitle').innerHTML=title; $('classVerdict').textContent=verdict; $('classReason').textContent=reason;
+}
+
+function renderAll(){renderFinite(); renderDiag(); renderUnion(); renderCantor(); renderClassifier();}
+['finiteSize','finiteIndex','gridDepth','diagStep','unionRows','unionCols','cantorRows','cantorCols','cantorPattern','exampleSet'].forEach(id=>$(id).addEventListener('input', renderAll));
+
+let timer=null;
+$('animateBtn').addEventListener('click',()=>{
+  if(timer){clearInterval(timer); timer=null; $('animateBtn').textContent='Animate diagonal'; return;}
+  $('animateBtn').textContent='Stop animation';
+  timer=setInterval(()=>{
+    const step=$('diagStep'); const max=+step.max; let v=+step.value;
+    step.value = v>=max ? 1 : v+1;
+    renderDiag();
+  }, 420);
+});
+
+renderAll();
+</script>
+</body>
+</html>

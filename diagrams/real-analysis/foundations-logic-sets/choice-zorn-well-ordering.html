@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for Choice, Zorn's Lemma, and well-ordering.">
+<title>Choice, Zorn, and Well-ordering | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+:root{
+  --bg:#f6f1e8;
+  --paper:#fffdf8;
+  --paper2:#f1eadf;
+  --ink:#1e2426;
+  --muted:#66716e;
+  --line:rgba(30,36,38,.13);
+  --line2:rgba(30,36,38,.08);
+  --soft:rgba(30,36,38,.045);
+  --accent:#2c9c8f;
+  --accent-weak:rgba(44,156,143,.13);
+  --accent-mid:rgba(44,156,143,.26);
+  --amber:#b87943;
+  --amber-weak:rgba(184,121,67,.15);
+  --blue:#536d92;
+  --blue-weak:rgba(83,109,146,.16);
+  --rose:#a65c72;
+  --shadow:0 18px 50px rgba(30,36,38,.09);
+  --radius:22px;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  --serif:Georgia,"Times New Roman",serif;
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+[data-theme="dark"]{
+  --bg:#0d1117;
+  --paper:#131922;
+  --paper2:#18202b;
+  --ink:#edf4f1;
+  --muted:#9aa8a4;
+  --line:rgba(237,244,241,.13);
+  --line2:rgba(237,244,241,.075);
+  --soft:rgba(237,244,241,.055);
+  --accent:#55c7b8;
+  --accent-weak:rgba(85,199,184,.13);
+  --accent-mid:rgba(85,199,184,.25);
+  --amber:#d49b68;
+  --amber-weak:rgba(212,155,104,.16);
+  --blue:#8aa3c8;
+  --blue-weak:rgba(138,163,200,.16);
+  --rose:#d18da1;
+  --shadow:0 18px 54px rgba(0,0,0,.32);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 12% -6%, var(--accent-weak), transparent 34rem),
+    radial-gradient(circle at 88% 4%, var(--blue-weak), transparent 30rem),
+    var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.45;
+}
+.app{width:min(1460px,calc(100% - 32px));margin:0 auto;padding:28px 0 40px}
+.hero{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:22px;
+  align-items:start;
+  margin-bottom:18px;
+}
+.eyebrow{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:16px;
+}
+.pill{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.28);
+  color:var(--muted);
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:12px;
+  letter-spacing:.02em;
+  backdrop-filter:blur(8px);
+}
+[data-theme="dark"] .pill{background:rgba(255,255,255,.035)}
+h1{
+  margin:0;
+  font-family:var(--serif);
+  font-weight:500;
+  letter-spacing:-.045em;
+  font-size:clamp(38px,5.3vw,78px);
+  line-height:.94;
+}
+.subtitle{
+  max-width:850px;
+  margin:14px 0 0;
+  color:var(--muted);
+  font-size:clamp(15px,1.55vw,18px);
+}
+.topControls{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+button,.selectLike{
+  border:1px solid var(--line);
+  background:var(--paper);
+  color:var(--ink);
+  border-radius:999px;
+  padding:9px 13px;
+  font:inherit;
+  cursor:pointer;
+  box-shadow:0 8px 20px rgba(0,0,0,.035);
+  transition:.18s ease transform,.18s ease background,.18s ease border-color;
+}
+button:hover{transform:translateY(-1px);border-color:var(--accent-mid)}
+button.active{background:var(--accent);color:#fff;border-color:transparent}
+button.ghost{background:transparent;box-shadow:none}
+button.small{font-size:12px;padding:7px 10px}
+select,input[type="range"]{accent-color:var(--accent)}
+select{
+  width:100%;
+  border:1px solid var(--line);
+  color:var(--ink);
+  background:var(--paper);
+  border-radius:12px;
+  padding:10px 11px;
+  font:inherit;
+}
+.grid{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:16px;
+}
+.card{
+  background:linear-gradient(180deg,rgba(255,255,255,.25),transparent 90px),var(--paper);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:18px;
+  overflow:hidden;
+}
+.card.tight{padding:14px}
+.card h2,.card h3{margin:0;color:var(--ink);letter-spacing:-.025em;font-weight:650}
+.card h2{font-size:20px}
+.card h3{font-size:15px}
+.card p{color:var(--muted);margin:8px 0 0;font-size:14px}
+.cardHeader{
+  display:flex;
+  align-items:start;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:14px;
+}
+.cardHeader .sub{font-size:13px;color:var(--muted);margin-top:4px}
+.mainCard{min-height:540px}
+.twoCol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.span2{grid-column:1 / -1}
+.panel{
+  background:var(--paper2);
+  border:1px solid var(--line2);
+  border-radius:18px;
+  padding:14px;
+}
+.formula{
+  font-family:var(--serif);
+  font-size:clamp(16px,1.45vw,21px);
+  line-height:1.55;
+  background:linear-gradient(135deg,var(--accent-weak),transparent 72%),var(--paper2);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:15px 16px;
+}
+.formula .tag{font-family:var(--sans);font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:5px}
+.math{font-family:var(--serif)}
+.mono{font-family:var(--mono)}
+.svgWrap{
+  position:relative;
+  background:
+    linear-gradient(var(--line2) 1px,transparent 1px),
+    linear-gradient(90deg,var(--line2) 1px,transparent 1px),
+    var(--paper2);
+  background-size:34px 34px;
+  border:1px solid var(--line2);
+  border-radius:20px;
+  min-height:330px;
+  overflow:hidden;
+}
+svg{display:block;width:100%;height:100%}
+#triangleSvg{height:360px}
+#zornSvg{height:410px}
+#wellSvg{height:320px}
+.vertex circle{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+.vertex.active circle{fill:var(--accent-weak);stroke:var(--accent);stroke-width:2.4}
+.vertex text{fill:var(--ink);font-weight:700;font-size:14px;text-anchor:middle;dominant-baseline:middle}
+.vertex .small{fill:var(--muted);font-weight:500;font-size:11px}
+.arrow{fill:none;stroke:var(--line);stroke-width:2.2;marker-end:url(#arrowHead)}
+.arrow.active{stroke:var(--accent);stroke-width:3.2}
+.arrowLabel{fill:var(--muted);font-size:12px;font-weight:650;text-anchor:middle}
+.arrowLabel.active{fill:var(--accent)}
+.truthStrip{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:12px;
+}
+.truthBox{
+  background:var(--paper);
+  border:1px solid var(--line2);
+  border-radius:16px;
+  padding:11px;
+}
+.truthBox strong{display:block;font-size:13px;margin-bottom:4px}
+.truthBox span{color:var(--muted);font-size:12px}
+.controls{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:13px;
+}
+.control{background:var(--paper2);border:1px solid var(--line2);border-radius:16px;padding:11px}
+.control label{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--muted);margin-bottom:8px}
+.control input[type="range"]{width:100%}
+.control .val{color:var(--ink);font-family:var(--mono)}
+.steps{display:grid;gap:9px;margin-top:12px}
+.step{
+  display:grid;
+  grid-template-columns:28px 1fr;
+  gap:10px;
+  align-items:start;
+  border:1px solid var(--line2);
+  background:var(--paper2);
+  border-radius:15px;
+  padding:10px;
+}
+.step .num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--accent-weak);
+  color:var(--accent);
+  display:grid;place-items:center;
+  font-weight:800;font-size:12px;
+}
+.step div:last-child{font-size:13px;color:var(--muted)}
+.step b{color:var(--ink)}
+.note{
+  border-left:3px solid var(--accent);
+  background:var(--accent-weak);
+  padding:11px 12px;
+  border-radius:12px;
+  color:var(--muted);
+  font-size:13px;
+}
+.warning{border-left-color:var(--amber);background:var(--amber-weak)}
+.familyGrid{display:grid;gap:10px}
+.setBox{
+  border:1px solid var(--line);
+  background:var(--paper2);
+  border-radius:18px;
+  padding:12px;
+  display:grid;
+  grid-template-columns:62px 1fr auto;
+  gap:10px;
+  align-items:center;
+}
+.setName{font-family:var(--serif);font-size:19px;color:var(--ink)}
+.elements{display:flex;flex-wrap:wrap;gap:7px}
+.el{
+  border:1px solid var(--line);
+  background:var(--paper);
+  padding:6px 8px;
+  border-radius:999px;
+  min-width:36px;
+  text-align:center;
+  font-family:var(--mono);
+  font-size:12px;
+}
+.el.chosen{background:var(--accent);border-color:transparent;color:#fff;font-weight:800}
+.mapOut{font-family:var(--serif);font-size:16px;color:var(--muted);white-space:nowrap}
+.orderLine{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+  padding:11px;
+  border:1px solid var(--line2);
+  background:var(--paper2);
+  border-radius:16px;
+  margin-bottom:12px;
+}
+.orderLine .label{font-size:12px;color:var(--muted);margin-right:3px}
+.badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:5px 8px;border-radius:999px;
+  background:var(--paper);border:1px solid var(--line);
+  font-size:12px;font-family:var(--mono);
+}
+.badge.accent{background:var(--accent);border-color:transparent;color:white}
+.badge.amber{background:var(--amber-weak);border-color:rgba(184,121,67,.25);color:var(--ink)}
+.badge.blue{background:var(--blue-weak);border-color:rgba(83,109,146,.25);color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;color:var(--muted);font-size:12px}
+.legendItem{display:flex;align-items:center;gap:6px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dot.accent{background:var(--accent)}.dot.amber{background:var(--amber)}.dot.blue{background:var(--blue)}
+.auditGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.audit{
+  background:var(--paper2);
+  border:1px solid var(--line2);
+  border-radius:16px;
+  padding:13px;
+}
+.audit b{display:block;margin-bottom:5px;font-size:13px}
+.audit span{color:var(--muted);font-size:12px}
+.summaryGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+ul.clean{margin:8px 0 0;padding-left:18px;color:var(--muted);font-size:14px}
+ul.clean li{margin:6px 0}.kbd{font-family:var(--mono);font-size:11px;border:1px solid var(--line);background:var(--paper);border-radius:7px;padding:2px 5px}
+.nodeLabel{font-size:10px;fill:var(--muted);text-anchor:middle;dominant-baseline:middle;font-family:var(--mono)}
+.nodeCircle{fill:var(--paper);stroke:var(--line);stroke-width:1.2}
+.nodeCircle.full{fill:var(--accent-weak);stroke:var(--accent)}
+.nodeCircle.chain{fill:var(--accent);stroke:transparent}
+.nodeCircle.upper{fill:var(--amber-weak);stroke:var(--amber);stroke-width:2}
+.edge{stroke:var(--line);stroke-width:1;opacity:.55}
+.edge.chain{stroke:var(--accent);stroke-width:2.4;opacity:1}
+.levelText{fill:var(--muted);font-size:11px;font-weight:650}
+.wellBox{fill:var(--paper);stroke:var(--line);stroke-width:1.3}.wellBox.partial{fill:var(--accent-weak);stroke:var(--accent)}.wellBox.missing{fill:var(--amber-weak);stroke:var(--amber)}.wellText{fill:var(--ink);font-size:12px;text-anchor:middle;dominant-baseline:middle;font-family:var(--mono);font-weight:700}.wellSmall{fill:var(--muted);font-size:11px;text-anchor:middle}
+@media (max-width:1050px){.grid,.twoCol,.summaryGrid{grid-template-columns:1fr}.mainCard{min-height:auto}.auditGrid{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.topControls{justify-content:flex-start}.span2{grid-column:auto}}
+@media (max-width:680px){.app{width:min(100% - 18px,1460px);padding-top:18px}.card{padding:14px;border-radius:18px}.controls{grid-template-columns:1fr}.setBox{grid-template-columns:1fr}.mapOut{white-space:normal}.truthStrip{grid-template-columns:1fr}#triangleSvg{height:320px}#zornSvg{height:360px}}
+</style>
+</head>
+<body>
+<div class="app" id="appRoot">
+  <header class="hero">
+    <div>
+      <div class="eyebrow">
+        <span class="pill">ZF-level theorem</span>
+        <span class="pill">finite visual shadows</span>
+        <span class="pill">choice • chains • well-orders</span>
+      </div>
+      <h1>Choice, Zorn, and Well-ordering</h1>
+      <p class="subtitle">Three faces of the same infinitary principle. The app separates the formal equivalence from finite diagrams: the pictures reveal the mechanism, while the statements remain set-theoretically exact.</p>
+    </div>
+    <div class="topControls">
+      <button id="themeBtn">Dark mode</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="card mainCard">
+      <div class="cardHeader">
+        <div>
+          <h2>The equivalence triangle</h2>
+          <div class="sub">Click a vertex or arrow. The active theorem is shown symbolically below.</div>
+        </div>
+        <div class="topControls" id="focusBtns">
+          <button class="small active" data-focus="AC">AC</button>
+          <button class="small" data-focus="Zorn">Zorn</button>
+          <button class="small" data-focus="WO">WO</button>
+          <button class="small" data-focus="WOAC">WO ⇒ AC</button>
+          <button class="small" data-focus="ACZorn">AC ⇒ Zorn</button>
+          <button class="small" data-focus="ZornWO">Zorn ⇒ WO</button>
+        </div>
+      </div>
+      <div class="svgWrap">
+        <svg id="triangleSvg" viewBox="0 0 760 360" aria-label="equivalence triangle">
+          <defs>
+            <marker id="arrowHead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
+            </marker>
+            <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="6" result="blur" />
+              <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.17  0 0 0 0 0.61  0 0 0 0 0.56  0 0 0 .28 0" />
+              <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <path id="arrow_WOAC" class="arrow active" d="M 235 258 C 144 223 118 139 191 91" />
+          <path id="arrow_ACZorn" class="arrow" d="M 261 74 C 358 22 504 22 601 91" />
+          <path id="arrow_ZornWO" class="arrow" d="M 628 112 C 654 202 559 292 430 281" />
+          <g id="vertex_AC" class="vertex active" data-focus="AC" role="button" tabindex="0">
+            <circle cx="215" cy="92" r="56"></circle>
+            <text x="215" y="82">AC</text>
+            <text class="small" x="215" y="105">choice functions</text>
+          </g>
+          <g id="vertex_Zorn" class="vertex" data-focus="Zorn" role="button" tabindex="0">
+            <circle cx="615" cy="110" r="60"></circle>
+            <text x="615" y="98">Zorn</text>
+            <text class="small" x="615" y="122">maximal elements</text>
+          </g>
+          <g id="vertex_WO" class="vertex" data-focus="WO" role="button" tabindex="0">
+            <circle cx="380" cy="274" r="62"></circle>
+            <text x="380" y="262">WO</text>
+            <text class="small" x="380" y="286">least elements</text>
+          </g>
+          <text id="label_WOAC" class="arrowLabel active" x="128" y="178">least representative</text>
+          <text id="label_ACZorn" class="arrowLabel" x="410" y="47">maximal chain</text>
+          <text id="label_ZornWO" class="arrowLabel" x="610" y="244">maximal well-order</text>
+        </svg>
+      </div>
+      <div id="statementBox" class="formula" style="margin-top:14px"></div>
+      <div class="truthStrip">
+        <div class="truthBox"><strong>Maximal ≠ maximum</strong><span>A maximal element has no strictly larger element. A maximum dominates all elements.</span></div>
+        <div class="truthBox"><strong>Chain</strong><span>A subset where every two elements are comparable.</span></div>
+        <div class="truthBox"><strong>Well-order</strong><span>Every nonempty subset has a least element, not merely a first-looking list.</span></div>
+      </div>
+    </section>
+
+    <aside class="card">
+      <div class="cardHeader">
+        <div>
+          <h2>Proof microscope</h2>
+          <div class="sub">The theorem is infinitary; the proof routes are exact, the labs are finite shadows.</div>
+        </div>
+      </div>
+      <div class="control">
+        <label for="proofSelect">Implication <span class="val" id="proofTag">WO ⇒ AC</span></label>
+        <select id="proofSelect">
+          <option value="WOAC">WO ⇒ AC</option>
+          <option value="ACZorn">AC ⇒ Zorn</option>
+          <option value="ZornWO">Zorn ⇒ WO</option>
+          <option value="ZornAC">Zorn ⇒ AC</option>
+        </select>
+      </div>
+      <div id="proofFormula" class="formula" style="margin-top:12px"></div>
+      <div id="proofSteps" class="steps"></div>
+      <div class="note warning" style="margin-top:12px"><b>Theoretical guardrail.</b> Finite diagrams cannot prove AC, Zorn, or well-ordering. They show the shape of the argument. The exact statements quantify over arbitrary sets and arbitrary families.</div>
+    </aside>
+
+    <section class="card span2">
+      <div class="cardHeader">
+        <div>
+          <h2>Choice from a well-order</h2>
+          <div class="sub">If the universe has a well-order, every nonempty set has a canonical least element.</div>
+        </div>
+        <button class="small ghost" id="shuffleOrderBtn">shuffle order</button>
+      </div>
+      <div class="controls">
+        <div class="control">
+          <label>Number of sets <span class="val" id="familyCountVal">5</span></label>
+          <input id="familyCount" type="range" min="2" max="7" value="5" />
+        </div>
+        <div class="control">
+          <label>Elements per set <span class="val" id="setSizeVal">3</span></label>
+          <input id="setSize" type="range" min="2" max="4" value="3" />
+        </div>
+      </div>
+      <div id="globalOrder" class="orderLine"></div>
+      <div id="familyGrid" class="familyGrid"></div>
+      <div class="note" style="margin-top:12px"><span class="math">WO ⇒ AC:</span> define <span class="math">f(i)=min_{&lt;} A_i</span>. The visual sets are finite, but the formula works for any nonempty members of a well-ordered universe.</div>
+    </section>
+
+    <section class="card">
+      <div class="cardHeader">
+        <div>
+          <h2>Zorn as extension logic</h2>
+          <div class="sub">Partial choice functions ordered by extension. A chain is compatible; its union is an upper bound.</div>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="control">
+          <label>Family size <span class="val" id="zornNVal">3</span></label>
+          <input id="zornN" type="range" min="2" max="3" value="3" />
+        </div>
+        <div class="control">
+          <label>Chain depth <span class="val" id="chainDepthVal">3</span></label>
+          <input id="chainDepth" type="range" min="0" max="3" value="3" />
+        </div>
+      </div>
+      <div class="svgWrap"><svg id="zornSvg" viewBox="0 0 640 410"></svg></div>
+      <div class="legend">
+        <span class="legendItem"><span class="dot"></span>partial function</span>
+        <span class="legendItem"><span class="dot accent"></span>selected chain</span>
+        <span class="legendItem"><span class="dot amber"></span>union upper bound</span>
+      </div>
+      <div id="zornText" class="note" style="margin-top:12px"></div>
+    </section>
+
+    <section class="card">
+      <div class="cardHeader">
+        <div>
+          <h2>Well-ordering by maximal extension</h2>
+          <div class="sub">Zorn is applied to well-orderings of subsets. A maximal one cannot omit a point.</div>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="control">
+          <label>Set size <span class="val" id="wellNVal">7</span></label>
+          <input id="wellN" type="range" min="4" max="9" value="7" />
+        </div>
+        <div class="control">
+          <label>Ordered part <span class="val" id="wellKVal">4</span></label>
+          <input id="wellK" type="range" min="0" max="7" value="4" />
+        </div>
+      </div>
+      <div class="svgWrap"><svg id="wellSvg" viewBox="0 0 640 320"></svg></div>
+      <div id="wellText" class="note" style="margin-top:12px"></div>
+    </section>
+
+    <section class="card span2">
+      <div class="cardHeader">
+        <div>
+          <h2>What to notice</h2>
+          <div class="sub">The same hidden pattern appears in all three principles.</div>
+        </div>
+      </div>
+      <div class="auditGrid">
+        <div class="audit"><b>Choice</b><span>Turns local nonemptiness <span class="math">A_i≠∅</span> into one global function selecting simultaneously.</span></div>
+        <div class="audit"><b>Zorn</b><span>Turns local chain-boundedness into one global maximal object.</span></div>
+        <div class="audit"><b>Well-ordering</b><span>Turns an arbitrary set into a structure where every nonempty part has a first element.</span></div>
+      </div>
+    </section>
+
+    <section class="card span2">
+      <div class="cardHeader">
+        <div>
+          <h2>Compact exam-style summary</h2>
+          <div class="sub">Minimal statements and proof routes.</div>
+        </div>
+      </div>
+      <div class="summaryGrid">
+        <div class="panel">
+          <h3>Statements over ZF</h3>
+          <ul class="clean">
+            <li><b>AC:</b> every family of nonempty sets admits a choice function.</li>
+            <li><b>Zorn:</b> if every chain in a nonempty poset has an upper bound, then the poset has a maximal element.</li>
+            <li><b>WO:</b> every set admits a well-order.</li>
+            <li><b>Equivalence:</b> <span class="math">AC ⇔ Zorn ⇔ WO</span>.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Proof skeleton</h3>
+          <ul class="clean">
+            <li><span class="math">WO⇒AC:</span> choose the least element of each nonempty set.</li>
+            <li><span class="math">AC⇒Zorn:</span> use AC to get a maximal chain; its upper bound is maximal.</li>
+            <li><span class="math">Zorn⇒WO:</span> maximize a well-ordering of a subset; append any missing point.</li>
+            <li><span class="math">Zorn⇒AC:</span> maximize partial choice functions ordered by extension.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  const root = document.documentElement;
+  const themeBtn = document.getElementById('themeBtn');
+  const savedTheme = localStorage.getItem('czwo-theme') || 'light';
+  root.setAttribute('data-theme', savedTheme);
+  themeBtn.textContent = savedTheme === 'dark' ? 'Light mode' : 'Dark mode';
+  themeBtn.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('czwo-theme', next);
+    themeBtn.textContent = next === 'dark' ? 'Light mode' : 'Dark mode';
+    renderTriangle(currentFocus);
+    renderZorn();
+    renderWell();
+  });
+
+  const statements = {
+    AC: {
+      tag:'Axiom of Choice',
+      body:'For every indexed family (A_i)_{i∈I} with A_i ≠ ∅, there exists f:I → ⋃_{i∈I}A_i such that f(i) ∈ A_i for every i∈I.'
+    },
+    Zorn: {
+      tag:"Zorn's Lemma",
+      body:'If (P,≤) is nonempty and every chain C⊆P has an upper bound in P, then P contains a maximal element m: there is no p∈P with m < p.'
+    },
+    WO: {
+      tag:'Well-ordering Theorem',
+      body:'For every set X, there exists an order < on X such that every nonempty Y⊆X has a <-least element.'
+    },
+    WOAC: {
+      tag:'WO ⇒ AC',
+      body:'Given a well-order < on ⋃A_i, define f(i)=min_{<} A_i. Each A_i is nonempty, so the minimum exists.'
+    },
+    ACZorn: {
+      tag:'AC ⇒ Zorn',
+      body:'Using AC one obtains a maximal chain M. If every chain has an upper bound u, then u must be maximal; otherwise M∪{v} would be a larger chain.'
+    },
+    ZornWO: {
+      tag:'Zorn ⇒ WO',
+      body:'Partially order well-orderings of subsets of X by end-extension. A maximal well-ordered subset cannot omit x∈X, because appending x gives a larger well-order.'
+    }
+  };
+
+  const proofData = {
+    WOAC: {
+      tag:'WO ⇒ AC',
+      formula:'< on U makes every nonempty A⊆U have min_< A. Therefore f(i)=min_< A_i is a choice function.',
+      steps:[
+        ['Place all candidates in one well-ordered universe','Let U=⋃_{i∈I}A_i and well-order U.'],
+        ['Use least elements','For each nonempty A_i, the subset A_i⊆U has a <-least element.'],
+        ['Define the choice function','Set f(i)=min_< A_i. Then f(i)∈A_i for all i.'],
+        ['Global selection appears','One rule selects from every set simultaneously.']
+      ]
+    },
+    ACZorn: {
+      tag:'AC ⇒ Zorn',
+      formula:'AC ⇒ Hausdorff maximal principle ⇒ Zorn. A maximal chain plus an upper bound yields a maximal element.',
+      steps:[
+        ['Use AC to get a maximal chain','Hausdorff maximal principle says every poset has a maximal chain. This principle is equivalent to AC.'],
+        ['Apply the chain-bound hypothesis','Let M be a maximal chain. By hypothesis, M has an upper bound u∈P.'],
+        ['Show u is maximal','If u<v for some v∈P, then M∪{v} remains a chain, contradicting maximality of M.'],
+        ['Conclusion','Thus u is a maximal element of P.']
+      ]
+    },
+    ZornWO: {
+      tag:'Zorn ⇒ WO',
+      formula:'Maximize partial well-orderings by end-extension. Maximality forces the domain to be all of X.',
+      steps:[
+        ['Build the poset','Elements are well-orderings of subsets A⊆X. Order them by end-extension.'],
+        ['Chains have upper bounds','The union of a chain of compatible end-extensions is again a well-ordering of the union domain.'],
+        ['Invoke Zorn','There is a maximal well-ordering (A,<).'],
+        ['No point can be missing','If x∈X\\A, append x as a new greatest element. This strictly extends the well-order, contradiction.'],
+        ['Conclusion','A=X, so X is well-orderable.']
+      ]
+    },
+    ZornAC: {
+      tag:'Zorn ⇒ AC',
+      formula:'Maximize partial choice functions. The union of any chain is an upper bound; maximal means total.',
+      steps:[
+        ['Build the poset','P consists of partial choice functions defined on subfamilies J⊆I. Order by extension.'],
+        ['Chains have upper bounds','The union of a chain of compatible partial functions is again a partial choice function.'],
+        ['Invoke Zorn','There is a maximal partial choice function g.'],
+        ['Maximal means total','If some A_i is outside dom(g), choose one a∈A_i and extend g by g(i)=a. Contradiction.'],
+        ['Conclusion','dom(g)=I, so g is a full choice function.']
+      ]
+    }
+  };
+
+  let currentFocus = 'AC';
+  const statementBox = document.getElementById('statementBox');
+  const focusBtns = document.querySelectorAll('#focusBtns button');
+  function setStatement(key){
+    const s = statements[key] || statements.AC;
+    statementBox.innerHTML = `<div class="tag">${s.tag}</div><div>${s.body}</div>`;
+  }
+  function renderTriangle(key){
+    currentFocus = key;
+    ['AC','Zorn','WO'].forEach(v => document.getElementById('vertex_'+v).classList.remove('active'));
+    ['WOAC','ACZorn','ZornWO'].forEach(a => {
+      document.getElementById('arrow_'+a).classList.remove('active');
+      document.getElementById('label_'+a).classList.remove('active');
+    });
+    if(key === 'AC' || key === 'Zorn' || key === 'WO') document.getElementById('vertex_'+key).classList.add('active');
+    if(['WOAC','ACZorn','ZornWO'].includes(key)){
+      document.getElementById('arrow_'+key).classList.add('active');
+      document.getElementById('label_'+key).classList.add('active');
+      const endpoints = {WOAC:['WO','AC'], ACZorn:['AC','Zorn'], ZornWO:['Zorn','WO']}[key];
+      endpoints.forEach(v => document.getElementById('vertex_'+v).classList.add('active'));
+    }
+    focusBtns.forEach(b => b.classList.toggle('active', b.dataset.focus === key));
+    setStatement(key);
+  }
+  focusBtns.forEach(btn => btn.addEventListener('click', () => renderTriangle(btn.dataset.focus)));
+  document.querySelectorAll('.vertex').forEach(v => v.addEventListener('click', () => renderTriangle(v.dataset.focus)));
+  renderTriangle('AC');
+
+  const proofSelect = document.getElementById('proofSelect');
+  const proofFormula = document.getElementById('proofFormula');
+  const proofSteps = document.getElementById('proofSteps');
+  const proofTag = document.getElementById('proofTag');
+  function renderProof(){
+    const data = proofData[proofSelect.value];
+    proofTag.textContent = data.tag;
+    proofFormula.innerHTML = `<div class="tag">logical route</div><div>${data.formula}</div>`;
+    proofSteps.innerHTML = data.steps.map((s,i)=>`<div class="step"><div class="num">${i+1}</div><div><b>${s[0]}.</b> ${s[1]}</div></div>`).join('');
+    const focusMap = {WOAC:'WOAC',ACZorn:'ACZorn',ZornWO:'ZornWO',ZornAC:'Zorn'};
+    renderTriangle(focusMap[proofSelect.value]);
+  }
+  proofSelect.addEventListener('change', renderProof);
+  renderProof();
+
+  const greek = ['α','β','γ','δ','ε','ζ','η','θ','κ','λ','μ','ν','ξ','π','ρ','σ','τ','φ','χ','ψ'];
+  let orderSeed = 0;
+  function seededShuffle(arr, seed){
+    const a = arr.slice();
+    let x = seed * 9301 + 49297;
+    for(let i=a.length-1;i>0;i--){
+      x = (x * 9301 + 49297) % 233280;
+      const j = Math.floor((x / 233280) * (i+1));
+      [a[i],a[j]] = [a[j],a[i]];
+    }
+    return a;
+  }
+  function makeFamilies(k, size){
+    let families = [];
+    let idx = 0;
+    for(let i=0;i<k;i++){
+      let set = [];
+      for(let j=0;j<size;j++){
+        set.push(greek[idx % greek.length] + '<sub>' + (i+1) + '</sub>');
+        idx++;
+      }
+      families.push(set);
+    }
+    return families;
+  }
+  function stripHTML(s){return s.replace(/<[^>]*>/g,'');}
+  function renderChoice(){
+    const k = +document.getElementById('familyCount').value;
+    const size = +document.getElementById('setSize').value;
+    document.getElementById('familyCountVal').textContent = k;
+    document.getElementById('setSizeVal').textContent = size;
+    const fams = makeFamilies(k,size);
+    const all = fams.flat();
+    const order = seededShuffle(all, orderSeed + k*17 + size*31);
+    const rank = new Map(order.map((x,i)=>[x,i]));
+    document.getElementById('globalOrder').innerHTML = `<span class="label">global well-order:</span>` + order.map(x=>`<span class="badge">${x}</span>`).join('<span style="color:var(--muted)">≺</span>');
+    const html = fams.map((set,i)=>{
+      const chosen = set.slice().sort((a,b)=>rank.get(a)-rank.get(b))[0];
+      const els = set.map(x=>`<span class="el ${x===chosen?'chosen':''}">${x}</span>`).join('');
+      return `<div class="setBox"><div class="setName">A<sub>${i+1}</sub></div><div class="elements">${els}</div><div class="mapOut">f(${i+1})=${chosen}</div></div>`;
+    }).join('');
+    document.getElementById('familyGrid').innerHTML = html;
+  }
+  document.getElementById('familyCount').addEventListener('input', renderChoice);
+  document.getElementById('setSize').addEventListener('input', renderChoice);
+  document.getElementById('shuffleOrderBtn').addEventListener('click', () => {orderSeed++; renderChoice();});
+  renderChoice();
+
+  const zornSvg = document.getElementById('zornSvg');
+  function subsets(n){
+    let out=[];
+    for(let mask=0;mask<(1<<n);mask++){
+      let arr=[];
+      for(let i=0;i<n;i++) if(mask&(1<<i)) arr.push(i);
+      out.push(arr);
+    }
+    return out;
+  }
+  function assignmentsForSubset(sub){
+    let out=[];
+    const m=sub.length;
+    for(let mask=0;mask<(1<<m);mask++){
+      let obj={};
+      for(let j=0;j<m;j++) obj[sub[j]] = (mask&(1<<j)) ? 1 : 0;
+      out.push(obj);
+    }
+    return out;
+  }
+  function keyOf(assign,n){
+    let parts=[];
+    for(let i=0;i<n;i++) if(assign[i]!==undefined) parts.push((i+1)+String(assign[i]));
+    return parts.length?parts.join(''):'∅';
+  }
+  function extendsByOne(a,b,n){
+    let diff=0;
+    for(let i=0;i<n;i++){
+      if(a[i]!==undefined && b[i]!==a[i]) return false;
+      if(a[i]===undefined && b[i]!==undefined) diff++;
+    }
+    return diff===1;
+  }
+  function renderZorn(){
+    const n = +document.getElementById('zornN').value;
+    const maxDepth = n;
+    const depthInput = document.getElementById('chainDepth');
+    depthInput.max = maxDepth;
+    if(+depthInput.value > maxDepth) depthInput.value = maxDepth;
+    const depth = +depthInput.value;
+    document.getElementById('zornNVal').textContent = n;
+    document.getElementById('chainDepthVal').textContent = depth;
+    const W=640,H=410, marginX=52;
+    let nodes=[];
+    subsets(n).forEach(sub => assignmentsForSubset(sub).forEach(assign => nodes.push({assign,level:sub.length,key:keyOf(assign,n)})));
+    const levels = Array.from({length:n+1},()=>[]);
+    nodes.forEach(nd => levels[nd.level].push(nd));
+    levels.forEach((lev,li)=>{
+      lev.sort((a,b)=>a.key.localeCompare(b.key));
+      const y = 52 + li*((H-104)/n);
+      lev.forEach((nd,j)=>{
+        const count = lev.length;
+        nd.x = count===1 ? W/2 : marginX + j*((W-2*marginX)/(count-1));
+        nd.y = y;
+      });
+    });
+    const chain=[];
+    let partial={};
+    chain.push(keyOf(partial,n));
+    for(let d=1; d<=depth; d++){
+      partial[d-1] = (d%2===0)?1:0;
+      chain.push(keyOf(partial,n));
+    }
+    const upperKey = chain[chain.length-1];
+    let edges=[];
+    for(const a of nodes) for(const b of nodes) if(b.level===a.level+1 && extendsByOne(a.assign,b.assign,n)) edges.push([a,b]);
+    zornSvg.innerHTML = '';
+    const ns = 'http://www.w3.org/2000/svg';
+    function el(name, attrs){const e=document.createElementNS(ns,name); Object.entries(attrs||{}).forEach(([k,v])=>e.setAttribute(k,v)); return e;}
+    for(let i=0;i<=n;i++){
+      const t=el('text',{x:16,y:56+i*((H-104)/n),class:'levelText'}); t.textContent='|dom|='+i; zornSvg.appendChild(t);
+    }
+    edges.forEach(([a,b])=>{
+      const isChain = chain.includes(a.key) && chain.includes(b.key) && chain.indexOf(b.key)===chain.indexOf(a.key)+1;
+      zornSvg.appendChild(el('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,class:'edge '+(isChain?'chain':'')}));
+    });
+    nodes.forEach(nd=>{
+      const g=el('g',{});
+      const cls = nd.key===upperKey ? 'nodeCircle upper' : chain.includes(nd.key) ? 'nodeCircle chain' : nd.level===n ? 'nodeCircle full' : 'nodeCircle';
+      g.appendChild(el('circle',{cx:nd.x,cy:nd.y,r:13,class:cls}));
+      const text=el('text',{x:nd.x,y:nd.y,class:'nodeLabel'}); text.textContent=nd.key; if(chain.includes(nd.key) && nd.key!==upperKey) text.setAttribute('fill','#fff');
+      g.appendChild(text);
+      zornSvg.appendChild(g);
+    });
+    const total = depth===n;
+    document.getElementById('zornText').innerHTML = total
+      ? `<b>Maximal partial choice function.</b> At the top level the domain is all ${n} sets. It is a full choice function.`
+      : `<b>Chain union.</b> The highlighted chain has upper bound <span class="kbd">${upperKey}</span>. Since the domain is not full, it can be extended by choosing from A<sub>${depth+1}</sub>; hence it is not maximal.`;
+  }
+  document.getElementById('zornN').addEventListener('input', renderZorn);
+  document.getElementById('chainDepth').addEventListener('input', renderZorn);
+  renderZorn();
+
+  const wellSvg = document.getElementById('wellSvg');
+  function renderWell(){
+    const n = +document.getElementById('wellN').value;
+    const kInput = document.getElementById('wellK');
+    kInput.max = n;
+    if(+kInput.value > n) kInput.value = n;
+    const k = +kInput.value;
+    document.getElementById('wellNVal').textContent = n;
+    document.getElementById('wellKVal').textContent = k;
+    const W=640,H=320;
+    const ns='http://www.w3.org/2000/svg';
+    function el(name,attrs){const e=document.createElementNS(ns,name); Object.entries(attrs||{}).forEach(([a,v])=>e.setAttribute(a,v)); return e;}
+    wellSvg.innerHTML='';
+    const elems=Array.from({length:n},(_,i)=>'x'+(i+1));
+    const ordered=elems.slice(0,k);
+    const missing=elems.slice(k);
+    const title=el('text',{x:34,y:35,class:'levelText'}); title.textContent='partial well-ordering of A ⊆ X'; wellSvg.appendChild(title);
+    const y=105, boxW=Math.min(58,(W-80)/Math.max(n,1)-6), gap=8;
+    const startX=40;
+    ordered.forEach((x,i)=>{
+      const rect=el('rect',{x:startX+i*(boxW+gap),y:y,width:boxW,height:46,rx:13,class:'wellBox partial'}); wellSvg.appendChild(rect);
+      const tx=el('text',{x:startX+i*(boxW+gap)+boxW/2,y:y+24,class:'wellText'}); tx.textContent=x; wellSvg.appendChild(tx);
+      if(i<ordered.length-1){const ar=el('text',{x:startX+i*(boxW+gap)+boxW+gap/2,y:y+28,class:'wellSmall'}); ar.textContent='≺'; wellSvg.appendChild(ar);}
+    });
+    if(ordered.length===0){
+      const empty=el('text',{x:W/2,y:y+27,class:'wellText'}); empty.textContent='empty well-ordering'; wellSvg.appendChild(empty);
+    }
+    const missTitle=el('text',{x:34,y:205,class:'levelText'}); missTitle.textContent='missing points in X \\ A'; wellSvg.appendChild(missTitle);
+    missing.forEach((x,i)=>{
+      const bx=startX+i*(boxW+gap);
+      wellSvg.appendChild(el('rect',{x:bx,y:225,width:boxW,height:42,rx:13,class:'wellBox missing'}));
+      const tx=el('text',{x:bx+boxW/2,y:247,class:'wellText'}); tx.textContent=x; wellSvg.appendChild(tx);
+    });
+    if(missing.length>0){
+      const mx=startX+boxW/2;
+      const lastX = ordered.length ? startX+(ordered.length-1)*(boxW+gap)+boxW/2 : W/2;
+      wellSvg.appendChild(el('path',{d:`M ${mx} 225 C ${mx} 182 ${lastX+70} 190 ${lastX+70} 151`,fill:'none',stroke:'var(--amber)', 'stroke-width':2, 'stroke-dasharray':'5 5'}));
+      const tx=el('text',{x:lastX+106,y:183,class:'wellSmall'}); tx.textContent='append as new greatest'; wellSvg.appendChild(tx);
+    }
+    document.getElementById('wellText').innerHTML = missing.length
+      ? `<b>Not maximal.</b> If <span class="math">A≠X</span>, choose one missing point, for instance <span class="kbd">${missing[0]}</span>, and append it as a new greatest element. This is a strict end-extension.`
+      : `<b>Maximal covers X.</b> No point is missing. The partial well-ordering is now a well-ordering of the whole finite set; in the theorem, Zorn forces the same conclusion for arbitrary X.`;
+  }
+  document.getElementById('wellN').addEventListener('input', renderWell);
+  document.getElementById('wellK').addEventListener('input', renderWell);
+  renderWell();
+})();
+</script>
+</body>
+</html>

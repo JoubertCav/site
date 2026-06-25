@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for functions, images, and preimages.">
+<title>Functions, Images, and Preimages | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+:root{
+  --bg:#f6f1e8;
+  --paper:#fffdf8;
+  --paper2:#f0eadf;
+  --ink:#202728;
+  --muted:#687271;
+  --line:rgba(35,42,43,.14);
+  --soft:rgba(35,42,43,.055);
+  --accent:#2d9b8f;
+  --accent-2:#b8794b;
+  --accent-3:#6d8fc8;
+  --good:#2d9b8f;
+  --bad:#b55f54;
+  --shadow:0 18px 50px rgba(31,37,39,.08);
+  --node:#fffdf8;
+  --grid:rgba(35,42,43,.07);
+}
+[data-theme="dark"]{
+  --bg:#0c1117;
+  --paper:#121922;
+  --paper2:#17212c;
+  --ink:#ecf4f2;
+  --muted:#9aa8a5;
+  --line:rgba(236,244,242,.13);
+  --soft:rgba(236,244,242,.055);
+  --accent:#57cbbb;
+  --accent-2:#d8a071;
+  --accent-3:#91abe0;
+  --good:#57cbbb;
+  --bad:#e08378;
+  --shadow:0 18px 60px rgba(0,0,0,.25);
+  --node:#151f2a;
+  --grid:rgba(236,244,242,.075);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 12% -5%, rgba(45,155,143,.16), transparent 30rem),
+    radial-gradient(circle at 88% 8%, rgba(184,121,75,.13), transparent 28rem),
+    var(--bg);
+  color:var(--ink);
+  line-height:1.45;
+}
+button,input,select{font:inherit;color:inherit}
+.wrapper{max-width:1240px;margin:0 auto;padding:28px 18px 42px}
+.hero{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:18px;
+  align-items:start;
+  margin-bottom:18px;
+}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:750;margin-bottom:8px}
+h1{font-family:Georgia, Cambria, "Times New Roman", serif;font-size:clamp(32px,4.5vw,56px);line-height:1.02;margin:0 0 10px;font-weight:560;letter-spacing:-.04em}
+.subtitle{font-size:clamp(15px,1.7vw,18px);color:var(--muted);max-width:770px;margin:0}
+.themeBtn{
+  border:1px solid var(--line);
+  background:var(--paper);
+  box-shadow:var(--shadow);
+  border-radius:999px;
+  padding:10px 14px;
+  cursor:pointer;
+  display:flex;gap:8px;align-items:center;
+  white-space:nowrap;
+}
+.card{
+  border:1px solid var(--line);
+  background:linear-gradient(180deg, color-mix(in srgb, var(--paper) 94%, transparent), var(--paper));
+  box-shadow:var(--shadow);
+  border-radius:24px;
+  padding:18px;
+}
+.card.compact{padding:14px}
+.grid{display:grid;gap:16px}
+.grid.main{grid-template-columns:320px minmax(0,1fr)}
+.grid.two{grid-template-columns:1.05fr .95fr}
+.grid.three{grid-template-columns:repeat(3,1fr)}
+.stack{display:flex;flex-direction:column;gap:14px}
+.sectionTitle{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+h2,h3{margin:0;font-size:15px;letter-spacing:.01em}
+h2{font-size:17px}
+small,.small{color:var(--muted);font-size:12px}.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+.math{
+  font-family:Georgia, Cambria, "Times New Roman", serif;
+  font-size:17px;
+  background:var(--soft);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:14px 15px;
+  overflow:auto;
+}
+.math.center{text-align:center}.math .big{font-size:22px}
+.controls{display:flex;flex-direction:column;gap:14px}
+.control{border:1px solid var(--line);background:var(--soft);border-radius:18px;padding:12px}
+.control label{display:flex;justify-content:space-between;gap:10px;font-size:13px;font-weight:700;margin-bottom:8px;color:var(--ink)}
+.control label span:last-child{font-weight:650;color:var(--accent)}
+input[type="range"]{width:100%;accent-color:var(--accent)}
+select{
+  width:100%;
+  border:1px solid var(--line);
+  background:var(--paper);
+  border-radius:14px;
+  padding:9px 10px;
+  outline:none;
+}
+.pills{display:flex;flex-wrap:wrap;gap:7px}
+.pill{
+  border:1px solid var(--line);
+  background:var(--paper);
+  color:var(--muted);
+  padding:7px 10px;
+  border-radius:999px;
+  cursor:pointer;
+  min-width:42px;
+  text-align:center;
+  user-select:none;
+  transition:.15s ease;
+}
+.pill:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--accent),var(--line) 40%)}
+.pill.active{background:color-mix(in srgb,var(--accent) 18%,var(--paper));border-color:color-mix(in srgb,var(--accent) 55%,var(--line));color:var(--ink);font-weight:750}
+.pill.alt.active{background:color-mix(in srgb,var(--accent-2) 20%,var(--paper));border-color:color-mix(in srgb,var(--accent-2) 55%,var(--line))}
+.mapGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.mapRow{display:flex;align-items:center;gap:6px;background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:6px 8px;font-size:13px}
+.mapRow select{padding:5px 6px;border-radius:10px;min-width:58px}
+.mainDiagram{min-height:560px;display:flex;flex-direction:column;gap:12px}
+.svgBox{
+  border:1px solid var(--line);
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+    color-mix(in srgb,var(--paper) 92%,var(--bg));
+  background-size:38px 38px;
+  border-radius:22px;
+  overflow:hidden;
+  min-height:392px;
+}
+svg{display:block;width:100%;height:auto}.svgLabel{font-size:13px;fill:var(--muted);font-weight:700}.svgMath{font-family:Georgia, Cambria, "Times New Roman", serif;font-size:17px;fill:var(--ink)}
+.nodeText{font-size:13px;font-weight:800;fill:var(--ink)}
+.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:6px 9px;background:var(--soft);font-size:12px;color:var(--muted)}
+.badge.good{color:var(--good);border-color:color-mix(in srgb,var(--good),var(--line) 60%);background:color-mix(in srgb,var(--good) 11%,transparent)}
+.badge.bad{color:var(--bad);border-color:color-mix(in srgb,var(--bad),var(--line) 60%);background:color-mix(in srgb,var(--bad) 10%,transparent)}
+.badges{display:flex;flex-wrap:wrap;gap:8px}
+.panelText{font-size:14px;color:var(--muted);margin:0}.panelText strong{color:var(--ink)}
+.truthList{display:grid;gap:8px}.truthItem{display:grid;grid-template-columns:28px 1fr;gap:9px;align-items:start;border:1px solid var(--line);background:var(--soft);border-radius:16px;padding:9px 10px}.truthDot{width:18px;height:18px;border-radius:50%;margin-top:2px;border:2px solid var(--line)}.truthDot.good{background:color-mix(in srgb,var(--good) 45%,transparent);border-color:var(--good)}.truthDot.bad{background:color-mix(in srgb,var(--bad) 33%,transparent);border-color:var(--bad)}
+.tableWrap{overflow:auto;border:1px solid var(--line);border-radius:18px;background:var(--soft)}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:8px 9px;text-align:center}th{font-weight:800;color:var(--muted);background:color-mix(in srgb,var(--paper2) 72%,transparent)}tr:last-child td{border-bottom:0}td:last-child,th:last-child{border-right:0}.dot{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--accent)}.empty{opacity:.28}
+.fibers{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:9px}.fiber{border:1px solid var(--line);background:var(--soft);border-radius:16px;padding:10px;min-height:74px}.fiber.hit{border-color:color-mix(in srgb,var(--accent),var(--line) 48%);background:color-mix(in srgb,var(--accent) 10%,var(--paper))}.fiberTitle{font-weight:850;font-size:13px;margin-bottom:8px}.fiberEls{display:flex;flex-wrap:wrap;gap:5px}.miniChip{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:4px 7px;background:var(--paper)}
+.notice{border-left:4px solid var(--accent);background:color-mix(in srgb,var(--accent) 9%,var(--paper));padding:13px 14px;border-radius:18px}.notice h3{margin-bottom:8px}.notice ul,.summary ul{margin:8px 0 0 18px;padding:0;color:var(--muted);font-size:14px}.notice li,.summary li{margin:5px 0}.summary{background:linear-gradient(180deg,color-mix(in srgb,var(--paper2) 72%,transparent),var(--paper));}
+.kbd{font-family:"SFMono-Regular",Consolas,monospace;border:1px solid var(--line);border-bottom-width:2px;border-radius:8px;padding:1px 6px;font-size:12px;background:var(--paper)}
+.footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
+@media(max-width:960px){.grid.main,.grid.two,.grid.three{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.themeBtn{justify-self:start}.mainDiagram{min-height:auto}.svgBox{min-height:320px}.mapGrid{grid-template-columns:1fr}}
+@media(max-width:520px){.wrapper{padding:18px 12px 28px}.card{border-radius:20px;padding:14px}.math{font-size:15px}.sectionTitle{flex-direction:column;align-items:flex-start}.themeBtn{width:100%;justify-content:center}}
+</style>
+</head>
+<body data-theme="light">
+<div class="wrapper">
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Real Analysis Foundations</div>
+      <h1>Functions, Images, and Preimages</h1>
+      <p class="subtitle">A function is a deterministic arrow from each point of a domain to exactly one point of a codomain. Images move sets forward. Preimages pull predicates backward.</p>
+    </div>
+    <button class="themeBtn" id="themeBtn" aria-label="Toggle dark mode">◐ <span>Dark mode</span></button>
+  </header>
+
+  <section class="grid main">
+    <aside class="stack">
+      <div class="card">
+        <div class="sectionTitle"><h2>Symbolic core</h2><span class="small">finite model</span></div>
+        <div class="math">
+          <div><span class="big">f:X → Y</span></div>
+          <div style="margin-top:9px">function ⇔ ∀x∈X, ∃!y∈Y : f(x)=y</div>
+          <div style="margin-top:9px">f(A) = { f(x) : x∈A }</div>
+          <div>f<sup>−1</sup>(B) = { x∈X : f(x)∈B }</div>
+        </div>
+      </div>
+
+      <div class="card controls">
+        <div class="sectionTitle"><h2>Controls</h2><span class="small">instant update</span></div>
+
+        <div class="control">
+          <label><span>|X| domain</span><span id="nVal">5</span></label>
+          <input id="nRange" type="range" min="2" max="8" value="5" />
+        </div>
+        <div class="control">
+          <label><span>|Y| codomain</span><span id="mVal">5</span></label>
+          <input id="mRange" type="range" min="2" max="8" value="5" />
+        </div>
+        <div class="control">
+          <label><span>Map pattern</span></label>
+          <select id="preset">
+            <option value="bijective">bijective: one-to-one and onto</option>
+            <option value="injective">injective, not onto</option>
+            <option value="surjective">onto, not injective</option>
+            <option value="many">many-to-one</option>
+            <option value="constant">constant map</option>
+            <option value="custom">custom map</option>
+          </select>
+        </div>
+        <div class="control">
+          <label><span>Subset A ⊆ X</span><span>image f(A)</span></label>
+          <div class="pills" id="xPills"></div>
+        </div>
+        <div class="control">
+          <label><span>Subset B ⊆ Y</span><span>preimage f⁻¹(B)</span></label>
+          <div class="pills" id="yPills"></div>
+        </div>
+      </div>
+
+      <div class="card compact">
+        <div class="sectionTitle"><h2>Edit f</h2><span class="small">x ↦ y</span></div>
+        <div id="mapEditor" class="mapGrid"></div>
+      </div>
+    </aside>
+
+    <main class="card mainDiagram">
+      <div class="sectionTitle">
+        <h2>Main diagram: arrows, image, and inverse image</h2>
+        <div class="badges" id="propertyBadges"></div>
+      </div>
+      <div class="svgBox"><svg id="mainSvg" viewBox="0 0 720 430" role="img" aria-label="Function arrow diagram"></svg></div>
+      <div class="grid two">
+        <div class="notice">
+          <h3>Interpretation</h3>
+          <p id="interpretation" class="panelText"></p>
+        </div>
+        <div class="notice" style="border-left-color:var(--accent-2);background:color-mix(in srgb,var(--accent-2) 9%,var(--paper));">
+          <h3>What to notice</h3>
+          <p class="panelText">The forward image only sees points that are actually hit by arrows. The inverse image is different: it pulls a subset of the codomain back to every domain point whose arrow lands there.</p>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <section class="grid two" style="margin-top:16px">
+    <div class="card">
+      <div class="sectionTitle"><h2>Fibers: preimages of singletons</h2><span class="small">Y is sliced by f</span></div>
+      <div class="math center" id="fiberFormula">f<sup>−1</sup>({y}) = {x∈X : f(x)=y}</div>
+      <div class="fibers" id="fibers" style="margin-top:12px"></div>
+    </div>
+
+    <div class="card">
+      <div class="sectionTitle"><h2>Relation matrix of a function</h2><span class="small">graph Γ<sub>f</sub> ⊆ X×Y</span></div>
+      <div class="tableWrap"><table id="matrixTable"></table></div>
+      <p class="panelText" style="margin-top:10px">Every row has exactly one mark. Injectivity means every column has at most one mark. Surjectivity means every column has at least one mark.</p>
+    </div>
+  </section>
+
+  <section class="grid two" style="margin-top:16px">
+    <div class="card">
+      <div class="sectionTitle"><h2>Composition</h2><span class="small">g ∘ f : X → Z</span></div>
+      <div class="control" style="margin-bottom:12px">
+        <label><span>|Z| target</span><span id="kVal">4</span></label>
+        <input id="kRange" type="range" min="2" max="7" value="4" />
+      </div>
+      <div class="control" style="margin-bottom:12px">
+        <label><span>Map g:Y→Z</span></label>
+        <select id="gPreset">
+          <option value="fold">fold classes</option>
+          <option value="identityish">identity-like</option>
+          <option value="constant">constant</option>
+          <option value="custom">custom</option>
+        </select>
+      </div>
+      <div id="gEditor" class="mapGrid" style="margin-bottom:12px"></div>
+      <div class="svgBox" style="min-height:250px"><svg id="compSvg" viewBox="0 0 720 290" role="img" aria-label="Composition diagram"></svg></div>
+      <div class="math" style="margin-top:12px">(g∘f)(x) = g(f(x))</div>
+    </div>
+
+    <div class="card">
+      <div class="sectionTitle"><h2>Restrictions and extensions</h2><span class="small">same arrows, smaller domain</span></div>
+      <div class="math">
+        f|<sub>A</sub> : A → Y, &nbsp; f|<sub>A</sub>(x)=f(x)<br>
+        F extends h:S→Y ⇔ S⊆X and F(x)=h(x) for all x∈S
+      </div>
+      <div class="svgBox" style="margin-top:12px;min-height:250px"><svg id="restrSvg" viewBox="0 0 720 290" role="img" aria-label="Restriction and extension diagram"></svg></div>
+      <div class="truthList" style="margin-top:12px" id="restrFacts"></div>
+    </div>
+  </section>
+
+  <section class="grid two" style="margin-top:16px">
+    <div class="card">
+      <div class="sectionTitle"><h2>Logical tests</h2><span class="small">witnesses</span></div>
+      <div class="truthList" id="logicTests"></div>
+    </div>
+
+    <div class="card summary">
+      <div class="sectionTitle"><h2>Exam-style summary</h2><span class="small">minimal checklist</span></div>
+      <ul>
+        <li><strong>Function:</strong> each x has one and only one image.</li>
+        <li><strong>Injective:</strong> no two distinct domain points share the same image.</li>
+        <li><strong>Surjective:</strong> every codomain point is hit.</li>
+        <li><strong>Bijective:</strong> injective + surjective; then an inverse function exists.</li>
+        <li><strong>Image:</strong> pushes A⊆X forward to f(A)⊆Y.</li>
+        <li><strong>Preimage:</strong> pulls B⊆Y backward to f<sup>−1</sup>(B)⊆X; always defined for any function.</li>
+        <li><strong>Composition:</strong> first f, then g; order matters.</li>
+        <li><strong>Restriction:</strong> same rule on smaller domain. <strong>Extension:</strong> a larger-domain function agreeing on the old domain.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="footer">Finite diagrams reveal the general logic: functions are graphs with exactly one output per input; images and preimages are set transformations.</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const state = {
+  n:5,m:5,k:4,
+  preset:'bijective',
+  gPreset:'fold',
+  f:[],g:[],
+  A:new Set([0,2,4]),
+  B:new Set([1,3])
+};
+
+function cssVar(name){return getComputedStyle(document.body).getPropertyValue(name).trim();}
+function X(i){return 'x'+(i+1)}
+function Y(j){return 'y'+(j+1)}
+function Z(k){return 'z'+(k+1)}
+function clampSets(){
+  state.A = new Set([...state.A].filter(i=>i<state.n));
+  state.B = new Set([...state.B].filter(j=>j<state.m));
+  if(state.A.size===0) state.A.add(0);
+  if(state.B.size===0) state.B.add(Math.min(1,state.m-1));
+}
+function ensureFeasiblePreset(){
+  if(state.preset==='bijective' && state.n!==state.m){ state.m=state.n; $('mRange').value=state.m; }
+  if(state.preset==='injective' && state.m<=state.n){ state.m=Math.min(8,state.n+1); $('mRange').value=state.m; if(state.m<=state.n){state.n=state.m-1; $('nRange').value=state.n;} }
+  if(state.preset==='surjective' && state.n<=state.m){ state.n=Math.min(8,state.m+1); $('nRange').value=state.n; if(state.n<=state.m){state.m=state.n-1; $('mRange').value=state.m;} }
+}
+function buildF(){
+  if(state.preset==='custom'){
+    while(state.f.length<state.n) state.f.push(0);
+    state.f=state.f.slice(0,state.n).map(v=>Math.min(v,state.m-1));
+    return;
+  }
+  ensureFeasiblePreset();
+  const n=state.n,m=state.m;
+  if(state.preset==='bijective') state.f=Array.from({length:n},(_,i)=>i%m);
+  if(state.preset==='injective') state.f=Array.from({length:n},(_,i)=>i);
+  if(state.preset==='surjective') state.f=Array.from({length:n},(_,i)=>i%m);
+  if(state.preset==='many') state.f=Array.from({length:n},(_,i)=>Math.floor(i/2)%m);
+  if(state.preset==='constant') state.f=Array.from({length:n},()=>0);
+}
+function buildG(){
+  if(state.gPreset==='custom'){
+    while(state.g.length<state.m) state.g.push(0);
+    state.g=state.g.slice(0,state.m).map(v=>Math.min(v,state.k-1));
+    return;
+  }
+  const m=state.m,k=state.k;
+  if(state.gPreset==='fold') state.g=Array.from({length:m},(_,j)=>j%k);
+  if(state.gPreset==='identityish') state.g=Array.from({length:m},(_,j)=>Math.min(j,k-1));
+  if(state.gPreset==='constant') state.g=Array.from({length:m},()=>0);
+}
+function imageOfA(){ return new Set([...state.A].map(i=>state.f[i])); }
+function fullImage(){ return new Set(state.f); }
+function preimageOfB(){ return new Set(state.f.map((y,i)=>state.B.has(y)?i:null).filter(v=>v!==null)); }
+function fibers(){
+  const F=Array.from({length:state.m},()=>[]);
+  state.f.forEach((j,i)=>F[j].push(i));
+  return F;
+}
+function props(){
+  const F=fibers();
+  const injective=F.every(arr=>arr.length<=1);
+  const surjective=F.every(arr=>arr.length>=1);
+  return {injective,surjective,bijective:injective&&surjective,F};
+}
+
+function updateThemeButton(){ $('themeBtn').querySelector('span').textContent=document.body.dataset.theme==='dark'?'Light mode':'Dark mode'; }
+$('themeBtn').addEventListener('click',()=>{document.body.dataset.theme=document.body.dataset.theme==='dark'?'light':'dark';updateThemeButton();renderAll();});
+
+$('nRange').addEventListener('input',e=>{state.n=+e.target.value;if(state.preset!=='custom')buildF();clampSets();renderAll();});
+$('mRange').addEventListener('input',e=>{state.m=+e.target.value;if(state.preset!=='custom')buildF();if(state.gPreset!=='custom')buildG();clampSets();renderAll();});
+$('kRange').addEventListener('input',e=>{state.k=+e.target.value;if(state.gPreset!=='custom')buildG();else state.g=state.g.map(v=>Math.min(v,state.k-1));renderAll();});
+$('preset').addEventListener('change',e=>{state.preset=e.target.value;buildF();clampSets();renderAll();});
+$('gPreset').addEventListener('change',e=>{state.gPreset=e.target.value;buildG();renderAll();});
+
+function renderPills(){
+  $('xPills').innerHTML='';
+  for(let i=0;i<state.n;i++){
+    const b=document.createElement('button'); b.className='pill '+(state.A.has(i)?'active':''); b.textContent=X(i);
+    b.onclick=()=>{ state.A.has(i)?state.A.delete(i):state.A.add(i); renderAll(false); };
+    $('xPills').appendChild(b);
+  }
+  $('yPills').innerHTML='';
+  for(let j=0;j<state.m;j++){
+    const b=document.createElement('button'); b.className='pill alt '+(state.B.has(j)?'active':''); b.textContent=Y(j);
+    b.onclick=()=>{ state.B.has(j)?state.B.delete(j):state.B.add(j); renderAll(false); };
+    $('yPills').appendChild(b);
+  }
+}
+function renderEditors(){
+  const ed=$('mapEditor'); ed.innerHTML='';
+  for(let i=0;i<state.n;i++){
+    const row=document.createElement('div'); row.className='mapRow';
+    const lab=document.createElement('span'); lab.innerHTML='<strong>'+X(i)+'</strong> ↦';
+    const sel=document.createElement('select');
+    for(let j=0;j<state.m;j++){ const o=document.createElement('option'); o.value=j; o.textContent=Y(j); sel.appendChild(o); }
+    sel.value=state.f[i];
+    sel.onchange=()=>{state.preset='custom';$('preset').value='custom';state.f[i]=+sel.value;renderAll(false);};
+    row.append(lab,sel); ed.appendChild(row);
+  }
+  const ged=$('gEditor'); ged.innerHTML='';
+  for(let j=0;j<state.m;j++){
+    const row=document.createElement('div'); row.className='mapRow';
+    const lab=document.createElement('span'); lab.innerHTML='<strong>'+Y(j)+'</strong> ↦';
+    const sel=document.createElement('select');
+    for(let z=0;z<state.k;z++){ const o=document.createElement('option'); o.value=z; o.textContent=Z(z); sel.appendChild(o); }
+    sel.value=state.g[j];
+    sel.onchange=()=>{state.gPreset='custom';$('gPreset').value='custom';state.g[j]=+sel.value;renderAll(false);};
+    row.append(lab,sel); ged.appendChild(row);
+  }
+}
+function pointList(set, labeler){
+  const arr=[...set].sort((a,b)=>a-b).map(labeler);
+  return arr.length?'{ '+arr.join(', ')+' }':'∅';
+}
+function renderBadges(){
+  const p=props();
+  const badges=[['injective',p.injective],['surjective',p.surjective],['bijective',p.bijective]];
+  $('propertyBadges').innerHTML=badges.map(([name,ok])=>`<span class="badge ${ok?'good':'bad'}">${ok?'✓':'×'} ${name}</span>`).join('');
+}
+function renderMainSvg(){
+  const svg=$('mainSvg');
+  const A=state.A, B=state.B, imA=imageOfA(), imX=fullImage(), preB=preimageOfB();
+  const W=720,H=430, lx=120, rx=600;
+  const top=74,bottom=360;
+  const ypX=i=> state.n===1?(top+bottom)/2:top+(bottom-top)*i/(state.n-1);
+  const ypY=j=> state.m===1?(top+bottom)/2:top+(bottom-top)*j/(state.m-1);
+  const accent=cssVar('--accent'), accent2=cssVar('--accent-2'), accent3=cssVar('--accent-3'), ink=cssVar('--ink'), muted=cssVar('--muted'), line=cssVar('--line'), node=cssVar('--node');
+  let s=`<defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="${accent}"/></marker>
+    <filter id="softShadow"><feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="rgba(0,0,0,.18)"/></filter>
+  </defs>`;
+  s+=`<text x="${lx}" y="32" text-anchor="middle" class="svgMath">X</text><text x="${rx}" y="32" text-anchor="middle" class="svgMath">Y</text>`;
+  s+=`<text x="360" y="32" text-anchor="middle" class="svgLabel">f : X → Y</text>`;
+  for(let i=0;i<state.n;i++){
+    const j=state.f[i];
+    const y1=ypX(i), y2=ypY(j);
+    const active=A.has(i)||B.has(j)||preB.has(i);
+    s+=`<path d="M ${lx+28} ${y1} C 270 ${y1}, 435 ${y2}, ${rx-28} ${y2}" fill="none" stroke="${active?accent:line}" stroke-width="${active?2.5:1.35}" opacity="${active?0.92:0.55}" marker-end="url(#arrow)"/>`;
+  }
+  for(let i=0;i<state.n;i++){
+    const y=ypX(i);
+    if(A.has(i)) s+=`<circle cx="${lx}" cy="${y}" r="31" fill="${accent}" opacity=".15"/>`;
+    if(preB.has(i)) s+=`<circle cx="${lx}" cy="${y}" r="37" fill="none" stroke="${accent2}" stroke-width="3" opacity=".85"/>`;
+    s+=`<circle cx="${lx}" cy="${y}" r="22" fill="${node}" stroke="${A.has(i)?accent:line}" stroke-width="${A.has(i)?2.4:1.4}" filter="url(#softShadow)"/>`;
+    s+=`<text x="${lx}" y="${y+4}" text-anchor="middle" class="nodeText">${X(i)}</text>`;
+  }
+  for(let j=0;j<state.m;j++){
+    const y=ypY(j);
+    if(imX.has(j)) s+=`<circle cx="${rx}" cy="${y}" r="36" fill="${accent3}" opacity=".10"/>`;
+    if(imA.has(j)) s+=`<circle cx="${rx}" cy="${y}" r="31" fill="${accent}" opacity=".18"/>`;
+    if(B.has(j)) s+=`<circle cx="${rx}" cy="${y}" r="39" fill="none" stroke="${accent2}" stroke-width="3" opacity=".85"/>`;
+    s+=`<circle cx="${rx}" cy="${y}" r="22" fill="${node}" stroke="${imA.has(j)?accent:(B.has(j)?accent2:line)}" stroke-width="${(imA.has(j)||B.has(j))?2.4:1.4}" filter="url(#softShadow)"/>`;
+    s+=`<text x="${rx}" y="${y+4}" text-anchor="middle" class="nodeText">${Y(j)}</text>`;
+  }
+  s+=`<text x="32" y="402" class="svgLabel" fill="${muted}">A highlighted in teal: ${pointList(A,X)}</text>`;
+  s+=`<text x="360" y="402" text-anchor="middle" class="svgLabel">f(A) = ${pointList(imA,Y)}</text>`;
+  s+=`<text x="688" y="402" text-anchor="end" class="svgLabel">B outlined in amber: ${pointList(B,Y)}</text>`;
+  svg.innerHTML=s;
+}
+function renderInterpretation(){
+  const imA=imageOfA(), preB=preimageOfB(), p=props();
+  const failInj = p.F.find(arr=>arr.length>1);
+  const missing = p.F.map((arr,j)=>arr.length?null:j).filter(v=>v!==null);
+  let text=`For the chosen subset A = ${pointList(state.A,X)}, the forward image is f(A) = ${pointList(imA,Y)}. For B = ${pointList(state.B,Y)}, the inverse image is f⁻¹(B) = ${pointList(preB,X)}.`;
+  if(!p.injective && failInj) text += ` Injectivity fails because ${failInj.map(X).join(' and ')} land on the same codomain point.`;
+  if(!p.surjective) text += ` Surjectivity fails because ${missing.map(Y).join(', ')} ${missing.length===1?'is':'are'} not hit.`;
+  if(p.bijective) text += ` Since every fiber has exactly one element, the inverse map Y→X exists.`;
+  $('interpretation').textContent=text;
+}
+function renderFibers(){
+  const F=fibers(); const el=$('fibers'); el.innerHTML='';
+  F.forEach((arr,j)=>{
+    const d=document.createElement('div'); d.className='fiber '+(arr.length?'hit':'');
+    d.innerHTML=`<div class="fiberTitle">f⁻¹({${Y(j)}})</div><div class="fiberEls">${arr.length?arr.map(i=>`<span class="miniChip">${X(i)}</span>`).join(''):'<span class="small">∅</span>'}</div>`;
+    el.appendChild(d);
+  });
+}
+function renderMatrix(){
+  let html='<thead><tr><th>Γ<sub>f</sub></th>';
+  for(let j=0;j<state.m;j++) html+=`<th>${Y(j)}</th>`;
+  html+='</tr></thead><tbody>';
+  for(let i=0;i<state.n;i++){
+    html+=`<tr><th>${X(i)}</th>`;
+    for(let j=0;j<state.m;j++) html+=`<td>${state.f[i]===j?'<span class="dot"></span>':'<span class="empty">·</span>'}</td>`;
+    html+='</tr>';
+  }
+  html+='</tbody>';
+  $('matrixTable').innerHTML=html;
+}
+function renderLogic(){
+  const p=props();
+  const failInj = p.F.find(arr=>arr.length>1);
+  const missing = p.F.map((arr,j)=>arr.length?null:j).filter(v=>v!==null);
+  const tests=[];
+  tests.push([true,'Function test','Every row of Γ_f has exactly one mark: each x has a unique f(x).']);
+  tests.push([p.injective,'Injectivity','∀x,x′∈X, f(x)=f(x′) ⇒ x=x′.'+(p.injective?'':' Witness: '+failInj.map(X).join(' ≠ ')+' share one image.')]);
+  tests.push([p.surjective,'Surjectivity','∀y∈Y, ∃x∈X with f(x)=y.'+(p.surjective?'':' Missing: '+missing.map(Y).join(', ')+'.')]);
+  tests.push([p.bijective,'Bijectivity','Equivalent to every fiber f⁻¹({y}) having exactly one element.']);
+  $('logicTests').innerHTML=tests.map(([ok,title,body])=>`<div class="truthItem"><span class="truthDot ${ok?'good':'bad'}"></span><div><strong>${title}</strong><br><span class="small">${body}</span></div></div>`).join('');
+}
+function renderCompSvg(){
+  const svg=$('compSvg');
+  const W=720,H=290, x1=90,x2=360,x3=630, top=58,bottom=232;
+  const maxRows=Math.max(state.n,state.m,state.k);
+  const pos=(i,count)=> count===1?(top+bottom)/2:top+(bottom-top)*i/(count-1);
+  const accent=cssVar('--accent'), accent2=cssVar('--accent-2'), accent3=cssVar('--accent-3'), line=cssVar('--line'), node=cssVar('--node');
+  let s=`<defs><marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="${accent}"/></marker></defs>`;
+  s+=`<text x="${x1}" y="27" text-anchor="middle" class="svgMath">X</text><text x="${x2}" y="27" text-anchor="middle" class="svgMath">Y</text><text x="${x3}" y="27" text-anchor="middle" class="svgMath">Z</text>`;
+  for(let i=0;i<state.n;i++){ let j=state.f[i]; s+=`<path d="M ${x1+17} ${pos(i,state.n)} C 190 ${pos(i,state.n)},250 ${pos(j,state.m)},${x2-17} ${pos(j,state.m)}" fill="none" stroke="${accent}" stroke-width="1.45" opacity=".52" marker-end="url(#arr2)"/>`; }
+  for(let j=0;j<state.m;j++){ let z=state.g[j]; s+=`<path d="M ${x2+17} ${pos(j,state.m)} C 460 ${pos(j,state.m)},520 ${pos(z,state.k)},${x3-17} ${pos(z,state.k)}" fill="none" stroke="${accent2}" stroke-width="1.45" opacity=".56" marker-end="url(#arr2)"/>`; }
+  for(let i=0;i<state.n;i++){ let z=state.g[state.f[i]]; s+=`<path d="M ${x1+22} ${pos(i,state.n)} C 250 ${Math.max(38,pos(i,state.n)-35)},480 ${Math.max(38,pos(z,state.k)-35)},${x3-22} ${pos(z,state.k)}" fill="none" stroke="${accent3}" stroke-width="1.1" opacity=".22" stroke-dasharray="5 5"/>`; }
+  const nodeDraw=(x,y,label,stroke)=>`<circle cx="${x}" cy="${y}" r="17" fill="${node}" stroke="${stroke}" stroke-width="1.4"/><text x="${x}" y="${y+4}" text-anchor="middle" class="nodeText" style="font-size:12px">${label}</text>`;
+  for(let i=0;i<state.n;i++) s+=nodeDraw(x1,pos(i,state.n),X(i),line);
+  for(let j=0;j<state.m;j++) s+=nodeDraw(x2,pos(j,state.m),Y(j),line);
+  for(let z=0;z<state.k;z++) s+=nodeDraw(x3,pos(z,state.k),Z(z),line);
+  s+=`<text x="225" y="265" text-anchor="middle" class="svgLabel">f</text><text x="495" y="265" text-anchor="middle" class="svgLabel">g</text><text x="360" y="282" text-anchor="middle" class="svgLabel">dashed: g∘f</text>`;
+  svg.innerHTML=s;
+}
+function renderRestrSvg(){
+  const svg=$('restrSvg');
+  const A=state.A, imA=imageOfA();
+  const lx=110,rx=600,top=58,bottom=232;
+  const ypX=i=>state.n===1?(top+bottom)/2:top+(bottom-top)*i/(state.n-1);
+  const ypY=j=>state.m===1?(top+bottom)/2:top+(bottom-top)*j/(state.m-1);
+  const accent=cssVar('--accent'), accent2=cssVar('--accent-2'), line=cssVar('--line'), node=cssVar('--node'), muted=cssVar('--muted');
+  let s=`<defs><marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="${accent}"/></marker></defs>`;
+  s+=`<text x="${lx}" y="28" text-anchor="middle" class="svgMath">A ⊆ X</text><text x="${rx}" y="28" text-anchor="middle" class="svgMath">Y</text>`;
+  for(let i=0;i<state.n;i++){
+    const j=state.f[i]; const active=A.has(i);
+    s+=`<path d="M ${lx+22} ${ypX(i)} C 250 ${ypX(i)},455 ${ypY(j)},${rx-22} ${ypY(j)}" fill="none" stroke="${active?accent:line}" stroke-width="${active?2.1:1.05}" opacity="${active?.86:.24}" marker-end="${active?'url(#arr3)':''}" stroke-dasharray="${active?'':'4 5'}"/>`;
+  }
+  for(let i=0;i<state.n;i++){
+    const active=A.has(i); const y=ypX(i);
+    s+=`<circle cx="${lx}" cy="${y}" r="18" fill="${node}" stroke="${active?accent:line}" stroke-width="${active?2.2:1.1}" opacity="${active?1:.52}"/>`;
+    s+=`<text x="${lx}" y="${y+4}" text-anchor="middle" class="nodeText" style="font-size:12px;opacity:${active?1:.55}">${X(i)}</text>`;
+    if(!active) s+=`<text x="${lx-44}" y="${y+4}" text-anchor="middle" class="svgLabel" opacity=".55">free</text>`;
+  }
+  for(let j=0;j<state.m;j++){
+    const hit=imA.has(j); const y=ypY(j);
+    s+=`<circle cx="${rx}" cy="${y}" r="18" fill="${node}" stroke="${hit?accent:line}" stroke-width="${hit?2.2:1.1}"/>`;
+    s+=`<text x="${rx}" y="${y+4}" text-anchor="middle" class="nodeText" style="font-size:12px">${Y(j)}</text>`;
+  }
+  s+=`<text x="360" y="266" text-anchor="middle" class="svgLabel">solid arrows are f|A; dashed arrows are extension choices on X\A</text>`;
+  svg.innerHTML=s;
+}
+function renderRestrFacts(){
+  const imA=imageOfA();
+  const outside=[...Array(state.n).keys()].filter(i=>!state.A.has(i));
+  const items=[
+    [true,'Restriction','f|A keeps exactly the arrows starting inside A. Its image is f(A) = '+pointList(imA,Y)+'.'],
+    [true,'Extension','The current f:X→Y extends h=f|A because it agrees with h on every point of A.'],
+    [outside.length>0,'Freedom','Outside A, an extension may choose values freely, as long as it remains a function. Free points: '+(outside.length?outside.map(X).join(', '):'none')+'.']
+  ];
+  $('restrFacts').innerHTML=items.map(([ok,title,body])=>`<div class="truthItem"><span class="truthDot ${ok?'good':'bad'}"></span><div><strong>${title}</strong><br><span class="small">${body}</span></div></div>`).join('');
+}
+function renderValues(){
+  $('nVal').textContent=state.n; $('mVal').textContent=state.m; $('kVal').textContent=state.k;
+  $('nRange').value=state.n; $('mRange').value=state.m; $('kRange').value=state.k;
+  $('preset').value=state.preset; $('gPreset').value=state.gPreset;
+}
+function renderAll(rebuildEditors=true){
+  clampSets();
+  if(rebuildEditors){ buildF(); buildG(); }
+  renderValues(); renderPills(); renderEditors(); renderBadges(); renderMainSvg(); renderInterpretation(); renderFibers(); renderMatrix(); renderLogic(); renderCompSvg(); renderRestrSvg(); renderRestrFacts();
+}
+
+buildF(); buildG(); updateThemeButton(); renderAll(false);
+</script>
+</body>
+</html>

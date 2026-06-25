@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for partial orders, total orders, and lattices.">
+<title>Partial Orders, Total Orders, and Lattices | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+:root{
+  --bg:#f6f1e8;
+  --paper:#fffdf8;
+  --paper2:#f0e8dc;
+  --text:#1f2527;
+  --muted:#66706f;
+  --border:rgba(32,38,40,.14);
+  --grid:rgba(32,38,40,.08);
+  --accent:#2f9d8e;
+  --accent-strong:#167d73;
+  --accent-soft:rgba(47,157,142,.16);
+  --gold:#b77942;
+  --gold-soft:rgba(183,121,66,.16);
+  --red:#b45555;
+  --red-soft:rgba(180,85,85,.14);
+  --blue:#537ca6;
+  --blue-soft:rgba(83,124,166,.15);
+  --shadow:0 18px 45px rgba(30,35,38,.08);
+  --node:#fffdf8;
+  --edge:rgba(31,37,39,.34);
+}
+[data-theme="dark"]{
+  --bg:#0c1118;
+  --paper:#131a24;
+  --paper2:#182230;
+  --text:#edf3f1;
+  --muted:#9ba9a5;
+  --border:rgba(237,243,241,.12);
+  --grid:rgba(237,243,241,.08);
+  --accent:#5bcabb;
+  --accent-strong:#79dfd1;
+  --accent-soft:rgba(91,202,187,.17);
+  --gold:#d29a67;
+  --gold-soft:rgba(210,154,103,.17);
+  --red:#d98787;
+  --red-soft:rgba(217,135,135,.15);
+  --blue:#8db1d4;
+  --blue-soft:rgba(141,177,212,.16);
+  --shadow:0 20px 55px rgba(0,0,0,.28);
+  --node:#151d29;
+  --edge:rgba(237,243,241,.32);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 20% -10%, var(--accent-soft), transparent 30%),
+    radial-gradient(circle at 90% 0%, var(--gold-soft), transparent 28%),
+    var(--bg);
+  color:var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height:1.45;
+}
+.app{max-width:1220px;margin:0 auto;padding:28px 18px 44px}
+header{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:18px;
+}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted);font-weight:750;margin-bottom:8px}
+h1{font-size:clamp(30px,4vw,54px);line-height:1.02;margin:0 0 8px;font-weight:800;letter-spacing:-.045em}
+.subtitle{max-width:760px;color:var(--muted);font-size:16px;margin:0}
+.header-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+button,.select,select,input[type="range"]{font:inherit}
+button,.pill-toggle{
+  border:1px solid var(--border);
+  background:var(--paper);
+  color:var(--text);
+  border-radius:999px;
+  padding:10px 13px;
+  cursor:pointer;
+  box-shadow:0 8px 20px rgba(0,0,0,.04);
+  transition:transform .12s ease, border-color .12s ease, background .12s ease;
+}
+button:hover,.pill-toggle:hover{transform:translateY(-1px);border-color:var(--accent)}
+button.primary{background:var(--accent);color:#fff;border-color:transparent}
+[data-theme="dark"] button.primary{color:#07110f}
+.grid{display:grid;grid-template-columns: 330px minmax(0,1fr);gap:16px;align-items:start}
+.card{
+  background:color-mix(in srgb, var(--paper) 94%, transparent);
+  border:1px solid var(--border);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.card.pad{padding:18px}
+.card-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+h2{font-size:15px;letter-spacing:.02em;margin:0;font-weight:800}
+.small{font-size:12px;color:var(--muted)}
+.mathbox{
+  background:linear-gradient(180deg, color-mix(in srgb, var(--paper2) 60%, transparent), color-mix(in srgb, var(--paper) 90%, transparent));
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:13px 14px;
+  margin:12px 0;
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  font-size:17px;
+}
+.mathline{display:block;margin:5px 0}
+.control{padding:13px 0;border-top:1px solid var(--border)}
+.control:first-of-type{border-top:0;padding-top:0}
+label{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted);margin-bottom:8px}
+select{
+  width:100%;
+  background:var(--paper);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:10px 11px;
+  outline:none;
+}
+select:focus{border-color:var(--accent)}
+.range-row{display:grid;grid-template-columns:1fr 46px;gap:10px;align-items:center}
+input[type="range"]{width:100%;accent-color:var(--accent)}
+.value-badge{font-size:12px;color:var(--text);background:var(--paper2);border:1px solid var(--border);border-radius:999px;text-align:center;padding:5px 0}
+.toggle-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.toggle-row button{border-radius:14px;padding:9px 10px}.toggle-row button.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-strong);font-weight:750}
+.main{display:grid;gap:16px}
+.board{position:relative;padding:0}
+.board-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;padding:17px 18px 0}
+.board-head p{margin:4px 0 0;color:var(--muted);font-size:13px}
+#hasseWrap{height:560px;padding:8px 10px 14px}
+svg{width:100%;height:100%;display:block}
+.panel-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel-grid.three{grid-template-columns:1fr 1fr 1fr}
+.status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.status{
+  border:1px solid var(--border);border-radius:17px;padding:11px 12px;background:var(--paper);
+}
+.status .name{font-size:12px;color:var(--muted);margin-bottom:5px}.status .val{font-size:20px;font-weight:800;letter-spacing:-.02em}.ok .val{color:var(--accent-strong)}.bad .val{color:var(--red)}
+.info-list{display:grid;gap:9px}.info-line{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border);padding:7px 0}.info-line:last-child{border-bottom:0}.info-line b{font-size:13px}.info-line span{font-size:13px;color:var(--muted);text-align:right}
+.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);border-radius:999px;padding:5px 9px;background:var(--paper2);font-size:12px;color:var(--muted);white-space:nowrap}.dot{width:8px;height:8px;border-radius:99px;background:var(--accent)}
+.matrix{overflow:auto;max-height:330px;border:1px solid var(--border);border-radius:18px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:12px}th,td{border-bottom:1px solid var(--border);border-right:1px solid var(--border);padding:6px 7px;text-align:center;min-width:34px}th{position:sticky;top:0;background:var(--paper2);font-weight:750;color:var(--muted);z-index:1}tr th:first-child{left:0;z-index:2}.cell-true{background:var(--accent-soft);color:var(--accent-strong);font-weight:800}.cell-false{background:transparent;color:var(--muted)}.cell-selected{outline:2px solid var(--gold);outline-offset:-2px}.cell-diag{box-shadow:inset 0 0 0 999px rgba(127,127,127,.045)}
+.legend{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.legend .badge{background:transparent}
+.notice{background:linear-gradient(135deg,var(--accent-soft),transparent 75%);border:1px solid color-mix(in srgb, var(--accent) 34%, var(--border));border-radius:20px;padding:14px}.notice h3,.summary h3{font-size:14px;margin:0 0 8px}.notice ul,.summary ul{margin:0;padding-left:18px;color:var(--muted);font-size:13px}.notice li,.summary li{margin:5px 0}.summary{background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:14px}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.formula{font-family:ui-serif,Georgia,Cambria,"Times New Roman",serif}.hint{color:var(--muted);font-size:12px;margin-top:8px}.mobile-pair{display:none}.footer-note{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
+.node-label{font-size:14px;font-weight:750;dominant-baseline:middle;text-anchor:middle;pointer-events:none;fill:var(--text)}
+.node-sub{font-size:10px;dominant-baseline:middle;text-anchor:middle;pointer-events:none;fill:var(--muted)}
+.node-circle{fill:var(--node);stroke:var(--border);stroke-width:1.4;filter:drop-shadow(0 8px 12px rgba(0,0,0,.09));cursor:pointer;transition:.12s ease}.node-group:hover .node-circle{stroke:var(--accent);stroke-width:2}.edge{stroke:var(--edge);stroke-width:2;fill:none}.edge.transitive{stroke-dasharray:4 5;stroke:var(--grid);stroke-width:1}.edge.highlight{stroke:var(--accent);stroke-width:4}.edge.gold{stroke:var(--gold);stroke-width:4}.halo{fill:none;stroke:var(--accent);stroke-width:4;opacity:.9}.halo.gold{stroke:var(--gold)}.halo.blue{stroke:var(--blue)}.halo.red{stroke:var(--red)}
+.atom-label{fill:var(--muted);font-size:11px;text-anchor:middle}.level-line{stroke:var(--grid);stroke-width:1}.level-text{fill:var(--muted);font-size:11px}
+@media (max-width: 940px){.grid{grid-template-columns:1fr}.panel-grid,.panel-grid.three{grid-template-columns:1fr}.status-grid{grid-template-columns:1fr 1fr}#hasseWrap{height:520px}header{flex-direction:column}.header-actions{justify-content:flex-start}.mobile-pair{display:block}}
+@media (max-width: 560px){.app{padding:18px 12px 32px}.card{border-radius:20px}.status-grid{grid-template-columns:1fr}.toggle-row{grid-template-columns:1fr}#hasseWrap{height:450px}.board-head{flex-direction:column}h1{font-size:34px}}
+</style>
+</head>
+<body data-theme="light">
+<div class="app">
+  <header>
+    <div>
+      <div class="eyebrow">Real Analysis · order structure</div>
+      <h1>Partial Orders, Total Orders, and Lattices</h1>
+      <p class="subtitle">A partial order is a geometry of comparison. A lattice is the special case where every two points have a best common upper bound and a best common lower bound.</p>
+    </div>
+    <div class="header-actions">
+      <button id="themeBtn" title="Toggle dark mode">Dark mode</button>
+      <button class="primary" id="resetBtn">Reset view</button>
+    </div>
+  </header>
+
+  <section class="grid">
+    <aside class="card pad">
+      <div class="card-title">
+        <h2>Symbolic core</h2>
+        <span class="badge"><span class="dot"></span> relation</span>
+      </div>
+      <div class="mathbox">
+        <span class="mathline">A relation is a subset&nbsp; <b>R ⊆ X × X</b>.</span>
+        <span class="mathline">Write&nbsp; <b>x ⪯ y</b> &nbsp;iff&nbsp; <b>(x,y) ∈ R</b>.</span>
+        <span class="mathline">Partial order: reflexive + antisymmetric + transitive.</span>
+      </div>
+
+      <div class="control">
+        <label for="exampleSelect"><span>Poset model</span><span id="sizeLabel">8 elements</span></label>
+        <select id="exampleSelect"></select>
+        <div class="hint" id="exampleHint"></div>
+      </div>
+
+      <div class="control">
+        <label><span>Inspect a pair</span><span class="mono">x,y</span></label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <select id="xSelect"></select>
+          <select id="ySelect"></select>
+        </div>
+        <div class="hint">Click nodes in the diagram to choose the pair.</div>
+      </div>
+
+      <div class="control">
+        <label for="highlightSelect"><span>Highlight</span><span>geometry</span></label>
+        <select id="highlightSelect">
+          <option value="pair">selected pair + join/meet</option>
+          <option value="upper">upper bounds of {x,y}</option>
+          <option value="lower">lower bounds of {x,y}</option>
+          <option value="maximal">maximal and minimal elements</option>
+          <option value="chain">one maximal chain</option>
+          <option value="none">none</option>
+        </select>
+      </div>
+
+      <div class="control">
+        <label><span>Diagram edges</span><span>Hasse vs relation</span></label>
+        <div class="toggle-row">
+          <button id="coverBtn" class="active">Cover edges</button>
+          <button id="allEdgesBtn">All x ⪯ y</button>
+        </div>
+      </div>
+
+      <div class="control">
+        <label><span>Quick witnesses</span><span>examples</span></label>
+        <div class="toggle-row">
+          <button id="incompBtn">Find incomparable</button>
+          <button id="nolatticeBtn">Find no join/meet</button>
+        </div>
+      </div>
+
+      <div class="control">
+        <label for="nodeSize"><span>Node size</span><span>readability</span></label>
+        <div class="range-row">
+          <input id="nodeSize" type="range" min="18" max="38" value="27" />
+          <div class="value-badge" id="nodeSizeVal">27</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="card board">
+        <div class="board-head">
+          <div>
+            <h2>Hasse diagram</h2>
+            <p id="diagramSubtitle">Only cover relations are drawn: upward means larger in the order.</p>
+          </div>
+          <div class="badge" id="modelBadge">Boolean lattice</div>
+        </div>
+        <div id="hasseWrap"><svg id="hasseSvg" role="img" aria-label="Interactive Hasse diagram"></svg></div>
+      </section>
+
+      <section class="panel-grid three">
+        <div class="card pad">
+          <div class="card-title"><h2>Property test</h2><span class="small">global</span></div>
+          <div class="status-grid" style="grid-template-columns:1fr 1fr">
+            <div class="status" id="partialStatus"><div class="name">partial order</div><div class="val">—</div></div>
+            <div class="status" id="totalStatus"><div class="name">total order</div><div class="val">—</div></div>
+            <div class="status" id="latticeStatus"><div class="name">lattice</div><div class="val">—</div></div>
+            <div class="status" id="boundedStatus"><div class="name">has min/max</div><div class="val">—</div></div>
+          </div>
+        </div>
+
+        <div class="card pad">
+          <div class="card-title"><h2>Pair geometry</h2><span class="small" id="pairName">x,y</span></div>
+          <div class="info-list" id="pairInfo"></div>
+        </div>
+
+        <div class="card pad">
+          <div class="card-title"><h2>Bounds of {x,y}</h2><span class="small">least / greatest</span></div>
+          <div class="info-list" id="boundsInfo"></div>
+        </div>
+      </section>
+
+      <section class="panel-grid">
+        <div class="card pad">
+          <div class="card-title"><h2>Relation matrix</h2><span class="small">cell = 1 iff row ⪯ column</span></div>
+          <div class="matrix" id="matrixWrap"></div>
+          <div class="legend">
+            <span class="badge"><span class="dot"></span>true</span>
+            <span class="badge"><span class="dot" style="background:var(--gold)"></span>selected pair</span>
+            <span class="badge"><span class="dot" style="background:var(--blue)"></span>diagonal = reflexivity</span>
+          </div>
+        </div>
+
+        <div class="card pad">
+          <div class="card-title"><h2>Definitions made visible</h2><span class="small">exam notation</span></div>
+          <div class="mathbox">
+            <span class="mathline"><b>comparability</b>: &nbsp; x ⪯ y or y ⪯ x</span>
+            <span class="mathline"><b>upper bound</b>: &nbsp; x ⪯ u and y ⪯ u</span>
+            <span class="mathline"><b>x ∨ y</b>: &nbsp; least element of all upper bounds</span>
+            <span class="mathline"><b>x ∧ y</b>: &nbsp; greatest element of all lower bounds</span>
+          </div>
+          <div class="notice">
+            <h3>What to notice</h3>
+            <ul id="noticeList"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel-grid">
+        <div class="summary">
+          <h3>Compact exam-style summary</h3>
+          <ul>
+            <li><b>Partial order:</b> reflexive, antisymmetric, transitive.</li>
+            <li><b>Total order:</b> partial order + every pair is comparable.</li>
+            <li><b>Maximum:</b> one element above all others. <b>Maximal:</b> no strictly larger element.</li>
+            <li><b>Supremum:</b> least upper bound, not merely a minimal upper bound.</li>
+            <li><b>Lattice:</b> every pair has both a supremum <span class="formula">x ∨ y</span> and an infimum <span class="formula">x ∧ y</span>.</li>
+          </ul>
+        </div>
+        <div class="summary">
+          <h3>Visual dictionary</h3>
+          <ul>
+            <li><b>Edges upward:</b> immediate order steps, called covers.</li>
+            <li><b>Chain:</b> a path where all chosen elements are mutually comparable.</li>
+            <li><b>Antichain:</b> a set of mutually incomparable elements.</li>
+            <li><b>Join:</b> the first common point above two elements.</li>
+            <li><b>Meet:</b> the first common point below two elements.</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </section>
+  <div class="footer-note">Self-contained HTML · no backend · pure SVG + JavaScript</div>
+</div>
+
+<script>
+const $ = (id)=>document.getElementById(id);
+const body = document.body;
+
+function popcount(n){let c=0;while(n){c+=n&1;n>>=1;}return c;}
+function subsetLabel(bits){
+  const names=['a','b','c'];
+  if(bits===0) return '∅';
+  return '{'+names.filter((_,i)=>bits&(1<<i)).join(',')+'}';
+}
+function divisors(n){const a=[];for(let i=1;i<=n;i++)if(n%i===0)a.push(i);return a;}
+function productItems(m,n){const arr=[];for(let i=0;i<m;i++)for(let j=0;j<n;j++)arr.push({id:`${i},${j}`, label:`(${i},${j})`, val:[i,j], rank:i+j});return arr;}
+
+const examples = [
+  {
+    id:'boolean3',
+    name:'Boolean lattice 𝒫({a,b,c})',
+    badge:'Boolean lattice',
+    hint:'Order by inclusion: A ⊆ B. Join is union; meet is intersection.',
+    items:Array.from({length:8},(_,i)=>({id:String(i), label:subsetLabel(i), val:i, rank:popcount(i)})),
+    leq:(x,y)=>(x.val & ~y.val)===0,
+    notice:['Inclusion is partial: {a} and {b} are incomparable.','Every pair still has a join and meet: union and intersection.','The Hasse diagram has levels by cardinality.']
+  },
+  {
+    id:'div12',
+    name:'Divisibility lattice Div(12)',
+    badge:'divisibility',
+    hint:'Order by divisibility: x ⪯ y iff x divides y. Join is lcm; meet is gcd inside this set.',
+    items:divisors(12).map(v=>({id:String(v), label:String(v), val:v})),
+    leq:(x,y)=>y.val % x.val === 0,
+    notice:['Divisibility behaves like inclusion of prime factors.','The join is the least common multiple.','The meet is the greatest common divisor.']
+  },
+  {
+    id:'chain5',
+    name:'Total order chain {1<2<3<4<5}',
+    badge:'total order',
+    hint:'Every pair is comparable. This is the simplest lattice: join=max and meet=min.',
+    items:[1,2,3,4,5].map(v=>({id:String(v), label:String(v), val:v, rank:v-1})),
+    leq:(x,y)=>x.val<=y.val,
+    notice:['A total order is a partial order with no incomparability.','Every finite chain is automatically a lattice.','Here x∨y=max{x,y} and x∧y=min{x,y}.']
+  },
+  {
+    id:'product3',
+    name:'Product order {0,1,2}²',
+    badge:'product lattice',
+    hint:'Order componentwise: (i,j) ⪯ (k,l) iff i≤k and j≤l.',
+    items:productItems(3,3),
+    leq:(x,y)=>x.val[0]<=y.val[0] && x.val[1]<=y.val[1],
+    notice:['Comparison requires both coordinates to increase.','Join is coordinatewise maximum.','Meet is coordinatewise minimum.']
+  },
+  {
+    id:'diamond',
+    name:'Diamond lattice M₃',
+    badge:'non-distributive lattice',
+    hint:'A lattice can fail distributivity. Three middle atoms are pairwise incomparable.',
+    items:[
+      {id:'0',label:'0',val:'0',rank:0},
+      {id:'a',label:'a',val:'a',rank:1},
+      {id:'b',label:'b',val:'b',rank:1},
+      {id:'c',label:'c',val:'c',rank:1},
+      {id:'1',label:'1',val:'1',rank:2}
+    ],
+    leq:(x,y)=> x.id===y.id || x.id==='0' || y.id==='1',
+    notice:['The middle atoms are incomparable.','Any two distinct atoms have join 1 and meet 0.','So it is a lattice, but not a total order.']
+  },
+  {
+    id:'notlattice',
+    name:'Partial order that is not a lattice',
+    badge:'not a lattice',
+    hint:'The pair a,b has two minimal upper bounds u,v and no least upper bound.',
+    items:[
+      {id:'0',label:'0',val:'0',rank:0},
+      {id:'a',label:'a',val:'a',rank:1},
+      {id:'b',label:'b',val:'b',rank:1},
+      {id:'u',label:'u',val:'u',rank:2},
+      {id:'v',label:'v',val:'v',rank:2}
+    ],
+    leq:(x,y)=>{
+      if(x.id===y.id) return true;
+      if(x.id==='0') return true;
+      if((x.id==='a'||x.id==='b') && (y.id==='u'||y.id==='v')) return true;
+      return false;
+    },
+    notice:['Minimal upper bounds need not be least upper bounds.','For a,b, both u and v are common upper bounds.','Neither u ⪯ v nor v ⪯ u, so a∨b does not exist.']
+  }
+];
+
+let state = {
+  ex:examples[0], x:0, y:1, highlight:'pair', showAll:false, nodeSize:27, selectedStep:0
+};
+
+function leq(i,j){ return state.ex.leq(state.ex.items[i], state.ex.items[j]); }
+function lt(i,j){ return i!==j && leq(i,j); }
+function comparable(i,j){ return leq(i,j) || leq(j,i); }
+function label(i){ return state.ex.items[i].label; }
+function setOf(indices){ return indices.length ? indices.map(label).join(', ') : '∅'; }
+
+function covers(){
+  const n=state.ex.items.length, e=[];
+  for(let i=0;i<n;i++) for(let j=0;j<n;j++) if(lt(i,j)){
+    let cover=true;
+    for(let k=0;k<n;k++) if(k!==i&&k!==j && lt(i,k) && lt(k,j)){cover=false;break;}
+    if(cover)e.push([i,j]);
+  }
+  return e;
+}
+function allEdges(){
+  const n=state.ex.items.length, e=[];
+  for(let i=0;i<n;i++) for(let j=0;j<n;j++) if(lt(i,j)) e.push([i,j]);
+  return e;
+}
+function levels(){
+  const n=state.ex.items.length;
+  const memo=Array(n).fill(null);
+  function level(i){
+    if(state.ex.items[i].rank!==undefined) return state.ex.items[i].rank;
+    if(memo[i]!==null)return memo[i];
+    let best=0;
+    for(let j=0;j<n;j++) if(lt(j,i)) best=Math.max(best,level(j)+1);
+    memo[i]=best;return best;
+  }
+  return Array.from({length:n},(_,i)=>level(i));
+}
+function pos(){
+  const n=state.ex.items.length, lev=levels(), maxL=Math.max(...lev), groups={};
+  lev.forEach((l,i)=>{(groups[l] ||= []).push(i);});
+  const W=900,H=520,padX=70,padY=52;
+  const p={};
+  Object.keys(groups).forEach(k=>{
+    const arr=groups[k];
+    arr.sort((a,b)=>String(label(a)).localeCompare(String(label(b))));
+    const y= H-padY - (maxL===0?0:(Number(k)/maxL)*(H-2*padY));
+    arr.forEach((idx,m)=>{
+      const x = arr.length===1 ? W/2 : padX + (m/(arr.length-1))*(W-2*padX);
+      p[idx]={x,y,level:Number(k)};
+    });
+  });
+  return {p,W,H,maxL,lev};
+}
+function upperBounds(i,j){return state.ex.items.map((_,k)=>k).filter(k=>leq(i,k)&&leq(j,k));}
+function lowerBounds(i,j){return state.ex.items.map((_,k)=>k).filter(k=>leq(k,i)&&leq(k,j));}
+function leastOf(set){return set.filter(u=>set.every(v=>leq(u,v)));}
+function greatestOf(set){return set.filter(u=>set.every(v=>leq(v,u)));}
+function join(i,j){const ub=upperBounds(i,j);const least=leastOf(ub);return least.length===1?least[0]:null;}
+function meet(i,j){const lb=lowerBounds(i,j);const greatest=greatestOf(lb);return greatest.length===1?greatest[0]:null;}
+function maximal(){const n=state.ex.items.length;return Array.from({length:n},(_,i)=>i).filter(i=>!Array.from({length:n},(_,j)=>j).some(j=>lt(i,j)));}
+function minimal(){const n=state.ex.items.length;return Array.from({length:n},(_,i)=>i).filter(i=>!Array.from({length:n},(_,j)=>j).some(j=>lt(j,i)));}
+function maximum(){const n=state.ex.items.length;return Array.from({length:n},(_,i)=>i).filter(i=>Array.from({length:n},(_,j)=>j).every(j=>leq(j,i)));}
+function minimum(){const n=state.ex.items.length;return Array.from({length:n},(_,i)=>i).filter(i=>Array.from({length:n},(_,j)=>j).every(j=>leq(i,j)));}
+function isReflexive(){return state.ex.items.every((_,i)=>leq(i,i));}
+function isAntisymmetric(){const n=state.ex.items.length;for(let i=0;i<n;i++)for(let j=0;j<n;j++)if(i!==j&&leq(i,j)&&leq(j,i))return false;return true;}
+function isTransitive(){const n=state.ex.items.length;for(let i=0;i<n;i++)for(let j=0;j<n;j++)for(let k=0;k<n;k++)if(leq(i,j)&&leq(j,k)&&!leq(i,k))return false;return true;}
+function isPartial(){return isReflexive()&&isAntisymmetric()&&isTransitive();}
+function isTotal(){const n=state.ex.items.length;for(let i=0;i<n;i++)for(let j=0;j<n;j++)if(!comparable(i,j))return false;return isPartial();}
+function isLattice(){const n=state.ex.items.length;for(let i=0;i<n;i++)for(let j=0;j<n;j++)if(join(i,j)===null||meet(i,j)===null)return false;return isPartial();}
+function maximalChain(){
+  const cv=covers();
+  const mins=minimum().length?minimum():minimal();
+  let best=[];
+  function dfs(path){
+    if(path.length>best.length) best=path.slice();
+    const last=path[path.length-1];
+    cv.filter(e=>e[0]===last).forEach(e=>dfs(path.concat(e[1])));
+  }
+  mins.forEach(m=>dfs([m]));
+  return best;
+}
+function findIncomparable(){
+  const n=state.ex.items.length;
+  for(let i=0;i<n;i++)for(let j=i+1;j<n;j++)if(!comparable(i,j))return [i,j];
+  return null;
+}
+function findNoLatticePair(){
+  const n=state.ex.items.length;
+  for(let i=0;i<n;i++)for(let j=i;j<n;j++)if(join(i,j)===null||meet(i,j)===null)return [i,j];
+  return null;
+}
+
+function initControls(){
+  $('exampleSelect').innerHTML=examples.map((e,i)=>`<option value="${i}">${e.name}</option>`).join('');
+  $('exampleSelect').addEventListener('change',e=>{
+    state.ex=examples[+e.target.value]; state.x=0; state.y=Math.min(1,state.ex.items.length-1); updateSelects(); render();
+  });
+  $('xSelect').addEventListener('change',e=>{state.x=+e.target.value;render();});
+  $('ySelect').addEventListener('change',e=>{state.y=+e.target.value;render();});
+  $('highlightSelect').addEventListener('change',e=>{state.highlight=e.target.value;render();});
+  $('coverBtn').addEventListener('click',()=>{state.showAll=false;$('coverBtn').classList.add('active');$('allEdgesBtn').classList.remove('active');render();});
+  $('allEdgesBtn').addEventListener('click',()=>{state.showAll=true;$('allEdgesBtn').classList.add('active');$('coverBtn').classList.remove('active');render();});
+  $('nodeSize').addEventListener('input',e=>{state.nodeSize=+e.target.value;$('nodeSizeVal').textContent=state.nodeSize;render();});
+  $('themeBtn').addEventListener('click',()=>{const dark=body.getAttribute('data-theme')==='dark';body.setAttribute('data-theme',dark?'light':'dark');$('themeBtn').textContent=dark?'Dark mode':'Light mode';render();});
+  $('resetBtn').addEventListener('click',()=>{state.x=0;state.y=Math.min(1,state.ex.items.length-1);state.highlight='pair';state.showAll=false;state.nodeSize=27;$('nodeSize').value=27;$('nodeSizeVal').textContent='27';$('highlightSelect').value='pair';$('coverBtn').classList.add('active');$('allEdgesBtn').classList.remove('active');updateSelects();render();});
+  $('incompBtn').addEventListener('click',()=>{const p=findIncomparable(); if(p){state.x=p[0];state.y=p[1];state.highlight='pair';$('highlightSelect').value='pair'; updateSelects(); render();} else {flashNotice('Every pair is comparable in this model.');}});
+  $('nolatticeBtn').addEventListener('click',()=>{const p=findNoLatticePair(); if(p){state.x=p[0];state.y=p[1];state.highlight='pair';$('highlightSelect').value='pair'; updateSelects(); render();} else {flashNotice('Every pair has a join and a meet here.');}});
+  updateSelects();
+}
+function updateSelects(){
+  const opts=state.ex.items.map((it,i)=>`<option value="${i}">${it.label}</option>`).join('');
+  $('xSelect').innerHTML=opts;$('ySelect').innerHTML=opts;
+  $('xSelect').value=state.x;$('ySelect').value=state.y;
+}
+function flashNotice(msg){
+  const old=state.ex.notice.slice();
+  const n=$('noticeList');
+  n.innerHTML=`<li><b>${msg}</b></li>`+old.map(s=>`<li>${s}</li>`).join('');
+  setTimeout(()=>renderNotice(),1600);
+}
+function svgEl(name,attrs={}){const el=document.createElementNS('http://www.w3.org/2000/svg',name);Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));return el;}
+function renderHasse(){
+  const svg=$('hasseSvg'); svg.innerHTML='';
+  const {p,W,H,maxL}=pos(); svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  const n=state.ex.items.length;
+  const js=join(state.x,state.y), mt=meet(state.x,state.y), ub=upperBounds(state.x,state.y), lb=lowerBounds(state.x,state.y), maxs=maximal(), mins=minimal(), chain=maximalChain();
+  const selected=new Set([state.x,state.y]);
+  let highlighted=new Set();
+  if(state.highlight==='upper') ub.forEach(i=>highlighted.add(i));
+  if(state.highlight==='lower') lb.forEach(i=>highlighted.add(i));
+  if(state.highlight==='maximal'){maxs.forEach(i=>highlighted.add(i));mins.forEach(i=>highlighted.add(i));}
+  if(state.highlight==='chain') chain.forEach(i=>highlighted.add(i));
+  if(state.highlight==='pair'){ if(js!==null) highlighted.add(js); if(mt!==null) highlighted.add(mt); }
+  for(let l=0;l<=maxL;l++){
+    const y = H-52 - (maxL===0?0:(l/maxL)*(H-104));
+    svg.appendChild(svgEl('line',{x1:42,y1:y,x2:W-42,y2:y,class:'level-line'}));
+    const t=svgEl('text',{x:15,y:y+4,class:'level-text'});t.textContent='L'+l;svg.appendChild(t);
+  }
+  const edges = state.showAll ? allEdges() : covers();
+  const coverSet = new Set(covers().map(e=>e.join('-')));
+  edges.forEach(([i,j])=>{
+    const cls = state.showAll && !coverSet.has(`${i}-${j}`) ? 'edge transitive' : 'edge';
+    const line=svgEl('path',{d:`M ${p[i].x} ${p[i].y} L ${p[j].x} ${p[j].y}`,class:cls});
+    if(state.highlight==='chain'){
+      for(let c=0;c<chain.length-1;c++) if(chain[c]===i&&chain[c+1]===j) line.setAttribute('class','edge highlight');
+    }
+    if(selected.has(i)&&selected.has(j)&&comparable(i,j)) line.setAttribute('class','edge gold');
+    svg.appendChild(line);
+  });
+  // halos behind nodes
+  for(let i=0;i<n;i++){
+    const r=state.nodeSize;
+    if(highlighted.has(i)){
+      let cls='halo';
+      if(state.highlight==='maximal') cls = maxs.includes(i)?'halo gold':'halo blue';
+      if(state.highlight==='lower') cls='halo blue';
+      if(state.highlight==='upper') cls='halo';
+      if(state.highlight==='pair' && (i===js||i===mt)) cls = i===js?'halo':'halo blue';
+      svg.appendChild(svgEl('circle',{cx:p[i].x,cy:p[i].y,r:r+8,class:cls}));
+    }
+    if(selected.has(i)) svg.appendChild(svgEl('circle',{cx:p[i].x,cy:p[i].y,r:r+12,class:'halo gold'}));
+  }
+  for(let i=0;i<n;i++){
+    const g=svgEl('g',{class:'node-group',tabindex:'0'});
+    g.addEventListener('click',()=>{
+      if(state.selectedStep%2===0) state.x=i; else state.y=i;
+      state.selectedStep++; updateSelects(); render();
+    });
+    const c=svgEl('circle',{cx:p[i].x,cy:p[i].y,r:state.nodeSize,class:'node-circle'});
+    if(selected.has(i)){c.setAttribute('stroke','var(--gold)');c.setAttribute('stroke-width','2.6');}
+    if(highlighted.has(i)){c.setAttribute('fill','color-mix(in srgb, var(--accent-soft) 60%, var(--node))');}
+    g.appendChild(c);
+    const text=svgEl('text',{x:p[i].x,y:p[i].y+1,class:'node-label'});text.textContent=label(i);g.appendChild(text);
+    svg.appendChild(g);
+  }
+}
+function renderMatrix(){
+  const n=state.ex.items.length;
+  let html='<table><thead><tr><th>⪯</th>'+state.ex.items.map((it)=>`<th>${it.label}</th>`).join('')+'</tr></thead><tbody>';
+  for(let i=0;i<n;i++){
+    html+=`<tr><th>${label(i)}</th>`;
+    for(let j=0;j<n;j++){
+      const cl=[leq(i,j)?'cell-true':'cell-false'];
+      if(i===j)cl.push('cell-diag');
+      if(i===state.x&&j===state.y)cl.push('cell-selected');
+      html+=`<td class="${cl.join(' ')}">${leq(i,j)?'1':'0'}</td>`;
+    }
+    html+='</tr>';
+  }
+  html+='</tbody></table>';
+  $('matrixWrap').innerHTML=html;
+}
+function setStatus(id, ok, text){
+  const el=$(id); el.classList.toggle('ok',!!ok); el.classList.toggle('bad',!ok); el.querySelector('.val').textContent=text || (ok?'yes':'no');
+}
+function renderProperties(){
+  setStatus('partialStatus',isPartial(),isPartial()?'yes':'no');
+  setStatus('totalStatus',isTotal(),isTotal()?'yes':'no');
+  setStatus('latticeStatus',isLattice(),isLattice()?'yes':'no');
+  const bounded = minimum().length===1 && maximum().length===1;
+  setStatus('boundedStatus',bounded,bounded?'yes':'no');
+}
+function renderPairInfo(){
+  const i=state.x,j=state.y;
+  $('pairName').textContent=`${label(i)} , ${label(j)}`;
+  const comp=comparable(i,j);
+  const rel = leq(i,j) && leq(j,i) ? `${label(i)} = ${label(j)}` : leq(i,j) ? `${label(i)} ⪯ ${label(j)}` : leq(j,i) ? `${label(j)} ⪯ ${label(i)}` : 'incomparable';
+  const rows=[
+    ['comparison',rel],
+    ['comparable?',comp?'yes':'no'],
+    ['x ⪯ y?',leq(i,j)?'true':'false'],
+    ['y ⪯ x?',leq(j,i)?'true':'false']
+  ];
+  $('pairInfo').innerHTML=rows.map(([a,b])=>`<div class="info-line"><b>${a}</b><span>${b}</span></div>`).join('');
+  const ub=upperBounds(i,j), lb=lowerBounds(i,j), js=join(i,j), mt=meet(i,j);
+  const minUB=ub.filter(u=>!ub.some(v=>v!==u && lt(v,u)));
+  const maxLB=lb.filter(u=>!lb.some(v=>v!==u && lt(u,v)));
+  const rows2=[
+    ['upper bounds',setOf(ub)],
+    ['minimal upper bounds',setOf(minUB)],
+    ['join x ∨ y',js===null?'does not exist':label(js)],
+    ['lower bounds',setOf(lb)],
+    ['maximal lower bounds',setOf(maxLB)],
+    ['meet x ∧ y',mt===null?'does not exist':label(mt)]
+  ];
+  $('boundsInfo').innerHTML=rows2.map(([a,b])=>`<div class="info-line"><b>${a}</b><span>${b}</span></div>`).join('');
+}
+function renderNotice(){
+  $('noticeList').innerHTML=state.ex.notice.map(s=>`<li>${s}</li>`).join('');
+}
+function renderHeaderBits(){
+  $('sizeLabel').textContent=`${state.ex.items.length} elements`;
+  $('exampleHint').textContent=state.ex.hint;
+  $('modelBadge').textContent=state.ex.badge;
+  $('diagramSubtitle').textContent=state.showAll?'All strict comparable pairs are drawn; dashed edges are transitive consequences.':'Only cover relations are drawn: upward means larger in the order.';
+}
+function render(){
+  $('exampleSelect').value=examples.indexOf(state.ex);
+  $('xSelect').value=state.x; $('ySelect').value=state.y;
+  $('nodeSizeVal').textContent=state.nodeSize;
+  renderHeaderBits(); renderHasse(); renderMatrix(); renderProperties(); renderPairInfo(); renderNotice();
+}
+initControls();
+render();
+</script>
+</body>
+</html>

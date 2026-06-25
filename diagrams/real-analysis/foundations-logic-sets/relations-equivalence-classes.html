@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive real analysis diagram for relations and equivalence classes.">
+<title>Relations and Equivalence Classes | Real Analysis Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+:root{
+  --bg:#f6f1e8;
+  --paper:#fffdf8;
+  --paper2:#f0eadf;
+  --text:#202629;
+  --muted:#687371;
+  --border:rgba(34,42,44,.13);
+  --accent:#2b9c8f;
+  --accent-soft:rgba(43,156,143,.16);
+  --accent-mid:rgba(43,156,143,.38);
+  --warn:#c77942;
+  --bad:#bd5d5d;
+  --good:#2b9c8f;
+  --shadow:0 18px 45px rgba(36,42,44,.08);
+  --grid:rgba(34,42,44,.075);
+  --cell:false;
+  --radius:22px;
+}
+[data-theme="dark"]{
+  --bg:#0c1117;
+  --paper:#121923;
+  --paper2:#18212d;
+  --text:#eef4f2;
+  --muted:#9baaa7;
+  --border:rgba(238,244,242,.12);
+  --accent:#59cabb;
+  --accent-soft:rgba(89,202,187,.15);
+  --accent-mid:rgba(89,202,187,.34);
+  --warn:#d59a68;
+  --bad:#dc7d7d;
+  --good:#59cabb;
+  --shadow:0 18px 50px rgba(0,0,0,.27);
+  --grid:rgba(238,244,242,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 18% -4%, var(--accent-soft), transparent 32%),
+    radial-gradient(circle at 84% 6%, rgba(199,121,66,.11), transparent 28%),
+    linear-gradient(180deg,var(--bg),var(--bg));
+  color:var(--text);
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height:1.45;
+}
+button,input,select{font:inherit;color:inherit}
+.app{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:26px 0 46px}
+.header{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:18px;
+  align-items:start;
+  margin-bottom:20px;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--accent);
+  font-size:12px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  font-weight:750;
+  margin-bottom:10px;
+}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 7px var(--accent-soft)}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(34px,4.6vw,58px);line-height:.98;margin:0 0 10px;font-weight:500;letter-spacing:-.04em}
+.subtitle{max-width:760px;color:var(--muted);font-size:16px;margin:0}
+.themeToggle{
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.22);
+  backdrop-filter:blur(10px);
+  border-radius:999px;
+  padding:10px 14px;
+  box-shadow:var(--shadow);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  white-space:nowrap;
+}
+.themeToggle:hover{border-color:var(--accent-mid)}
+.card{
+  background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(255,255,255,.28)),var(--paper);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  border-radius:var(--radius);
+}
+[data-theme="dark"] .card{background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01)),var(--paper)}
+.topGrid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;margin-bottom:16px}
+.definition{padding:20px 22px}
+.kicker{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:800;margin-bottom:8px}
+.formula{
+  background:var(--paper2);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px 16px;
+  margin:10px 0;
+  overflow-x:auto;
+  font-family:"Times New Roman",Georgia,serif;
+  font-size:18px;
+  line-height:1.65;
+}
+.formula .small{font-size:16px;color:var(--muted)}
+.tightText{font-size:14px;color:var(--muted);margin:10px 0 0;max-width:820px}
+.controls{padding:18px}
+.controlGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.control{background:var(--paper2);border:1px solid var(--border);border-radius:17px;padding:12px}
+.control.full{grid-column:1/-1}
+.labelRow{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px;color:var(--muted);font-size:13px;font-weight:650}
+.valuePill{font-size:12px;color:var(--text);background:var(--paper);border:1px solid var(--border);border-radius:999px;padding:3px 8px;min-width:34px;text-align:center}
+input[type="range"]{width:100%;accent-color:var(--accent)}
+select{
+  width:100%;
+  border:1px solid var(--border);
+  background:var(--paper);
+  border-radius:12px;
+  padding:10px 11px;
+  outline:none;
+}
+.buttonRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.btn{
+  border:1px solid var(--border);
+  background:var(--paper);
+  border-radius:999px;
+  padding:8px 10px;
+  cursor:pointer;
+  font-size:13px;
+  color:var(--muted);
+}
+.btn:hover{color:var(--text);border-color:var(--accent-mid)}
+.dashboard{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start}
+.panel{padding:18px}
+.panelTitle{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.panelTitle h2{font-size:17px;margin:0;font-weight:780;letter-spacing:-.02em}
+.panelTitle p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--paper2);border-radius:999px;padding:5px 9px;font-size:12px;color:var(--muted);white-space:nowrap}
+.badge.ok{color:var(--good);background:var(--accent-soft);border-color:var(--accent-mid)}
+.badge.no{color:var(--bad);background:rgba(189,93,93,.12);border-color:rgba(189,93,93,.28)}
+.matrixWrap{overflow:auto;padding-bottom:4px}
+.matrix{
+  --n:8;
+  display:grid;
+  grid-template-columns:40px repeat(var(--n), minmax(34px,1fr));
+  gap:5px;
+  min-width:520px;
+}
+.mcell,.mlabel,.corner{
+  height:38px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+}
+.corner,.mlabel{color:var(--muted);font-weight:720;background:transparent}
+.mcell{
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.18);
+  position:relative;
+  cursor:default;
+  transition:transform .12s ease, background .12s ease, border-color .12s ease;
+}
+.mcell.true{background:var(--accent-soft);border-color:var(--accent-mid);color:var(--text)}
+.mcell.false{background:rgba(100,100,100,.035);color:var(--muted)}
+.mcell.diag::after{
+  content:"";position:absolute;inset:6px;border-radius:8px;border:1px dashed rgba(127,127,127,.34);pointer-events:none;
+}
+.mcell.focus{box-shadow:0 0 0 2px var(--accent-mid) inset}
+.mcell.counter{box-shadow:0 0 0 2px var(--bad) inset;background:rgba(189,93,93,.12)}
+.mcell.triple1{box-shadow:0 0 0 2px var(--accent) inset}
+.mcell.triple2{box-shadow:0 0 0 2px var(--warn) inset}
+.mcell.triple3{box-shadow:0 0 0 2px var(--bad) inset}
+.mcell.clickable{cursor:pointer}
+.mcell.clickable:hover{transform:translateY(-1px);border-color:var(--accent)}
+.matrixLegend{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;color:var(--muted);font-size:12px}
+.swatch{width:16px;height:16px;border-radius:5px;border:1px solid var(--border);display:inline-block;vertical-align:-3px;margin-right:5px}
+.swatch.true{background:var(--accent-soft);border-color:var(--accent-mid)}
+.swatch.diag{background:transparent;border-style:dashed}.swatch.focus{box-shadow:0 0 0 2px var(--accent-mid) inset}
+.graphBox{height:318px;border-radius:18px;background:var(--paper2);border:1px solid var(--border);overflow:hidden;position:relative}
+svg{display:block;width:100%;height:100%}
+.arrowLine{stroke:var(--accent);stroke-width:1.2;stroke-opacity:.48;fill:none;marker-end:url(#arrowHead)}
+.loop{stroke:var(--accent);stroke-width:1.2;stroke-opacity:.45;fill:none;marker-end:url(#arrowHead)}
+.node{fill:var(--paper);stroke:var(--border);stroke-width:1.4}
+.node.focusNode{stroke:var(--accent);stroke-width:3;fill:var(--accent-soft)}
+.nodeText{font-size:12px;fill:var(--text);font-weight:800;text-anchor:middle;dominant-baseline:central}
+.graphHint{position:absolute;left:12px;right:12px;bottom:10px;color:var(--muted);font-size:12px;background:rgba(255,255,255,.24);border:1px solid var(--border);backdrop-filter:blur(8px);border-radius:13px;padding:8px 10px}
+[data-theme="dark"] .graphHint{background:rgba(0,0,0,.18)}
+.propertyGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}
+.prop{background:var(--paper2);border:1px solid var(--border);border-radius:16px;padding:12px;min-height:112px}
+.propHead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.prop h3{font-size:14px;margin:0}.mark{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:900;background:rgba(189,93,93,.12);color:var(--bad);border:1px solid rgba(189,93,93,.25)}
+.prop.ok .mark{background:var(--accent-soft);color:var(--good);border-color:var(--accent-mid)}
+.propFormula{font-family:"Times New Roman",Georgia,serif;color:var(--muted);font-size:15px;line-height:1.35}.witness{margin-top:8px;font-size:12px;color:var(--muted)}
+.sideStack{display:grid;gap:16px}.classes{display:grid;gap:10px}
+.classCard{border:1px solid var(--border);background:var(--paper2);border-radius:16px;padding:12px;transition:transform .12s ease,border-color .12s ease}
+.classCard.active{border-color:var(--accent-mid);background:var(--accent-soft)}
+.classTop{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.classTitle{font-family:"Times New Roman",Georgia,serif;font-size:18px}.elements{display:flex;gap:6px;flex-wrap:wrap}
+.el{min-width:28px;height:28px;border-radius:999px;border:1px solid var(--border);display:grid;place-items:center;background:var(--paper);font-weight:750;font-size:13px}.el.active{border-color:var(--accent);background:var(--accent-soft)}
+.partitionNote{font-size:13px;color:var(--muted);margin-top:10px}.miniFormula{font-family:"Times New Roman",Georgia,serif;font-size:17px;color:var(--text);line-height:1.45}
+.tripleGrid{display:grid;grid-template-columns:1fr;gap:10px}.truthRow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;border:1px solid var(--border);background:var(--paper2);border-radius:14px;padding:10px;font-size:13px}.truth{font-family:"Times New Roman",Georgia,serif;font-size:18px}.truthVal{border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;border:1px solid var(--border)}.truthVal.t{color:var(--good);background:var(--accent-soft);border-color:var(--accent-mid)}.truthVal.f{color:var(--bad);background:rgba(189,93,93,.12);border-color:rgba(189,93,93,.28)}
+.noticeGrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.notice{padding:18px}.notice ul{margin:10px 0 0;padding-left:18px;color:var(--muted);font-size:14px}.notice li{margin:6px 0}.exam{padding:18px}.examGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.examItem{background:var(--paper2);border:1px solid var(--border);border-radius:15px;padding:12px}.examItem b{display:block;margin-bottom:4px}.examItem span{display:block;color:var(--muted);font-size:13px}.footer{color:var(--muted);font-size:12px;text-align:center;margin-top:20px}
+@media(max-width:960px){.topGrid,.dashboard,.noticeGrid{grid-template-columns:1fr}.propertyGrid{grid-template-columns:repeat(2,1fr)}.sideStack{grid-template-columns:1fr 1fr}.matrix{min-width:500px}}
+@media(max-width:660px){.app{width:min(100% - 18px,1180px);padding-top:16px}.header{grid-template-columns:1fr}.controlGrid,.sideStack,.examGrid{grid-template-columns:1fr}.propertyGrid{grid-template-columns:1fr}.card{border-radius:18px}.matrix{min-width:455px;gap:4px}.mcell,.mlabel,.corner{height:34px;border-radius:8px}.graphBox{height:280px}}
+</style>
+</head>
+<body data-theme="light">
+<div class="app">
+  <header class="header">
+    <div>
+      <div class="eyebrow"><span class="dot"></span> Real Analysis Notebook</div>
+      <h1>Relations and equivalence classes</h1>
+      <p class="subtitle">A binary relation is a region inside <strong>U × U</strong>. Equivalence relations are exactly the regions whose rows group points into a genuine partition.</p>
+    </div>
+    <button class="themeToggle" id="themeBtn" aria-label="Toggle theme"><span id="themeIcon">☾</span><span id="themeText">Dark mode</span></button>
+  </header>
+
+  <section class="topGrid">
+    <div class="card definition">
+      <div class="kicker">Minimal symbolic model</div>
+      <div class="formula">
+        <span>R ⊆ U × U</span>,&nbsp;&nbsp;
+        <span>xRy ⇔ (x,y) ∈ R</span>.
+      </div>
+      <div class="formula">
+        <div>R is an equivalence relation ⇔</div>
+        <div style="padding-left:1.1rem">
+          ∀x∈U: xRx <span class="small">reflexive</span><br>
+          xRy ⇒ yRx <span class="small">symmetric</span><br>
+          xRy ∧ yRz ⇒ xRz <span class="small">transitive</span>
+        </div>
+      </div>
+      <div class="formula">
+        [x]<sub>R</sub> = { y∈U : xRy },&nbsp;&nbsp;
+        U/R = { [x]<sub>R</sub> : x∈U }.
+      </div>
+      <p class="tightText">The matrix below is the geometry of the relation: filled cells are true statements. Diagonal means reflexivity, mirror symmetry means symmetry, and filled two-step paths force a third filled cell when transitivity holds.</p>
+    </div>
+
+    <div class="card controls">
+      <div class="panelTitle">
+        <div><h2>Controls</h2><p>Change the relation and watch the matrix, graph, and quotient update.</p></div>
+      </div>
+      <div class="controlGrid">
+        <div class="control full">
+          <div class="labelRow"><label for="relationType">Relation family</label><span class="valuePill" id="relationName">mod</span></div>
+          <select id="relationType">
+            <option value="mod">Congruence: x ≡ y mod m</option>
+            <option value="blocks">Same block in a partition</option>
+            <option value="equality">Equality: x = y</option>
+            <option value="universal">Universal: every pair related</option>
+            <option value="near">Nearness: |x − y| ≤ d</option>
+            <option value="divides">Divisibility: x divides y</option>
+            <option value="less">Strict order: x &lt; y</option>
+            <option value="custom">Custom clickable matrix</option>
+          </select>
+        </div>
+        <div class="control">
+          <div class="labelRow"><label for="nSlider">Universe size</label><span class="valuePill" id="nVal">8</span></div>
+          <input id="nSlider" type="range" min="3" max="10" value="8" />
+        </div>
+        <div class="control" id="paramControl">
+          <div class="labelRow"><label for="paramSlider" id="paramLabel">Modulus m</label><span class="valuePill" id="paramVal">3</span></div>
+          <input id="paramSlider" type="range" min="1" max="8" value="3" />
+        </div>
+        <div class="control">
+          <div class="labelRow"><label for="focusSlider">Focus element x</label><span class="valuePill" id="focusVal">1</span></div>
+          <input id="focusSlider" type="range" min="1" max="8" value="1" />
+        </div>
+        <div class="control">
+          <div class="labelRow"><label for="aSlider">Triple a</label><span class="valuePill" id="aVal">1</span></div>
+          <input id="aSlider" type="range" min="1" max="8" value="1" />
+        </div>
+        <div class="control">
+          <div class="labelRow"><label for="bSlider">Triple b</label><span class="valuePill" id="bVal">2</span></div>
+          <input id="bSlider" type="range" min="1" max="8" value="2" />
+        </div>
+        <div class="control">
+          <div class="labelRow"><label for="cSlider">Triple c</label><span class="valuePill" id="cVal">3</span></div>
+          <input id="cSlider" type="range" min="1" max="8" value="3" />
+        </div>
+        <div class="control full" id="customTools" style="display:none">
+          <div class="labelRow"><span>Custom relation tools</span><span class="valuePill">click cells</span></div>
+          <div class="buttonRow">
+            <button class="btn" id="clearBtn">Clear</button>
+            <button class="btn" id="diagBtn">Add diagonal</button>
+            <button class="btn" id="symBtn">Make symmetric</button>
+            <button class="btn" id="transBtn">Transitive closure</button>
+            <button class="btn" id="eqBtn">Make equivalence by blocks</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="dashboard">
+    <section class="card panel">
+      <div class="panelTitle">
+        <div><h2>Relation as a truth region in U × U</h2><p>Rows are first coordinate x; columns are second coordinate y.</p></div>
+        <span class="badge" id="equivBadge">checking</span>
+      </div>
+      <div class="matrixWrap"><div class="matrix" id="matrix"></div></div>
+      <div class="matrixLegend">
+        <span><span class="swatch true"></span>true cell: xRy</span>
+        <span><span class="swatch diag"></span>diagonal: xRx</span>
+        <span><span class="swatch focus"></span>focus row/class</span>
+      </div>
+      <div class="propertyGrid" id="propertyGrid"></div>
+    </section>
+
+    <aside class="sideStack">
+      <section class="card panel">
+        <div class="panelTitle">
+          <div><h2>Directed graph</h2><p>Arrows are true ordered pairs.</p></div>
+        </div>
+        <div class="graphBox">
+          <svg id="graphSvg" viewBox="0 0 360 318" preserveAspectRatio="xMidYMid meet"></svg>
+          <div class="graphHint" id="graphHint">Loops show reflexive statements. Too many arrows are softened.</div>
+        </div>
+      </section>
+
+      <section class="card panel">
+        <div class="panelTitle">
+          <div><h2>Classes and quotient</h2><p id="quotientSubtitle">If R is equivalence, classes form a partition.</p></div>
+        </div>
+        <div id="classes" class="classes"></div>
+      </section>
+
+      <section class="card panel">
+        <div class="panelTitle">
+          <div><h2>Transitivity inspector</h2><p>Check the selected triple (a,b,c).</p></div>
+        </div>
+        <div class="tripleGrid" id="triplePanel"></div>
+      </section>
+    </aside>
+  </main>
+
+  <section class="noticeGrid">
+    <div class="card notice">
+      <div class="kicker">What to notice</div>
+      <ul>
+        <li><strong>Reflexivity</strong> is the filled diagonal of the matrix.</li>
+        <li><strong>Symmetry</strong> is mirror symmetry across the diagonal.</li>
+        <li><strong>Transitivity</strong> says every two-step path must have a shortcut.</li>
+        <li><strong>Equivalence classes</strong> are not just subsets; together they are a partition.</li>
+        <li>A partition induces an equivalence relation: two points are related iff they lie in the same block.</li>
+      </ul>
+    </div>
+    <div class="card exam">
+      <div class="kicker">Compact exam-style summary</div>
+      <div class="examGrid">
+        <div class="examItem"><b>Binary relation</b><span>Any subset R of U×U.</span></div>
+        <div class="examItem"><b>Equivalence relation</b><span>Reflexive + symmetric + transitive.</span></div>
+        <div class="examItem"><b>Class</b><span>[x] = {y∈U : xRy}.</span></div>
+        <div class="examItem"><b>Quotient</b><span>U/R = set of all distinct classes.</span></div>
+        <div class="examItem"><b>Partition theorem</b><span>Equivalence relations on U ↔ partitions of U.</span></div>
+        <div class="examItem"><b>Matrix test</b><span>M²_boolean ≤ M, plus diagonal and symmetry.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">All computations are finite visualizations of the definitions. No backend, no external files.</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const state = {
+  n:8, type:'mod', param:3, focus:1, a:1, b:2, c:3,
+  custom: Array.from({length:10},()=>Array(10).fill(false))
+};
+for(let i=0;i<10;i++) state.custom[i][i]=true;
+
+function mod(a,b){return ((a-b)%b+b)%b}
+function U(){return Array.from({length:state.n},(_,i)=>i+1)}
+function sameBlock(a,b,size){return Math.floor((a-1)/size)===Math.floor((b-1)/size)}
+function R(a,b){
+  const p = Math.max(1, Math.min(state.param,state.n));
+  switch(state.type){
+    case 'mod': return ((a-b)%p+p)%p===0;
+    case 'blocks': return sameBlock(a,b,p);
+    case 'equality': return a===b;
+    case 'universal': return true;
+    case 'near': return Math.abs(a-b)<=p;
+    case 'divides': return b%a===0;
+    case 'less': return a<b;
+    case 'custom': return !!state.custom[a-1][b-1];
+  }
+}
+function matrix(){return U().map(a=>U().map(b=>R(a,b)))}
+function classOf(x){return U().filter(y=>R(x,y))}
+function relationName(){
+  const map={mod:'x ≡ y mod m',blocks:'same partition block',equality:'x = y',universal:'U × U',near:'|x − y| ≤ d',divides:'x divides y',less:'x < y',custom:'custom R'};
+  return map[state.type];
+}
+function updateSliderBounds(){
+  const n=state.n;
+  ['focus','a','b','c'].forEach(k=>{
+    const el=$(k+'Slider'); el.max=n;
+    if(state[k]>n) state[k]=n;
+    el.value=state[k]; $(k+'Val').textContent=state[k];
+  });
+  const ps=$('paramSlider');
+  ps.max=n;
+  if(state.param>n) state.param=n;
+  ps.value=state.param;
+  $('paramVal').textContent=state.param;
+  $('nVal').textContent=state.n;
+}
+function configureParam(){
+  const type=state.type;
+  const control=$('paramControl');
+  const label=$('paramLabel');
+  if(['equality','universal','divides','less','custom'].includes(type)){
+    control.style.display='none';
+  }else{
+    control.style.display='block';
+    if(type==='mod') label.textContent='Modulus m';
+    if(type==='blocks') label.textContent='Block size';
+    if(type==='near') label.textContent='Distance d';
+  }
+  $('customTools').style.display = type==='custom' ? 'block':'none';
+  $('relationName').textContent = type;
+}
+function propertyTests(){
+  let ref=true, sym=true, trans=true;
+  let refW=null, symW=null, transW=null;
+  const items=U();
+  for(const x of items){if(!R(x,x)){ref=false; refW=[x]; break;}}
+  for(const x of items){for(const y of items){if(R(x,y)&&!R(y,x)){sym=false; symW=[x,y]; break;}} if(!sym)break;}
+  for(const x of items){for(const y of items){for(const z of items){if(R(x,y)&&R(y,z)&&!R(x,z)){trans=false; transW=[x,y,z]; break;}} if(!trans)break;} if(!trans)break;}
+  return {ref,sym,trans,refW,symW,transW,equiv:ref&&sym&&trans};
+}
+function renderMatrix(tests){
+  const M=$('matrix'); M.innerHTML=''; M.style.setProperty('--n',state.n);
+  const corner=document.createElement('div'); corner.className='corner'; corner.textContent='R'; M.appendChild(corner);
+  U().forEach(y=>{const d=document.createElement('div'); d.className='mlabel'; d.textContent=y; M.appendChild(d);});
+  const [ta,tb,tc]=[state.a,state.b,state.c];
+  U().forEach(x=>{
+    const row=document.createElement('div'); row.className='mlabel'; row.textContent=x; M.appendChild(row);
+    U().forEach(y=>{
+      const cell=document.createElement('div');
+      const val=R(x,y);
+      cell.className='mcell '+(val?'true':'false')+(x===y?' diag':'')+(state.type==='custom'?' clickable':'');
+      cell.textContent=val?'1':'0';
+      if(x===state.focus || y===state.focus) cell.classList.add('focus');
+      if(!tests.ref && tests.refW && x===tests.refW[0] && y===tests.refW[0]) cell.classList.add('counter');
+      if(!tests.sym && tests.symW && ((x===tests.symW[0]&&y===tests.symW[1])||(x===tests.symW[1]&&y===tests.symW[0]))) cell.classList.add('counter');
+      if(!tests.trans && tests.transW && ((x===tests.transW[0]&&y===tests.transW[1])||(x===tests.transW[1]&&y===tests.transW[2])||(x===tests.transW[0]&&y===tests.transW[2]))) cell.classList.add('counter');
+      if(x===ta&&y===tb) cell.classList.add('triple1');
+      if(x===tb&&y===tc) cell.classList.add('triple2');
+      if(x===ta&&y===tc) cell.classList.add('triple3');
+      cell.title=`(${x},${y}) ${val?'∈':'∉'} R`;
+      if(state.type==='custom') cell.addEventListener('click',()=>{state.custom[x-1][y-1]=!state.custom[x-1][y-1]; render();});
+      M.appendChild(cell);
+    });
+  });
+}
+function propCard(title, ok, formula, witness){
+  return `<div class="prop ${ok?'ok':''}"><div class="propHead"><h3>${title}</h3><div class="mark">${ok?'✓':'×'}</div></div><div class="propFormula">${formula}</div><div class="witness">${witness}</div></div>`;
+}
+function renderProperties(t){
+  const refW=t.ref?'every diagonal cell is filled':`fails at x=${t.refW[0]}: ${t.refW[0]}R${t.refW[0]} is false`;
+  const symW=t.sym?'matrix equals its transpose':`counterexample: ${t.symW[0]}R${t.symW[1]} but not ${t.symW[1]}R${t.symW[0]}`;
+  const trW=t.trans?'every two-step path closes':`counterexample: ${t.transW[0]}R${t.transW[1]} and ${t.transW[1]}R${t.transW[2]}, but not ${t.transW[0]}R${t.transW[2]}`;
+  const eqW=t.equiv?'classes are genuine partition blocks':'quotient partition is not valid until all three hold';
+  $('propertyGrid').innerHTML =
+    propCard('Reflexive',t.ref,'∀x∈U: xRx',refW)+
+    propCard('Symmetric',t.sym,'xRy ⇒ yRx',symW)+
+    propCard('Transitive',t.trans,'xRy ∧ yRz ⇒ xRz',trW)+
+    propCard('Equivalence',t.equiv,'refl. ∧ sym. ∧ trans.',eqW);
+  const badge=$('equivBadge');
+  badge.className='badge '+(t.equiv?'ok':'no');
+  badge.textContent=t.equiv?'equivalence relation':'not an equivalence relation';
+}
+function curvedPath(x1,y1,x2,y2,bend){
+  const mx=(x1+x2)/2, my=(y1+y2)/2;
+  const dx=x2-x1, dy=y2-y1;
+  const len=Math.hypot(dx,dy)||1;
+  const nx=-dy/len, ny=dx/len;
+  return `M ${x1} ${y1} Q ${mx+nx*bend} ${my+ny*bend} ${x2} ${y2}`;
+}
+function renderGraph(){
+  const svg=$('graphSvg'); svg.innerHTML='';
+  const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
+  defs.innerHTML='<marker id="arrowHead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)" opacity=".68"></path></marker>';
+  svg.appendChild(defs);
+  const n=state.n, cx=180, cy=148, r=102;
+  const pos={};
+  U().forEach((v,i)=>{const ang=-Math.PI/2 + 2*Math.PI*i/n; pos[v]=[cx+r*Math.cos(ang),cy+r*Math.sin(ang)];});
+  let arrows=0;
+  U().forEach(a=>U().forEach(b=>{if(!R(a,b))return; arrows++;}));
+  U().forEach(a=>U().forEach(b=>{
+    if(!R(a,b))return;
+    const [x1,y1]=pos[a], [x2,y2]=pos[b];
+    if(a===b){
+      const loop=document.createElementNS('http://www.w3.org/2000/svg','path');
+      const outward=[x1-cx,y1-cy], len=Math.hypot(outward[0],outward[1])||1;
+      const ox=outward[0]/len*16, oy=outward[1]/len*16;
+      loop.setAttribute('d',`M ${x1+ox-7} ${y1+oy} C ${x1+ox-22} ${y1+oy-22}, ${x1+ox+22} ${y1+oy-22}, ${x1+ox+7} ${y1+oy}`);
+      loop.setAttribute('class','loop');
+      loop.style.strokeOpacity=arrows>35?.22:.42;
+      svg.appendChild(loop);
+    }else{
+      const dx=x2-x1, dy=y2-y1, len=Math.hypot(dx,dy)||1;
+      const sx=x1+dx/len*18, sy=y1+dy/len*18, ex=x2-dx/len*22, ey=y2-dy/len*22;
+      const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+      const bend=R(b,a)?12:0;
+      p.setAttribute('d',curvedPath(sx,sy,ex,ey,bend));
+      p.setAttribute('class','arrowLine');
+      p.style.strokeOpacity=arrows>45?.17:arrows>25?.28:.45;
+      svg.appendChild(p);
+    }
+  }));
+  U().forEach(v=>{
+    const [x,y]=pos[v];
+    const circ=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circ.setAttribute('cx',x); circ.setAttribute('cy',y); circ.setAttribute('r',16); circ.setAttribute('class','node'+(v===state.focus?' focusNode':''));
+    svg.appendChild(circ);
+    const text=document.createElementNS('http://www.w3.org/2000/svg','text');
+    text.setAttribute('x',x); text.setAttribute('y',y+0.5); text.setAttribute('class','nodeText'); text.textContent=v;
+    svg.appendChild(text);
+  });
+  $('graphHint').textContent = arrows>45 ? 'Dense relation: arrows are softened to reveal structure.' : 'Loops show xRx; paired arrows reveal symmetry.';
+}
+function arraysEqual(a,b){return a.length===b.length && a.every((v,i)=>v===b[i]);}
+function uniqueClasses(){
+  const classes=[];
+  U().forEach(x=>{
+    const cls=classOf(x);
+    if(!classes.some(c=>arraysEqual(c.items,cls))) classes.push({rep:x,items:cls});
+  });
+  return classes;
+}
+function renderClasses(t){
+  const box=$('classes'); box.innerHTML='';
+  const focusCls=classOf(state.focus);
+  if(t.equiv){
+    $('quotientSubtitle').textContent='Distinct equivalence classes: disjoint and cover U.';
+    uniqueClasses().forEach(c=>{
+      const div=document.createElement('div'); div.className='classCard '+(arraysEqual(c.items,focusCls)?'active':'');
+      div.innerHTML=`<div class="classTop"><div class="classTitle">[${c.rep}]<sub>R</sub></div><span class="badge ok">block</span></div><div class="elements">${c.items.map(x=>`<span class="el ${x===state.focus?'active':''}">${x}</span>`).join('')}</div>`;
+      box.appendChild(div);
+    });
+    const note=document.createElement('div'); note.className='partitionNote';
+    note.innerHTML=`<div class="miniFormula">U/R = { ${uniqueClasses().map(c=>'['+c.rep+']').join(', ')} }</div>Same-class rule: xRy iff [x]=[y].`;
+    box.appendChild(note);
+  }else{
+    $('quotientSubtitle').textContent='Raw relation neighborhoods need not form a quotient.';
+    U().slice(0,Math.min(state.n,5)).forEach(x=>{
+      const c=classOf(x);
+      const div=document.createElement('div'); div.className='classCard '+(x===state.focus?'active':'');
+      div.innerHTML=`<div class="classTop"><div class="classTitle">R(${x})</div><span class="badge no">not quotient</span></div><div class="elements">${c.length?c.map(y=>`<span class="el ${y===state.focus?'active':''}">${y}</span>`).join(''):'<span class="partitionNote">empty</span>'}</div>`;
+      box.appendChild(div);
+    });
+    const note=document.createElement('div'); note.className='partitionNote';
+    note.innerHTML='Because R is not an equivalence relation, these sets may overlap without being equal, miss reflexive representatives, or fail the partition theorem.';
+    box.appendChild(note);
+  }
+}
+function renderTriple(){
+  const a=state.a,b=state.b,c=state.c;
+  const ab=R(a,b), bc=R(b,c), ac=R(a,c);
+  const antecedent=ab&&bc;
+  const implication=!antecedent || ac;
+  function row(label,val){return `<div class="truthRow"><div class="truth">${label}</div><div class="truthVal ${val?'t':'f'}">${val?'true':'false'}</div></div>`}
+  $('triplePanel').innerHTML =
+    row(`${a}R${b}`,ab)+row(`${b}R${c}`,bc)+row(`${a}R${c}`,ac)+
+    `<div class="truthRow"><div><div class="truth">(${a}R${b} ∧ ${b}R${c}) ⇒ ${a}R${c}</div><div class="partitionNote">${implication?'This triple respects transitivity.':'This triple violates transitivity.'}</div></div><div class="truthVal ${implication?'t':'f'}">${implication?'ok':'fail'}</div></div>`;
+}
+function render(){
+  updateSliderBounds(); configureParam();
+  const t=propertyTests();
+  renderMatrix(t); renderProperties(t); renderGraph(); renderClasses(t); renderTriple();
+}
+
+$('themeBtn').addEventListener('click',()=>{
+  const body=document.body; const dark=body.getAttribute('data-theme')==='dark';
+  body.setAttribute('data-theme',dark?'light':'dark');
+  $('themeIcon').textContent=dark?'☾':'☀'; $('themeText').textContent=dark?'Dark mode':'Light mode';
+  renderGraph();
+});
+$('relationType').addEventListener('change',e=>{state.type=e.target.value; render();});
+$('nSlider').addEventListener('input',e=>{state.n=+e.target.value; render();});
+$('paramSlider').addEventListener('input',e=>{state.param=+e.target.value; render();});
+['focus','a','b','c'].forEach(k=>$(k+'Slider').addEventListener('input',e=>{state[k]=+e.target.value; render();}));
+$('clearBtn').addEventListener('click',()=>{state.custom=Array.from({length:10},()=>Array(10).fill(false)); render();});
+$('diagBtn').addEventListener('click',()=>{for(let i=0;i<state.n;i++)state.custom[i][i]=true; render();});
+$('symBtn').addEventListener('click',()=>{for(let i=0;i<state.n;i++)for(let j=0;j<state.n;j++){if(state.custom[i][j]||state.custom[j][i]){state.custom[i][j]=state.custom[j][i]=true;}} render();});
+$('transBtn').addEventListener('click',()=>{
+  for(let k=0;k<state.n;k++) for(let i=0;i<state.n;i++) for(let j=0;j<state.n;j++) if(state.custom[i][k]&&state.custom[k][j]) state.custom[i][j]=true;
+  render();
+});
+$('eqBtn').addEventListener('click',()=>{
+  const p=Math.max(1,state.param);
+  state.custom=Array.from({length:10},()=>Array(10).fill(false));
+  for(let i=1;i<=state.n;i++)for(let j=1;j<=state.n;j++) if(sameBlock(i,j,p)) state.custom[i-1][j-1]=true;
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
