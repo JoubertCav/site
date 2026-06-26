@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive macroeconomics diagram for Baumol-Tobin money demand, inventory-theoretic money demand, transaction costs, and the square-root rule.">
+<title>Baumol-Tobin Money Demand | Monetary Economics Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+
+<style>
+:root {
+  --bg: #f6f1e7;
+  --paper: #fffaf1;
+  --paper2: #f1eadc;
+  --ink: #172123;
+  --muted: #64706e;
+  --line: rgba(31, 45, 48, 0.14);
+  --grid: rgba(31, 45, 48, 0.075);
+  --accent: #2f8f83;
+  --accent2: #8fc7be;
+  --soft: rgba(47, 143, 131, 0.13);
+  --gold: #b8944b;
+  --blue: #577f9e;
+  --red: #a85e50;
+  --purple: #85699d;
+  --shadow: 0 16px 36px rgba(55, 45, 31, 0.095);
+}
+
+[data-theme="dark"] {
+  --bg: #0b1116;
+  --paper: #111a21;
+  --paper2: #17232b;
+  --ink: #eef5f3;
+  --muted: #a2afad;
+  --line: rgba(238, 245, 243, 0.13);
+  --grid: rgba(238, 245, 243, 0.065);
+  --accent: #77c9bd;
+  --accent2: #3e857a;
+  --soft: rgba(119, 201, 189, 0.13);
+  --gold: #d4ba74;
+  --blue: #8fb7d5;
+  --red: #d39080;
+  --purple: #b5a0cf;
+  --shadow: 0 22px 52px rgba(0, 0, 0, 0.34);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 8% 0%, var(--soft), transparent 30rem),
+    radial-gradient(circle at 92% 8%, rgba(184,148,75,0.10), transparent 28rem),
+    var(--bg);
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.45;
+}
+
+.app {
+  width: min(1460px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 26px 0 42px;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.8rem, 3.4vw, 3.35rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+}
+
+.subtitle {
+  max-width: 800px;
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 1.35vw, 1.05rem);
+}
+
+.top-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+button { font: inherit; }
+
+.toggle, .pill {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 96%, transparent);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 9px 13px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.pill.active {
+  background: var(--soft);
+  border-color: var(--accent);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.card {
+  background: color-mix(in srgb, var(--paper) 95%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+}
+
+.controls {
+  position: sticky;
+  top: 16px;
+  padding: 17px;
+}
+
+.title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.title-row h2, .title-row h3 {
+  margin: 0;
+  font-size: 0.96rem;
+  letter-spacing: -0.015em;
+}
+
+.title-row span {
+  color: var(--muted);
+  font-size: 0.74rem;
+}
+
+.group {
+  border-top: 1px solid var(--line);
+  padding: 14px 0;
+}
+
+.group:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.group-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.105em;
+  font-size: 0.72rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.row { margin: 13px 0; }
+
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.86rem;
+  margin-bottom: 7px;
+}
+
+.label label { font-weight: 650; }
+
+.value {
+  color: var(--accent);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.main {
+  display: grid;
+  gap: 18px;
+}
+
+.model {
+  padding: 17px;
+}
+
+.model-grid {
+  display: grid;
+  grid-template-columns: 1.14fr 0.86fr;
+  gap: 14px;
+  margin-bottom: 17px;
+}
+
+.eqbox {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 15px;
+}
+
+.eq-title {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.105em;
+  font-size: 0.72rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.equations {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1rem, 1.3vw, 1.18rem);
+  line-height: 1.75;
+  overflow-x: auto;
+}
+
+.equations .line { white-space: nowrap; }
+
+.note {
+  color: var(--muted);
+  font-size: 0.83rem;
+  margin-top: 8px;
+}
+
+.diagrams {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.diagram {
+  padding: 15px;
+}
+
+.dhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.dhead h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.dhead p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.badge {
+  border: 1px solid var(--line);
+  background: var(--soft);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.svgbox {
+  height: 560px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 42px 42px;
+  overflow: hidden;
+}
+
+.svgbox.small { height: 500px; }
+
+svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.bottom {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 18px;
+}
+
+.info { padding: 17px; }
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.kpi {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  padding: 12px;
+}
+
+.kpi small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.71rem;
+  margin-bottom: 3px;
+}
+
+.kpi strong {
+  font-size: 1.02rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.functions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 11px;
+}
+
+.fcard {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.fcard h4 {
+  margin: 0 0 6px;
+  font-size: 0.9rem;
+}
+
+.fcard p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.notice {
+  margin-top: 13px;
+  border-left: 3px solid var(--accent);
+  background: var(--soft);
+  border-radius: 16px;
+  padding: 13px 14px;
+}
+
+.notice h4 {
+  margin: 0 0 7px;
+  font-size: 0.9rem;
+}
+
+.notice ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 12px));
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 12px;
+  padding: 9px 11px;
+  font-size: 0.78rem;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transition: opacity 120ms ease;
+  z-index: 100;
+  max-width: 280px;
+}
+
+@media (max-width: 1100px) {
+  .layout, .diagrams, .bottom, .model-grid { grid-template-columns: 1fr; }
+  .controls { position: static; }
+  .kpis, .functions { grid-template-columns: repeat(2, 1fr); }
+  .svgbox { height: 520px; }
+  .svgbox.small { height: 470px; }
+}
+
+@media (max-width: 640px) {
+  .app { width: min(100% - 18px, 1380px); padding-top: 18px; }
+  .header { grid-template-columns: 1fr; }
+  .top-actions { justify-content: flex-start; }
+  .kpis, .functions { grid-template-columns: 1fr; }
+  .svgbox { height: 420px; }
+  .svgbox.small { height: 390px; }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <header class="header">
+    <div>
+      <div class="eyebrow">Macroeconomics notebook</div>
+      <h1>Baumol–Tobin Money Demand</h1>
+      <p class="subtitle">
+        Money demand as an inventory problem: choose how often to convert bonds into cash, balancing transaction costs against foregone interest.
+      </p>
+    </div>
+    <div class="top-actions">
+      <button class="toggle" id="themeBtn" type="button">◐ Theme</button>
+      <button class="pill" id="animateBtn" type="button">Animate withdrawals</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="card controls">
+      <div class="title-row">
+        <h2>Controls</h2>
+        <span>real units</span>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Spending and opportunity cost</div>
+        <div class="row">
+          <div class="label"><label for="spending">Period spending Y</label><span class="value" id="vSpending"></span></div>
+          <input id="spending" type="range" min="500" max="10000" step="100" value="4800">
+        </div>
+
+        <div class="row">
+          <div class="label"><label for="interest">Interest rate i</label><span class="value" id="vInterest"></span></div>
+          <input id="interest" type="range" min="0.5" max="20" step="0.1" value="5.0">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Transaction technology</div>
+        <div class="row">
+          <div class="label"><label for="fixedCost">Fixed cost per conversion b</label><span class="value" id="vFixedCost"></span></div>
+          <input id="fixedCost" type="range" min="1" max="160" step="1" value="40">
+        </div>
+
+        <div class="row">
+          <div class="label"><label for="periods">Withdrawal intervals shown</label><span class="value" id="vPeriods"></span></div>
+          <input id="periods" type="range" min="2" max="12" step="1" value="6">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Comparison shocks</div>
+        <div class="row">
+          <div class="label"><label for="incomeShock">Income multiplier</label><span class="value" id="vIncomeShock"></span></div>
+          <input id="incomeShock" type="range" min="0.5" max="2.0" step="0.05" value="1.0">
+        </div>
+
+        <div class="row">
+          <div class="label"><label for="costShock">Fintech cost multiplier</label><span class="value" id="vCostShock"></span></div>
+          <input id="costShock" type="range" min="0.25" max="2.0" step="0.05" value="1.0">
+        </div>
+      </div>
+    </aside>
+
+    <section class="main">
+      <section class="card model">
+        <div class="model-grid">
+          <div class="eqbox">
+            <div class="eq-title">Minimal symbolic model</div>
+            <div class="equations">
+              <div class="line">Choose withdrawal size C.</div>
+              <div class="line">Average money: Mᵈ = C/2</div>
+              <div class="line">Number of conversions: N = Y/C</div>
+              <div class="line">Cost(C) = bY/C + iC/2</div>
+            </div>
+          </div>
+
+          <div class="eqbox">
+            <div class="eq-title">Square-root rule</div>
+            <div class="equations">
+              <div class="line">C* = √(2bY/i)</div>
+              <div class="line">Mᵈ* = C*/2 = √(bY/(2i))</div>
+              <div class="line">N* = Y/C* = √(iY/(2b))</div>
+            </div>
+            <div class="note">The model predicts income elasticity 1/2 and interest elasticity −1/2 for transactions money demand.</div>
+          </div>
+        </div>
+
+        <div class="diagrams">
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>Cash inventory over time</h3>
+                <p>Cash is withdrawn in lumps, spent down, then replenished.</p>
+              </div>
+              <div class="badge" id="cashBadge">C*</div>
+            </div>
+            <div class="svgbox">
+              <svg id="inventorySvg" viewBox="0 0 760 530" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>Cost minimization</h3>
+                <p>The optimum equates marginal savings in transaction costs with marginal opportunity cost.</p>
+              </div>
+              <div class="badge" id="costBadge">min</div>
+            </div>
+            <div class="svgbox small">
+              <svg id="costSvg" viewBox="0 0 620 390" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bottom">
+        <div class="card info">
+          <div class="title-row">
+            <h3>Current optimum</h3>
+            <span>computed live</span>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><small>Withdrawal C*</small><strong id="kCstar"></strong></div>
+            <div class="kpi"><small>Money demand Mᵈ*</small><strong id="kMstar"></strong></div>
+            <div class="kpi"><small>Conversions N*</small><strong id="kNstar"></strong></div>
+            <div class="kpi"><small>Minimum cost</small><strong id="kCost"></strong></div>
+          </div>
+          <div class="notice">
+            <h4>What to notice</h4>
+            <ul>
+              <li>Higher spending raises optimal cash withdrawals and average money balances.</li>
+              <li>Higher interest makes holding cash more expensive, so money demand falls.</li>
+              <li>Lower conversion costs make withdrawals smaller and more frequent.</li>
+              <li>The square-root rule makes money demand less than proportional to income.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card info">
+          <div class="title-row">
+            <h3>Economic interpretation</h3>
+            <span>inventory theory</span>
+          </div>
+          <div class="functions">
+            <div class="fcard">
+              <h4>Transaction cost</h4>
+              <p>Small withdrawals imply many trips to convert bonds into money.</p>
+            </div>
+            <div class="fcard">
+              <h4>Opportunity cost</h4>
+              <p>Large withdrawals imply high average cash balances and lost interest.</p>
+            </div>
+            <div class="fcard">
+              <h4>Optimal inventory</h4>
+              <p>The chosen withdrawal size balances fewer trips against more idle cash.</p>
+            </div>
+          </div>
+
+          <div class="notice">
+            <h4>Exam-style summary</h4>
+            <ul>
+              <li>Baumol–Tobin gives a microfoundation for transactions demand for money.</li>
+              <li>Total cost is bY/C + iC/2.</li>
+              <li>FOC: −bY/C² + i/2 = 0.</li>
+              <li>Therefore C* = √(2bY/i) and Mᵈ* = √(bY/(2i)).</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const state = {
+  theme: localStorage.getItem("baumol-tobin-theme") || "light",
+  animating: false,
+  phase: 0
+};
+
+const $ = id => document.getElementById(id);
+
+const inputs = {
+  spending: $("spending"),
+  interest: $("interest"),
+  fixedCost: $("fixedCost"),
+  periods: $("periods"),
+  incomeShock: $("incomeShock"),
+  costShock: $("costShock")
+};
+
+const values = {
+  spending: $("vSpending"),
+  interest: $("vInterest"),
+  fixedCost: $("vFixedCost"),
+  periods: $("vPeriods"),
+  incomeShock: $("vIncomeShock"),
+  costShock: $("vCostShock")
+};
+
+const inventorySvg = $("inventorySvg");
+const costSvg = $("costSvg");
+const tooltip = $("tooltip");
+
+function num(x) { return Number(x); }
+
+function fmt(x, d = 0) {
+  return Number(x).toLocaleString("en-US", {
+    maximumFractionDigits: d,
+    minimumFractionDigits: d
+  });
+}
+
+function v(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function data() {
+  const rawY = num(inputs.spending.value);
+  const incomeMult = num(inputs.incomeShock.value);
+  const costMult = num(inputs.costShock.value);
+  const Y = rawY * incomeMult;
+  const iPercent = num(inputs.interest.value);
+  const i = iPercent / 100;
+  const b = num(inputs.fixedCost.value) * costMult;
+  const intervals = num(inputs.periods.value);
+
+  const Cstar = Math.sqrt((2 * b * Y) / Math.max(i, 0.0001));
+  const Mstar = Cstar / 2;
+  const Nstar = Y / Cstar;
+  const transCost = b * Y / Cstar;
+  const oppCost = i * Cstar / 2;
+  const minCost = transCost + oppCost;
+
+  return { rawY, incomeMult, costMult, Y, iPercent, i, b, intervals, Cstar, Mstar, Nstar, transCost, oppCost, minCost };
+}
+
+function setTheme() {
+  document.documentElement.dataset.theme = state.theme;
+  localStorage.setItem("baumol-tobin-theme", state.theme);
+}
+
+function svgEl(tag, attrs = {}) {
+  const e = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  Object.entries(attrs).forEach(([k, val]) => e.setAttribute(k, val));
+  return e;
+}
+
+function add(parent, child) {
+  parent.appendChild(child);
+  return child;
+}
+
+function text(parent, x, y, content, attrs = {}) {
+  const e = svgEl("text", {
+    x, y,
+    fill: attrs.fill || v("--ink"),
+    "font-size": attrs.size || 14,
+    "font-weight": attrs.weight || 500,
+    "text-anchor": attrs.anchor || "start",
+    "dominant-baseline": attrs.base || "auto",
+    opacity: attrs.opacity ?? 1
+  });
+  e.textContent = content;
+  return add(parent, e);
+}
+
+function rect(parent, x, y, width, height, attrs = {}) {
+  return add(parent, svgEl("rect", {
+    x, y, width, height,
+    rx: attrs.rx || 14,
+    fill: attrs.fill || "transparent",
+    stroke: attrs.stroke || "none",
+    "stroke-width": attrs.sw || 1,
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function line(parent, x1, y1, x2, y2, attrs = {}) {
+  return add(parent, svgEl("line", {
+    x1, y1, x2, y2,
+    stroke: attrs.stroke || v("--line"),
+    "stroke-width": attrs.sw || 1,
+    "stroke-dasharray": attrs.dash || "",
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function path(parent, d, attrs = {}) {
+  return add(parent, svgEl("path", {
+    d,
+    fill: attrs.fill || "none",
+    stroke: attrs.stroke || v("--ink"),
+    "stroke-width": attrs.sw || 2,
+    "stroke-linecap": "round",
+    "stroke-linejoin": "round",
+    "stroke-dasharray": attrs.dash || "",
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function circle(parent, cx, cy, r, attrs = {}) {
+  return add(parent, svgEl("circle", {
+    cx, cy, r,
+    fill: attrs.fill || "transparent",
+    stroke: attrs.stroke || "none",
+    "stroke-width": attrs.sw || 1,
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function tip(ev, html) {
+  tooltip.innerHTML = html;
+  tooltip.style.left = ev.clientX + "px";
+  tooltip.style.top = ev.clientY + "px";
+  tooltip.style.opacity = 1;
+}
+
+function untip() { tooltip.style.opacity = 0; }
+
+function updateLabels(d) {
+  values.spending.textContent = fmt(num(inputs.spending.value));
+  values.interest.textContent = `${fmt(num(inputs.interest.value), 1)}%`;
+  values.fixedCost.textContent = fmt(num(inputs.fixedCost.value));
+  values.periods.textContent = fmt(num(inputs.periods.value));
+  values.incomeShock.textContent = `${fmt(num(inputs.incomeShock.value), 2)}×`;
+  values.costShock.textContent = `${fmt(num(inputs.costShock.value), 2)}×`;
+
+  $("kCstar").textContent = fmt(d.Cstar);
+  $("kMstar").textContent = fmt(d.Mstar);
+  $("kNstar").textContent = fmt(d.Nstar, 2);
+  $("kCost").textContent = fmt(d.minCost, 2);
+
+  $("cashBadge").textContent = `Mᵈ* = ${fmt(d.Mstar)}`;
+  $("costBadge").textContent = `C* = ${fmt(d.Cstar)}`;
+}
+
+function drawInventory(d) {
+  inventorySvg.innerHTML = "";
+
+  const accent = v("--accent");
+  const muted = v("--muted");
+  const linec = v("--line");
+  const ink = v("--ink");
+  const paper2 = v("--paper2");
+  const gold = v("--gold");
+  const blue = v("--blue");
+  const red = v("--red");
+
+  const base = { Y: 4800, i: 0.05, b: 40 };
+  base.Cstar = Math.sqrt((2 * base.b * base.Y) / base.i);
+  base.Mstar = base.Cstar / 2;
+  base.Nstar = base.Y / base.Cstar;
+
+  rect(inventorySvg, 42, 28, 676, 474, { fill: "rgba(0,0,0,0.01)", stroke: linec, rx: 24 });
+  text(inventorySvg, 72, 60, "cash inventory: withdrawals, spending, and average money", { fill: muted, size: 12.5, weight: 800 });
+
+  const x0 = 76, y0 = 382, W = 604, H = 250;
+  line(inventorySvg, x0, y0, x0 + W, y0, { stroke: linec, sw: 1.45 });
+  line(inventorySvg, x0, y0, x0, y0 - H, { stroke: linec, sw: 1.45 });
+
+  for (let j = 1; j < 6; j++) {
+    const gy = y0 - j * H / 6;
+    line(inventorySvg, x0, gy, x0 + W, gy, { stroke: linec, sw: 1, opacity: .36 });
+  }
+  for (let k = 1; k < 8; k++) {
+    const gx = x0 + k * W / 8;
+    line(inventorySvg, gx, y0 - H, gx, y0, { stroke: linec, sw: 1, opacity: .30 });
+  }
+
+  const yMax = Math.max(base.Cstar, d.Cstar) * 1.30;
+  const yMap = C => y0 - Math.min(C / yMax, 1) * H;
+
+  function sawPath(C, periods) {
+    const top = yMap(C);
+    const step = W / periods;
+    let p = "";
+    for (let k = 0; k < periods; k++) {
+      const xA = x0 + k * step;
+      const xB = x0 + (k + 1) * step;
+      p += `M${xA},${top} L${xB},${y0} `;
+    }
+    return { p, top, step };
+  }
+
+  function sawArea(C, periods) {
+    const s = sawPath(C, periods);
+    return `M${x0},${y0} ${s.p} L${x0 + W},${y0} Z`;
+  }
+
+  const baseline = sawPath(base.Cstar, d.intervals);
+  const current = sawPath(d.Cstar, d.intervals);
+
+  path(inventorySvg, sawArea(base.Cstar, d.intervals), { fill: muted, stroke: "none", opacity: .045 });
+  path(inventorySvg, baseline.p, { stroke: muted, sw: 2.1, dash: "6 7", opacity: .55 });
+
+  path(inventorySvg, sawArea(d.Cstar, d.intervals), { fill: accent, stroke: "none", opacity: .085 });
+  path(inventorySvg, current.p, { stroke: accent, sw: 3.25 });
+
+  for (let k = 1; k < d.intervals; k++) {
+    const x = x0 + k * current.step;
+    line(inventorySvg, x, y0, x, current.top, { stroke: gold, sw: 1.25, dash: "4 5", opacity: .78 });
+    circle(inventorySvg, x, current.top, 4, { fill: gold, stroke: "none" });
+  }
+
+  const avgCurrent = yMap(d.Mstar);
+  const avgBase = yMap(base.Mstar);
+  line(inventorySvg, x0, avgBase, x0 + W, avgBase, { stroke: muted, sw: 1.7, dash: "5 7", opacity: .55 });
+  line(inventorySvg, x0, avgCurrent, x0 + W, avgCurrent, { stroke: blue, sw: 2.5, dash: "7 6" });
+
+  text(inventorySvg, x0 + W, y0 + 30, "time within the period", { fill: muted, size: 12, anchor: "end", weight: 740 });
+  text(inventorySvg, x0 - 22, y0 - H - 8, "cash balance", { fill: muted, size: 12, weight: 740 });
+  text(inventorySvg, x0 + W - 8, avgCurrent - 8, "average money Mᵈ = C*/2", { fill: blue, size: 12, anchor: "end", weight: 850 });
+
+  function miniCard(x, y, title, value, color) {
+    rect(inventorySvg, x, y, 156, 42, { fill: paper2, stroke: linec, rx: 14 });
+    text(inventorySvg, x + 14, y + 17, title, { fill: muted, size: 10.5, weight: 800 });
+    text(inventorySvg, x + 14, y + 33, value, { fill: color, size: 13.4, weight: 850 });
+  }
+
+  miniCard(88, 82, "current C*", fmt(d.Cstar), accent);
+  miniCard(258, 82, "average Mᵈ*", fmt(d.Mstar), blue);
+  miniCard(428, 82, "conversions N*", fmt(d.Nstar, 2), gold);
+
+  const movingX = x0 + (state.phase % 1) * W;
+  const local = ((state.phase * d.intervals) % 1);
+  const movingY = current.top + local * (y0 - current.top);
+  if (state.animating) {
+    circle(inventorySvg, movingX, movingY, 12, { fill: red, opacity: .14 });
+    circle(inventorySvg, movingX, movingY, 6, { fill: red, stroke: ink, sw: 1.2 });
+  }
+
+  rect(inventorySvg, 104, 430, 552, 36, { fill: paper2, stroke: linec, rx: 15, opacity: .98 });
+  text(inventorySvg, 124, 453, "Inventory logic: larger withdrawals mean fewer trips but higher average idle cash.", {
+    fill: muted,
+    size: 12.1,
+    weight: 800
+  });
+
+  rect(inventorySvg, 104, 474, 552, 30, { fill: paper2, stroke: linec, rx: 14, opacity: .96 });
+  text(inventorySvg, 124, 494, "Faint path = baseline. Solid path = current optimum, so parameter changes visibly move the cash cycle.", {
+    fill: accent,
+    size: 11.4,
+    weight: 800
+  });
+}
+
+function drawCost(d) {
+  costSvg.innerHTML = "";
+
+  const accent = v("--accent");
+  const muted = v("--muted");
+  const linec = v("--line");
+  const ink = v("--ink");
+  const paper2 = v("--paper2");
+  const gold = v("--gold");
+  const blue = v("--blue");
+  const red = v("--red");
+
+  const base = { Y: 4800, i: 0.05, b: 40 };
+  base.Cstar = Math.sqrt((2 * base.b * base.Y) / base.i);
+  base.Mstar = base.Cstar / 2;
+  base.transCost = base.b * base.Y / base.Cstar;
+  base.oppCost = base.i * base.Cstar / 2;
+  base.minCost = base.transCost + base.oppCost;
+
+  rect(costSvg, 34, 26, 552, 324, { fill: "rgba(0,0,0,0.01)", stroke: linec, rx: 22 });
+  text(costSvg, 62, 56, "cost minimization and the square-root rule", { fill: muted, size: 12.5, weight: 800 });
+
+  const x0 = 62, y0 = 278, W = 492, H = 190;
+  line(costSvg, x0, y0, x0 + W, y0, { stroke: linec, sw: 1.4 });
+  line(costSvg, x0, y0, x0, y0 - H, { stroke: linec, sw: 1.4 });
+
+  for (let j = 1; j < 5; j++) {
+    const gy = y0 - j * H / 5;
+    line(costSvg, x0, gy, x0 + W, gy, { stroke: linec, sw: 1, opacity: .36 });
+  }
+  for (let k = 1; k < 8; k++) {
+    const gx = x0 + k * W / 8;
+    line(costSvg, gx, y0 - H, gx, y0, { stroke: linec, sw: 1, opacity: .30 });
+  }
+
+  const minC = Math.max(20, Math.min(base.Cstar, d.Cstar) * .18);
+  const maxC = Math.max(base.Cstar, d.Cstar) * 2.75;
+
+  function totalCost(C, model) { return model.b * model.Y / C + model.i * C / 2; }
+  function transactionCost(C, model) { return model.b * model.Y / C; }
+  function opportunityCost(C, model) { return model.i * C / 2; }
+
+  let maxCost = 0;
+  for (let s = 0; s <= 180; s++) {
+    const C = minC + (maxC - minC) * s / 180;
+    maxCost = Math.max(
+      maxCost,
+      totalCost(C, d),
+      totalCost(C, base),
+      transactionCost(C, d),
+      opportunityCost(C, d)
+    );
+  }
+  maxCost *= 1.08;
+
+  function map(C, cost) {
+    return [
+      x0 + (C - minC) / (maxC - minC) * W,
+      y0 - cost / maxCost * H
+    ];
+  }
+
+  function curve(fn, model) {
+    const pts = [];
+    for (let s = 0; s <= 190; s++) {
+      const C = minC + (maxC - minC) * s / 190;
+      pts.push(map(C, fn(C, model)));
+    }
+    return pts.map((p, i) => `${i === 0 ? "M" : "L"}${p[0]},${p[1]}`).join(" ");
+  }
+
+  path(costSvg, curve(totalCost, base), { stroke: muted, sw: 2.2, dash: "7 7", opacity: .55 });
+  path(costSvg, curve(transactionCost, d), { stroke: gold, sw: 2.1, dash: "6 7", opacity: .82 });
+  path(costSvg, curve(opportunityCost, d), { stroke: blue, sw: 2.1, dash: "6 7", opacity: .82 });
+  path(costSvg, curve(totalCost, d), { stroke: accent, sw: 3.2 });
+
+  const [xStar, yStar] = map(d.Cstar, d.minCost);
+  const [xBase, yBase] = map(base.Cstar, base.minCost);
+
+  line(costSvg, xBase, y0, xBase, yBase, { stroke: muted, sw: 1.05, dash: "4 6", opacity: .62 });
+  circle(costSvg, xBase, yBase, 5.1, { fill: muted, stroke: "none", opacity: .72 });
+
+  line(costSvg, xStar, y0, xStar, yStar, { stroke: muted, sw: 1.05, dash: "5 5" });
+  line(costSvg, x0, yStar, xStar, yStar, { stroke: muted, sw: 1.05, dash: "5 5" });
+
+  circle(costSvg, xStar, yStar, 11.5, { fill: accent, opacity: .16 });
+  const dot = circle(costSvg, xStar, yStar, 6.2, { fill: accent, stroke: ink, sw: 1.25 });
+  dot.addEventListener("mousemove", ev => tip(ev, `<b>Cost minimum</b><br>C* = ${fmt(d.Cstar)}<br>Mᵈ* = ${fmt(d.Mstar)}<br>TC = ${fmt(d.minCost, 2)}<br><br>At optimum:<br>bY/C* = iC*/2`));
+  dot.addEventListener("mouseleave", untip);
+
+  text(costSvg, x0 + W, y0 + 24, "withdrawal size C", { fill: muted, size: 11.5, weight: 740, anchor: "end" });
+  text(costSvg, x0 - 18, y0 - H - 7, "cost", { fill: muted, size: 11.5, weight: 740 });
+
+  function mini(x, y, label, value, color) {
+    rect(costSvg, x, y, 126, 31, { fill: paper2, stroke: linec, rx: 12 });
+    text(costSvg, x + 11, y + 13, label, { fill: muted, size: 9.5, weight: 800 });
+    text(costSvg, x + 11, y + 26, value, { fill: color, size: 11.8, weight: 850 });
+  }
+
+  mini(76, 70, "current C*", fmt(d.Cstar), accent);
+  mini(214, 70, "baseline C*", fmt(base.Cstar), muted);
+  mini(352, 70, "min cost", fmt(d.minCost, 2), red);
+
+  // Legend
+  function legend(x, y, color, dash, label) {
+    line(costSvg, x, y, x + 20, y, { stroke: color, sw: 2.4, dash });
+    text(costSvg, x + 28, y + 4, label, { fill: muted, size: 10.8, weight: 750 });
+  }
+
+  rect(costSvg, 82, 304, 456, 30, { fill: paper2, stroke: linec, rx: 13, opacity: .97 });
+  legend(102, 323, muted, "6 7", "baseline");
+  legend(208, 323, gold, "5 6", "transaction cost");
+  legend(350, 323, blue, "5 6", "opportunity cost");
+  legend(492, 323, accent, "", "total");
+
+  rect(costSvg, 82, 354, 456, 26, { fill: paper2, stroke: linec, rx: 12, opacity: .96 });
+  text(costSvg, 100, 371, "Square-root rule: C* minimizes bY/C + iC/2, so Mᵈ* = C*/2.", {
+    fill: muted,
+    size: 11.1,
+    weight: 790
+  });
+}
+
+function update() {
+  const d = data();
+  updateLabels(d);
+  drawInventory(d);
+  drawCost(d);
+}
+
+let animationTimer = null;
+
+function animateWithdrawals() {
+  if (state.animating) {
+    state.animating = false;
+    $("animateBtn").classList.remove("active");
+    if (animationTimer) cancelAnimationFrame(animationTimer);
+    update();
+    return;
+  }
+
+  state.animating = true;
+  $("animateBtn").classList.add("active");
+  let last = performance.now();
+
+  function frame(now) {
+    const dt = (now - last) / 1000;
+    last = now;
+    state.phase = (state.phase + dt * 0.18) % 1;
+    update();
+    if (state.animating) animationTimer = requestAnimationFrame(frame);
+  }
+
+  animationTimer = requestAnimationFrame(frame);
+}
+
+Object.values(inputs).forEach(input => input.addEventListener("input", update));
+
+$("themeBtn").addEventListener("click", () => {
+  state.theme = state.theme === "dark" ? "light" : "dark";
+  setTheme();
+  update();
+});
+
+$("animateBtn").addEventListener("click", animateWithdrawals);
+
+setTheme();
+update();
+</script>
+</body>
+</html>

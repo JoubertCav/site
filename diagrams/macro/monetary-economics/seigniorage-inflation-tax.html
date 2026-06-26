@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive macroeconomics diagram for seigniorage and the inflation tax: real money balances, inflation revenue, Laffer-curve logic, and hyperinflation risk.">
+<title>Seigniorage and the Inflation Tax | Monetary Economics Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "\\(", right: "\\)", display: false},
+        {left: "\\[", right: "\\]", display: true}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+
+<style>
+:root{
+  --bg:#f6f1e7;
+  --paper:#fffaf1;
+  --paper2:#f1eadc;
+  --ink:#172123;
+  --muted:#64706e;
+  --line:rgba(31,45,48,.14);
+  --grid:rgba(31,45,48,.07);
+  --accent:#2f8f83;
+  --soft:rgba(47,143,131,.13);
+  --gold:#b8944b;
+  --blue:#577f9e;
+  --red:#a85e50;
+  --purple:#85699d;
+  --shadow:0 16px 36px rgba(55,45,31,.095);
+}
+[data-theme="dark"]{
+  --bg:#0b1116;
+  --paper:#111a21;
+  --paper2:#17232b;
+  --ink:#eef5f3;
+  --muted:#a2afad;
+  --line:rgba(238,245,243,.13);
+  --grid:rgba(238,245,243,.06);
+  --accent:#77c9bd;
+  --soft:rgba(119,201,189,.13);
+  --gold:#d4ba74;
+  --blue:#8fb7d5;
+  --red:#d39080;
+  --purple:#b5a0cf;
+  --shadow:0 22px 52px rgba(0,0,0,.34);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 8% 0%, var(--soft), transparent 30rem),
+    radial-gradient(circle at 92% 8%, rgba(184,148,75,.10), transparent 28rem),
+    var(--bg);
+  color:var(--ink);
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height:1.45;
+}
+.app{width:min(1460px, calc(100% - 28px)); margin:0 auto; padding:26px 0 42px;}
+.header{
+  display:grid; grid-template-columns:1fr auto; gap:18px; align-items:start; margin-bottom:18px;
+}
+.eyebrow{
+  color:var(--accent); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; font-weight:800; margin-bottom:8px;
+}
+h1{
+  margin:0; font-family:Georgia, "Times New Roman", serif; font-size:clamp(1.78rem, 3.1vw, 3.1rem);
+  line-height:1.04; letter-spacing:-.035em; font-weight:500;
+}
+.subtitle{
+  max-width:950px; margin:12px 0 0; color:var(--muted); font-size:clamp(.95rem, 1.35vw, 1.05rem);
+}
+.top-actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
+button{font:inherit}
+.toggle,.pill{
+  border:1px solid var(--line); background:color-mix(in srgb, var(--paper) 96%, transparent); color:var(--ink);
+  border-radius:999px; padding:9px 13px; cursor:pointer; box-shadow:var(--shadow);
+}
+.layout{display:grid; grid-template-columns:320px minmax(0,1fr); gap:18px; align-items:start;}
+.card{
+  background:color-mix(in srgb, var(--paper) 95%, transparent);
+  border:1px solid var(--line); border-radius:24px; box-shadow:var(--shadow);
+}
+.controls{position:sticky; top:16px; padding:17px;}
+.title-row{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:14px;
+}
+.title-row h2,.title-row h3{margin:0; font-size:.96rem; letter-spacing:-.015em;}
+.title-row span{color:var(--muted); font-size:.74rem;}
+.group{border-top:1px solid var(--line); padding:14px 0;}
+.group:first-of-type{border-top:0; padding-top:0;}
+.group-label{
+  color:var(--muted); text-transform:uppercase; letter-spacing:.105em; font-size:.72rem; font-weight:800; margin-bottom:12px;
+}
+.row{margin:13px 0;}
+.label{
+  display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:.86rem; margin-bottom:7px;
+}
+.label label{font-weight:650;}
+.value{color:var(--accent); font-weight:800; font-variant-numeric:tabular-nums;}
+input[type="range"]{width:100%; accent-color:var(--accent);}
+.main{display:grid; gap:18px;}
+.model{padding:17px;}
+.model-grid{display:grid; grid-template-columns:1.08fr .92fr; gap:14px; margin-bottom:17px;}
+.eqbox{
+  background:var(--paper2); border:1px solid var(--line); border-radius:20px; padding:15px;
+}
+.eq-title{
+  color:var(--muted); text-transform:uppercase; letter-spacing:.105em; font-size:.72rem; font-weight:800; margin-bottom:10px;
+}
+.equations{
+  font-family:Georgia, "Times New Roman", serif; font-size:clamp(1rem, 1.25vw, 1.14rem); line-height:1.75; overflow-x:auto;
+}
+.equations .line{white-space:nowrap;}
+.equations .katex{font-size:1.03em;}
+.eqbox .katex-display{margin:.35rem 0;}
+.note{color:var(--muted); font-size:.83rem; margin-top:8px;}
+.diagrams{display:grid; grid-template-columns:1fr; gap:22px;}
+.diagram{padding:15px;}
+.dhead{
+  display:flex; justify-content:space-between; align-items:start; gap:12px; margin-bottom:10px;
+}
+.dhead h3{margin:0; font-size:1rem;}
+.dhead p{margin:4px 0 0; color:var(--muted); font-size:.84rem;}
+.badge{
+  border:1px solid var(--line); background:var(--soft); color:var(--accent);
+  border-radius:999px; padding:6px 10px; font-size:.76rem; font-weight:800; white-space:nowrap;
+}
+.svgbox{
+  height:560px; border-radius:20px; border:1px solid var(--line);
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:42px 42px; overflow:hidden;
+}
+.svgbox.small{height:490px;}
+svg{width:100%; height:100%; display:block;}
+.bottom{display:grid; grid-template-columns:.9fr 1.1fr; gap:18px;}
+.info{padding:17px;}
+.kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:10px;}
+.kpi{
+  background:var(--paper2); border:1px solid var(--line); border-radius:17px; padding:12px;
+}
+.kpi small{display:block; color:var(--muted); font-size:.71rem; margin-bottom:3px;}
+.kpi strong{font-size:1.02rem; font-variant-numeric:tabular-nums;}
+.functions{display:grid; grid-template-columns:repeat(3,1fr); gap:11px;}
+.fcard{
+  background:var(--paper2); border:1px solid var(--line); border-radius:18px; padding:14px;
+}
+.fcard h4{margin:0 0 6px; font-size:.9rem;}
+.fcard p{margin:0; color:var(--muted); font-size:.82rem;}
+.notice{
+  margin-top:13px; border-left:3px solid var(--accent); background:var(--soft);
+  border-radius:16px; padding:13px 14px;
+}
+.notice h4{margin:0 0 7px; font-size:.9rem;}
+.notice ul{margin:0; padding-left:18px; color:var(--muted); font-size:.84rem;}
+.tooltip{
+  position:fixed; pointer-events:none; transform:translate(-50%, calc(-100% - 12px));
+  background:var(--ink); color:var(--bg); border-radius:12px; padding:9px 11px;
+  font-size:.78rem; box-shadow:var(--shadow); opacity:0; transition:opacity 120ms ease;
+  z-index:100; max-width:320px;
+}
+@media (max-width:1100px){
+  .layout,.bottom,.model-grid{grid-template-columns:1fr;}
+  .controls{position:static;}
+  .kpis,.functions{grid-template-columns:repeat(2,1fr);}
+  .svgbox{height:520px;}
+  .svgbox.small{height:460px;}
+}
+@media (max-width:640px){
+  .app{width:min(100% - 18px, 1460px); padding-top:18px;}
+  .header{grid-template-columns:1fr;}
+  .top-actions{justify-content:flex-start;}
+  .kpis,.functions{grid-template-columns:1fr;}
+  .svgbox{height:420px;}
+  .svgbox.small{height:390px;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div>
+      <div class="eyebrow">Macroeconomics notebook</div>
+      <h1>Seigniorage and the Inflation Tax</h1>
+      <p class="subtitle">
+        Seigniorage is the real revenue the government obtains from money creation. At low inflation, higher inflation can raise this revenue. But as inflation erodes real money balances, the tax base shrinks and a Laffer-curve logic emerges. If fiscal needs exceed the maximum attainable seigniorage, hyperinflation risk appears.
+      </p>
+    </div>
+    <div class="top-actions">
+      <button class="toggle" id="themeBtn" type="button">◐ Theme</button>
+      <button class="pill" id="shockBtn" type="button">Expectation shock</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="card controls">
+      <div class="title-row">
+        <h2>Controls</h2>
+        <span>inflation economics</span>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Money demand</div>
+        <div class="row">
+          <div class="label"><label for="Y">Real income Y</label><span class="value" id="vY"></span></div>
+          <input id="Y" type="range" min="60" max="220" step="1" value="120">
+        </div>
+        <div class="row">
+          <div class="label"><label for="k">Money demand scale k</label><span class="value" id="vk"></span></div>
+          <input id="k" type="range" min="0.10" max="1.20" step="0.01" value="0.55">
+        </div>
+        <div class="row">
+          <div class="label"><label for="eta">Inflation semi-elasticity η</label><span class="value" id="veta"></span></div>
+          <input id="eta" type="range" min="0.5" max="8" step="0.1" value="2.2">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Current regime</div>
+        <div class="row">
+          <div class="label"><label for="pi">Current inflation π</label><span class="value" id="vpi"></span></div>
+          <input id="pi" type="range" min="0" max="2.00" step="0.01" value="0.25">
+        </div>
+        <div class="row">
+          <div class="label"><label for="need">Fiscal financing need d</label><span class="value" id="vneed"></span></div>
+          <input id="need" type="range" min="0" max="40" step="0.2" value="9.0">
+        </div>
+        <div class="row">
+          <div class="label"><label for="expect">Expected-inflation premium χ</label><span class="value" id="vexpect"></span></div>
+          <input id="expect" type="range" min="0" max="2.0" step="0.05" value="0.20">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Interpretation switches</div>
+        <div class="row">
+          <div class="label"><label for="hyper">Hyperinflation sensitivity h</label><span class="value" id="vhyper"></span></div>
+          <input id="hyper" type="range" min="0" max="2.0" step="0.05" value="0.55">
+        </div>
+      </div>
+    </aside>
+
+    <section class="main">
+      <section class="card model">
+        <div class="model-grid">
+          <div class="eqbox">
+            <div class="eq-title">Minimal symbolic model</div>
+            <div class="equations">
+              <div class="line">\( m(\pi) = \dfrac{M}{P} = kY e^{-\eta\pi} \)</div>
+              <div class="line">\( s(\pi) = \pi \cdot m(\pi) \)</div>
+              <div class="line">\( \pi^* = \dfrac{1}{\eta} \)</div>
+            </div>
+            <div class="note">Real balances fall with inflation. Seigniorage equals inflation times the real money stock. With exponential money demand, the revenue-maximizing inflation rate is \(\pi^* = 1/\eta\).</div>
+          </div>
+
+          <div class="eqbox">
+            <div class="eq-title">Fiscal logic and risk</div>
+            <div class="equations">
+              <div class="line">\( d > s_{\max} \Rightarrow \) inflation finance is insufficient</div>
+              <div class="line">\( E\pi \uparrow \Rightarrow m(\pi) \downarrow \)</div>
+              <div class="line">\( m(\pi) \downarrow \Rightarrow \) unstable inflation risk</div>
+            </div>
+            <div class="note">When expected inflation rises, money demand collapses faster, shifting the seigniorage curve downward. On the wrong side of the Laffer curve, more inflation can yield less revenue.</div>
+          </div>
+        </div>
+
+        <div class="diagrams">
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>Seigniorage Laffer curve</h3>
+                <p>The government earns more from inflation at first, but eventually the inflation tax base collapses as agents reduce real money balances.</p>
+              </div>
+              <div class="badge" id="lafferBadge">revenue peak</div>
+            </div>
+            <div class="svgbox">
+              <svg id="lafferSvg" viewBox="0 0 760 530" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>Real balances, inflation tax, and hyperinflation risk</h3>
+                <p>Higher inflation erodes real balances. If fiscal needs remain high, expectations can shift money demand inward and destabilize the regime.</p>
+              </div>
+              <div class="badge" id="riskBadge">money demand</div>
+            </div>
+            <div class="svgbox small">
+              <svg id="riskSvg" viewBox="0 0 620 390" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bottom">
+        <div class="card info">
+          <div class="title-row">
+            <h3>Current state</h3>
+            <span>computed live</span>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><small>Real balances m(π)</small><strong id="kMoney"></strong></div>
+            <div class="kpi"><small>Seigniorage s(π)</small><strong id="kSeig"></strong></div>
+            <div class="kpi"><small>Peak inflation π*</small><strong id="kPeak"></strong></div>
+            <div class="kpi"><small>Risk status</small><strong id="kRisk"></strong></div>
+          </div>
+          <div class="notice">
+            <h4>What to notice</h4>
+            <ul>
+              <li>Seigniorage is an inflation tax on holders of real money balances.</li>
+              <li>The tax base is \(m(\pi)\), which falls as inflation rises.</li>
+              <li>The revenue-maximizing inflation rate is not socially desirable; welfare losses grow before revenue peaks.</li>
+              <li>If fiscal need exceeds the top of the Laffer curve, the system may move toward unstable inflation or hyperinflation.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card info">
+          <div class="title-row">
+            <h3>Economic interpretation</h3>
+            <span>mechanism</span>
+          </div>
+          <div class="functions">
+            <div class="fcard">
+              <h4>Inflation tax</h4>
+              <p>Higher inflation reduces the purchasing power of money, transferring resources to the issuer of money.</p>
+            </div>
+            <div class="fcard">
+              <h4>Laffer logic</h4>
+              <p>Too much inflation shrinks money demand so much that seigniorage revenue falls rather than rises.</p>
+            </div>
+            <div class="fcard">
+              <h4>Hyperinflation risk</h4>
+              <p>When expectations worsen and fiscal financing relies too heavily on money creation, the demand for money can collapse abruptly.</p>
+            </div>
+          </div>
+          <div class="notice">
+            <h4>Exam-style summary</h4>
+            <ul>
+              <li>Seigniorage: \(s(\pi)=\pi\cdot m(\pi)\).</li>
+              <li>Inflation tax base: real money balances \(m(\pi)\).</li>
+              <li>With \(m(\pi)=kY e^{-\eta\pi}\), the peak occurs at \(\pi^*=1/\eta\).</li>
+              <li>If fiscal need lies above the maximum attainable seigniorage, inflation financing becomes unstable.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const state = {
+  theme: localStorage.getItem("seigniorage-theme") || "light",
+  shock: false
+};
+
+const $ = id => document.getElementById(id);
+const inputs = {
+  Y: $("Y"), k: $("k"), eta: $("eta"), pi: $("pi"),
+  need: $("need"), expect: $("expect"), hyper: $("hyper")
+};
+const values = {
+  Y: $("vY"), k: $("vk"), eta: $("veta"), pi: $("vpi"),
+  need: $("vneed"), expect: $("vexpect"), hyper: $("vhyper")
+};
+
+const lafferSvg = $("lafferSvg");
+const riskSvg = $("riskSvg");
+const tooltip = $("tooltip");
+
+function num(x){ return Number(x); }
+function fmt(x, d=0){
+  return Number(x).toLocaleString("en-US", {maximumFractionDigits:d, minimumFractionDigits:d});
+}
+function pct(x, d=1){ return `${fmt(100*x, d)}%`; }
+function v(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+function setTheme(){
+  document.documentElement.dataset.theme = state.theme;
+  localStorage.setItem("seigniorage-theme", state.theme);
+}
+
+function mDemand(pi, Y, k, etaEff){
+  return k * Y * Math.exp(-etaEff * pi);
+}
+function seig(pi, Y, k, etaEff){
+  return pi * mDemand(pi, Y, k, etaEff);
+}
+
+function data(){
+  const Y = num(inputs.Y.value);
+  const k = num(inputs.k.value);
+  const eta = num(inputs.eta.value);
+  const pi = num(inputs.pi.value);
+  const need = num(inputs.need.value);
+  const expect = num(inputs.expect.value) * (state.shock ? 1.5 : 1);
+  const hyper = num(inputs.hyper.value);
+
+  const etaEff = eta * (1 + expect * hyper * Math.max(pi, 0.15));
+  const money = mDemand(pi, Y, k, etaEff);
+  const sNow = seig(pi, Y, k, etaEff);
+
+  const peakPiBase = 1 / etaEff;
+  const sMax = seig(peakPiBase, Y, k, etaEff);
+  const gap = need - sMax;
+
+  let status = "stable";
+  if (gap > 0 && pi < peakPiBase) status = "pressure";
+  if (gap > 0 && pi >= peakPiBase) status = "high risk";
+  if (gap > 0.15 * Math.max(1, sMax)) status = "hyper risk";
+
+  return {Y,k,eta,pi,need,expect,hyper,etaEff,money,sNow,peakPiBase,sMax,gap,status};
+}
+
+function svgEl(tag, attrs = {}){
+  const e = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  Object.entries(attrs).forEach(([k,val]) => e.setAttribute(k,val));
+  return e;
+}
+function add(parent, child){ parent.appendChild(child); return child; }
+function text(parent,x,y,content,attrs={}){
+  const e = svgEl("text", {
+    x, y,
+    fill: attrs.fill || v("--ink"),
+    "font-size": attrs.size || 14,
+    "font-weight": attrs.weight || 500,
+    "text-anchor": attrs.anchor || "start",
+    "dominant-baseline": attrs.base || "auto",
+    opacity: attrs.opacity ?? 1
+  });
+  e.textContent = content;
+  return add(parent,e);
+}
+function rect(parent,x,y,width,height,attrs={}){
+  return add(parent, svgEl("rect", {
+    x,y,width,height,rx:attrs.rx || 14,
+    fill:attrs.fill || "transparent",
+    stroke:attrs.stroke || "none",
+    "stroke-width":attrs.sw || 1,
+    opacity:attrs.opacity ?? 1
+  }));
+}
+function line(parent,x1,y1,x2,y2,attrs={}){
+  return add(parent, svgEl("line", {
+    x1,y1,x2,y2,
+    stroke:attrs.stroke || v("--line"),
+    "stroke-width":attrs.sw || 1,
+    "stroke-dasharray":attrs.dash || "",
+    opacity:attrs.opacity ?? 1
+  }));
+}
+function path(parent,d,attrs={}){
+  return add(parent, svgEl("path", {
+    d,
+    fill:attrs.fill || "none",
+    stroke:attrs.stroke || v("--ink"),
+    "stroke-width":attrs.sw || 2,
+    "stroke-linecap":"round",
+    "stroke-linejoin":"round",
+    "stroke-dasharray":attrs.dash || "",
+    opacity:attrs.opacity ?? 1
+  }));
+}
+function circle(parent,cx,cy,r,attrs={}){
+  return add(parent, svgEl("circle", {
+    cx,cy,r,
+    fill:attrs.fill || "transparent",
+    stroke:attrs.stroke || "none",
+    "stroke-width":attrs.sw || 1,
+    opacity:attrs.opacity ?? 1
+  }));
+}
+function tip(ev, html){
+  tooltip.innerHTML = html;
+  tooltip.style.left = ev.clientX + "px";
+  tooltip.style.top = ev.clientY + "px";
+  tooltip.style.opacity = 1;
+}
+function untip(){ tooltip.style.opacity = 0; }
+
+function updateLabels(d){
+  values.Y.textContent = fmt(d.Y);
+  values.k.textContent = fmt(d.k,2);
+  values.eta.textContent = fmt(d.eta,1);
+  values.pi.textContent = pct(d.pi,1);
+  values.need.textContent = fmt(d.need,1);
+  values.expect.textContent = fmt(d.expect,2);
+  values.hyper.textContent = fmt(d.hyper,2);
+
+  $("kMoney").textContent = fmt(d.money,2);
+  $("kSeig").textContent = fmt(d.sNow,2);
+  $("kPeak").textContent = pct(d.peakPiBase,1);
+  $("kRisk").textContent = d.status;
+
+  $("lafferBadge").textContent = `π* = ${pct(d.peakPiBase,1)}`;
+  $("riskBadge").textContent = state.shock ? "expectations shocked" : "baseline expectations";
+}
+
+function drawLaffer(d){
+  lafferSvg.innerHTML = "";
+  const accent=v("--accent"), muted=v("--muted"), linec=v("--line"), ink=v("--ink"),
+        paper2=v("--paper2"), gold=v("--gold"), blue=v("--blue"), red=v("--red"), purple=v("--purple");
+
+  rect(lafferSvg,42,28,676,474,{fill:"rgba(0,0,0,0.01)", stroke:linec, rx:24});
+  text(lafferSvg,72,60,"seigniorage revenue and the inflation tax", {fill:muted, size:12.5, weight:800});
+
+  const x0=76, y0=382, W=604, H=250;
+  const piMax=Math.max(1.8, d.peakPiBase*2.2, d.pi*1.35);
+  const yMax=Math.max(d.sMax, d.sNow, d.need) * 1.22 + 0.5;
+
+  line(lafferSvg,x0,y0,x0+W,y0,{stroke:linec,sw:1.45});
+  line(lafferSvg,x0,y0,x0,y0-H,{stroke:linec,sw:1.45});
+  for(let j=1;j<6;j++){
+    const gy=y0-j*H/6;
+    line(lafferSvg,x0,gy,x0+W,gy,{stroke:linec,sw:1,opacity:.36});
+  }
+  for(let k=1;k<8;k++){
+    const gx=x0+k*W/8;
+    line(lafferSvg,gx,y0-H,gx,y0,{stroke:linec,sw:1,opacity:.30});
+  }
+
+  function X(p){ return x0 + (p/piMax)*W; }
+  function Yp(s){ return y0 - (s/yMax)*H; }
+
+  const pts=[];
+  const riskPts=[];
+  for(let p=0; p<=piMax; p+=piMax/240){
+    const s = seig(p, d.Y, d.k, d.etaEff);
+    const sRisk = seig(p, d.Y, d.k, d.etaEff*(1 + 0.4*d.expect));
+    pts.push([X(p), Yp(s)]);
+    riskPts.push([X(p), Yp(sRisk)]);
+  }
+  const area = `M${x0},${y0} ` + pts.map(p=>`L${p[0]},${p[1]}`).join(" ") + ` L${x0+W},${y0} Z`;
+  path(lafferSvg, area, {fill:accent, stroke:"none", opacity:.05});
+  path(lafferSvg, riskPts.map((p,i)=>`${i===0?"M":"L"}${p[0]},${p[1]}`).join(" "), {stroke:purple, sw:2.1, dash:"6 7", opacity:.58});
+  path(lafferSvg, pts.map((p,i)=>`${i===0?"M":"L"}${p[0]},${p[1]}`).join(" "), {stroke:accent, sw:3.3});
+
+  // Financing need horizontal line
+  line(lafferSvg, x0, Yp(d.need), x0+W, Yp(d.need), {stroke:red, sw:1.4, dash:"6 6", opacity:.7});
+  text(lafferSvg, x0+W-8, Yp(d.need)-8, "fiscal need d", {fill:red, size:11.1, weight:820, anchor:"end"});
+
+  // Peak point
+  const peakX = X(d.peakPiBase), peakY = Yp(d.sMax);
+  line(lafferSvg, peakX, y0, peakX, peakY, {stroke:muted, sw:1.0, dash:"5 5"});
+  circle(lafferSvg, peakX, peakY, 6.2, {fill:blue, stroke:ink, sw:1.1});
+  text(lafferSvg, peakX+10, peakY-8, "maximum seigniorage", {fill:blue, size:11.0, weight:800});
+
+  // Current point
+  const currX = X(d.pi), currY = Yp(d.sNow);
+  line(lafferSvg, currX, y0, currX, currY, {stroke:muted, sw:1.0, dash:"5 5"});
+  line(lafferSvg, x0, currY, currX, currY, {stroke:muted, sw:1.0, dash:"5 5"});
+  circle(lafferSvg, currX, currY, 11, {fill:accent, opacity:.15});
+  const dot = circle(lafferSvg, currX, currY, 5.9, {fill:accent, stroke:ink, sw:1.15});
+  dot.addEventListener("mousemove", ev => tip(ev, `<b>Current inflation point</b><br>Inflation: ${pct(d.pi,1)}<br>Real balances: ${fmt(d.money,2)}<br>Seigniorage: ${fmt(d.sNow,2)}`));
+  dot.addEventListener("mouseleave", untip);
+  text(lafferSvg, currX+10, currY-10, `s = ${fmt(d.sNow,2)}`, {fill:accent, size:11.0, weight:840});
+
+  rect(lafferSvg, 82, 82, 150, 42, {fill:paper2, stroke:linec, rx:14});
+  text(lafferSvg, 96, 99, "real balances", {fill:muted, size:10.5, weight:800});
+  text(lafferSvg, 96, 116, `m(π) = ${fmt(d.money,2)}`, {fill:gold, size:13.2, weight:850});
+
+  rect(lafferSvg, 248, 82, 150, 42, {fill:paper2, stroke:linec, rx:14});
+  text(lafferSvg, 262, 99, "current revenue", {fill:muted, size:10.5, weight:800});
+  text(lafferSvg, 262, 116, `s(π) = ${fmt(d.sNow,2)}`, {fill:accent, size:13.2, weight:850});
+
+  rect(lafferSvg, 414, 82, 150, 42, {fill:paper2, stroke:linec, rx:14});
+  text(lafferSvg, 428, 99, "maximum revenue", {fill:muted, size:10.5, weight:800});
+  text(lafferSvg, 428, 116, `smax = ${fmt(d.sMax,2)}`, {fill:blue, size:13.2, weight:850});
+
+  text(lafferSvg, x0+W, y0+30, "inflation rate π", {fill:muted, size:12, anchor:"end", weight:740});
+  text(lafferSvg, x0-22, y0-H-8, "real seigniorage s(π)", {fill:muted, size:12, weight:740});
+
+  rect(lafferSvg, 104, 430, 552, 36, {fill:paper2, stroke:linec, rx:15, opacity:.98});
+  const msg = d.gap <= 0
+    ? "Current fiscal need lies below maximum seigniorage: inflation financing is feasible, though still distortionary."
+    : "Fiscal need exceeds maximum seigniorage: raising inflation further may fail to close the gap."
+  text(lafferSvg, 124, 453, msg, {fill: d.gap<=0 ? accent : red, size:12.0, weight:820});
+
+  rect(lafferSvg, 104, 474, 552, 30, {fill:paper2, stroke:linec, rx:14, opacity:.96});
+  text(lafferSvg, 124, 494, "Dashed purple curve = weaker money demand under worse inflation expectations.", {fill:muted, size:11.3, weight:780});
+}
+
+function drawRisk(d){
+  riskSvg.innerHTML = "";
+  const accent=v("--accent"), muted=v("--muted"), linec=v("--line"), ink=v("--ink"),
+        paper2=v("--paper2"), gold=v("--gold"), blue=v("--blue"), red=v("--red"), purple=v("--purple");
+
+  rect(riskSvg,34,26,552,324,{fill:"rgba(0,0,0,0.01)", stroke:linec, rx:22});
+  text(riskSvg,62,56,"money demand collapse and hyperinflation risk", {fill:muted, size:12.5, weight:800});
+
+  // Left: real balances curve
+  const x0=62, y0=254, W=248, H=176;
+  line(riskSvg,x0,y0,x0+W,y0,{stroke:linec,sw:1.4});
+  line(riskSvg,x0,y0-H,x0,y0+8,{stroke:linec,sw:1.4});
+  for(let j=1;j<4;j++){
+    const gy=y0-j*H/4;
+    line(riskSvg,x0,gy,x0+W,gy,{stroke:linec,sw:1,opacity:.34});
+  }
+  for(let k=1;k<5;k++){
+    const gx=x0+k*W/5;
+    line(riskSvg,gx,y0-H,gx,y0+8,{stroke:linec,sw:1,opacity:.28});
+  }
+
+  const piMax = Math.max(1.8, d.peakPiBase*2.2, d.pi*1.3);
+  const mMax = mDemand(0, d.Y, d.k, d.etaEff) * 1.05;
+  function X(pi){ return x0 + (pi/piMax)*W; }
+  function Ym(m){ return y0 - (m/mMax)*H; }
+
+  const balPts=[], badPts=[];
+  for(let p=0; p<=piMax; p+=piMax/200){
+    balPts.push([X(p), Ym(mDemand(p, d.Y, d.k, d.etaEff))]);
+    badPts.push([X(p), Ym(mDemand(p, d.Y, d.k, d.etaEff*(1 + 0.45*d.expect)))]);
+  }
+  path(riskSvg, balPts.map((p,i)=>`${i===0?"M":"L"}${p[0]},${p[1]}`).join(" "), {stroke:accent, sw:3.0});
+  path(riskSvg, badPts.map((p,i)=>`${i===0?"M":"L"}${p[0]},${p[1]}`).join(" "), {stroke:purple, sw:2.0, dash:"6 7", opacity:.6});
+
+  const currX=X(d.pi), currY=Ym(d.money);
+  line(riskSvg, currX, y0, currX, currY, {stroke:muted, sw:1.0, dash:"5 5"});
+  circle(riskSvg, currX, currY, 5.8, {fill:accent, stroke:ink, sw:1.15});
+  text(riskSvg, currX+8, currY-8, `m = ${fmt(d.money,1)}`, {fill:accent, size:10.8, weight:830});
+
+  text(riskSvg, x0+W, y0+22, "inflation π", {fill:muted, size:11.5, anchor:"end", weight:740});
+  text(riskSvg, x0-18, y0-H+4, "m(π)", {fill:muted, size:11.5, weight:740});
+
+  // Right: risk ladder / financing relation
+  const rx=350, ry=242, RW=188, RH=164;
+  rect(riskSvg, rx, 90, RW, RH, {fill:paper2, stroke:linec, rx:18, opacity:.96});
+  text(riskSvg, rx+16, 114, "risk diagnosis", {fill:muted, size:11.0, weight:800});
+
+  const colors = {
+    stable: accent, pressure: gold, "high risk": red, "hyper risk": red
+  };
+  const c = colors[d.status] || accent;
+  rect(riskSvg, rx+16, 128, RW-32, 40, {fill:state.shock ? "rgba(0,0,0,0.02)" : "rgba(0,0,0,0.00)", stroke:linec, rx:14});
+  text(riskSvg, rx+30, 145, "status", {fill:muted, size:10.0, weight:800});
+  text(riskSvg, rx+30, 160, d.status, {fill:c, size:14.2, weight:850});
+
+  rect(riskSvg, rx+16, 176, RW-32, 30, {fill:"transparent", stroke:linec, rx:12});
+  text(riskSvg, rx+30, 195, `fiscal need d = ${fmt(d.need,1)}`, {fill:ink, size:11.2, weight:780});
+
+  rect(riskSvg, rx+16, 212, RW-32, 30, {fill:"transparent", stroke:linec, rx:12});
+  text(riskSvg, rx+30, 231, `maximum smax = ${fmt(d.sMax,1)}`, {fill:ink, size:11.2, weight:780});
+
+  // mini arrows for mechanism
+  text(riskSvg, 352, 282, "mechanism", {fill:muted, size:11.0, weight:800});
+  line(riskSvg, 366, 300, 440, 300, {stroke:purple, sw:2.0});
+  path(riskSvg, `M432,294 L446,300 L432,306`, {stroke:purple, sw:2.0});
+  text(riskSvg, 354, 317, "worse expectations", {fill:purple, size:10.7, weight:780});
+
+  line(riskSvg, 366, 336, 440, 336, {stroke:red, sw:2.0});
+  path(riskSvg, `M432,330 L446,336 L432,342`, {stroke:red, sw:2.0});
+  text(riskSvg, 354, 353, "smaller tax base", {fill:red, size:10.7, weight:780});
+
+  rect(riskSvg, 80, 300, 198, 24, {fill:paper2, stroke:linec, rx:10, opacity:.96});
+  line(riskSvg, 94, 312, 112, 312, {stroke:accent, sw:2.4});
+  text(riskSvg, 120, 316, "current demand", {fill:muted, size:10.3, weight:760});
+  line(riskSvg, 196, 312, 214, 312, {stroke:purple, sw:2.0, dash:"6 7"});
+  text(riskSvg, 222, 316, "after χ shock", {fill:muted, size:10.3, weight:760});
+
+  rect(riskSvg, 80, 350, 458, 24, {fill:paper2, stroke:linec, rx:11, opacity:.96});
+  const riskText = d.gap <= 0
+    ? "Below the Laffer peak, inflation can still finance the need, but real balances are already being taxed."
+    : "Above the Laffer peak, stronger expectations can reduce revenue and make the inflation process unstable."
+  text(riskSvg, 96, 366, riskText, {fill: d.gap<=0 ? muted : red, size:10.6, weight:780});
+}
+
+function update(){
+  const d = data();
+  updateLabels(d);
+  drawLaffer(d);
+  drawRisk(d);
+}
+
+Object.values(inputs).forEach(input => input.addEventListener("input", update));
+$("themeBtn").addEventListener("click", () => {
+  state.theme = state.theme === "dark" ? "light" : "dark";
+  setTheme();
+  update();
+});
+$("shockBtn").addEventListener("click", () => {
+  state.shock = !state.shock;
+  $("shockBtn").style.background = state.shock ? "var(--soft)" : "";
+  update();
+});
+
+setTheme();
+update();
+</script>
+</body>
+</html>

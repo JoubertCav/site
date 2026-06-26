@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive macroeconomics diagram for Keynesian money demand: transactions, precautionary, and speculative motives, with income and interest-rate effects.">
+<title>Keynesian Money Demand | Monetary Economics Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+
+<style>
+:root {
+  --bg: #f6f1e7;
+  --paper: #fffaf1;
+  --paper2: #f1eadc;
+  --ink: #172123;
+  --muted: #64706e;
+  --line: rgba(31, 45, 48, 0.14);
+  --grid: rgba(31, 45, 48, 0.075);
+  --accent: #2f8f83;
+  --accent2: #8fc7be;
+  --soft: rgba(47, 143, 131, 0.13);
+  --gold: #b8944b;
+  --blue: #577f9e;
+  --red: #a85e50;
+  --purple: #85699d;
+  --shadow: 0 16px 36px rgba(55, 45, 31, 0.095);
+}
+
+[data-theme="dark"] {
+  --bg: #0b1116;
+  --paper: #111a21;
+  --paper2: #17232b;
+  --ink: #eef5f3;
+  --muted: #a2afad;
+  --line: rgba(238, 245, 243, 0.13);
+  --grid: rgba(238, 245, 243, 0.065);
+  --accent: #77c9bd;
+  --accent2: #3e857a;
+  --soft: rgba(119, 201, 189, 0.13);
+  --gold: #d4ba74;
+  --blue: #8fb7d5;
+  --red: #d39080;
+  --purple: #b5a0cf;
+  --shadow: 0 22px 52px rgba(0, 0, 0, 0.34);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 8% 0%, var(--soft), transparent 30rem),
+    radial-gradient(circle at 92% 8%, rgba(184,148,75,0.10), transparent 28rem),
+    var(--bg);
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.45;
+}
+
+.app {
+  width: min(1460px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 26px 0 42px;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.8rem, 3.4vw, 3.35rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+}
+
+.subtitle {
+  max-width: 790px;
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 1.35vw, 1.05rem);
+}
+
+.top-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+button { font: inherit; }
+
+.toggle, .pill {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 96%, transparent);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 9px 13px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.pill.active {
+  background: var(--soft);
+  border-color: var(--accent);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.card {
+  background: color-mix(in srgb, var(--paper) 95%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+}
+
+.controls {
+  position: sticky;
+  top: 16px;
+  padding: 17px;
+}
+
+.title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.title-row h2, .title-row h3 {
+  margin: 0;
+  font-size: 0.96rem;
+  letter-spacing: -0.015em;
+}
+
+.title-row span {
+  color: var(--muted);
+  font-size: 0.74rem;
+}
+
+.group {
+  border-top: 1px solid var(--line);
+  padding: 14px 0;
+}
+
+.group:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.group-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.105em;
+  font-size: 0.72rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.row { margin: 13px 0; }
+
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.86rem;
+  margin-bottom: 7px;
+}
+
+.label label { font-weight: 650; }
+
+.value {
+  color: var(--accent);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.main {
+  display: grid;
+  gap: 18px;
+}
+
+.model {
+  padding: 17px;
+}
+
+.model-grid {
+  display: grid;
+  grid-template-columns: 1.14fr 0.86fr;
+  gap: 14px;
+  margin-bottom: 17px;
+}
+
+.eqbox {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 15px;
+}
+
+.eq-title {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.105em;
+  font-size: 0.72rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.equations {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1rem, 1.3vw, 1.18rem);
+  line-height: 1.75;
+  overflow-x: auto;
+}
+
+.equations .line { white-space: nowrap; }
+
+.note {
+  color: var(--muted);
+  font-size: 0.83rem;
+  margin-top: 8px;
+}
+
+.diagrams {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.diagram {
+  padding: 15px;
+}
+
+.dhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.dhead h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.dhead p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.badge {
+  border: 1px solid var(--line);
+  background: var(--soft);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.svgbox {
+  height: 560px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 42px 42px;
+  overflow: hidden;
+}
+
+.svgbox.small { height: 500px; }
+
+svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.bottom {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 18px;
+}
+
+.info { padding: 17px; }
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.kpi {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  padding: 12px;
+}
+
+.kpi small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.71rem;
+  margin-bottom: 3px;
+}
+
+.kpi strong {
+  font-size: 1.02rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.functions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 11px;
+}
+
+.fcard {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.fcard h4 {
+  margin: 0 0 6px;
+  font-size: 0.9rem;
+}
+
+.fcard p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.notice {
+  margin-top: 13px;
+  border-left: 3px solid var(--accent);
+  background: var(--soft);
+  border-radius: 16px;
+  padding: 13px 14px;
+}
+
+.notice h4 {
+  margin: 0 0 7px;
+  font-size: 0.9rem;
+}
+
+.notice ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 12px));
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 12px;
+  padding: 9px 11px;
+  font-size: 0.78rem;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transition: opacity 120ms ease;
+  z-index: 100;
+  max-width: 270px;
+}
+
+@media (max-width: 1100px) {
+  .layout, .diagrams, .bottom, .model-grid { grid-template-columns: 1fr; }
+  .controls { position: static; }
+  .kpis, .functions { grid-template-columns: repeat(2, 1fr); }
+  .svgbox { height: 520px; }
+  .svgbox.small { height: 470px; }
+}
+
+@media (max-width: 640px) {
+  .app { width: min(100% - 18px, 1380px); padding-top: 18px; }
+  .header { grid-template-columns: 1fr; }
+  .top-actions { justify-content: flex-start; }
+  .kpis, .functions { grid-template-columns: 1fr; }
+  .svgbox { height: 420px; }
+  .svgbox.small { height: 390px; }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <header class="header">
+    <div>
+      <div class="eyebrow">Macroeconomics notebook</div>
+      <h1>Keynesian Money Demand</h1>
+      <p class="subtitle">
+        Money demand is a portfolio choice: people hold money for transactions, precautionary liquidity, and speculative safety when bonds look risky.
+      </p>
+    </div>
+    <div class="top-actions">
+      <button class="toggle" id="themeBtn" type="button">◐ Theme</button>
+      <button class="pill" id="shockBtn" type="button">Animate income shock</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="card controls">
+      <div class="title-row">
+        <h2>Controls</h2>
+        <span>real units</span>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Scale of the economy</div>
+        <div class="row">
+          <div class="label"><label for="income">Income Y</label><span class="value" id="vIncome"></span></div>
+          <input id="income" type="range" min="500" max="8000" step="50" value="3600">
+        </div>
+        <div class="row">
+          <div class="label"><label for="moneySupply">Real money supply M/P</label><span class="value" id="vMoneySupply"></span></div>
+          <input id="moneySupply" type="range" min="300" max="5000" step="25" value="1900">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Motives</div>
+        <div class="row">
+          <div class="label"><label for="kTrans">Transactions sensitivity k</label><span class="value" id="vKTrans"></span></div>
+          <input id="kTrans" type="range" min="0.05" max="0.55" step="0.01" value="0.23">
+        </div>
+        <div class="row">
+          <div class="label"><label for="uncertainty">Precautionary uncertainty u</label><span class="value" id="vUncertainty"></span></div>
+          <input id="uncertainty" type="range" min="0" max="100" step="1" value="30">
+        </div>
+        <div class="row">
+          <div class="label"><label for="precaution">Precautionary sensitivity λ</label><span class="value" id="vPrecaution"></span></div>
+          <input id="precaution" type="range" min="0.00" max="0.28" step="0.01" value="0.09">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Speculative demand</div>
+        <div class="row">
+          <div class="label"><label for="specScale">Bond-risk demand a</label><span class="value" id="vSpecScale"></span></div>
+          <input id="specScale" type="range" min="100" max="5000" step="50" value="1750">
+        </div>
+        <div class="row">
+          <div class="label"><label for="rateFloor">Rate floor φ</label><span class="value" id="vRateFloor"></span></div>
+          <input id="rateFloor" type="range" min="0.4" max="6" step="0.1" value="1.5">
+        </div>
+        <div class="row">
+          <div class="label"><label for="rate">Observed interest rate i</label><span class="value" id="vRate"></span></div>
+          <input id="rate" type="range" min="0.5" max="18" step="0.1" value="5.2">
+        </div>
+      </div>
+    </aside>
+
+    <section class="main">
+      <section class="card model">
+        <div class="model-grid">
+          <div class="eqbox">
+            <div class="eq-title">Minimal symbolic model</div>
+            <div class="equations">
+              <div class="line">L(Y,i,u) = Lᵀ(Y) + Lᴾ(Y,u) + Lˢ(i)</div>
+              <div class="line">Lᵀ = kY</div>
+              <div class="line">Lᴾ = λuY</div>
+              <div class="line">Lˢ = a/(i + φ)</div>
+            </div>
+          </div>
+
+          <div class="eqbox">
+            <div class="eq-title">Money-market equilibrium</div>
+            <div class="equations">
+              <div class="line">M/P = L(Y,i,u)</div>
+              <div class="line">∂L/∂Y &gt; 0</div>
+              <div class="line">∂L/∂i &lt; 0</div>
+            </div>
+            <div class="note">The interest rate is the opportunity cost of liquidity. Higher income shifts money demand right; higher interest reduces desired money balances.</div>
+          </div>
+        </div>
+
+        <div class="diagrams">
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>Money market</h3>
+                <p>Equilibrium is where real money supply meets liquidity preference.</p>
+              </div>
+              <div class="badge" id="eqBadge">i*</div>
+            </div>
+            <div class="svgbox">
+              <svg id="marketSvg" viewBox="0 0 760 530" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>Three motives</h3>
+                <p>Transactions and precautionary demand move with income; speculative demand moves against i.</p>
+              </div>
+              <div class="badge" id="demandBadge">L</div>
+            </div>
+            <div class="svgbox small">
+              <svg id="motivesSvg" viewBox="0 0 620 390" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bottom">
+        <div class="card info">
+          <div class="title-row">
+            <h3>Current state</h3>
+            <span>computed live</span>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><small>Transactions</small><strong id="kTrans"></strong></div>
+            <div class="kpi"><small>Precautionary</small><strong id="kPrec"></strong></div>
+            <div class="kpi"><small>Speculative</small><strong id="kSpec"></strong></div>
+            <div class="kpi"><small>Total L</small><strong id="kTotal"></strong></div>
+          </div>
+          <div class="notice">
+            <h4>What to notice</h4>
+            <ul>
+              <li>Income raises the transaction need for money.</li>
+              <li>Uncertainty raises precautionary balances.</li>
+              <li>The interest rate lowers speculative money demand by making bonds more attractive.</li>
+              <li>A higher money supply lowers the equilibrium interest rate, unless demand is extremely interest-elastic.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card info">
+          <div class="title-row">
+            <h3>Economic interpretation</h3>
+            <span>Keynesian liquidity preference</span>
+          </div>
+          <div class="functions">
+            <div class="fcard">
+              <h4>Transactions motive</h4>
+              <p>Higher income means more purchases, payments, and settlement needs.</p>
+            </div>
+            <div class="fcard">
+              <h4>Precautionary motive</h4>
+              <p>Higher uncertainty makes households and firms hold a liquidity buffer.</p>
+            </div>
+            <div class="fcard">
+              <h4>Speculative motive</h4>
+              <p>When interest rates are low, agents fear bond capital losses and prefer money.</p>
+            </div>
+          </div>
+
+          <div class="notice">
+            <h4>Exam-style summary</h4>
+            <ul>
+              <li>Keynesian money demand: L = L(Y,i), increasing in Y and decreasing in i.</li>
+              <li>Transactions and precautionary motives explain the positive income effect.</li>
+              <li>Speculative demand explains the negative interest-rate effect.</li>
+              <li>In the money market, M/P fixed vertically; demand shifts move the equilibrium interest rate.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const state = {
+  theme: localStorage.getItem("keynes-money-theme") || "light",
+  animating: false
+};
+
+const $ = id => document.getElementById(id);
+
+const inputs = {
+  income: $("income"),
+  moneySupply: $("moneySupply"),
+  kTrans: $("kTrans"),
+  uncertainty: $("uncertainty"),
+  precaution: $("precaution"),
+  specScale: $("specScale"),
+  rateFloor: $("rateFloor"),
+  rate: $("rate")
+};
+
+const values = {
+  income: $("vIncome"),
+  moneySupply: $("vMoneySupply"),
+  kTrans: $("vKTrans"),
+  uncertainty: $("vUncertainty"),
+  precaution: $("vPrecaution"),
+  specScale: $("vSpecScale"),
+  rateFloor: $("vRateFloor"),
+  rate: $("vRate")
+};
+
+const marketSvg = $("marketSvg");
+const motivesSvg = $("motivesSvg");
+const tooltip = $("tooltip");
+
+function num(x) { return Number(x); }
+
+function fmt(x, d = 0) {
+  return Number(x).toLocaleString("en-US", {
+    maximumFractionDigits: d,
+    minimumFractionDigits: d
+  });
+}
+
+function v(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function data() {
+  const Y = num(inputs.income.value);
+  const MS = num(inputs.moneySupply.value);
+  const k = num(inputs.kTrans.value);
+  const u = num(inputs.uncertainty.value) / 100;
+  const lam = num(inputs.precaution.value);
+  const a = num(inputs.specScale.value);
+  const phi = num(inputs.rateFloor.value);
+  const i = num(inputs.rate.value);
+
+  const LT = k * Y;
+  const LP = lam * u * Y;
+  const LS = a / (i + phi);
+  const L = LT + LP + LS;
+
+  const autonomous = LT + LP;
+  let iStar = a / Math.max(MS - autonomous, 1e-6) - phi;
+  let constrained = false;
+  if (MS <= autonomous) {
+    iStar = 18;
+    constrained = true;
+  }
+  iStar = Math.max(0.5, Math.min(18, iStar));
+
+  const LAtStar = LT + LP + a / (iStar + phi);
+  const gap = MS - L;
+
+  return { Y, MS, k, u, lam, a, phi, i, LT, LP, LS, L, autonomous, iStar, LAtStar, gap, constrained };
+}
+
+function setTheme() {
+  document.documentElement.dataset.theme = state.theme;
+  localStorage.setItem("keynes-money-theme", state.theme);
+}
+
+function svgEl(tag, attrs = {}) {
+  const e = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  Object.entries(attrs).forEach(([k, val]) => e.setAttribute(k, val));
+  return e;
+}
+
+function add(parent, child) {
+  parent.appendChild(child);
+  return child;
+}
+
+function text(parent, x, y, content, attrs = {}) {
+  const e = svgEl("text", {
+    x, y,
+    fill: attrs.fill || v("--ink"),
+    "font-size": attrs.size || 14,
+    "font-weight": attrs.weight || 500,
+    "text-anchor": attrs.anchor || "start",
+    "dominant-baseline": attrs.base || "auto",
+    opacity: attrs.opacity ?? 1
+  });
+  e.textContent = content;
+  return add(parent, e);
+}
+
+function rect(parent, x, y, width, height, attrs = {}) {
+  return add(parent, svgEl("rect", {
+    x, y, width, height,
+    rx: attrs.rx || 14,
+    fill: attrs.fill || "transparent",
+    stroke: attrs.stroke || "none",
+    "stroke-width": attrs.sw || 1,
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function line(parent, x1, y1, x2, y2, attrs = {}) {
+  return add(parent, svgEl("line", {
+    x1, y1, x2, y2,
+    stroke: attrs.stroke || v("--line"),
+    "stroke-width": attrs.sw || 1,
+    "stroke-dasharray": attrs.dash || "",
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function path(parent, d, attrs = {}) {
+  return add(parent, svgEl("path", {
+    d,
+    fill: attrs.fill || "none",
+    stroke: attrs.stroke || v("--ink"),
+    "stroke-width": attrs.sw || 2,
+    "stroke-linecap": "round",
+    "stroke-linejoin": "round",
+    "stroke-dasharray": attrs.dash || "",
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function circle(parent, cx, cy, r, attrs = {}) {
+  return add(parent, svgEl("circle", {
+    cx, cy, r,
+    fill: attrs.fill || "transparent",
+    stroke: attrs.stroke || "none",
+    "stroke-width": attrs.sw || 1,
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function tip(ev, html) {
+  tooltip.innerHTML = html;
+  tooltip.style.left = ev.clientX + "px";
+  tooltip.style.top = ev.clientY + "px";
+  tooltip.style.opacity = 1;
+}
+
+function untip() { tooltip.style.opacity = 0; }
+
+function updateLabels(d) {
+  values.income.textContent = fmt(num(inputs.income.value));
+  values.moneySupply.textContent = fmt(num(inputs.moneySupply.value));
+  values.kTrans.textContent = fmt(num(inputs.kTrans.value), 2);
+  values.uncertainty.textContent = `${fmt(num(inputs.uncertainty.value))}%`;
+  values.precaution.textContent = fmt(num(inputs.precaution.value), 2);
+  values.specScale.textContent = fmt(num(inputs.specScale.value));
+  values.rateFloor.textContent = fmt(num(inputs.rateFloor.value), 1);
+  values.rate.textContent = `${fmt(num(inputs.rate.value), 1)}%`;
+
+  $("kTrans").textContent = fmt(d.LT);
+  $("kPrec").textContent = fmt(d.LP);
+  $("kSpec").textContent = fmt(d.LS);
+  $("kTotal").textContent = fmt(d.L);
+  $("eqBadge").textContent = d.constrained ? "tight liquidity" : `i* = ${fmt(d.iStar, 2)}%`;
+  $("demandBadge").textContent = `L = ${fmt(d.L)}`;
+}
+
+function drawMarket(d) {
+  marketSvg.innerHTML = "";
+
+  const accent = v("--accent");
+  const muted = v("--muted");
+  const linec = v("--line");
+  const ink = v("--ink");
+  const paper2 = v("--paper2");
+  const gold = v("--gold");
+  const blue = v("--blue");
+  const red = v("--red");
+
+  rect(marketSvg, 42, 28, 676, 474, { fill: "rgba(0,0,0,0.01)", stroke: linec, rx: 24 });
+  text(marketSvg, 72, 60, "money market: supply and liquidity preference", { fill: muted, size: 12.5, weight: 800 });
+
+  const x0 = 76, y0 = 388, W = 600, H = 270;
+  const maxI = 18;
+  const maxM = Math.max(
+    d.MS * 1.34,
+    d.L * 1.34,
+    d.autonomous + d.a / (0.5 + d.phi) * 1.08,
+    2600
+  );
+
+  // Axes and grid
+  line(marketSvg, x0, y0, x0 + W, y0, { stroke: linec, sw: 1.45 });
+  line(marketSvg, x0, y0, x0, y0 - H, { stroke: linec, sw: 1.45 });
+
+  for (let j = 1; j < 6; j++) {
+    const gy = y0 - j * H / 6;
+    line(marketSvg, x0, gy, x0 + W, gy, { stroke: linec, sw: 1, opacity: .36 });
+  }
+  for (let k = 1; k < 8; k++) {
+    const gx = x0 + k * W / 8;
+    line(marketSvg, gx, y0 - H, gx, y0, { stroke: linec, sw: 1, opacity: .30 });
+  }
+
+  function X(m) { return x0 + Math.min(m / maxM, 1) * W; }
+  function Yp(rate) { return y0 - rate / maxI * H; }
+  function LAtRate(rate, shift = 0) {
+    return d.autonomous + shift + d.a / (rate + d.phi);
+  }
+
+  // Demand curves: current and right-shifted reference.
+  const basePts = [];
+  const shiftedPts = [];
+  const incomeShift = 0.10 * d.Y + 120 * d.u;
+
+  for (let r = 0.5; r <= maxI; r += 0.08) {
+    basePts.push([X(LAtRate(r, 0)), Yp(r)]);
+    shiftedPts.push([X(LAtRate(r, incomeShift)), Yp(r)]);
+  }
+
+  const area = `M${X(d.autonomous)},${y0} ` + basePts.map(p => `L${p[0]},${p[1]}`).join(" ") + ` L${X(d.autonomous)},${y0} Z`;
+  path(marketSvg, area, { fill: accent, stroke: "none", opacity: .055 });
+  path(marketSvg, shiftedPts.map((p, i) => `${i === 0 ? "M" : "L"}${p[0]},${p[1]}`).join(" "), {
+    stroke: gold, sw: 2.1, dash: "6 7", opacity: .72
+  });
+  path(marketSvg, basePts.map((p, i) => `${i === 0 ? "M" : "L"}${p[0]},${p[1]}`).join(" "), {
+    stroke: accent, sw: 3.2
+  });
+
+  // Vertical real money supply.
+  const supplyX = X(d.MS);
+  const supplyXShift = X(d.MS * 1.12);
+  line(marketSvg, supplyXShift, y0, supplyXShift, y0 - H, { stroke: blue, sw: 1.8, dash: "5 6", opacity: .48 });
+  line(marketSvg, supplyX, y0, supplyX, y0 - H, { stroke: blue, sw: 3.0 });
+
+  // Equilibrium.
+  const eqY = Yp(d.iStar);
+  line(marketSvg, x0, eqY, supplyX, eqY, { stroke: muted, sw: 1.05, dash: "5 5" });
+  line(marketSvg, supplyX, y0, supplyX, eqY, { stroke: muted, sw: 1.05, dash: "5 5" });
+
+  circle(marketSvg, supplyX, eqY, 12, { fill: accent, opacity: .16 });
+  const dot = circle(marketSvg, supplyX, eqY, 6.5, { fill: accent, stroke: ink, sw: 1.3 });
+  dot.addEventListener("mousemove", ev => tip(ev, `<b>Money-market equilibrium</b><br>M/P = ${fmt(d.MS)}<br>i* = ${fmt(d.iStar, 2)}%<br>L(Y,i*,u) ≈ ${fmt(d.LAtStar)}`));
+  dot.addEventListener("mouseleave", untip);
+
+  // Observed demand point at the observed interest rate.
+  const obsX = X(d.L);
+  const obsY = Yp(d.i);
+  circle(marketSvg, obsX, obsY, 9.5, { fill: gold, opacity: .18 });
+  circle(marketSvg, obsX, obsY, 5.4, { fill: gold, stroke: ink, sw: 1.15 });
+
+  // Axis labels.
+  text(marketSvg, x0 + W, y0 + 30, "real money balances M/P", { fill: muted, size: 12, anchor: "end", weight: 740 });
+  text(marketSvg, x0 - 22, y0 - H - 8, "interest rate i", { fill: muted, size: 12, weight: 740 });
+
+  // Minimal in-plot labels.
+  text(marketSvg, supplyX + 10, y0 - H + 26, "real money supply", { fill: blue, size: 11.5, weight: 800 });
+  text(marketSvg, x0 + W - 178, y0 - H + 64, "higher Y or uncertainty", { fill: gold, size: 11.5, weight: 800 });
+  text(marketSvg, x0 + W - 178, y0 - H + 82, "shifts L right", { fill: gold, size: 11.5, weight: 800 });
+  text(marketSvg, Math.min(supplyX + 12, x0 + W - 92), Math.max(104, eqY - 14), `i* = ${fmt(d.iStar, 2)}%`, {
+    fill: accent, size: 12.5, weight: 850
+  });
+
+  // Top summary cards.
+  function miniCard(x, y, title, value, color) {
+    rect(marketSvg, x, y, 156, 42, { fill: paper2, stroke: linec, rx: 14 });
+    text(marketSvg, x + 14, y + 17, title, { fill: muted, size: 10.5, weight: 800 });
+    text(marketSvg, x + 14, y + 33, value, { fill: color, size: 13.4, weight: 850 });
+  }
+
+  miniCard(88, 82, "liquidity demand", `L = ${fmt(d.L)}`, accent);
+  miniCard(258, 82, "real money supply", `M/P = ${fmt(d.MS)}`, blue);
+  miniCard(428, 82, "equilibrium rate", d.constrained ? "very high" : `${fmt(d.iStar, 2)}%`, red);
+
+  rect(marketSvg, 104, 430, 552, 36, { fill: paper2, stroke: linec, rx: 15, opacity: .98 });
+  text(marketSvg, 124, 453, "Equilibrium: vertical real money supply intersects downward-sloping liquidity preference.", {
+    fill: muted,
+    size: 12.2,
+    weight: 800
+  });
+
+  rect(marketSvg, 104, 474, 552, 30, { fill: paper2, stroke: linec, rx: 14, opacity: .96 });
+  text(marketSvg, 124, 494, "Income and uncertainty shift money demand; the interest rate moves along the speculative component.", {
+    fill: accent,
+    size: 11.6,
+    weight: 800
+  });
+}
+
+function drawMotives(d) {
+  motivesSvg.innerHTML = "";
+
+  const accent = v("--accent");
+  const muted = v("--muted");
+  const linec = v("--line");
+  const ink = v("--ink");
+  const paper2 = v("--paper2");
+  const gold = v("--gold");
+  const blue = v("--blue");
+  const purple = v("--purple");
+
+  rect(motivesSvg, 34, 26, 552, 324, { fill: "rgba(0,0,0,0.01)", stroke: linec, rx: 22 });
+  text(motivesSvg, 62, 56, "three motives for holding money", { fill: muted, size: 12.5, weight: 800 });
+
+  // Larger left panel: decomposition.
+  const x0 = 70, y0 = 262, W = 250, H = 170;
+  line(motivesSvg, x0, y0, x0 + W, y0, { stroke: linec, sw: 1.4 });
+  line(motivesSvg, x0, y0, x0, y0 - H, { stroke: linec, sw: 1.4 });
+
+  for (let j = 1; j < 4; j++) {
+    const gy = y0 - j * H / 4;
+    line(motivesSvg, x0, gy, x0 + W, gy, { stroke: linec, sw: 1, opacity: .36 });
+  }
+
+  text(motivesSvg, x0, 86, "decomposition at observed i", { fill: muted, size: 12, weight: 800 });
+
+  const bars = [
+    { label: "T", name: "transactions", val: d.LT, color: accent },
+    { label: "P", name: "precautionary", val: d.LP, color: gold },
+    { label: "S", name: "speculative", val: d.LS, color: purple },
+    { label: "L", name: "total", val: d.L, color: blue }
+  ];
+  const maxVal = Math.max(d.L * 1.16, 1000);
+
+  bars.forEach((b, idx) => {
+    const x = x0 + 34 + idx * 52;
+    const bw = 36;
+    const h = Math.max(4, b.val / maxVal * H);
+    rect(motivesSvg, x, y0 - h, bw, h, { fill: b.color, opacity: .24, stroke: b.color, sw: 1.25, rx: 10 });
+    rect(motivesSvg, x, y0 - h, bw, 8, { fill: b.color, opacity: .18, stroke: "none", rx: 10 });
+    text(motivesSvg, x + bw / 2, y0 + 20, b.label, { fill: ink, size: 12, weight: 850, anchor: "middle" });
+    text(motivesSvg, x + bw / 2, y0 - h - 8, fmt(b.val), { fill: b.color, size: 10.8, weight: 820, anchor: "middle" });
+  });
+
+  // Larger right panel: speculative curve.
+  const x1 = 366, y1 = 262, W2 = 184, H2 = 170;
+  line(motivesSvg, x1, y1, x1 + W2, y1, { stroke: linec, sw: 1.4 });
+  line(motivesSvg, x1, y1, x1, y1 - H2, { stroke: linec, sw: 1.4 });
+  text(motivesSvg, x1, 86, "speculative demand", { fill: muted, size: 12, weight: 800 });
+
+  for (let j = 1; j < 4; j++) {
+    const gy = y1 - j * H2 / 4;
+    line(motivesSvg, x1, gy, x1 + W2, gy, { stroke: linec, sw: 1, opacity: .34 });
+  }
+
+  const maxSpec = d.a / (0.5 + d.phi);
+  const pts = [];
+  for (let r = 0.5; r <= 18; r += 0.1) {
+    const LS = d.a / (r + d.phi);
+    const x = x1 + (r - 0.5) / 17.5 * W2;
+    const y = y1 - LS / maxSpec * H2;
+    pts.push([x, y]);
+  }
+
+  const area = `M${x1},${y1} ` + pts.map(p => `L${p[0]},${p[1]}`).join(" ") + ` L${x1 + W2},${y1} Z`;
+  path(motivesSvg, area, { fill: purple, stroke: "none", opacity: .07 });
+  path(motivesSvg, pts.map((p, i) => `${i === 0 ? "M" : "L"}${p[0]},${p[1]}`).join(" "), { stroke: purple, sw: 3.1 });
+
+  const dotX = x1 + (d.i - 0.5) / 17.5 * W2;
+  const dotY = y1 - d.LS / maxSpec * H2;
+  line(motivesSvg, dotX, y1, dotX, dotY, { stroke: muted, sw: 1, dash: "4 5" });
+  line(motivesSvg, x1, dotY, dotX, dotY, { stroke: muted, sw: 1, dash: "4 5", opacity: .65 });
+  circle(motivesSvg, dotX, dotY, 10.5, { fill: purple, opacity: .16 });
+  circle(motivesSvg, dotX, dotY, 5.8, { fill: purple, stroke: ink, sw: 1.2 });
+
+  text(motivesSvg, x1 + W2, y1 + 22, "interest rate i", { fill: muted, size: 11.5, anchor: "end", weight: 740 });
+  text(motivesSvg, x1 - 18, y1 - H2 + 4, "Lˢ", { fill: muted, size: 11.5, weight: 740 });
+
+  // Small explanatory cards.
+  function mini(x, y, title, body, color) {
+    rect(motivesSvg, x, y, 160, 40, { fill: paper2, stroke: linec, rx: 14 });
+    text(motivesSvg, x + 13, y + 16, title, { fill: muted, size: 10, weight: 800 });
+    text(motivesSvg, x + 13, y + 31, body, { fill: color, size: 11.5, weight: 850 });
+  }
+
+  mini(74, 300, "income-linked", "T and P rise with Y", accent);
+  mini(250, 300, "interest-linked", "S falls as i rises", purple);
+
+  rect(motivesSvg, 80, 354, 460, 26, { fill: paper2, stroke: linec, rx: 12, opacity: .96 });
+  text(motivesSvg, 98, 371, "Keynesian liquidity preference: L rises with Y and uncertainty, but falls with the interest rate.", {
+    fill: muted,
+    size: 11.2,
+    weight: 780
+  });
+}
+
+function update() {
+  const d = data();
+  updateLabels(d);
+  drawMarket(d);
+  drawMotives(d);
+}
+
+function animateIncome() {
+  if (state.animating) return;
+  state.animating = true;
+  $("shockBtn").classList.add("active");
+
+  const start = num(inputs.income.value);
+  const path = [start, 4200, 5000, 5900, 6600, 5900, 5000, 4200, 3400, 2700, 3400, start];
+  let idx = 0;
+
+  const timer = setInterval(() => {
+    inputs.income.value = Math.max(500, Math.min(8000, path[idx]));
+    update();
+    idx++;
+    if (idx >= path.length) {
+      clearInterval(timer);
+      state.animating = false;
+      $("shockBtn").classList.remove("active");
+    }
+  }, 190);
+}
+
+Object.values(inputs).forEach(input => input.addEventListener("input", update));
+
+$("themeBtn").addEventListener("click", () => {
+  state.theme = state.theme === "dark" ? "light" : "dark";
+  setTheme();
+  update();
+});
+
+$("shockBtn").addEventListener("click", animateIncome);
+
+setTheme();
+update();
+</script>
+</body>
+</html>

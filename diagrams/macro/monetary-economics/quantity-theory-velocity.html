@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive macroeconomics diagram for quantity theory and velocity: the equation of exchange, money growth, output growth, and inflation.">
+<title>Quantity Theory and Velocity | Monetary Economics Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+
+<style>
+:root {
+  --bg: #f6f1e7;
+  --paper: #fffaf1;
+  --paper2: #f1eadc;
+  --ink: #172123;
+  --muted: #64706e;
+  --line: rgba(31, 45, 48, 0.14);
+  --grid: rgba(31, 45, 48, 0.075);
+  --accent: #2f8f83;
+  --accent2: #8fc7be;
+  --soft: rgba(47, 143, 131, 0.13);
+  --gold: #b8944b;
+  --blue: #577f9e;
+  --red: #a85e50;
+  --purple: #85699d;
+  --shadow: 0 16px 36px rgba(55, 45, 31, 0.095);
+}
+
+[data-theme="dark"] {
+  --bg: #0b1116;
+  --paper: #111a21;
+  --paper2: #17232b;
+  --ink: #eef5f3;
+  --muted: #a2afad;
+  --line: rgba(238, 245, 243, 0.13);
+  --grid: rgba(238, 245, 243, 0.065);
+  --accent: #77c9bd;
+  --accent2: #3e857a;
+  --soft: rgba(119, 201, 189, 0.13);
+  --gold: #d4ba74;
+  --blue: #8fb7d5;
+  --red: #d39080;
+  --purple: #b5a0cf;
+  --shadow: 0 22px 52px rgba(0, 0, 0, 0.34);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 8% 0%, var(--soft), transparent 30rem),
+    radial-gradient(circle at 92% 8%, rgba(184,148,75,0.10), transparent 28rem),
+    var(--bg);
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.45;
+}
+
+.app {
+  width: min(1460px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 26px 0 42px;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.8rem, 3.4vw, 3.35rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+}
+
+.subtitle {
+  max-width: 820px;
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 1.35vw, 1.05rem);
+}
+
+.top-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+button { font: inherit; }
+
+.toggle, .pill {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 96%, transparent);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 9px 13px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.pill.active {
+  background: var(--soft);
+  border-color: var(--accent);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.card {
+  background: color-mix(in srgb, var(--paper) 95%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+}
+
+.controls {
+  position: sticky;
+  top: 16px;
+  padding: 17px;
+}
+
+.title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.title-row h2, .title-row h3 {
+  margin: 0;
+  font-size: 0.96rem;
+  letter-spacing: -0.015em;
+}
+
+.title-row span {
+  color: var(--muted);
+  font-size: 0.74rem;
+}
+
+.group {
+  border-top: 1px solid var(--line);
+  padding: 14px 0;
+}
+
+.group:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.group-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.105em;
+  font-size: 0.72rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.row { margin: 13px 0; }
+
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.86rem;
+  margin-bottom: 7px;
+}
+
+.label label { font-weight: 650; }
+
+.value {
+  color: var(--accent);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.main {
+  display: grid;
+  gap: 18px;
+}
+
+.model {
+  padding: 17px;
+}
+
+.model-grid {
+  display: grid;
+  grid-template-columns: 1.14fr 0.86fr;
+  gap: 14px;
+  margin-bottom: 17px;
+}
+
+.eqbox {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 15px;
+}
+
+.eq-title {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.105em;
+  font-size: 0.72rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.equations {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1rem, 1.3vw, 1.18rem);
+  line-height: 1.75;
+  overflow-x: auto;
+}
+
+.equations .line { white-space: nowrap; }
+
+.note {
+  color: var(--muted);
+  font-size: 0.83rem;
+  margin-top: 8px;
+}
+
+.diagrams {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.diagram {
+  padding: 15px;
+}
+
+.dhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.dhead h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.dhead p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.badge {
+  border: 1px solid var(--line);
+  background: var(--soft);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.svgbox {
+  height: 560px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 42px 42px;
+  overflow: hidden;
+}
+
+.svgbox.small { height: 500px; }
+
+svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.bottom {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 18px;
+}
+
+.info { padding: 17px; }
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.kpi {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  padding: 12px;
+}
+
+.kpi small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.71rem;
+  margin-bottom: 3px;
+}
+
+.kpi strong {
+  font-size: 1.02rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.functions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 11px;
+}
+
+.fcard {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.fcard h4 {
+  margin: 0 0 6px;
+  font-size: 0.9rem;
+}
+
+.fcard p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.notice {
+  margin-top: 13px;
+  border-left: 3px solid var(--accent);
+  background: var(--soft);
+  border-radius: 16px;
+  padding: 13px 14px;
+}
+
+.notice h4 {
+  margin: 0 0 7px;
+  font-size: 0.9rem;
+}
+
+.notice ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 12px));
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 12px;
+  padding: 9px 11px;
+  font-size: 0.78rem;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transition: opacity 120ms ease;
+  z-index: 100;
+  max-width: 280px;
+}
+
+@media (max-width: 1100px) {
+  .layout, .diagrams, .bottom, .model-grid { grid-template-columns: 1fr; }
+  .controls { position: static; }
+  .kpis, .functions { grid-template-columns: repeat(2, 1fr); }
+  .svgbox { height: 520px; }
+  .svgbox.small { height: 470px; }
+}
+
+@media (max-width: 640px) {
+  .app { width: min(100% - 18px, 1380px); padding-top: 18px; }
+  .header { grid-template-columns: 1fr; }
+  .top-actions { justify-content: flex-start; }
+  .kpis, .functions { grid-template-columns: 1fr; }
+  .svgbox { height: 420px; }
+  .svgbox.small { height: 390px; }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <header class="header">
+    <div>
+      <div class="eyebrow">Macroeconomics notebook</div>
+      <h1>Quantity Theory and Velocity</h1>
+      <p class="subtitle">
+        The equation of exchange links money, velocity, prices, and real output. Inflation appears when nominal spending grows faster than real production.
+      </p>
+    </div>
+    <div class="top-actions">
+      <button class="toggle" id="themeBtn" type="button">◐ Theme</button>
+      <button class="pill" id="animateBtn" type="button">Animate velocity shock</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="card controls">
+      <div class="title-row">
+        <h2>Controls</h2>
+        <span>annual rates</span>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Initial levels</div>
+        <div class="row">
+          <div class="label"><label for="money0">Money stock M₀</label><span class="value" id="vMoney0"></span></div>
+          <input id="money0" type="range" min="500" max="10000" step="100" value="4000">
+        </div>
+
+        <div class="row">
+          <div class="label"><label for="velocity0">Velocity V₀</label><span class="value" id="vVelocity0"></span></div>
+          <input id="velocity0" type="range" min="0.5" max="8" step="0.1" value="2.0">
+        </div>
+
+        <div class="row">
+          <div class="label"><label for="output0">Real output Y₀</label><span class="value" id="vOutput0"></span></div>
+          <input id="output0" type="range" min="1000" max="20000" step="100" value="8000">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Growth rates</div>
+        <div class="row">
+          <div class="label"><label for="moneyGrowth">Money growth μ</label><span class="value" id="vMoneyGrowth"></span></div>
+          <input id="moneyGrowth" type="range" min="-5" max="30" step="0.25" value="8">
+        </div>
+
+        <div class="row">
+          <div class="label"><label for="velocityGrowth">Velocity growth v</label><span class="value" id="vVelocityGrowth"></span></div>
+          <input id="velocityGrowth" type="range" min="-10" max="15" step="0.25" value="0">
+        </div>
+
+        <div class="row">
+          <div class="label"><label for="outputGrowth">Output growth g</label><span class="value" id="vOutputGrowth"></span></div>
+          <input id="outputGrowth" type="range" min="-5" max="12" step="0.25" value="3">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Velocity shock</div>
+        <div class="row">
+          <div class="label"><label for="shock">One-time velocity shock</label><span class="value" id="vShock"></span></div>
+          <input id="shock" type="range" min="-40" max="40" step="1" value="0">
+        </div>
+
+        <div class="row">
+          <div class="label"><label for="persistence">Shock persistence ρ</label><span class="value" id="vPersistence"></span></div>
+          <input id="persistence" type="range" min="0" max="0.95" step="0.05" value="0.55">
+        </div>
+
+        <div class="row">
+          <div class="label"><label for="horizon">Time horizon</label><span class="value" id="vHorizon"></span></div>
+          <input id="horizon" type="range" min="5" max="30" step="1" value="18">
+        </div>
+      </div>
+    </aside>
+
+    <section class="main">
+      <section class="card model">
+        <div class="model-grid">
+          <div class="eqbox">
+            <div class="eq-title">Equation of exchange</div>
+            <div class="equations">
+              <div class="line">Mₜ Vₜ = Pₜ Yₜ</div>
+              <div class="line">Pₜ = MₜVₜ / Yₜ</div>
+              <div class="line">Nominal spending = money × velocity</div>
+            </div>
+          </div>
+
+          <div class="eqbox">
+            <div class="eq-title">Growth-rate form</div>
+            <div class="equations">
+              <div class="line">π ≈ μ + v − g</div>
+              <div class="line">inflation ≈ money growth + velocity growth − output growth</div>
+            </div>
+            <div class="note">With stable velocity, sustained inflation is mainly the excess of money growth over real output growth.</div>
+          </div>
+        </div>
+
+        <div class="diagrams">
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>Levels: M, V, Y, and P</h3>
+                <p>The price level adjusts so nominal spending equals nominal output.</p>
+              </div>
+              <div class="badge" id="priceBadge">P</div>
+            </div>
+            <div class="svgbox">
+              <svg id="levelsSvg" viewBox="0 0 760 530" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>Inflation decomposition</h3>
+                <p>Inflation is the part of nominal spending growth not absorbed by real output growth.</p>
+              </div>
+              <div class="badge" id="inflationBadge">π</div>
+            </div>
+            <div class="svgbox small">
+              <svg id="growthSvg" viewBox="0 0 620 390" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bottom">
+        <div class="card info">
+          <div class="title-row">
+            <h3>Current state</h3>
+            <span>computed live</span>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><small>Current price P₀</small><strong id="kP0"></strong></div>
+            <div class="kpi"><small>Long-run inflation</small><strong id="kPiLR"></strong></div>
+            <div class="kpi"><small>Final price Pᵀ</small><strong id="kPT"></strong></div>
+            <div class="kpi"><small>Velocity Vᵀ</small><strong id="kVT"></strong></div>
+          </div>
+          <div class="notice">
+            <h4>What to notice</h4>
+            <ul>
+              <li>Higher money growth raises nominal spending growth.</li>
+              <li>Higher real output growth absorbs nominal spending growth and lowers inflation.</li>
+              <li>Velocity shocks move prices even without a money-stock change.</li>
+              <li>If velocity is stable, π ≈ μ − g.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card info">
+          <div class="title-row">
+            <h3>Economic interpretation</h3>
+            <span>quantity theory</span>
+          </div>
+          <div class="functions">
+            <div class="fcard">
+              <h4>Money M</h4>
+              <p>The stock of means of payment. Faster M growth pushes nominal expenditure upward.</p>
+            </div>
+            <div class="fcard">
+              <h4>Velocity V</h4>
+              <p>The average frequency with which money turns over in transactions.</p>
+            </div>
+            <div class="fcard">
+              <h4>Real output Y</h4>
+              <p>The real goods side. If Y grows, the same nominal spending pressure produces less inflation.</p>
+            </div>
+          </div>
+
+          <div class="notice">
+            <h4>Exam-style summary</h4>
+            <ul>
+              <li>Equation of exchange: MV = PY.</li>
+              <li>Taking logs: log P = log M + log V − log Y.</li>
+              <li>Growth form: π ≈ μ + v − g.</li>
+              <li>Classical quantity theory adds stable V and long-run real-output determination.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const state = {
+  theme: localStorage.getItem("quantity-theory-theme") || "light",
+  animating: false
+};
+
+const $ = id => document.getElementById(id);
+
+const inputs = {
+  money0: $("money0"),
+  velocity0: $("velocity0"),
+  output0: $("output0"),
+  moneyGrowth: $("moneyGrowth"),
+  velocityGrowth: $("velocityGrowth"),
+  outputGrowth: $("outputGrowth"),
+  shock: $("shock"),
+  persistence: $("persistence"),
+  horizon: $("horizon")
+};
+
+const values = {
+  money0: $("vMoney0"),
+  velocity0: $("vVelocity0"),
+  output0: $("vOutput0"),
+  moneyGrowth: $("vMoneyGrowth"),
+  velocityGrowth: $("vVelocityGrowth"),
+  outputGrowth: $("vOutputGrowth"),
+  shock: $("vShock"),
+  persistence: $("vPersistence"),
+  horizon: $("vHorizon")
+};
+
+const levelsSvg = $("levelsSvg");
+const growthSvg = $("growthSvg");
+const tooltip = $("tooltip");
+
+function num(x) { return Number(x); }
+
+function fmt(x, d = 0) {
+  return Number(x).toLocaleString("en-US", {
+    maximumFractionDigits: d,
+    minimumFractionDigits: d
+  });
+}
+
+function v(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function data() {
+  const M0 = num(inputs.money0.value);
+  const V0 = num(inputs.velocity0.value);
+  const Y0 = num(inputs.output0.value);
+
+  const mu = num(inputs.moneyGrowth.value) / 100;
+  const vg = num(inputs.velocityGrowth.value) / 100;
+  const g = num(inputs.outputGrowth.value) / 100;
+
+  const shock = num(inputs.shock.value) / 100;
+  const rho = num(inputs.persistence.value);
+  const T = num(inputs.horizon.value);
+
+  const rows = [];
+  let prevP = null;
+
+  for (let t = 0; t <= T; t++) {
+    const shockFactor = t === 0 ? 1 : Math.exp(Math.log(Math.max(0.05, 1 + shock)) * Math.pow(rho, t - 1));
+    const M = M0 * Math.pow(1 + mu, t);
+    const V = V0 * Math.pow(1 + vg, t) * shockFactor;
+    const Y = Y0 * Math.pow(1 + g, t);
+    const P = M * V / Y;
+    const PY = P * Y;
+    const MV = M * V;
+    const pi = prevP === null ? 0 : (P / prevP - 1);
+    rows.push({ t, M, V, Y, P, MV, PY, pi, shockFactor });
+    prevP = P;
+  }
+
+  const piLR = mu + vg - g;
+  const final = rows[rows.length - 1];
+
+  return { M0, V0, Y0, mu, vg, g, shock, rho, T, rows, piLR, final };
+}
+
+function setTheme() {
+  document.documentElement.dataset.theme = state.theme;
+  localStorage.setItem("quantity-theory-theme", state.theme);
+}
+
+function svgEl(tag, attrs = {}) {
+  const e = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  Object.entries(attrs).forEach(([k, val]) => e.setAttribute(k, val));
+  return e;
+}
+
+function add(parent, child) {
+  parent.appendChild(child);
+  return child;
+}
+
+function text(parent, x, y, content, attrs = {}) {
+  const e = svgEl("text", {
+    x, y,
+    fill: attrs.fill || v("--ink"),
+    "font-size": attrs.size || 14,
+    "font-weight": attrs.weight || 500,
+    "text-anchor": attrs.anchor || "start",
+    "dominant-baseline": attrs.base || "auto",
+    opacity: attrs.opacity ?? 1
+  });
+  e.textContent = content;
+  return add(parent, e);
+}
+
+function rect(parent, x, y, width, height, attrs = {}) {
+  return add(parent, svgEl("rect", {
+    x, y, width, height,
+    rx: attrs.rx || 14,
+    fill: attrs.fill || "transparent",
+    stroke: attrs.stroke || "none",
+    "stroke-width": attrs.sw || 1,
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function line(parent, x1, y1, x2, y2, attrs = {}) {
+  return add(parent, svgEl("line", {
+    x1, y1, x2, y2,
+    stroke: attrs.stroke || v("--line"),
+    "stroke-width": attrs.sw || 1,
+    "stroke-dasharray": attrs.dash || "",
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function path(parent, d, attrs = {}) {
+  return add(parent, svgEl("path", {
+    d,
+    fill: attrs.fill || "none",
+    stroke: attrs.stroke || v("--ink"),
+    "stroke-width": attrs.sw || 2,
+    "stroke-linecap": "round",
+    "stroke-linejoin": "round",
+    "stroke-dasharray": attrs.dash || "",
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function circle(parent, cx, cy, r, attrs = {}) {
+  return add(parent, svgEl("circle", {
+    cx, cy, r,
+    fill: attrs.fill || "transparent",
+    stroke: attrs.stroke || "none",
+    "stroke-width": attrs.sw || 1,
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function tip(ev, html) {
+  tooltip.innerHTML = html;
+  tooltip.style.left = ev.clientX + "px";
+  tooltip.style.top = ev.clientY + "px";
+  tooltip.style.opacity = 1;
+}
+
+function untip() { tooltip.style.opacity = 0; }
+
+function pct(x, d = 2) {
+  return `${fmt(100 * x, d)}%`;
+}
+
+function updateLabels(d) {
+  values.money0.textContent = fmt(num(inputs.money0.value));
+  values.velocity0.textContent = fmt(num(inputs.velocity0.value), 1);
+  values.output0.textContent = fmt(num(inputs.output0.value));
+  values.moneyGrowth.textContent = `${fmt(num(inputs.moneyGrowth.value), 2)}%`;
+  values.velocityGrowth.textContent = `${fmt(num(inputs.velocityGrowth.value), 2)}%`;
+  values.outputGrowth.textContent = `${fmt(num(inputs.outputGrowth.value), 2)}%`;
+  values.shock.textContent = `${fmt(num(inputs.shock.value), 0)}%`;
+  values.persistence.textContent = fmt(num(inputs.persistence.value), 2);
+  values.horizon.textContent = `${fmt(num(inputs.horizon.value))}y`;
+
+  $("kP0").textContent = fmt(d.rows[0].P, 2);
+  $("kPiLR").textContent = pct(d.piLR, 2);
+  $("kPT").textContent = fmt(d.final.P, 2);
+  $("kVT").textContent = fmt(d.final.V, 2);
+  $("priceBadge").textContent = `Pᵀ = ${fmt(d.final.P, 2)}`;
+  $("inflationBadge").textContent = `π ≈ ${pct(d.piLR, 2)}`;
+}
+
+function drawLevels(d) {
+  levelsSvg.innerHTML = "";
+
+  const accent = v("--accent");
+  const muted = v("--muted");
+  const linec = v("--line");
+  const ink = v("--ink");
+  const paper2 = v("--paper2");
+  const gold = v("--gold");
+  const blue = v("--blue");
+  const red = v("--red");
+  const purple = v("--purple");
+
+  rect(levelsSvg, 42, 28, 676, 474, { fill: "rgba(0,0,0,0.01)", stroke: linec, rx: 24 });
+  text(levelsSvg, 72, 60, "equation of exchange in levels", { fill: muted, size: 12.5, weight: 800 });
+
+  const indexed = d.rows.map(r => ({
+    t: r.t,
+    M: 100 * r.M / d.rows[0].M,
+    V: 100 * r.V / d.rows[0].V,
+    Y: 100 * r.Y / d.rows[0].Y,
+    P: 100 * r.P / d.rows[0].P,
+    MV: 100 * r.MV / d.rows[0].MV
+  }));
+
+  const allValues = indexed.flatMap(r => [r.M, r.V, r.Y, r.P, r.MV]);
+  const maxIndex = Math.max(...allValues) * 1.08;
+  const minIndex = Math.min(...allValues, 100) * 0.96;
+
+  const x0 = 76, y0 = 382, W = 604, H = 250;
+
+  line(levelsSvg, x0, y0, x0 + W, y0, { stroke: linec, sw: 1.45 });
+  line(levelsSvg, x0, y0, x0, y0 - H, { stroke: linec, sw: 1.45 });
+
+  for (let j = 1; j < 6; j++) {
+    const gy = y0 - j * H / 6;
+    line(levelsSvg, x0, gy, x0 + W, gy, { stroke: linec, sw: 1, opacity: .36 });
+  }
+  for (let k = 1; k < 8; k++) {
+    const gx = x0 + k * W / 8;
+    line(levelsSvg, gx, y0 - H, gx, y0, { stroke: linec, sw: 1, opacity: .30 });
+  }
+
+  function X(t) { return x0 + t / d.T * W; }
+  function Yp(val) { return y0 - (val - minIndex) / (maxIndex - minIndex) * H; }
+
+  line(levelsSvg, x0, Yp(100), x0 + W, Yp(100), { stroke: muted, sw: 1.05, dash: "5 6", opacity: .72 });
+  text(levelsSvg, x0 + 8, Yp(100) - 7, "100", { fill: muted, size: 10.8, weight: 750 });
+
+  const series = [
+    { key: "M", color: accent, label: "money M", sw: 2.35, dash: "" },
+    { key: "V", color: purple, label: "velocity V", sw: 2.25, dash: "4 6" },
+    { key: "Y", color: blue, label: "real output Y", sw: 2.25, dash: "6 6" },
+    { key: "P", color: red, label: "price level P", sw: 3.35, dash: "" }
+  ];
+
+  // Soft area under price level to make the inflation object visible.
+  const pricePts = indexed.map(r => [X(r.t), Yp(r.P)]);
+  const priceArea = `M${x0},${y0} ` + pricePts.map(p => `L${p[0]},${p[1]}`).join(" ") + ` L${x0 + W},${y0} Z`;
+  path(levelsSvg, priceArea, { fill: red, stroke: "none", opacity: .045 });
+
+  series.forEach(s => {
+    const pts = indexed.map((r, i) => `${i === 0 ? "M" : "L"}${X(r.t)},${Yp(r[s.key])}`).join(" ");
+    path(levelsSvg, pts, { stroke: s.color, sw: s.sw, dash: s.dash, opacity: s.key === "P" ? 1 : .84 });
+  });
+
+  const final = indexed[indexed.length - 1];
+  series.forEach((s, idx) => {
+    const x = X(d.T);
+    const y = Yp(final[s.key]);
+    circle(levelsSvg, x, y, s.key === "P" ? 6.4 : 5.2, { fill: s.color, stroke: ink, sw: 1.15 });
+    text(levelsSvg, x + 10, y + 4 + (idx - 1.5) * 2, s.key, { fill: s.color, size: 11.8, weight: 850 });
+  });
+
+  text(levelsSvg, x0 + W, y0 + 30, "time", { fill: muted, size: 12, anchor: "end", weight: 740 });
+  text(levelsSvg, x0 - 22, y0 - H - 8, "index, t=0 = 100", { fill: muted, size: 12, weight: 740 });
+
+  // Compact identity cards.
+  const last = d.final;
+  function miniCard(x, y, title, value, color) {
+    rect(levelsSvg, x, y, 158, 42, { fill: paper2, stroke: linec, rx: 14 });
+    text(levelsSvg, x + 14, y + 17, title, { fill: muted, size: 10.5, weight: 800 });
+    text(levelsSvg, x + 14, y + 33, value, { fill: color, size: 13.4, weight: 850 });
+  }
+
+  miniCard(88, 82, "identity", "M · V = P · Y", ink);
+  miniCard(258, 82, "final P", fmt(last.P, 2), red);
+  miniCard(428, 82, "final V", fmt(last.V, 2), purple);
+
+  // Legend.
+  function legend(x, y, color, dash, label) {
+    line(levelsSvg, x, y, x + 20, y, { stroke: color, sw: 2.5, dash });
+    text(levelsSvg, x + 28, y + 4, label, { fill: muted, size: 10.8, weight: 750 });
+  }
+
+  rect(levelsSvg, 104, 430, 552, 36, { fill: paper2, stroke: linec, rx: 15, opacity: .98 });
+  legend(124, 452, accent, "", "M");
+  legend(196, 452, purple, "4 6", "V");
+  legend(268, 452, blue, "6 6", "Y");
+  legend(340, 452, red, "", "P");
+  text(levelsSvg, 418, 456, "Price rises when M·V grows faster than real output Y.", {
+    fill: muted,
+    size: 11.4,
+    weight: 780
+  });
+
+  rect(levelsSvg, 104, 474, 552, 30, { fill: paper2, stroke: linec, rx: 14, opacity: .96 });
+  text(levelsSvg, 124, 494, `Final equation: MᵀVᵀ / Yᵀ = Pᵀ = ${fmt(last.P, 2)}`, {
+    fill: red,
+    size: 11.5,
+    weight: 820
+  });
+}
+
+function drawGrowth(d) {
+  growthSvg.innerHTML = "";
+
+  const accent = v("--accent");
+  const muted = v("--muted");
+  const linec = v("--line");
+  const ink = v("--ink");
+  const paper2 = v("--paper2");
+  const gold = v("--gold");
+  const blue = v("--blue");
+  const red = v("--red");
+  const purple = v("--purple");
+
+  rect(growthSvg, 34, 26, 552, 324, { fill: "rgba(0,0,0,0.01)", stroke: linec, rx: 22 });
+  text(growthSvg, 62, 56, "inflation decomposition", { fill: muted, size: 12.5, weight: 800 });
+
+  // Left panel: growth-rate bars.
+  const x0 = 64, y0 = 258, W = 250, H = 170;
+  line(growthSvg, x0, y0, x0 + W, y0, { stroke: linec, sw: 1.4 });
+  line(growthSvg, x0, y0 - H, x0, y0 + 24, { stroke: linec, sw: 1.4 });
+
+  for (let j = 1; j < 4; j++) {
+    const gy = y0 - j * H / 4;
+    line(growthSvg, x0, gy, x0 + W, gy, { stroke: linec, sw: 1, opacity: .34 });
+  }
+
+  text(growthSvg, x0, 86, "π ≈ μ + v − g", { fill: muted, size: 12, weight: 800 });
+
+  const vals = [
+    { label: "μ", val: d.mu, color: accent, name: "money growth" },
+    { label: "v", val: d.vg, color: purple, name: "velocity growth" },
+    { label: "−g", val: -d.g, color: blue, name: "minus output growth" },
+    { label: "π", val: d.piLR, color: red, name: "inflation" }
+  ];
+
+  const maxAbs = Math.max(0.04, ...vals.map(o => Math.abs(o.val))) * 1.34;
+  function Ybar(val) { return y0 - val / maxAbs * H / 2; }
+
+  line(growthSvg, x0, y0, x0 + W, y0, { stroke: muted, sw: 1.1, opacity: .75 });
+
+  vals.forEach((b, idx) => {
+    const x = x0 + 30 + idx * 54;
+    const bw = 36;
+    const h = Math.max(3, Math.abs(Ybar(b.val) - y0));
+    rect(growthSvg, x, b.val >= 0 ? Ybar(b.val) : y0, bw, h, {
+      fill: b.color,
+      opacity: .24,
+      stroke: b.color,
+      sw: 1.25,
+      rx: 10
+    });
+    text(growthSvg, x + bw / 2, y0 + 21, b.label, { fill: ink, size: 12, weight: 850, anchor: "middle" });
+    text(growthSvg, x + bw / 2, b.val >= 0 ? Ybar(b.val) - 8 : y0 + h + 15, pct(b.val, 1), {
+      fill: b.color,
+      size: 10.7,
+      weight: 820,
+      anchor: "middle"
+    });
+  });
+
+  // Right panel: inflation path.
+  const x1 = 366, y1 = 258, W2 = 184, H2 = 170;
+  line(growthSvg, x1, y1, x1 + W2, y1, { stroke: linec, sw: 1.4 });
+  line(growthSvg, x1, y1 - H2, x1, y1 + 24, { stroke: linec, sw: 1.4 });
+  text(growthSvg, x1, 86, "inflation path", { fill: muted, size: 12, weight: 800 });
+
+  for (let j = 1; j < 4; j++) {
+    const gy = y1 - j * H2 / 4;
+    line(growthSvg, x1, gy, x1 + W2, gy, { stroke: linec, sw: 1, opacity: .34 });
+  }
+
+  const pis = d.rows.slice(1).map(r => r.pi);
+  const maxAbsPi = Math.max(0.04, ...pis.map(Math.abs), Math.abs(d.piLR)) * 1.35;
+  function X(t) { return x1 + (t - 1) / Math.max(1, d.T - 1) * W2; }
+  function Yp(pi) { return y1 - pi / maxAbsPi * H2 / 2; }
+
+  line(growthSvg, x1, Yp(0), x1 + W2, Yp(0), { stroke: muted, sw: 1.1, opacity: .72 });
+  line(growthSvg, x1, Yp(d.piLR), x1 + W2, Yp(d.piLR), { stroke: muted, sw: 1.25, dash: "5 6", opacity: .70 });
+
+  const pts = d.rows.slice(1).map((r, i) => `${i === 0 ? "M" : "L"}${X(r.t)},${Yp(r.pi)}`).join(" ");
+  path(growthSvg, pts, { stroke: red, sw: 3.1 });
+
+  const last = d.rows[d.rows.length - 1];
+  circle(growthSvg, X(last.t), Yp(last.pi), 6.1, { fill: red, stroke: ink, sw: 1.15 });
+
+  text(growthSvg, x1 + W2, y1 + 22, "time", { fill: muted, size: 11.5, anchor: "end", weight: 740 });
+  text(growthSvg, x1 - 18, y1 - H2 + 4, "π", { fill: muted, size: 11.5, weight: 740 });
+
+  function mini(x, y, label, value, color) {
+    rect(growthSvg, x, y, 132, 32, { fill: paper2, stroke: linec, rx: 12 });
+    text(growthSvg, x + 11, y + 13, label, { fill: muted, size: 9.5, weight: 800 });
+    text(growthSvg, x + 11, y + 27, value, { fill: color, size: 11.8, weight: 850 });
+  }
+
+  mini(82, 300, "long-run approx.", pct(d.piLR, 2), red);
+  mini(230, 300, "latest inflation", pct(last.pi, 2), red);
+  mini(378, 300, "velocity shock", `${fmt(100 * d.shock, 0)}%`, purple);
+
+  rect(growthSvg, 80, 354, 460, 26, { fill: paper2, stroke: linec, rx: 12, opacity: .96 });
+  text(growthSvg, 98, 371, "Core logic: inflation equals nominal spending growth minus real output growth.", {
+    fill: muted,
+    size: 11.1,
+    weight: 790
+  });
+}
+
+function update() {
+  const d = data();
+  updateLabels(d);
+  drawLevels(d);
+  drawGrowth(d);
+}
+
+let animationTimer = null;
+
+function animateVelocityShock() {
+  if (state.animating) {
+    state.animating = false;
+    $("animateBtn").classList.remove("active");
+    if (animationTimer) clearInterval(animationTimer);
+    return;
+  }
+
+  state.animating = true;
+  $("animateBtn").classList.add("active");
+
+  const frames = [0, 8, 16, 24, 32, 40, 30, 20, 10, 0, -10, -20, -30, -20, -10, 0];
+  let i = 0;
+
+  animationTimer = setInterval(() => {
+    inputs.shock.value = frames[i];
+    update();
+    i++;
+    if (i >= frames.length) {
+      clearInterval(animationTimer);
+      state.animating = false;
+      $("animateBtn").classList.remove("active");
+    }
+  }, 180);
+}
+
+Object.values(inputs).forEach(input => input.addEventListener("input", update));
+
+$("themeBtn").addEventListener("click", () => {
+  state.theme = state.theme === "dark" ? "light" : "dark";
+  setTheme();
+  update();
+});
+
+$("animateBtn").addEventListener("click", animateVelocityShock);
+
+setTheme();
+update();
+</script>
+</body>
+</html>

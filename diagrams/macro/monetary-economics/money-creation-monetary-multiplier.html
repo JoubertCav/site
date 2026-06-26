@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive macroeconomics diagram for money creation and the monetary multiplier: currency-deposit ratios, reserve ratios, excess reserves, and bank-created money.">
+<title>Money Creation and the Monetary Multiplier | Monetary Economics Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+
+<style>
+:root {
+  --bg: #f6f1e7;
+  --paper: #fffaf1;
+  --paper2: #f1eadc;
+  --ink: #172123;
+  --muted: #64706e;
+  --line: rgba(31,45,48,.14);
+  --grid: rgba(31,45,48,.075);
+  --accent: #2f8f83;
+  --soft: rgba(47,143,131,.13);
+  --gold: #b8944b;
+  --blue: #577f9e;
+  --red: #a85e50;
+  --purple: #85699d;
+  --shadow: 0 16px 36px rgba(55,45,31,.095);
+}
+[data-theme="dark"] {
+  --bg: #0b1116;
+  --paper: #111a21;
+  --paper2: #17232b;
+  --ink: #eef5f3;
+  --muted: #a2afad;
+  --line: rgba(238,245,243,.13);
+  --grid: rgba(238,245,243,.065);
+  --accent: #77c9bd;
+  --soft: rgba(119,201,189,.13);
+  --gold: #d4ba74;
+  --blue: #8fb7d5;
+  --red: #d39080;
+  --purple: #b5a0cf;
+  --shadow: 0 22px 52px rgba(0,0,0,.34);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 8% 0%, var(--soft), transparent 30rem),
+    radial-gradient(circle at 92% 8%, rgba(184,148,75,.10), transparent 28rem),
+    var(--bg);
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.45;
+}
+.app {
+  width: min(1380px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 26px 0 42px;
+}
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+.eyebrow {
+  color: var(--accent);
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.8rem, 3.4vw, 3.35rem);
+  line-height: 1.02;
+  letter-spacing: -.035em;
+  font-weight: 500;
+}
+.subtitle {
+  max-width: 850px;
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: clamp(.95rem, 1.35vw, 1.05rem);
+}
+.top-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+button { font: inherit; }
+.toggle, .pill {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 96%, transparent);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 9px 13px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.pill.active {
+  background: var(--soft);
+  border-color: var(--accent);
+}
+.layout {
+  display: grid;
+  grid-template-columns: 330px minmax(0,1fr);
+  gap: 18px;
+  align-items: start;
+}
+.card {
+  background: color-mix(in srgb, var(--paper) 95%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+}
+.controls {
+  position: sticky;
+  top: 16px;
+  padding: 17px;
+}
+.title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.title-row h2, .title-row h3 {
+  margin: 0;
+  font-size: .96rem;
+  letter-spacing: -.015em;
+}
+.title-row span {
+  color: var(--muted);
+  font-size: .74rem;
+}
+.group {
+  border-top: 1px solid var(--line);
+  padding: 14px 0;
+}
+.group:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+.group-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .105em;
+  font-size: .72rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+.row { margin: 13px 0; }
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: .86rem;
+  margin-bottom: 7px;
+}
+.label label { font-weight: 650; }
+.value {
+  color: var(--accent);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.main {
+  display: grid;
+  gap: 18px;
+}
+.model {
+  padding: 17px;
+}
+.model-grid {
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 14px;
+  margin-bottom: 17px;
+}
+.eqbox {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 15px;
+}
+.eq-title {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .105em;
+  font-size: .72rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+.equations {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1rem,1.3vw,1.18rem);
+  line-height: 1.75;
+  overflow-x: auto;
+}
+.equations .line { white-space: nowrap; }
+.note {
+  color: var(--muted);
+  font-size: .83rem;
+  margin-top: 8px;
+}
+.diagrams {
+  display: grid;
+  grid-template-columns: 1.12fr .88fr;
+  gap: 18px;
+}
+.diagram {
+  padding: 15px;
+}
+.dhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.dhead h3 {
+  margin: 0;
+  font-size: .98rem;
+}
+.dhead p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: .82rem;
+}
+.badge {
+  border: 1px solid var(--line);
+  background: var(--soft);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: .76rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.svgbox {
+  height: 442px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 42px 42px;
+  overflow: hidden;
+}
+.svgbox.small { height: 362px; }
+svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.bottom {
+  display: grid;
+  grid-template-columns: .9fr 1.1fr;
+  gap: 18px;
+}
+.info { padding: 17px; }
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 10px;
+}
+.kpi {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  padding: 12px;
+}
+.kpi small {
+  display: block;
+  color: var(--muted);
+  font-size: .71rem;
+  margin-bottom: 3px;
+}
+.kpi strong {
+  font-size: 1.02rem;
+  font-variant-numeric: tabular-nums;
+}
+.functions {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 11px;
+}
+.fcard {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+}
+.fcard h4 {
+  margin: 0 0 6px;
+  font-size: .9rem;
+}
+.fcard p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .82rem;
+}
+.notice {
+  margin-top: 13px;
+  border-left: 3px solid var(--accent);
+  background: var(--soft);
+  border-radius: 16px;
+  padding: 13px 14px;
+}
+.notice h4 {
+  margin: 0 0 7px;
+  font-size: .9rem;
+}
+.notice ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: .84rem;
+}
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 12px));
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 12px;
+  padding: 9px 11px;
+  font-size: .78rem;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transition: opacity 120ms ease;
+  z-index: 100;
+  max-width: 280px;
+}
+@media (max-width: 1100px) {
+  .layout, .diagrams, .bottom, .model-grid { grid-template-columns: 1fr; }
+  .controls { position: static; }
+  .kpis, .functions { grid-template-columns: repeat(2,1fr); }
+  .svgbox { height: 390px; }
+}
+@media (max-width: 640px) {
+  .app { width: min(100% - 18px, 1380px); padding-top: 18px; }
+  .header { grid-template-columns: 1fr; }
+  .top-actions { justify-content: flex-start; }
+  .kpis, .functions { grid-template-columns: 1fr; }
+  .svgbox { height: 338px; }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <header class="header">
+    <div>
+      <div class="eyebrow">Macroeconomics notebook</div>
+      <h1>Money Creation and the Monetary Multiplier</h1>
+      <p class="subtitle">
+        A visual model of how the monetary base becomes broad money through deposits, reserves, currency leakage, and bank lending.
+      </p>
+    </div>
+    <div class="top-actions">
+      <button class="toggle" id="themeBtn" type="button">◐ Theme</button>
+      <button class="pill" id="animateBtn" type="button">Animate deposit rounds</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="card controls">
+      <div class="title-row">
+        <h2>Controls</h2>
+        <span>ratios</span>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Monetary base</div>
+        <div class="row">
+          <div class="label"><label for="base">Monetary base B</label><span class="value" id="vBase"></span></div>
+          <input id="base" type="range" min="500" max="10000" step="100" value="3000">
+        </div>
+        <div class="row">
+          <div class="label"><label for="injection">Base injection ΔB</label><span class="value" id="vInjection"></span></div>
+          <input id="injection" type="range" min="0" max="2000" step="50" value="500">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Leakages and reserves</div>
+        <div class="row">
+          <div class="label"><label for="currencyRatio">Currency-deposit ratio c</label><span class="value" id="vCurrencyRatio"></span></div>
+          <input id="currencyRatio" type="range" min="0" max="0.8" step="0.01" value="0.20">
+        </div>
+        <div class="row">
+          <div class="label"><label for="requiredReserve">Required reserve ratio rr</label><span class="value" id="vRequiredReserve"></span></div>
+          <input id="requiredReserve" type="range" min="0.02" max="0.5" step="0.01" value="0.10">
+        </div>
+        <div class="row">
+          <div class="label"><label for="excessReserve">Excess reserve ratio er</label><span class="value" id="vExcessReserve"></span></div>
+          <input id="excessReserve" type="range" min="0" max="0.5" step="0.01" value="0.05">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Process visualization</div>
+        <div class="row">
+          <div class="label"><label for="rounds">Deposit rounds</label><span class="value" id="vRounds"></span></div>
+          <input id="rounds" type="range" min="4" max="20" step="1" value="10">
+        </div>
+        <div class="row">
+          <div class="label"><label for="shockRatio">Reserve stress shock</label><span class="value" id="vShockRatio"></span></div>
+          <input id="shockRatio" type="range" min="0" max="0.35" step="0.01" value="0">
+        </div>
+      </div>
+    </aside>
+
+    <section class="main">
+      <section class="card model">
+        <div class="model-grid">
+          <div class="eqbox">
+            <div class="eq-title">Simple multiplier model</div>
+            <div class="equations">
+              <div class="line">B = C + R</div>
+              <div class="line">M = C + D</div>
+              <div class="line">c = C/D, &nbsp; rr = RR/D, &nbsp; er = ER/D</div>
+              <div class="line">R = (rr + er)D</div>
+            </div>
+          </div>
+
+          <div class="eqbox">
+            <div class="eq-title">Money multiplier</div>
+            <div class="equations">
+              <div class="line">B = (c + rr + er)D</div>
+              <div class="line">M = (1 + c)D</div>
+              <div class="line">m = M/B = (1+c)/(c+rr+er)</div>
+            </div>
+            <div class="note">Currency leakage and reserve hoarding weaken deposit expansion. A higher c, rr, or er lowers the multiplier.</div>
+          </div>
+        </div>
+
+        <div class="diagrams">
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>From base money to broad money</h3>
+                <p>The base supports deposits; deposits create broad money, but leakages absorb part of the expansion.</p>
+              </div>
+              <div class="badge" id="multBadge">m</div>
+            </div>
+            <div class="svgbox">
+              <svg id="balanceSvg" viewBox="0 0 760 510" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>Deposit expansion rounds</h3>
+                <p>Each lending round becomes smaller because currency and reserves drain purchasing power from deposits.</p>
+              </div>
+              <div class="badge" id="roundBadge">rounds</div>
+            </div>
+            <div class="svgbox small">
+              <svg id="roundsSvg" viewBox="0 0 620 370" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bottom">
+        <div class="card info">
+          <div class="title-row">
+            <h3>Current state</h3>
+            <span>computed live</span>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><small>Multiplier m</small><strong id="kMult"></strong></div>
+            <div class="kpi"><small>Deposits D</small><strong id="kDeposits"></strong></div>
+            <div class="kpi"><small>Money M</small><strong id="kMoney"></strong></div>
+            <div class="kpi"><small>Bank-created money</small><strong id="kBankMoney"></strong></div>
+          </div>
+          <div class="notice">
+            <h4>What to notice</h4>
+            <ul>
+              <li>Money creation is strongest when currency leakage and reserve ratios are low.</li>
+              <li>Excess reserves act like a brake on the deposit multiplier.</li>
+              <li>Bank-created money is inside money: deposits backed by loans and bank assets.</li>
+              <li>A base injection changes broad money by approximately m × ΔB in this simple model.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card info">
+          <div class="title-row">
+            <h3>Economic interpretation</h3>
+            <span>banking system</span>
+          </div>
+          <div class="functions">
+            <div class="fcard">
+              <h4>Currency leakage</h4>
+              <p>When the public holds more cash per deposit, fewer funds stay inside banks.</p>
+            </div>
+            <div class="fcard">
+              <h4>Reserve ratios</h4>
+              <p>Required and excess reserves absorb deposits that could otherwise support loans.</p>
+            </div>
+            <div class="fcard">
+              <h4>Bank lending</h4>
+              <p>Loans create deposits, but the process is constrained by reserves and cash withdrawals.</p>
+            </div>
+          </div>
+
+          <div class="notice">
+            <h4>Exam-style summary</h4>
+            <ul>
+              <li>With c = C/D and r = rr + er, B = (c+r)D.</li>
+              <li>Since M = C + D = (1+c)D, m = (1+c)/(c+r).</li>
+              <li>Higher c lowers the deposit base and weakens money creation.</li>
+              <li>Higher rr or er raises reserve absorption and lowers m.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const state = {
+  theme: localStorage.getItem("money-multiplier-theme") || "light",
+  animating: false,
+  activeRound: 0
+};
+
+const $ = id => document.getElementById(id);
+
+const inputs = {
+  base: $("base"),
+  injection: $("injection"),
+  currencyRatio: $("currencyRatio"),
+  requiredReserve: $("requiredReserve"),
+  excessReserve: $("excessReserve"),
+  rounds: $("rounds"),
+  shockRatio: $("shockRatio")
+};
+
+const values = {
+  base: $("vBase"),
+  injection: $("vInjection"),
+  currencyRatio: $("vCurrencyRatio"),
+  requiredReserve: $("vRequiredReserve"),
+  excessReserve: $("vExcessReserve"),
+  rounds: $("vRounds"),
+  shockRatio: $("vShockRatio")
+};
+
+const balanceSvg = $("balanceSvg");
+const roundsSvg = $("roundsSvg");
+const tooltip = $("tooltip");
+
+function num(x) { return Number(x); }
+
+function fmt(x, d = 0) {
+  return Number(x).toLocaleString("en-US", {
+    maximumFractionDigits: d,
+    minimumFractionDigits: d
+  });
+}
+
+function pct(x, d = 0) {
+  return `${fmt(100 * x, d)}%`;
+}
+
+function v(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function data() {
+  const B = num(inputs.base.value);
+  const dB = num(inputs.injection.value);
+  const c = num(inputs.currencyRatio.value);
+  const rr = num(inputs.requiredReserve.value);
+  const er0 = num(inputs.excessReserve.value);
+  const stress = num(inputs.shockRatio.value);
+  const er = er0 + stress;
+  const r = rr + er;
+  const rounds = num(inputs.rounds.value);
+
+  const denom = Math.max(c + r, 0.001);
+  const m = (1 + c) / denom;
+  const D = B / denom;
+  const C = c * D;
+  const R = r * D;
+  const RR = rr * D;
+  const ER = er * D;
+  const M = C + D;
+  const loans = Math.max(0, (1 - rr - er) * D);
+  const bankCreated = Math.max(0, M - B);
+
+  const dM = m * dB;
+  const dD = dB / denom;
+  const dC = c * dD;
+  const dR = r * dD;
+
+  const leak = (1 - rr - er) / (1 + c);
+  const effectiveLeak = Math.max(0, Math.min(0.98, leak));
+  const roundRows = [];
+  let deposit = dB / Math.max(c + r, 1); 
+  deposit = Math.min(dD, dB * 1.2);
+  let flow = dB;
+  for (let k = 1; k <= rounds; k++) {
+    const currencyDrain = c / (1 + c) * flow;
+    const reserveDrain = r / (1 + c) * flow;
+    const newDeposit = Math.max(0, flow - currencyDrain - reserveDrain);
+    roundRows.push({ k, flow, currencyDrain, reserveDrain, newDeposit });
+    flow = newDeposit;
+  }
+
+  return { B, dB, c, rr, er, er0, stress, r, rounds, m, D, C, R, RR, ER, M, loans, bankCreated, dM, dD, dC, dR, effectiveLeak, roundRows };
+}
+
+function setTheme() {
+  document.documentElement.dataset.theme = state.theme;
+  localStorage.setItem("money-multiplier-theme", state.theme);
+}
+
+function svgEl(tag, attrs = {}) {
+  const e = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  Object.entries(attrs).forEach(([k, val]) => e.setAttribute(k, val));
+  return e;
+}
+
+function add(parent, child) { parent.appendChild(child); return child; }
+
+function text(parent, x, y, content, attrs = {}) {
+  const e = svgEl("text", {
+    x, y,
+    fill: attrs.fill || v("--ink"),
+    "font-size": attrs.size || 14,
+    "font-weight": attrs.weight || 500,
+    "text-anchor": attrs.anchor || "start",
+    "dominant-baseline": attrs.base || "auto",
+    opacity: attrs.opacity ?? 1
+  });
+  e.textContent = content;
+  return add(parent, e);
+}
+
+function rect(parent, x, y, width, height, attrs = {}) {
+  return add(parent, svgEl("rect", {
+    x, y, width, height,
+    rx: attrs.rx || 14,
+    fill: attrs.fill || "transparent",
+    stroke: attrs.stroke || "none",
+    "stroke-width": attrs.sw || 1,
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function line(parent, x1, y1, x2, y2, attrs = {}) {
+  return add(parent, svgEl("line", {
+    x1, y1, x2, y2,
+    stroke: attrs.stroke || v("--line"),
+    "stroke-width": attrs.sw || 1,
+    "stroke-dasharray": attrs.dash || "",
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function path(parent, d, attrs = {}) {
+  return add(parent, svgEl("path", {
+    d,
+    fill: attrs.fill || "none",
+    stroke: attrs.stroke || v("--ink"),
+    "stroke-width": attrs.sw || 2,
+    "stroke-linecap": "round",
+    "stroke-linejoin": "round",
+    "stroke-dasharray": attrs.dash || "",
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function circle(parent, cx, cy, r, attrs = {}) {
+  return add(parent, svgEl("circle", {
+    cx, cy, r,
+    fill: attrs.fill || "transparent",
+    stroke: attrs.stroke || "none",
+    "stroke-width": attrs.sw || 1,
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function tip(ev, html) {
+  tooltip.innerHTML = html;
+  tooltip.style.left = ev.clientX + "px";
+  tooltip.style.top = ev.clientY + "px";
+  tooltip.style.opacity = 1;
+}
+
+function untip() { tooltip.style.opacity = 0; }
+
+function updateLabels(d) {
+  values.base.textContent = fmt(num(inputs.base.value));
+  values.injection.textContent = fmt(num(inputs.injection.value));
+  values.currencyRatio.textContent = fmt(num(inputs.currencyRatio.value), 2);
+  values.requiredReserve.textContent = pct(num(inputs.requiredReserve.value), 0);
+  values.excessReserve.textContent = pct(num(inputs.excessReserve.value), 0);
+  values.rounds.textContent = fmt(num(inputs.rounds.value));
+  values.shockRatio.textContent = `+${pct(num(inputs.shockRatio.value), 0)}`;
+
+  $("kMult").textContent = fmt(d.m, 2);
+  $("kDeposits").textContent = fmt(d.D);
+  $("kMoney").textContent = fmt(d.M);
+  $("kBankMoney").textContent = fmt(d.bankCreated);
+  $("multBadge").textContent = `m = ${fmt(d.m, 2)}`;
+  $("roundBadge").textContent = `ΔM ≈ ${fmt(d.dM)}`;
+}
+
+function drawBalance(d) {
+  balanceSvg.innerHTML = "";
+
+  const accent = v("--accent");
+  const muted = v("--muted");
+  const linec = v("--line");
+  const ink = v("--ink");
+  const paper2 = v("--paper2");
+  const gold = v("--gold");
+  const blue = v("--blue");
+  const red = v("--red");
+  const purple = v("--purple");
+
+  const x0 = 72, y0 = 92;
+  rect(balanceSvg, 54, 34, 652, 400, { fill: "rgba(0,0,0,0.01)", stroke: linec, rx: 22 });
+
+  text(balanceSvg, 78, 64, "balance-sheet map", { fill: muted, size: 12, weight: 800 });
+
+  const maxVal = Math.max(d.M, d.D, d.B, 1);
+  const barW = 520;
+
+  function hbar(y, label, value, color, subtitle) {
+    const w = Math.max(4, barW * value / maxVal);
+    const g = svgEl("g", { style: "cursor:pointer" });
+    g.appendChild(svgEl("rect", { x: x0 + 126, y, width: barW, height: 44, rx: 15, fill: paper2, stroke: linec, "stroke-width": 1 }));
+    g.appendChild(svgEl("rect", { x: x0 + 126, y, width: w, height: 44, rx: 15, fill: color, opacity: .22, stroke: color, "stroke-width": 1.3 }));
+    g.appendChild(svgEl("text", { x: x0, y: y + 19, fill: ink, "font-size": 13, "font-weight": 850 })).textContent = label;
+    g.appendChild(svgEl("text", { x: x0, y: y + 37, fill: muted, "font-size": 11, "font-weight": 700 })).textContent = subtitle;
+    g.appendChild(svgEl("text", { x: x0 + 142, y: y + 28, fill: color, "font-size": 13, "font-weight": 850 })).textContent = fmt(value);
+    g.addEventListener("mousemove", ev => tip(ev, `<b>${label}</b><br>${subtitle}<br>${fmt(value)}`));
+    g.addEventListener("mouseleave", untip);
+    balanceSvg.appendChild(g);
+  }
+
+  hbar(92, "B", d.B, accent, "monetary base");
+  hbar(154, "D", d.D, blue, "deposit liabilities");
+  hbar(216, "M", d.M, gold, "currency plus deposits");
+  hbar(278, "Loans", d.loans, purple, "bank-created credit");
+
+  rect(balanceSvg, 92, 358, 540, 54, { fill: paper2, stroke: linec, rx: 18 });
+  text(balanceSvg, 112, 382, "Multiplier mechanism", { fill: muted, size: 11.5, weight: 800 });
+  text(balanceSvg, 112, 400, `m = (1+c)/(c+rr+er) = ${fmt(d.m, 2)}`, { fill: accent, size: 16, weight: 850 });
+
+  const cx = 592, cy = 386;
+  circle(balanceSvg, cx, cy, 38, { fill: "transparent", stroke: linec, sw: 1.3 });
+  const denom = Math.max(d.c + d.rr + d.er, 0.001);
+  const parts = [
+    { label: "c", val: d.c / denom, color: gold },
+    { label: "rr", val: d.rr / denom, color: blue },
+    { label: "er", val: d.er / denom, color: red }
+  ];
+  let angle = -Math.PI / 2;
+  parts.forEach(p => {
+    const a2 = angle + p.val * Math.PI * 2;
+    const x1 = cx + 38 * Math.cos(angle), y1 = cy + 38 * Math.sin(angle);
+    const x2 = cx + 38 * Math.cos(a2), y2 = cy + 38 * Math.sin(a2);
+    const large = p.val > .5 ? 1 : 0;
+    path(balanceSvg, `M${cx},${cy} L${x1},${y1} A38,38 0 ${large},1 ${x2},${y2} Z`, { fill: p.color, stroke: "none", opacity: .22 });
+    angle = a2;
+  });
+  text(balanceSvg, cx, cy + 4, "leakages", { fill: muted, size: 10.5, weight: 800, anchor: "middle" });
+
+  function statBox(x, y, title, val, color) {
+    rect(balanceSvg, x, y, 126, 44, { fill: paper2, stroke: linec, rx: 14 });
+    text(balanceSvg, x + 14, y + 18, title, { fill: muted, size: 10.5, weight: 800 });
+    text(balanceSvg, x + 14, y + 34, val, { fill: color, size: 13.5, weight: 850 });
+  }
+  statBox(84, 444, "currency C", fmt(d.C), gold);
+  statBox(226, 444, "required RR", fmt(d.RR), blue);
+  statBox(368, 444, "excess ER", fmt(d.ER), red);
+  statBox(510, 444, "ΔM from ΔB", fmt(d.dM), accent);
+}
+
+function drawRounds(d) {
+  roundsSvg.innerHTML = "";
+
+  const accent = v("--accent");
+  const muted = v("--muted");
+  const linec = v("--line");
+  const ink = v("--ink");
+  const paper2 = v("--paper2");
+  const gold = v("--gold");
+  const blue = v("--blue");
+  const red = v("--red");
+
+  rect(roundsSvg, 34, 28, 552, 302, { fill: "rgba(0,0,0,0.01)", stroke: linec, rx: 22 });
+  text(roundsSvg, 62, 60, "successive deposit rounds", { fill: muted, size: 12, weight: 800 });
+
+  const x0 = 64, y0 = 276, W = 500, H = 184;
+  line(roundsSvg, x0, y0, x0 + W, y0, { stroke: linec, sw: 1.4 });
+  line(roundsSvg, x0, y0, x0, y0 - H, { stroke: linec, sw: 1.4 });
+
+  for (let j = 1; j < 5; j++) {
+    const gy = y0 - j * H / 5;
+    line(roundsSvg, x0, gy, x0 + W, gy, { stroke: linec, sw: 1, opacity: .42 });
+  }
+
+  const maxFlow = Math.max(...d.roundRows.map(r => r.flow), 1);
+  const bw = W / d.rounds * .62;
+
+  d.roundRows.forEach((r, idx) => {
+    const x = x0 + idx * (W / d.rounds) + 5;
+    const h = Math.max(3, r.flow / maxFlow * H);
+    const active = state.animating && idx === state.activeRound % d.rounds;
+    rect(roundsSvg, x, y0 - h, bw, h, {
+      fill: active ? gold : accent,
+      opacity: active ? .36 : .22,
+      stroke: active ? gold : accent,
+      sw: active ? 2 : 1.2,
+      rx: 9
+    });
+    if (idx % Math.ceil(d.rounds / 6) === 0) {
+      text(roundsSvg, x + bw / 2, y0 + 18, String(r.k), { fill: muted, size: 10.5, weight: 750, anchor: "middle" });
+    }
+  });
+
+  const totalShown = d.roundRows.reduce((s, r) => s + r.flow, 0);
+  const finalFlow = d.roundRows[d.roundRows.length - 1].flow;
+
+  rect(roundsSvg, 78, 82, 154, 48, { fill: paper2, stroke: linec, rx: 16 });
+  text(roundsSvg, 94, 101, "first injection", { fill: muted, size: 11, weight: 800 });
+  text(roundsSvg, 94, 118, `ΔB = ${fmt(d.dB)}`, { fill: accent, size: 16, weight: 850 });
+
+  rect(roundsSvg, 252, 82, 154, 48, { fill: paper2, stroke: linec, rx: 16 });
+  text(roundsSvg, 268, 101, "shown deposits", { fill: muted, size: 11, weight: 800 });
+  text(roundsSvg, 268, 118, fmt(totalShown), { fill: blue, size: 16, weight: 850 });
+
+  rect(roundsSvg, 426, 82, 122, 48, { fill: paper2, stroke: linec, rx: 16 });
+  text(roundsSvg, 442, 101, "decay", { fill: muted, size: 11, weight: 800 });
+  text(roundsSvg, 442, 118, `${fmt(100 * d.effectiveLeak, 1)}%`, { fill: red, size: 16, weight: 850 });
+
+  rect(roundsSvg, 84, 318, 438, 28, { fill: paper2, stroke: linec, rx: 13, opacity: .96 });
+  text(roundsSvg, 102, 336, "Each round is smaller because part of each deposit becomes currency or reserves.", {
+    fill: muted,
+    size: 11.8,
+    weight: 750
+  });
+}
+
+function update() {
+  const d = data();
+  updateLabels(d);
+  drawBalance(d);
+  drawRounds(d);
+}
+
+let timer = null;
+
+function animateRounds() {
+  if (state.animating) {
+    state.animating = false;
+    $("animateBtn").classList.remove("active");
+    if (timer) clearInterval(timer);
+    update();
+    return;
+  }
+  state.animating = true;
+  $("animateBtn").classList.add("active");
+  state.activeRound = 0;
+  timer = setInterval(() => {
+    const d = data();
+    state.activeRound = (state.activeRound + 1) % d.rounds;
+    update();
+  }, 280);
+}
+
+Object.values(inputs).forEach(input => input.addEventListener("input", update));
+
+$("themeBtn").addEventListener("click", () => {
+  state.theme = state.theme === "dark" ? "light" : "dark";
+  setTheme();
+  update();
+});
+
+$("animateBtn").addEventListener("click", animateRounds);
+
+setTheme();
+update();
+</script>
+</body>
+</html>

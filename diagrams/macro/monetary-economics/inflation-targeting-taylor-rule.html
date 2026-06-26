@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive macroeconomics diagram for inflation targeting and the Taylor rule: policy reaction functions, inflation gaps, output gaps, and interest-rate smoothing.">
+<title>Inflation Targeting and the Taylor Rule | Monetary Economics Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+
+<style>
+:root {
+  --bg: #f6f1e7;
+  --paper: #fffaf1;
+  --paper2: #f1eadc;
+  --ink: #172123;
+  --muted: #64706e;
+  --line: rgba(31,45,48,.14);
+  --grid: rgba(31,45,48,.07);
+  --accent: #2f8f83;
+  --soft: rgba(47,143,131,.13);
+  --gold: #b8944b;
+  --blue: #577f9e;
+  --red: #a85e50;
+  --purple: #85699d;
+  --shadow: 0 16px 36px rgba(55,45,31,.095);
+}
+[data-theme="dark"] {
+  --bg: #0b1116;
+  --paper: #111a21;
+  --paper2: #17232b;
+  --ink: #eef5f3;
+  --muted: #a2afad;
+  --line: rgba(238,245,243,.13);
+  --grid: rgba(238,245,243,.06);
+  --accent: #77c9bd;
+  --soft: rgba(119,201,189,.13);
+  --gold: #d4ba74;
+  --blue: #8fb7d5;
+  --red: #d39080;
+  --purple: #b5a0cf;
+  --shadow: 0 22px 52px rgba(0,0,0,.34);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 8% 0%, var(--soft), transparent 30rem),
+    radial-gradient(circle at 92% 8%, rgba(184,148,75,.10), transparent 28rem),
+    var(--bg);
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.45;
+}
+.app {
+  width: min(1460px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 26px 0 42px;
+}
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+.eyebrow {
+  color: var(--accent);
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.76rem, 3.22vw, 3.18rem);
+  line-height: 1.04;
+  letter-spacing: -.035em;
+  font-weight: 500;
+}
+.subtitle {
+  max-width: 880px;
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: clamp(.95rem, 1.35vw, 1.05rem);
+}
+.top-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+button { font: inherit; }
+.toggle, .pill {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 96%, transparent);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 9px 13px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.pill.active {
+  background: var(--soft);
+  border-color: var(--accent);
+}
+.layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0,1fr);
+  gap: 18px;
+  align-items: start;
+}
+.card {
+  background: color-mix(in srgb, var(--paper) 95%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+}
+.controls {
+  position: sticky;
+  top: 16px;
+  padding: 17px;
+}
+.title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.title-row h2, .title-row h3 {
+  margin: 0;
+  font-size: .96rem;
+  letter-spacing: -.015em;
+}
+.title-row span {
+  color: var(--muted);
+  font-size: .74rem;
+}
+.group {
+  border-top: 1px solid var(--line);
+  padding: 14px 0;
+}
+.group:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+.group-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .105em;
+  font-size: .72rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+.row { margin: 13px 0; }
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: .86rem;
+  margin-bottom: 7px;
+}
+.label label { font-weight: 650; }
+.value {
+  color: var(--accent);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.main {
+  display: grid;
+  gap: 18px;
+}
+.model { padding: 17px; }
+.model-grid {
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 14px;
+  margin-bottom: 17px;
+}
+.eqbox {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 15px;
+}
+.eq-title {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .105em;
+  font-size: .72rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+.equations {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1rem,1.25vw,1.14rem);
+  line-height: 1.75;
+  overflow-x: auto;
+}
+.equations .line { white-space: nowrap; }
+.note {
+  color: var(--muted);
+  font-size: .83rem;
+  margin-top: 8px;
+}
+.diagrams {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+.diagram { padding: 15px; }
+.dhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.dhead h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+.dhead p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: .84rem;
+}
+.badge {
+  border: 1px solid var(--line);
+  background: var(--soft);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: .76rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.svgbox {
+  height: 560px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 42px 42px;
+  overflow: hidden;
+}
+.svgbox.small { height: 500px; }
+svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.bottom {
+  display: grid;
+  grid-template-columns: .9fr 1.1fr;
+  gap: 18px;
+}
+.info { padding: 17px; }
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 10px;
+}
+.kpi {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  padding: 12px;
+}
+.kpi small {
+  display: block;
+  color: var(--muted);
+  font-size: .71rem;
+  margin-bottom: 3px;
+}
+.kpi strong {
+  font-size: 1.02rem;
+  font-variant-numeric: tabular-nums;
+}
+.functions {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 11px;
+}
+.fcard {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+}
+.fcard h4 {
+  margin: 0 0 6px;
+  font-size: .9rem;
+}
+.fcard p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .82rem;
+}
+.notice {
+  margin-top: 13px;
+  border-left: 3px solid var(--accent);
+  background: var(--soft);
+  border-radius: 16px;
+  padding: 13px 14px;
+}
+.notice h4 {
+  margin: 0 0 7px;
+  font-size: .9rem;
+}
+.notice ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: .84rem;
+}
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 12px));
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 12px;
+  padding: 9px 11px;
+  font-size: .78rem;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transition: opacity 120ms ease;
+  z-index: 100;
+  max-width: 280px;
+}
+@media (max-width: 1100px) {
+  .layout, .diagrams, .bottom, .model-grid { grid-template-columns: 1fr; }
+  .controls { position: static; }
+  .kpis, .functions { grid-template-columns: repeat(2,1fr); }
+  .svgbox { height: 520px; }
+  .svgbox.small { height: 470px; }
+}
+@media (max-width: 640px) {
+  .app { width: min(100% - 18px, 1380px); padding-top: 18px; }
+  .header { grid-template-columns: 1fr; }
+  .top-actions { justify-content: flex-start; }
+  .kpis, .functions { grid-template-columns: 1fr; }
+  .svgbox { height: 420px; }
+  .svgbox.small { height: 390px; }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <header class="header">
+    <div>
+      <div class="eyebrow">Macroeconomics notebook</div>
+      <h1>Inflation Targeting and the Taylor Rule</h1>
+      <p class="subtitle">
+        A compact visual model of how a central bank reacts to inflation gaps, output gaps, and the desire to adjust interest rates gradually.
+      </p>
+    </div>
+    <div class="top-actions">
+      <button class="toggle" id="themeBtn" type="button">◐ Theme</button>
+      <button class="pill" id="animateBtn" type="button">Animate demand shock</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="card controls">
+      <div class="title-row">
+        <h2>Controls</h2>
+        <span>percent points</span>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Targets and state</div>
+        <div class="row">
+          <div class="label"><label for="piTarget">Inflation target π*</label><span class="value" id="vPiTarget"></span></div>
+          <input id="piTarget" type="range" min="0" max="6" step="0.1" value="2.0">
+        </div>
+        <div class="row">
+          <div class="label"><label for="inflation">Current inflation π</label><span class="value" id="vInflation"></span></div>
+          <input id="inflation" type="range" min="-2" max="12" step="0.1" value="4.0">
+        </div>
+        <div class="row">
+          <div class="label"><label for="outputGap">Output gap x</label><span class="value" id="vOutputGap"></span></div>
+          <input id="outputGap" type="range" min="-8" max="8" step="0.1" value="1.5">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Policy-rule parameters</div>
+        <div class="row">
+          <div class="label"><label for="neutralRate">Neutral real rate r*</label><span class="value" id="vNeutralRate"></span></div>
+          <input id="neutralRate" type="range" min="-1" max="5" step="0.1" value="1.0">
+        </div>
+        <div class="row">
+          <div class="label"><label for="phiPi">Inflation response φπ</label><span class="value" id="vPhiPi"></span></div>
+          <input id="phiPi" type="range" min="0" max="3" step="0.05" value="1.5">
+        </div>
+        <div class="row">
+          <div class="label"><label for="phiY">Output-gap response φx</label><span class="value" id="vPhiY"></span></div>
+          <input id="phiY" type="range" min="0" max="2" step="0.05" value="0.5">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Interest-rate smoothing</div>
+        <div class="row">
+          <div class="label"><label for="smoothing">Smoothing ρ</label><span class="value" id="vSmoothing"></span></div>
+          <input id="smoothing" type="range" min="0" max="0.95" step="0.05" value="0.65">
+        </div>
+        <div class="row">
+          <div class="label"><label for="previousRate">Previous policy rate i₋₁</label><span class="value" id="vPreviousRate"></span></div>
+          <input id="previousRate" type="range" min="0" max="15" step="0.1" value="5.0">
+        </div>
+        <div class="row">
+          <div class="label"><label for="elb">Effective lower bound</label><span class="value" id="vElb"></span></div>
+          <input id="elb" type="range" min="-1" max="2" step="0.1" value="0.0">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Shock persistence</div>
+        <div class="row">
+          <div class="label"><label for="persistence">Gap persistence λ</label><span class="value" id="vPersistence"></span></div>
+          <input id="persistence" type="range" min="0" max="0.95" step="0.05" value="0.65">
+        </div>
+        <div class="row">
+          <div class="label"><label for="horizon">Time horizon</label><span class="value" id="vHorizon"></span></div>
+          <input id="horizon" type="range" min="6" max="28" step="1" value="16">
+        </div>
+      </div>
+    </aside>
+
+    <section class="main">
+      <section class="card model">
+        <div class="model-grid">
+          <div class="eqbox">
+            <div class="eq-title">Taylor-rule target rate</div>
+            <div class="equations">
+              <div class="line">iᵀ = r* + π* + φπ(π − π*) + φx x</div>
+              <div class="line">inflation gap: π − π*</div>
+              <div class="line">output gap: x = percent deviation of output from potential</div>
+            </div>
+          </div>
+
+          <div class="eqbox">
+            <div class="eq-title">Interest-rate smoothing</div>
+            <div class="equations">
+              <div class="line">i = ρ i₋₁ + (1 − ρ)iᵀ</div>
+              <div class="line">Taylor principle: φπ &gt; 1</div>
+              <div class="line">ELB: i = max(ELB, i)</div>
+            </div>
+            <div class="note">With φπ &gt; 1, a rise in inflation raises the nominal rate by more than one-for-one, increasing the real policy rate.</div>
+          </div>
+        </div>
+
+        <div class="diagrams">
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>Policy reaction function</h3>
+                <p>The central bank raises the policy rate when inflation or output is above target.</p>
+              </div>
+              <div class="badge" id="rateBadge">i</div>
+            </div>
+            <div class="svgbox">
+              <svg id="reactionSvg" viewBox="0 0 760 530" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>Smoothing dynamics</h3>
+                <p>The actual policy rate moves gradually toward the Taylor-rule prescription.</p>
+              </div>
+              <div class="badge" id="principleBadge">Taylor principle</div>
+            </div>
+            <div class="svgbox small">
+              <svg id="dynamicsSvg" viewBox="0 0 620 390" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bottom">
+        <div class="card info">
+          <div class="title-row">
+            <h3>Current state</h3>
+            <span>computed live</span>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><small>Taylor target iᵀ</small><strong id="kTargetRate"></strong></div>
+            <div class="kpi"><small>Smoothed rate i</small><strong id="kPolicyRate"></strong></div>
+            <div class="kpi"><small>Real rate i − π</small><strong id="kRealRate"></strong></div>
+            <div class="kpi"><small>Inflation gap</small><strong id="kPiGap"></strong></div>
+          </div>
+          <div class="notice">
+            <h4>What to notice</h4>
+            <ul>
+              <li>A positive inflation gap pushes the Taylor-rule rate upward.</li>
+              <li>A positive output gap also pushes the policy rate upward.</li>
+              <li>Higher ρ makes policy adjust slowly, even when the rule says rates should move sharply.</li>
+              <li>When φπ &gt; 1, the real rate rises after inflation increases.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card info">
+          <div class="title-row">
+            <h3>Economic interpretation</h3>
+            <span>inflation targeting</span>
+          </div>
+          <div class="functions">
+            <div class="fcard">
+              <h4>Inflation gap</h4>
+              <p>If inflation is above target, the rule prescribes a higher nominal interest rate.</p>
+            </div>
+            <div class="fcard">
+              <h4>Output gap</h4>
+              <p>If output is above potential, demand pressure calls for tighter policy.</p>
+            </div>
+            <div class="fcard">
+              <h4>Smoothing</h4>
+              <p>The central bank partly adjusts today and leaves some adjustment for future meetings.</p>
+            </div>
+          </div>
+
+          <div class="notice">
+            <h4>Exam-style summary</h4>
+            <ul>
+              <li>Taylor rule: iᵀ = r* + π* + φπ(π − π*) + φx x.</li>
+              <li>Inflation targeting means policy reacts to deviations from π*.</li>
+              <li>Taylor principle: φπ &gt; 1 stabilizes inflation in simple New Keynesian logic.</li>
+              <li>Smoothing: i = ρi₋₁ + (1−ρ)iᵀ.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const state = {
+  theme: localStorage.getItem("taylor-rule-theme") || "light",
+  animating: false,
+  shockScale: 1
+};
+
+const $ = id => document.getElementById(id);
+
+const inputs = {
+  piTarget: $("piTarget"),
+  inflation: $("inflation"),
+  outputGap: $("outputGap"),
+  neutralRate: $("neutralRate"),
+  phiPi: $("phiPi"),
+  phiY: $("phiY"),
+  smoothing: $("smoothing"),
+  previousRate: $("previousRate"),
+  elb: $("elb"),
+  persistence: $("persistence"),
+  horizon: $("horizon")
+};
+
+const values = {
+  piTarget: $("vPiTarget"),
+  inflation: $("vInflation"),
+  outputGap: $("vOutputGap"),
+  neutralRate: $("vNeutralRate"),
+  phiPi: $("vPhiPi"),
+  phiY: $("vPhiY"),
+  smoothing: $("vSmoothing"),
+  previousRate: $("vPreviousRate"),
+  elb: $("vElb"),
+  persistence: $("vPersistence"),
+  horizon: $("vHorizon")
+};
+
+const reactionSvg = $("reactionSvg");
+const dynamicsSvg = $("dynamicsSvg");
+const tooltip = $("tooltip");
+
+function num(x) { return Number(x); }
+
+function fmt(x, d = 1) {
+  return Number(x).toLocaleString("en-US", {
+    maximumFractionDigits: d,
+    minimumFractionDigits: d
+  });
+}
+
+function pp(x, d = 1) {
+  return `${fmt(x, d)}%`;
+}
+
+function v(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function data() {
+  const piStar = num(inputs.piTarget.value);
+  const pi = piStar + (num(inputs.inflation.value) - piStar) * state.shockScale;
+  const xGap = num(inputs.outputGap.value) * state.shockScale;
+  const rStar = num(inputs.neutralRate.value);
+  const phiPi = num(inputs.phiPi.value);
+  const phiY = num(inputs.phiY.value);
+  const rho = num(inputs.smoothing.value);
+  const iPrev = num(inputs.previousRate.value);
+  const elb = num(inputs.elb.value);
+  const lambda = num(inputs.persistence.value);
+  const T = num(inputs.horizon.value);
+
+  const piGap = pi - piStar;
+  const neutralNominal = rStar + piStar;
+  const piContribution = phiPi * piGap;
+  const yContribution = phiY * xGap;
+  const targetRateRaw = neutralNominal + piContribution + yContribution;
+  const smoothedRaw = rho * iPrev + (1 - rho) * targetRateRaw;
+  const targetRate = Math.max(elb, targetRateRaw);
+  const policyRate = Math.max(elb, smoothedRaw);
+  const realRate = policyRate - pi;
+  const realNeutral = rStar;
+  const realGap = realRate - realNeutral;
+
+  const rows = [];
+  let iLag = iPrev;
+  for (let t = 0; t <= T; t++) {
+    const decay = Math.pow(lambda, t);
+    const pit = piStar + piGap * decay;
+    const xt = xGap * decay;
+    const iTRaw = neutralNominal + phiPi * (pit - piStar) + phiY * xt;
+    const iT = Math.max(elb, iTRaw);
+    const iSmoothRaw = rho * iLag + (1 - rho) * iTRaw;
+    const it = Math.max(elb, iSmoothRaw);
+    rows.push({ t, pi: pit, x: xt, iT, i: it, real: it - pit });
+    iLag = it;
+  }
+
+  return {
+    piStar, pi, xGap, rStar, phiPi, phiY, rho, iPrev, elb, lambda, T,
+    piGap, neutralNominal, piContribution, yContribution,
+    targetRateRaw, targetRate, policyRate, realRate, realNeutral, realGap,
+    rows
+  };
+}
+
+function setTheme() {
+  document.documentElement.dataset.theme = state.theme;
+  localStorage.setItem("taylor-rule-theme", state.theme);
+}
+
+function svgEl(tag, attrs = {}) {
+  const e = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  Object.entries(attrs).forEach(([k, val]) => e.setAttribute(k, val));
+  return e;
+}
+function add(parent, child) { parent.appendChild(child); return child; }
+
+function text(parent, x, y, content, attrs = {}) {
+  const e = svgEl("text", {
+    x, y,
+    fill: attrs.fill || v("--ink"),
+    "font-size": attrs.size || 14,
+    "font-weight": attrs.weight || 500,
+    "text-anchor": attrs.anchor || "start",
+    "dominant-baseline": attrs.base || "auto",
+    opacity: attrs.opacity ?? 1
+  });
+  e.textContent = content;
+  return add(parent, e);
+}
+
+function rect(parent, x, y, width, height, attrs = {}) {
+  return add(parent, svgEl("rect", {
+    x, y, width, height,
+    rx: attrs.rx || 14,
+    fill: attrs.fill || "transparent",
+    stroke: attrs.stroke || "none",
+    "stroke-width": attrs.sw || 1,
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function line(parent, x1, y1, x2, y2, attrs = {}) {
+  return add(parent, svgEl("line", {
+    x1, y1, x2, y2,
+    stroke: attrs.stroke || v("--line"),
+    "stroke-width": attrs.sw || 1,
+    "stroke-dasharray": attrs.dash || "",
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function path(parent, d, attrs = {}) {
+  return add(parent, svgEl("path", {
+    d,
+    fill: attrs.fill || "none",
+    stroke: attrs.stroke || v("--ink"),
+    "stroke-width": attrs.sw || 2,
+    "stroke-linecap": "round",
+    "stroke-linejoin": "round",
+    "stroke-dasharray": attrs.dash || "",
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function circle(parent, cx, cy, r, attrs = {}) {
+  return add(parent, svgEl("circle", {
+    cx, cy, r,
+    fill: attrs.fill || "transparent",
+    stroke: attrs.stroke || "none",
+    "stroke-width": attrs.sw || 1,
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function tip(ev, html) {
+  tooltip.innerHTML = html;
+  tooltip.style.left = ev.clientX + "px";
+  tooltip.style.top = ev.clientY + "px";
+  tooltip.style.opacity = 1;
+}
+
+function untip() { tooltip.style.opacity = 0; }
+
+function updateLabels(d) {
+  values.piTarget.textContent = pp(num(inputs.piTarget.value));
+  values.inflation.textContent = pp(num(inputs.inflation.value));
+  values.outputGap.textContent = pp(num(inputs.outputGap.value));
+  values.neutralRate.textContent = pp(num(inputs.neutralRate.value));
+  values.phiPi.textContent = fmt(num(inputs.phiPi.value), 2);
+  values.phiY.textContent = fmt(num(inputs.phiY.value), 2);
+  values.smoothing.textContent = fmt(num(inputs.smoothing.value), 2);
+  values.previousRate.textContent = pp(num(inputs.previousRate.value));
+  values.elb.textContent = pp(num(inputs.elb.value));
+  values.persistence.textContent = fmt(num(inputs.persistence.value), 2);
+  values.horizon.textContent = `${fmt(num(inputs.horizon.value), 0)}q`;
+
+  $("kTargetRate").textContent = pp(d.targetRate);
+  $("kPolicyRate").textContent = pp(d.policyRate);
+  $("kRealRate").textContent = pp(d.realRate);
+  $("kPiGap").textContent = `${d.piGap >= 0 ? "+" : ""}${pp(d.piGap)}`;
+
+  $("rateBadge").textContent = `i = ${pp(d.policyRate)}`;
+  $("principleBadge").textContent = d.phiPi > 1 ? "Taylor principle holds" : "weak inflation response";
+}
+
+function drawReaction(d) {
+  reactionSvg.innerHTML = "";
+
+  const accent = v("--accent");
+  const muted = v("--muted");
+  const linec = v("--line");
+  const ink = v("--ink");
+  const paper2 = v("--paper2");
+  const gold = v("--gold");
+  const blue = v("--blue");
+  const red = v("--red");
+
+  rect(reactionSvg, 42, 28, 676, 474, { fill: "rgba(0,0,0,0.01)", stroke: linec, rx: 24 });
+  text(reactionSvg, 72, 60, "policy reaction function", { fill: muted, size: 12.5, weight: 800 });
+
+  const x0 = 76, y0 = 376, W = 602, H = 252;
+
+  line(reactionSvg, x0, y0, x0 + W, y0, { stroke: linec, sw: 1.45 });
+  line(reactionSvg, x0, y0, x0, y0 - H, { stroke: linec, sw: 1.45 });
+
+  for (let j = 1; j < 6; j++) {
+    const gy = y0 - j * H / 6;
+    line(reactionSvg, x0, gy, x0 + W, gy, { stroke: linec, sw: 1, opacity: .36 });
+  }
+  for (let k = 1; k < 8; k++) {
+    const gx = x0 + k * W / 8;
+    line(reactionSvg, gx, y0 - H, gx, y0, { stroke: linec, sw: 1, opacity: .30 });
+  }
+
+  const gapMin = -4, gapMax = 6;
+  const yMin = Math.min(d.elb - 1, d.neutralNominal - 4, d.targetRateRaw - 2);
+  const yMax = Math.max(d.neutralNominal + d.phiPi * gapMax + d.phiY * d.xGap + 2, d.targetRateRaw + 2, 12);
+
+  function X(g) { return x0 + (g - gapMin) / (gapMax - gapMin) * W; }
+  function Yp(rate) { return y0 - (rate - yMin) / (yMax - yMin) * H; }
+
+  line(reactionSvg, X(0), y0, X(0), y0 - H, { stroke: muted, sw: 1, dash: "4 6", opacity: .65 });
+  line(reactionSvg, x0, Yp(d.neutralNominal), x0 + W, Yp(d.neutralNominal), { stroke: muted, sw: 1, dash: "4 6", opacity: .65 });
+  line(reactionSvg, x0, Yp(d.elb), x0 + W, Yp(d.elb), { stroke: red, sw: 1, dash: "6 6", opacity: .54 });
+
+  const pts = [];
+  for (let g = gapMin; g <= gapMax; g += 0.04) {
+    const rate = d.neutralNominal + d.phiPi * g + d.phiY * d.xGap;
+    pts.push([X(g), Yp(Math.max(d.elb, rate))]);
+  }
+
+  const area = `M${x0},${y0} ` + pts.map(p => `L${p[0]},${p[1]}`).join(" ") + ` L${x0 + W},${y0} Z`;
+  path(reactionSvg, area, { fill: accent, stroke: "none", opacity: .05 });
+  path(reactionSvg, pts.map((p, i) => `${i === 0 ? "M" : "L"}${p[0]},${p[1]}`).join(" "), { stroke: accent, sw: 3.2 });
+
+  const px = X(d.piGap);
+  const py = Yp(d.targetRate);
+  line(reactionSvg, px, y0, px, py, { stroke: muted, sw: 1, dash: "5 5" });
+  line(reactionSvg, x0, py, px, py, { stroke: muted, sw: 1, dash: "5 5" });
+  circle(reactionSvg, px, py, 11, { fill: accent, opacity: .16 });
+  const dot = circle(reactionSvg, px, py, 6.2, { fill: accent, stroke: ink, sw: 1.25 });
+  dot.addEventListener("mousemove", ev => tip(ev, `<b>Taylor target</b><br>Inflation gap: ${d.piGap >= 0 ? "+" : ""}${pp(d.piGap)}<br>Output gap: ${d.xGap >= 0 ? "+" : ""}${pp(d.xGap)}<br>iᵀ = ${pp(d.targetRate)}`));
+  dot.addEventListener("mouseleave", untip);
+
+  text(reactionSvg, x0 + W, y0 + 30, "inflation gap π − π*", { fill: muted, size: 12, anchor: "end", weight: 740 });
+  text(reactionSvg, x0 - 22, y0 - H - 8, "policy rate i", { fill: muted, size: 12, weight: 740 });
+  text(reactionSvg, X(0) + 7, y0 - H + 18, "target", { fill: muted, size: 10.5, weight: 800 });
+  text(reactionSvg, x0 + W - 8, Yp(d.elb) - 7, "ELB", { fill: red, size: 10.5, weight: 800, anchor: "end" });
+
+  function badge(x, y, title, value, color) {
+    rect(reactionSvg, x, y, 148, 38, { fill: paper2, stroke: linec, rx: 14 });
+    text(reactionSvg, x + 13, y + 16, title, { fill: muted, size: 10, weight: 800 });
+    text(reactionSvg, x + 13, y + 31, `${value >= 0 ? "+" : ""}${pp(value)}`, { fill: color, size: 12.4, weight: 850 });
+  }
+
+  badge(82, 82, "neutral nominal", d.neutralNominal, blue);
+  badge(246, 82, "inflation response", d.piContribution, red);
+  badge(410, 82, "output response", d.yContribution, gold);
+
+  rect(reactionSvg, 104, 408, 552, 36, { fill: paper2, stroke: linec, rx: 15, opacity: .98 });
+  text(reactionSvg, 124, 431, `iᵀ = r* + π* + φπ(π − π*) + φx x = ${pp(d.targetRate)}`, {
+    fill: accent,
+    size: 13.4,
+    weight: 850
+  });
+
+  rect(reactionSvg, 104, 454, 552, 30, { fill: paper2, stroke: linec, rx: 14, opacity: .96 });
+  text(reactionSvg, 124, 474, d.phiPi > 1
+    ? "Taylor principle: inflation raises the nominal rate more than one-for-one."
+    : "Weak response: the nominal rate may not rise enough to raise the real rate.",
+    { fill: d.phiPi > 1 ? accent : red, size: 11.6, weight: 800 }
+  );
+}
+
+function drawDynamics(d) {
+  dynamicsSvg.innerHTML = "";
+
+  const accent = v("--accent");
+  const muted = v("--muted");
+  const linec = v("--line");
+  const ink = v("--ink");
+  const paper2 = v("--paper2");
+  const gold = v("--gold");
+  const red = v("--red");
+  const purple = v("--purple");
+
+  rect(dynamicsSvg, 34, 26, 552, 328, { fill: "rgba(0,0,0,0.01)", stroke: linec, rx: 22 });
+  text(dynamicsSvg, 62, 56, "interest-rate smoothing", { fill: muted, size: 12.5, weight: 800 });
+
+  const x0 = 64, y0 = 282, W = 490, H = 198;
+
+  line(dynamicsSvg, x0, y0, x0 + W, y0, { stroke: linec, sw: 1.4 });
+  line(dynamicsSvg, x0, y0, x0, y0 - H, { stroke: linec, sw: 1.4 });
+
+  for (let j = 1; j < 5; j++) {
+    const gy = y0 - j * H / 5;
+    line(dynamicsSvg, x0, gy, x0 + W, gy, { stroke: linec, sw: 1, opacity: .36 });
+  }
+  for (let k = 1; k < 8; k++) {
+    const gx = x0 + k * W / 8;
+    line(dynamicsSvg, gx, y0 - H, gx, y0, { stroke: linec, sw: 1, opacity: .30 });
+  }
+
+  const rates = d.rows.flatMap(r => [r.i, r.iT, r.real]);
+  const yMin = Math.min(d.elb - 1, ...rates) - 0.5;
+  const yMax = Math.max(...rates, d.neutralNominal, d.targetRate) + 1;
+
+  function X(t) { return x0 + t / d.T * W; }
+  function Yp(rate) { return y0 - (rate - yMin) / (yMax - yMin) * H; }
+
+  line(dynamicsSvg, x0, Yp(d.elb), x0 + W, Yp(d.elb), { stroke: red, sw: 1, dash: "6 6", opacity: .54 });
+  line(dynamicsSvg, x0, Yp(d.neutralNominal), x0 + W, Yp(d.neutralNominal), { stroke: muted, sw: 1, dash: "4 6", opacity: .62 });
+
+  function seriesPath(key) {
+    return d.rows.map((r, i) => `${i === 0 ? "M" : "L"}${X(r.t)},${Yp(r[key])}`).join(" ");
+  }
+
+  path(dynamicsSvg, seriesPath("iT"), { stroke: gold, sw: 2.2, dash: "6 6", opacity: .86 });
+  path(dynamicsSvg, seriesPath("i"), { stroke: accent, sw: 3.1 });
+  path(dynamicsSvg, seriesPath("real"), { stroke: purple, sw: 2.1, dash: "4 6", opacity: .84 });
+
+  const last = d.rows[d.rows.length - 1];
+  circle(dynamicsSvg, X(last.t), Yp(last.i), 6.2, { fill: accent, stroke: ink, sw: 1.15 });
+  circle(dynamicsSvg, X(last.t), Yp(last.iT), 5.2, { fill: gold, stroke: ink, sw: 1.05 });
+  circle(dynamicsSvg, X(last.t), Yp(last.real), 5.2, { fill: purple, stroke: ink, sw: 1.05 });
+
+  text(dynamicsSvg, x0 + W, y0 + 24, "quarters", { fill: muted, size: 11.5, weight: 740, anchor: "end" });
+  text(dynamicsSvg, x0 - 18, y0 - H - 7, "rate", { fill: muted, size: 11.5, weight: 740 });
+
+  function legend(x, y, color, dash, label) {
+    line(dynamicsSvg, x, y, x + 20, y, { stroke: color, sw: 2.4, dash });
+    text(dynamicsSvg, x + 28, y + 4, label, { fill: muted, size: 10.8, weight: 750 });
+  }
+
+  rect(dynamicsSvg, 80, 306, 456, 30, { fill: paper2, stroke: linec, rx: 13, opacity: .97 });
+  legend(100, 325, gold, "5 5", "Taylor target");
+  legend(238, 325, accent, "", "actual rate");
+  legend(362, 325, purple, "4 5", "real rate");
+
+  function mini(x, y, label, value, color) {
+    rect(dynamicsSvg, x, y, 126, 30, { fill: paper2, stroke: linec, rx: 12 });
+    text(dynamicsSvg, x + 11, y + 12, label, { fill: muted, size: 9.2, weight: 800 });
+    text(dynamicsSvg, x + 11, y + 25, value, { fill: color, size: 11.8, weight: 850 });
+  }
+
+  mini(424, 58, "Taylor target", pp(d.targetRate), gold);
+  mini(424, 94, "smoothed rate", pp(d.policyRate), accent);
+  mini(424, 130, "real rate", pp(d.realRate), purple);
+
+  rect(dynamicsSvg, 78, 58, 268, 30, { fill: paper2, stroke: linec, rx: 13 });
+  text(dynamicsSvg, 96, 78, `ρ = ${fmt(d.rho,2)}: gradual adjustment toward the target rate`, {
+    fill: muted,
+    size: 10.8,
+    weight: 800
+  });
+}
+
+function update() {
+  const d = data();
+  updateLabels(d);
+  drawReaction(d);
+  drawDynamics(d);
+}
+
+let timer = null;
+function animateShock() {
+  if (state.animating) {
+    state.animating = false;
+    $("animateBtn").classList.remove("active");
+    if (timer) clearInterval(timer);
+    state.shockScale = 1;
+    update();
+    return;
+  }
+
+  state.animating = true;
+  $("animateBtn").classList.add("active");
+  const frames = [0, .15, .3, .45, .6, .75, .9, 1, .85, .7, .55, .4, .25, .1, 1];
+  let i = 0;
+  timer = setInterval(() => {
+    state.shockScale = frames[i];
+    update();
+    i++;
+    if (i >= frames.length) {
+      clearInterval(timer);
+      state.shockScale = 1;
+      state.animating = false;
+      $("animateBtn").classList.remove("active");
+      update();
+    }
+  }, 170);
+}
+
+Object.values(inputs).forEach(input => input.addEventListener("input", update));
+
+$("themeBtn").addEventListener("click", () => {
+  state.theme = state.theme === "dark" ? "light" : "dark";
+  setTheme();
+  update();
+});
+
+$("animateBtn").addEventListener("click", animateShock);
+
+setTheme();
+update();
+</script>
+</body>
+</html>

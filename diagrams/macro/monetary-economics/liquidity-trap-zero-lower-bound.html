@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive macroeconomics diagram for liquidity trap and the zero lower bound: horizontal money demand, ineffective conventional policy, and the role of expectations.">
+<title>Liquidity Trap and the Zero Lower Bound | Monetary Economics Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+
+<style>
+:root {
+  --bg: #f6f1e7;
+  --paper: #fffaf1;
+  --paper2: #f1eadc;
+  --ink: #172123;
+  --muted: #64706e;
+  --line: rgba(31,45,48,.14);
+  --grid: rgba(31,45,48,.07);
+  --accent: #2f8f83;
+  --soft: rgba(47,143,131,.13);
+  --gold: #b8944b;
+  --blue: #577f9e;
+  --red: #a85e50;
+  --purple: #85699d;
+  --shadow: 0 16px 36px rgba(55,45,31,.095);
+}
+[data-theme="dark"] {
+  --bg: #0b1116;
+  --paper: #111a21;
+  --paper2: #17232b;
+  --ink: #eef5f3;
+  --muted: #a2afad;
+  --line: rgba(238,245,243,.13);
+  --grid: rgba(238,245,243,.06);
+  --accent: #77c9bd;
+  --soft: rgba(119,201,189,.13);
+  --gold: #d4ba74;
+  --blue: #8fb7d5;
+  --red: #d39080;
+  --purple: #b5a0cf;
+  --shadow: 0 22px 52px rgba(0,0,0,.34);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 8% 0%, var(--soft), transparent 30rem),
+    radial-gradient(circle at 92% 8%, rgba(184,148,75,.10), transparent 28rem),
+    var(--bg);
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.45;
+}
+.app {
+  width: min(1460px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 26px 0 42px;
+}
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+.eyebrow {
+  color: var(--accent);
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.78rem, 3.1vw, 3.1rem);
+  line-height: 1.04;
+  letter-spacing: -.035em;
+  font-weight: 500;
+}
+.subtitle {
+  max-width: 930px;
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: clamp(.95rem, 1.35vw, 1.05rem);
+}
+.top-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+button { font: inherit; }
+.toggle, .pill {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 96%, transparent);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 9px 13px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.pill.active {
+  background: var(--soft);
+  border-color: var(--accent);
+}
+.layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+.card {
+  background: color-mix(in srgb, var(--paper) 95%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+}
+.controls {
+  position: sticky;
+  top: 16px;
+  padding: 17px;
+}
+.title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.title-row h2, .title-row h3 {
+  margin: 0;
+  font-size: .96rem;
+  letter-spacing: -.015em;
+}
+.title-row span {
+  color: var(--muted);
+  font-size: .74rem;
+}
+.group {
+  border-top: 1px solid var(--line);
+  padding: 14px 0;
+}
+.group:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+.group-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .105em;
+  font-size: .72rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+.row { margin: 13px 0; }
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: .86rem;
+  margin-bottom: 7px;
+}
+.label label { font-weight: 650; }
+.value {
+  color: var(--accent);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.tabs button {
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--paper2);
+  color: var(--muted);
+  padding: 9px 7px;
+  cursor: pointer;
+  font-size: .82rem;
+}
+.tabs button.active {
+  background: var(--soft);
+  color: var(--ink);
+  border-color: var(--accent);
+  font-weight: 800;
+}
+.main {
+  display: grid;
+  gap: 18px;
+}
+.model { padding: 17px; }
+.model-grid {
+  display: grid;
+  grid-template-columns: 1.08fr .92fr;
+  gap: 14px;
+  margin-bottom: 17px;
+}
+.eqbox {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 15px;
+}
+.eq-title {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .105em;
+  font-size: .72rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+.equations {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1rem, 1.25vw, 1.14rem);
+  line-height: 1.75;
+  overflow-x: auto;
+}
+.equations .line { white-space: nowrap; }
+.note {
+  color: var(--muted);
+  font-size: .83rem;
+  margin-top: 8px;
+}
+.diagrams {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+.diagram { padding: 15px; }
+.dhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.dhead h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+.dhead p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: .84rem;
+}
+.badge {
+  border: 1px solid var(--line);
+  background: var(--soft);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: .76rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.svgbox {
+  height: 560px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 42px 42px;
+  overflow: hidden;
+}
+.svgbox.small { height: 490px; }
+svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.bottom {
+  display: grid;
+  grid-template-columns: .9fr 1.1fr;
+  gap: 18px;
+}
+.info { padding: 17px; }
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 10px;
+}
+.kpi {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  padding: 12px;
+}
+.kpi small {
+  display: block;
+  color: var(--muted);
+  font-size: .71rem;
+  margin-bottom: 3px;
+}
+.kpi strong {
+  font-size: 1.02rem;
+  font-variant-numeric: tabular-nums;
+}
+.functions {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 11px;
+}
+.fcard {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+}
+.fcard h4 {
+  margin: 0 0 6px;
+  font-size: .9rem;
+}
+.fcard p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .82rem;
+}
+.notice {
+  margin-top: 13px;
+  border-left: 3px solid var(--accent);
+  background: var(--soft);
+  border-radius: 16px;
+  padding: 13px 14px;
+}
+.notice h4 {
+  margin: 0 0 7px;
+  font-size: .9rem;
+}
+.notice ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: .84rem;
+}
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 12px));
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 12px;
+  padding: 9px 11px;
+  font-size: .78rem;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transition: opacity 120ms ease;
+  z-index: 100;
+  max-width: 300px;
+}
+@media (max-width: 1100px) {
+  .layout, .bottom, .model-grid { grid-template-columns: 1fr; }
+  .controls { position: static; }
+  .kpis, .functions { grid-template-columns: repeat(2,1fr); }
+  .svgbox { height: 520px; }
+  .svgbox.small { height: 460px; }
+}
+@media (max-width: 640px) {
+  .app { width: min(100% - 18px, 1460px); padding-top: 18px; }
+  .header { grid-template-columns: 1fr; }
+  .top-actions { justify-content: flex-start; }
+  .kpis, .functions { grid-template-columns: 1fr; }
+  .svgbox { height: 420px; }
+  .svgbox.small { height: 390px; }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <header class="header">
+    <div>
+      <div class="eyebrow">Macroeconomics notebook</div>
+      <h1>Liquidity Trap and the Zero Lower Bound</h1>
+      <p class="subtitle">
+        When money demand becomes nearly horizontal at the zero lower bound, conventional money expansion has little effect on the nominal interest rate. Expectations then become central because expected inflation can lower the real rate even when the nominal rate is stuck.
+      </p>
+    </div>
+    <div class="top-actions">
+      <button class="toggle" id="themeBtn" type="button">◐ Theme</button>
+      <button class="pill" id="animateBtn" type="button">Animate money injection</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="card controls">
+      <div class="title-row">
+        <h2>Controls</h2>
+        <span>zlb regime</span>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Regime</div>
+        <div class="tabs" id="regimeTabs">
+          <button type="button" class="active" data-mode="trap">Trap</button>
+          <button type="button" data-mode="normal">Normal</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Money market</div>
+        <div class="row">
+          <div class="label"><label for="ms0">Initial real money supply (M/P)<sub>0</sub></label><span class="value" id="vMs0"></span></div>
+          <input id="ms0" type="range" min="400" max="2600" step="20" value="1200">
+        </div>
+        <div class="row">
+          <div class="label"><label for="ms1">New real money supply (M/P)<sub>1</sub></label><span class="value" id="vMs1"></span></div>
+          <input id="ms1" type="range" min="400" max="3200" step="20" value="1700">
+        </div>
+        <div class="row">
+          <div class="label"><label for="income">Income Y</label><span class="value" id="vIncome"></span></div>
+          <input id="income" type="range" min="50" max="220" step="1" value="120">
+        </div>
+        <div class="row">
+          <div class="label"><label for="trapStrength">Trap strength λ</label><span class="value" id="vTrapStrength"></span></div>
+          <input id="trapStrength" type="range" min="0" max="1" step="0.01" value="0.88">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Expectations channel</div>
+        <div class="row">
+          <div class="label"><label for="expInfl">Expected inflation Eπ</label><span class="value" id="vExpInfl"></span></div>
+          <input id="expInfl" type="range" min="-2" max="6" step="0.1" value="2.0">
+        </div>
+        <div class="row">
+          <div class="label"><label for="naturalRate">Natural real rate rⁿ</label><span class="value" id="vNaturalRate"></span></div>
+          <input id="naturalRate" type="range" min="-3" max="4" step="0.1" value="-1.0">
+        </div>
+        <div class="row">
+          <div class="label"><label for="sigma">Intertemporal elasticity parameter σ</label><span class="value" id="vSigma"></span></div>
+          <input id="sigma" type="range" min="0.5" max="4" step="0.1" value="1.4">
+        </div>
+        <div class="row">
+          <div class="label"><label for="zlb">Zero lower bound</label><span class="value" id="vZlb"></span></div>
+          <input id="zlb" type="range" min="0" max="2" step="0.1" value="0.0">
+        </div>
+      </div>
+    </aside>
+
+    <section class="main">
+      <section class="card model">
+        <div class="model-grid">
+          <div class="eqbox">
+            <div class="eq-title">Money-market logic</div>
+            <div class="equations">
+              <div class="line">M/P = L(Y,i)</div>
+              <div class="line">normal case: L<sub>i</sub> &lt; 0</div>
+              <div class="line">liquidity trap: i ≈ 0 and L becomes very interest-elastic</div>
+            </div>
+          </div>
+
+          <div class="eqbox">
+            <div class="eq-title">Expectations at the ZLB</div>
+            <div class="equations">
+              <div class="line">r = i − Eπ</div>
+              <div class="line">x = − (1/σ)(r − rⁿ)</div>
+              <div class="line">at the ZLB, i cannot fall much further</div>
+            </div>
+            <div class="note">If expected inflation rises, the real rate falls even with the nominal rate stuck at the lower bound, which supports current demand.</div>
+          </div>
+        </div>
+
+        <div class="diagrams">
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>Money demand and ineffective conventional policy</h3>
+                <p>In a trap, raising real money supply shifts the economy along a nearly horizontal money-demand schedule, so the nominal interest rate barely moves.</p>
+              </div>
+              <div class="badge" id="marketBadge">ZLB</div>
+            </div>
+            <div class="svgbox">
+              <svg id="marketSvg" viewBox="0 0 760 530" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>The role of expectations</h3>
+                <p>When the nominal rate is stuck, expected inflation becomes a tool for reducing the real rate and raising the output gap.</p>
+              </div>
+              <div class="badge" id="expectBadge">Eπ</div>
+            </div>
+            <div class="svgbox small">
+              <svg id="expectSvg" viewBox="0 0 620 420" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bottom">
+        <div class="card info">
+          <div class="title-row">
+            <h3>Current state</h3>
+            <span>computed live</span>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><small>Initial nominal rate i₀</small><strong id="kI0"></strong></div>
+            <div class="kpi"><small>New nominal rate i₁</small><strong id="kI1"></strong></div>
+            <div class="kpi"><small>Real rate r</small><strong id="kReal"></strong></div>
+            <div class="kpi"><small>Output gap x</small><strong id="kGap"></strong></div>
+          </div>
+          <div class="notice">
+            <h4>What to notice</h4>
+            <ul>
+              <li>In the trap, money demand is almost flat near the lower bound.</li>
+              <li>A higher money supply then changes balances much more than the interest rate.</li>
+              <li>Conventional monetary policy is weak because the nominal rate is already at its floor.</li>
+              <li>Expected inflation lowers the real rate and can stimulate demand even at the ZLB.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card info">
+          <div class="title-row">
+            <h3>Economic interpretation</h3>
+            <span>mechanism</span>
+          </div>
+          <div class="functions">
+            <div class="fcard">
+              <h4>Horizontal demand</h4>
+              <p>Near the ZLB, agents willingly absorb extra money without requiring a much lower interest rate.</p>
+            </div>
+            <div class="fcard">
+              <h4>Ineffective conventional policy</h4>
+              <p>Open-market purchases mainly raise money holdings, not spending through lower nominal rates.</p>
+            </div>
+            <div class="fcard">
+              <h4>Expectations</h4>
+              <p>Forward guidance or higher expected inflation can reduce the real rate when the nominal rate is stuck.</p>
+            </div>
+          </div>
+
+          <div class="notice">
+            <h4>Exam-style summary</h4>
+            <ul>
+              <li>Liquidity trap: money demand becomes highly elastic at very low rates.</li>
+              <li>ZLB: the nominal rate cannot fall below its lower bound.</li>
+              <li>Then increases in M/P have little effect on i.</li>
+              <li>Expectations matter because \( r = i - E\pi \).</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const state = {
+  theme: localStorage.getItem("zlb-liquidity-trap-theme") || "light",
+  mode: "trap",
+  animating: false,
+  shockScale: 1
+};
+
+const $ = id => document.getElementById(id);
+
+const inputs = {
+  ms0: $("ms0"),
+  ms1: $("ms1"),
+  income: $("income"),
+  trapStrength: $("trapStrength"),
+  expInfl: $("expInfl"),
+  naturalRate: $("naturalRate"),
+  sigma: $("sigma"),
+  zlb: $("zlb")
+};
+
+const values = {
+  ms0: $("vMs0"),
+  ms1: $("vMs1"),
+  income: $("vIncome"),
+  trapStrength: $("vTrapStrength"),
+  expInfl: $("vExpInfl"),
+  naturalRate: $("vNaturalRate"),
+  sigma: $("vSigma"),
+  zlb: $("vZlb")
+};
+
+const marketSvg = $("marketSvg");
+const expectSvg = $("expectSvg");
+const tooltip = $("tooltip");
+
+function num(x) { return Number(x); }
+function fmt(x, d = 0) {
+  return Number(x).toLocaleString("en-US", {
+    maximumFractionDigits: d,
+    minimumFractionDigits: d
+  });
+}
+function pct(x, d = 1) { return `${fmt(x, d)}%`; }
+function v(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+function setTheme() {
+  document.documentElement.dataset.theme = state.theme;
+  localStorage.setItem("zlb-liquidity-trap-theme", state.theme);
+}
+
+function liquidityParams() {
+  const modeTrap = state.mode === "trap";
+  const strengthInput = num(inputs.trapStrength.value);
+  const lambda = modeTrap ? Math.max(strengthInput, 0.55) : Math.min(strengthInput, 0.28);
+  return lambda;
+}
+
+function inverseMoneyDemand(M, Y, zlb, lambda) {
+  const autonomous = 140 + 4.6 * Y;
+  const M0 = 120;
+  const denom = Math.max(M - M0, 22);
+  const normal = 8800 / denom - 1.0;
+  const flatness = 0.03 + 1.0 * (1 - lambda);
+  return zlb + flatness * Math.max(normal, 0);
+}
+
+function equilibriumRate(M, Y, zlb, lambda) {
+  return Math.max(zlb, inverseMoneyDemand(M, Y, zlb, lambda));
+}
+
+function data() {
+  const lambda = liquidityParams();
+  const Y = num(inputs.income.value);
+  const zlb = num(inputs.zlb.value);
+  const ms0 = num(inputs.ms0.value);
+  const ms1 = num(inputs.ms1.value) * state.shockScale;
+  const expInfl = num(inputs.expInfl.value);
+  const rn = num(inputs.naturalRate.value);
+  const sigma = num(inputs.sigma.value);
+
+  const i0 = equilibriumRate(ms0, Y, zlb, lambda);
+  const i1 = equilibriumRate(ms1, Y, zlb, lambda);
+
+  const realRate = i1 - expInfl;
+  const outputGap = -(1 / sigma) * (realRate - rn);
+
+  const notionalI1 = inverseMoneyDemand(ms1, Y, zlb, 0.0);
+  const ineffectiveness = Math.abs(i1 - i0);
+
+  return {
+    lambda, Y, zlb, ms0, ms1, expInfl, rn, sigma,
+    i0, i1, realRate, outputGap,
+    notionalI1, ineffectiveness
+  };
+}
+
+function svgEl(tag, attrs = {}) {
+  const e = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  Object.entries(attrs).forEach(([k, val]) => e.setAttribute(k, val));
+  return e;
+}
+function add(parent, child) { parent.appendChild(child); return child; }
+function text(parent, x, y, content, attrs = {}) {
+  const e = svgEl("text", {
+    x, y,
+    fill: attrs.fill || v("--ink"),
+    "font-size": attrs.size || 14,
+    "font-weight": attrs.weight || 500,
+    "text-anchor": attrs.anchor || "start",
+    "dominant-baseline": attrs.base || "auto",
+    opacity: attrs.opacity ?? 1
+  });
+  e.textContent = content;
+  return add(parent, e);
+}
+function rect(parent, x, y, width, height, attrs = {}) {
+  return add(parent, svgEl("rect", {
+    x, y, width, height,
+    rx: attrs.rx || 14,
+    fill: attrs.fill || "transparent",
+    stroke: attrs.stroke || "none",
+    "stroke-width": attrs.sw || 1,
+    opacity: attrs.opacity ?? 1
+  }));
+}
+function line(parent, x1, y1, x2, y2, attrs = {}) {
+  return add(parent, svgEl("line", {
+    x1, y1, x2, y2,
+    stroke: attrs.stroke || v("--line"),
+    "stroke-width": attrs.sw || 1,
+    "stroke-dasharray": attrs.dash || "",
+    opacity: attrs.opacity ?? 1
+  }));
+}
+function path(parent, d, attrs = {}) {
+  return add(parent, svgEl("path", {
+    d,
+    fill: attrs.fill || "none",
+    stroke: attrs.stroke || v("--ink"),
+    "stroke-width": attrs.sw || 2,
+    "stroke-linecap": "round",
+    "stroke-linejoin": "round",
+    "stroke-dasharray": attrs.dash || "",
+    opacity: attrs.opacity ?? 1
+  }));
+}
+function circle(parent, cx, cy, r, attrs = {}) {
+  return add(parent, svgEl("circle", {
+    cx, cy, r,
+    fill: attrs.fill || "transparent",
+    stroke: attrs.stroke || "none",
+    "stroke-width": attrs.sw || 1,
+    opacity: attrs.opacity ?? 1
+  }));
+}
+function tip(ev, html) {
+  tooltip.innerHTML = html;
+  tooltip.style.left = ev.clientX + "px";
+  tooltip.style.top = ev.clientY + "px";
+  tooltip.style.opacity = 1;
+}
+function untip() { tooltip.style.opacity = 0; }
+
+function updateLabels(d) {
+  values.ms0.textContent = fmt(num(inputs.ms0.value));
+  values.ms1.textContent = fmt(num(inputs.ms1.value) * state.shockScale);
+  values.income.textContent = fmt(num(inputs.income.value));
+  values.trapStrength.textContent = fmt(num(inputs.trapStrength.value), 2);
+  values.expInfl.textContent = pct(num(inputs.expInfl.value), 1);
+  values.naturalRate.textContent = pct(num(inputs.naturalRate.value), 1);
+  values.sigma.textContent = fmt(num(inputs.sigma.value), 1);
+  values.zlb.textContent = pct(num(inputs.zlb.value), 1);
+
+  $("kI0").textContent = pct(d.i0, 2);
+  $("kI1").textContent = pct(d.i1, 2);
+  $("kReal").textContent = pct(d.realRate, 2);
+  $("kGap").textContent = `${d.outputGap >= 0 ? "+" : ""}${pct(d.outputGap, 2)}`;
+
+  $("marketBadge").textContent = state.mode === "trap" ? "trap regime" : "normal regime";
+  $("expectBadge").textContent = `Eπ = ${pct(d.expInfl, 1)}`;
+}
+
+function drawMarket(d) {
+  marketSvg.innerHTML = "";
+
+  const accent = v("--accent");
+  const muted = v("--muted");
+  const linec = v("--line");
+  const ink = v("--ink");
+  const paper2 = v("--paper2");
+  const gold = v("--gold");
+  const blue = v("--blue");
+  const red = v("--red");
+  const purple = v("--purple");
+
+  rect(marketSvg, 42, 28, 676, 474, { fill: "rgba(0,0,0,0.01)", stroke: linec, rx: 24 });
+  text(marketSvg, 72, 60, "liquidity preference near the lower bound", { fill: muted, size: 12.5, weight: 800 });
+
+  const x0 = 76, y0 = 382, W = 604, H = 250;
+  const xMax = Math.max(d.ms1, d.ms0, 2500) * 1.25;
+  const yMax = Math.max(7, inverseMoneyDemand(250, d.Y, d.zlb, 0) + 0.6, d.zlb + 2.6);
+
+  line(marketSvg, x0, y0, x0 + W, y0, { stroke: linec, sw: 1.45 });
+  line(marketSvg, x0, y0, x0, y0 - H, { stroke: linec, sw: 1.45 });
+
+  for (let j = 1; j < 6; j++) {
+    const gy = y0 - j * H / 6;
+    line(marketSvg, x0, gy, x0 + W, gy, { stroke: linec, sw: 1, opacity: .36 });
+  }
+  for (let k = 1; k < 8; k++) {
+    const gx = x0 + k * W / 8;
+    line(marketSvg, gx, y0 - H, gx, y0, { stroke: linec, sw: 1, opacity: .30 });
+  }
+
+  function X(m) { return x0 + Math.min(m / xMax, 1) * W; }
+  function Yp(i) { return y0 - (i / yMax) * H; }
+
+  line(marketSvg, x0, Yp(d.zlb), x0 + W, Yp(d.zlb), { stroke: red, sw: 1.15, dash: "6 6", opacity: .72 });
+
+  const trapPts = [];
+  const normalPts = [];
+  for (let M = 160; M <= xMax; M += xMax / 220) {
+    trapPts.push([X(M), Yp(inverseMoneyDemand(M, d.Y, d.zlb, d.lambda))]);
+    normalPts.push([X(M), Yp(inverseMoneyDemand(M, d.Y, d.zlb, 0))]);
+  }
+
+  const trapArea = `M${x0},${y0} ` + trapPts.map(p => `L${p[0]},${p[1]}`).join(" ") + ` L${x0 + W},${y0} Z`;
+  path(marketSvg, trapArea, { fill: accent, stroke: "none", opacity: .055 });
+  path(marketSvg, normalPts.map((p, i) => `${i===0?"M":"L"}${p[0]},${p[1]}`).join(" "), {
+    stroke: purple, sw: 2.2, dash: "6 7", opacity: .55
+  });
+  path(marketSvg, trapPts.map((p, i) => `${i===0?"M":"L"}${p[0]},${p[1]}`).join(" "), {
+    stroke: accent, sw: 3.25
+  });
+
+  // Money supply lines
+  line(marketSvg, X(d.ms0), y0, X(d.ms0), y0 - H, { stroke: blue, sw: 2.3 });
+  line(marketSvg, X(d.ms1), y0, X(d.ms1), y0 - H, { stroke: gold, sw: 2.3 });
+
+  // Equilibria
+  const eq0y = Yp(d.i0);
+  const eq1y = Yp(d.i1);
+  line(marketSvg, x0, eq0y, X(d.ms0), eq0y, { stroke: muted, sw: 1.0, dash: "5 5" });
+  line(marketSvg, x0, eq1y, X(d.ms1), eq1y, { stroke: muted, sw: 1.0, dash: "5 5" });
+
+  circle(marketSvg, X(d.ms0), eq0y, 5.4, { fill: blue, stroke: ink, sw: 1.1 });
+  const dot1 = circle(marketSvg, X(d.ms1), eq1y, 6.4, { fill: gold, stroke: ink, sw: 1.15 });
+  dot1.addEventListener("mousemove", ev => tip(ev, `<b>New equilibrium</b><br>M/P = ${fmt(d.ms1)}<br>Nominal rate: ${pct(d.i1,2)}<br>Real rate: ${pct(d.realRate,2)}`));
+  dot1.addEventListener("mouseleave", untip);
+
+  // Ineffective policy wedge
+  const gapColor = d.ineffectiveness < 0.22 ? red : accent;
+  rect(marketSvg, 514, 82, 156, 42, { fill: paper2, stroke: linec, rx: 14 });
+  text(marketSvg, 528, 99, "rate response", { fill: muted, size: 10.5, weight: 800 });
+  text(marketSvg, 528, 116, `Δi = ${pct(d.i1 - d.i0, 2)}`, { fill: gapColor, size: 13.2, weight: 850 });
+
+  rect(marketSvg, 344, 82, 156, 42, { fill: paper2, stroke: linec, rx: 14 });
+  text(marketSvg, 358, 99, "money expansion", { fill: muted, size: 10.5, weight: 800 });
+  text(marketSvg, 358, 116, `Δ(M/P) = ${fmt(d.ms1 - d.ms0)}`, { fill: gold, size: 13.2, weight: 850 });
+
+  rect(marketSvg, 174, 82, 156, 42, { fill: paper2, stroke: linec, rx: 14 });
+  text(marketSvg, 188, 99, "trap strength", { fill: muted, size: 10.5, weight: 800 });
+  text(marketSvg, 188, 116, `λ = ${fmt(d.lambda, 2)}`, { fill: accent, size: 13.2, weight: 850 });
+
+  text(marketSvg, x0 + W, y0 + 30, "real money balances M/P", { fill: muted, size: 12, anchor: "end", weight: 740 });
+  text(marketSvg, x0 - 22, y0 - H - 8, "nominal interest rate i", { fill: muted, size: 12, weight: 740 });
+
+  text(marketSvg, X(d.ms0) + 8, y0 - H + 22, "(M/P)₀", { fill: blue, size: 11.2, weight: 800 });
+  text(marketSvg, X(d.ms1) + 8, y0 - H + 42, "(M/P)₁", { fill: gold, size: 11.2, weight: 800 });
+  text(marketSvg, x0 + W - 158, Yp(d.zlb) - 8, "zero lower bound", { fill: red, size: 11.2, weight: 800 });
+
+  rect(marketSvg, 104, 430, 552, 36, { fill: paper2, stroke: linec, rx: 15, opacity: .98 });
+  text(marketSvg, 124, 453,
+       d.ineffectiveness < 0.22
+         ? "Conventional policy is weak here: a large increase in money balances barely changes the nominal rate."
+         : "Outside the trap, higher money supply still lowers the nominal rate in a visible way.",
+       { fill: d.ineffectiveness < 0.22 ? red : accent, size: 12.1, weight: 820 });
+
+  rect(marketSvg, 104, 474, 552, 30, { fill: paper2, stroke: linec, rx: 14, opacity: .96 });
+  text(marketSvg, 124, 494, "Dashed purple curve = normal money demand. Solid teal curve = current regime with trap intensity λ.", {
+    fill: muted, size: 11.3, weight: 780
+  });
+}
+
+function drawExpectations(d) {
+  expectSvg.innerHTML = "";
+
+  const accent = v("--accent");
+  const muted = v("--muted");
+  const linec = v("--line");
+  const ink = v("--ink");
+  const paper2 = v("--paper2");
+  const blue = v("--blue");
+  const red = v("--red");
+  const purple = v("--purple");
+
+  rect(expectSvg, 34, 26, 552, 354, { fill: "rgba(0,0,0,0.01)", stroke: linec, rx: 22 });
+  text(expectSvg, 62, 52, "expectations and the real rate at the ZLB", { fill: muted, size: 12.5, weight: 800 });
+
+  // Compact state chips, placed slightly lower to avoid crowding the title.
+  function chip(x, y, label, value, color) {
+    rect(expectSvg, x, y, 138, 31, { fill: paper2, stroke: linec, rx: 12 });
+    text(expectSvg, x + 11, y + 12, label, { fill: muted, size: 9.2, weight: 800 });
+    text(expectSvg, x + 11, y + 25, value, { fill: color, size: 11.5, weight: 850 });
+  }
+  chip(74, 78, "nominal rate i", pct(d.i1, 2), blue);
+  chip(222, 78, "real rate r", pct(d.realRate, 2), red);
+  chip(370, 78, "natural rate rⁿ", pct(d.rn, 2), purple);
+
+  // Main plot
+  const x0 = 76, y0 = 248, W = 466, H = 150;
+  line(expectSvg, x0, y0, x0 + W, y0, { stroke: linec, sw: 1.35 });
+  line(expectSvg, x0, y0 - H, x0, y0 + 8, { stroke: linec, sw: 1.35 });
+
+  for (let j = 1; j < 4; j++) {
+    const gy = y0 - j * H / 4;
+    line(expectSvg, x0, gy, x0 + W, gy, { stroke: linec, sw: 1, opacity: .27 });
+  }
+  for (let k = 1; k < 7; k++) {
+    const gx = x0 + k * W / 7;
+    line(expectSvg, gx, y0 - H, gx, y0 + 8, { stroke: linec, sw: 1, opacity: .22 });
+  }
+
+  const minExp = -2, maxExp = 6;
+  const sample = [];
+  let minGap = Infinity, maxGap = -Infinity;
+  for (let e = minExp; e <= maxExp; e += 0.05) {
+    const r = d.i1 - e;
+    const x = -(1 / d.sigma) * (r - d.rn);
+    sample.push({ e, r, x });
+    minGap = Math.min(minGap, x);
+    maxGap = Math.max(maxGap, x);
+  }
+
+  const yMin = Math.min(minGap, -2.2) - 0.25;
+  const yMax = Math.max(maxGap, 2.6) + 0.25;
+  function X(e) { return x0 + (e - minExp) / (maxExp - minExp) * W; }
+  function Yp(x) { return y0 - (x - yMin) / (yMax - yMin) * H; }
+
+  line(expectSvg, x0, Yp(0), x0 + W, Yp(0), { stroke: muted, sw: 1.05, dash: "5 6", opacity: .65 });
+
+  const pts = sample.map((o, i) => `${i===0?"M":"L"}${X(o.e)},${Yp(o.x)}`).join(" ");
+  const area = `M${x0},${Yp(0)} ` + sample.map(o => `L${X(o.e)},${Yp(o.x)}`).join(" ") + ` L${x0 + W},${Yp(0)} Z`;
+  path(expectSvg, area, { fill: accent, stroke: "none", opacity: .045 });
+  path(expectSvg, pts, { stroke: accent, sw: 3.0 });
+
+  const currX = X(d.expInfl);
+  const currY = Yp(d.outputGap);
+  line(expectSvg, currX, y0, currX, currY, { stroke: muted, sw: 1.0, dash: "5 5" });
+  line(expectSvg, x0, currY, currX, currY, { stroke: muted, sw: 1.0, dash: "5 5" });
+  circle(expectSvg, currX, currY, 10, { fill: accent, opacity: .15 });
+  const dot = circle(expectSvg, currX, currY, 5.8, { fill: accent, stroke: ink, sw: 1.15 });
+  dot.addEventListener("mousemove", ev => tip(ev, `<b>Current expectations point</b><br>Expected inflation: ${pct(d.expInfl,1)}<br>Real rate: ${pct(d.realRate,2)}<br>Output gap: ${pct(d.outputGap,2)}`));
+  dot.addEventListener("mouseleave", untip);
+
+  // Repositioned axis labels to avoid superposition.
+  text(expectSvg, x0 + W, y0 + 24, "expected inflation Eπ", { fill: muted, size: 11.3, weight: 740, anchor: "end" });
+  text(expectSvg, x0 - 18, y0 - H + 18, "output gap x", { fill: muted, size: 11.3, weight: 740 });
+
+  text(expectSvg, currX + 10, currY - 10, `x = ${d.outputGap >= 0 ? "+" : ""}${pct(d.outputGap,2)}`, {
+    fill: accent, size: 11.0, weight: 840
+  });
+
+  // Minimal legend
+  rect(expectSvg, 76, 270, 194, 24, { fill: paper2, stroke: linec, rx: 10, opacity: .96 });
+  line(expectSvg, 92, 282, 110, 282, { stroke: accent, sw: 2.6 });
+  text(expectSvg, 118, 286, "expectations curve", { fill: muted, size: 10.3, weight: 760 });
+  line(expectSvg, 222, 282, 240, 282, { stroke: muted, sw: 1.2, dash: "5 5" });
+  text(expectSvg, 248, 286, "x = 0", { fill: muted, size: 10.3, weight: 760 });
+
+  rect(expectSvg, 76, 306, 466, 31, { fill: paper2, stroke: linec, rx: 13, opacity: .98 });
+  text(expectSvg, 94, 326, `Real-rate channel: r = i − Eπ = ${pct(d.i1,2)} − ${pct(d.expInfl,1)} = ${pct(d.realRate,2)}`, {
+    fill: ink, size: 11.4, weight: 790
+  });
+
+  rect(expectSvg, 76, 346, 466, 31, { fill: paper2, stroke: linec, rx: 13, opacity: .98 });
+  text(expectSvg, 94, 366, `Demand effect: x = −(1/σ)(r − rⁿ) = ${d.outputGap >= 0 ? "+" : ""}${pct(d.outputGap,2)}`, {
+    fill: accent, size: 11.4, weight: 840
+  });
+
+  rect(expectSvg, 76, 386, 466, 24, { fill: paper2, stroke: linec, rx: 11, opacity: .96 });
+  text(expectSvg, 94, 402, "Higher expected inflation lowers r and raises demand even when i is stuck.", {
+    fill: muted, size: 10.5, weight: 770
+  });
+}
+
+function update() {
+  const d = data();
+  updateLabels(d);
+  drawMarket(d);
+  drawExpectations(d);
+}
+
+let timer = null;
+function animateMoney() {
+  if (state.animating) {
+    state.animating = false;
+    $("animateBtn").classList.remove("active");
+    if (timer) clearInterval(timer);
+    state.shockScale = 1;
+    update();
+    return;
+  }
+  state.animating = true;
+  $("animateBtn").classList.add("active");
+  const frames = [1, 1.06, 1.12, 1.18, 1.24, 1.30, 1.24, 1.18, 1.12, 1.06, 1];
+  let i = 0;
+  timer = setInterval(() => {
+    state.shockScale = frames[i];
+    update();
+    i++;
+    if (i >= frames.length) {
+      clearInterval(timer);
+      state.shockScale = 1;
+      state.animating = false;
+      $("animateBtn").classList.remove("active");
+      update();
+    }
+  }, 180);
+}
+
+Object.values(inputs).forEach(input => input.addEventListener("input", update));
+
+document.querySelectorAll("#regimeTabs button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    state.mode = btn.dataset.mode;
+    document.querySelectorAll("#regimeTabs button").forEach(b => b.classList.toggle("active", b === btn));
+    update();
+  });
+});
+
+$("themeBtn").addEventListener("click", () => {
+  state.theme = state.theme === "dark" ? "light" : "dark";
+  setTheme();
+  update();
+});
+$("animateBtn").addEventListener("click", animateMoney);
+
+setTheme();
+update();
+</script>
+</body>
+</html>

@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive macroeconomics diagram for money functions and monetary aggregates: unit of account, medium of exchange, store of value, and aggregate structure.">
+<title>Functions and Monetary Aggregates | Monetary Economics Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+
+<style>
+:root {
+  --bg: #f6f1e7;
+  --paper: #fffaf1;
+  --paper2: #f1eadc;
+  --ink: #172123;
+  --muted: #64706e;
+  --line: rgba(31, 45, 48, 0.14);
+  --grid: rgba(31, 45, 48, 0.075);
+  --accent: #2f8f83;
+  --accent2: #8fc7be;
+  --soft: rgba(47, 143, 131, 0.13);
+  --gold: #b8944b;
+  --blue: #577f9e;
+  --red: #a85e50;
+  --shadow: 0 16px 36px rgba(55, 45, 31, 0.095);
+}
+
+[data-theme="dark"] {
+  --bg: #0b1116;
+  --paper: #111a21;
+  --paper2: #17232b;
+  --ink: #eef5f3;
+  --muted: #a2afad;
+  --line: rgba(238, 245, 243, 0.13);
+  --grid: rgba(238, 245, 243, 0.065);
+  --accent: #77c9bd;
+  --accent2: #3e857a;
+  --soft: rgba(119, 201, 189, 0.13);
+  --gold: #d4ba74;
+  --blue: #8fb7d5;
+  --red: #d39080;
+  --shadow: 0 22px 52px rgba(0, 0, 0, 0.34);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 8% 0%, var(--soft), transparent 30rem),
+    var(--bg);
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.45;
+}
+
+.app {
+  width: min(1380px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 26px 0 42px;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.8rem, 3.4vw, 3.35rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+}
+
+.subtitle {
+  max-width: 760px;
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 1.35vw, 1.05rem);
+}
+
+.top-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+button { font: inherit; }
+
+.toggle, .pill {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 96%, transparent);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 9px 13px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.pill.active {
+  background: var(--soft);
+  border-color: var(--accent);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 330px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.card {
+  background: color-mix(in srgb, var(--paper) 95%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+}
+
+.controls {
+  position: sticky;
+  top: 16px;
+  padding: 17px;
+}
+
+.title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.title-row h2, .title-row h3 {
+  margin: 0;
+  font-size: 0.96rem;
+  letter-spacing: -0.015em;
+}
+
+.title-row span {
+  color: var(--muted);
+  font-size: 0.74rem;
+}
+
+.group {
+  border-top: 1px solid var(--line);
+  padding: 14px 0;
+}
+
+.group:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.group-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.105em;
+  font-size: 0.72rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.row {
+  margin: 13px 0;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.86rem;
+  margin-bottom: 7px;
+}
+
+.label label {
+  font-weight: 650;
+}
+
+.value {
+  color: var(--accent);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.tabs button {
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--paper2);
+  color: var(--muted);
+  padding: 9px 7px;
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+
+.tabs button.active {
+  background: var(--soft);
+  color: var(--ink);
+  border-color: var(--accent);
+  font-weight: 800;
+}
+
+.main {
+  display: grid;
+  gap: 18px;
+}
+
+.model {
+  padding: 17px;
+}
+
+.model-grid {
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 14px;
+  margin-bottom: 17px;
+}
+
+.eqbox {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 15px;
+}
+
+.eq-title {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.105em;
+  font-size: 0.72rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.equations {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1rem, 1.3vw, 1.18rem);
+  line-height: 1.7;
+  overflow-x: auto;
+}
+
+.equations .line {
+  white-space: nowrap;
+}
+
+.note {
+  color: var(--muted);
+  font-size: 0.83rem;
+  margin-top: 8px;
+}
+
+.diagrams {
+  display: grid;
+  grid-template-columns: 1.13fr 0.87fr;
+  gap: 18px;
+}
+
+.diagram {
+  padding: 15px;
+}
+
+.dhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.dhead h3 {
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+.dhead p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.badge {
+  border: 1px solid var(--line);
+  background: var(--soft);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.svgbox {
+  height: 428px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 42px 42px;
+  overflow: hidden;
+}
+
+.svgbox.small {
+  height: 348px;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.bottom {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 18px;
+}
+
+.info {
+  padding: 17px;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.kpi {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  padding: 12px;
+}
+
+.kpi small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.71rem;
+  margin-bottom: 3px;
+}
+
+.kpi strong {
+  font-size: 1.02rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.functions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 11px;
+}
+
+.fcard {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.fcard h4 {
+  margin: 0 0 6px;
+  font-size: 0.9rem;
+}
+
+.fcard p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.notice {
+  margin-top: 13px;
+  border-left: 3px solid var(--accent);
+  background: var(--soft);
+  border-radius: 16px;
+  padding: 13px 14px;
+}
+
+.notice h4 {
+  margin: 0 0 7px;
+  font-size: 0.9rem;
+}
+
+.notice ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 12px));
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 12px;
+  padding: 9px 11px;
+  font-size: 0.78rem;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transition: opacity 120ms ease;
+  z-index: 100;
+  max-width: 255px;
+}
+
+@media (max-width: 1100px) {
+  .layout, .diagrams, .bottom, .model-grid { grid-template-columns: 1fr; }
+  .controls { position: static; }
+  .kpis, .functions { grid-template-columns: repeat(2, 1fr); }
+  .svgbox { height: 380px; }
+}
+
+@media (max-width: 640px) {
+  .app { width: min(100% - 18px, 1380px); padding-top: 18px; }
+  .header { grid-template-columns: 1fr; }
+  .top-actions { justify-content: flex-start; }
+  .kpis, .functions { grid-template-columns: 1fr; }
+  .svgbox { height: 338px; }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <header class="header">
+    <div>
+      <div class="eyebrow">Macroeconomics notebook</div>
+      <h1>Money and Monetary Aggregates</h1>
+      <p class="subtitle">
+        A compact visual model of money as a hierarchy of liquidity: central-bank money, transaction money, and broad near-money.
+      </p>
+    </div>
+    <div class="top-actions">
+      <button class="toggle" id="themeBtn" type="button">◐ Theme</button>
+      <button class="pill" id="shockBtn" type="button">Animate liquidity shock</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="card controls">
+      <div class="title-row">
+        <h2>Controls</h2>
+        <span>billions</span>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Central-bank money</div>
+        <div class="row">
+          <div class="label"><label for="currency">Currency C</label><span class="value" id="vCurrency"></span></div>
+          <input id="currency" type="range" min="50" max="1000" step="10" value="320">
+        </div>
+        <div class="row">
+          <div class="label"><label for="reserves">Bank reserves R</label><span class="value" id="vReserves"></span></div>
+          <input id="reserves" type="range" min="20" max="800" step="10" value="180">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Bank and near-money liabilities</div>
+        <div class="row">
+          <div class="label"><label for="deposits">Checkable deposits D</label><span class="value" id="vDeposits"></span></div>
+          <input id="deposits" type="range" min="50" max="1600" step="10" value="720">
+        </div>
+        <div class="row">
+          <div class="label"><label for="savings">Savings deposits S</label><span class="value" id="vSavings"></span></div>
+          <input id="savings" type="range" min="0" max="1800" step="10" value="900">
+        </div>
+        <div class="row">
+          <div class="label"><label for="time">Small time deposits T</label><span class="value" id="vTime"></span></div>
+          <input id="time" type="range" min="0" max="1400" step="10" value="520">
+        </div>
+        <div class="row">
+          <div class="label"><label for="funds">Money market funds F</label><span class="value" id="vFunds"></span></div>
+          <input id="funds" type="range" min="0" max="1400" step="10" value="430">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Quantity equation</div>
+        <div class="row">
+          <div class="label"><label for="velocity">Velocity V</label><span class="value" id="vVelocity"></span></div>
+          <input id="velocity" type="range" min="0.4" max="6" step="0.1" value="2.1">
+        </div>
+        <div class="row">
+          <div class="label"><label for="output">Real output Y</label><span class="value" id="vOutput"></span></div>
+          <input id="output" type="range" min="800" max="8000" step="50" value="3600">
+        </div>
+        <div class="row">
+          <div class="label"><label for="shock">Liquidity preference shock</label><span class="value" id="vShock"></span></div>
+          <input id="shock" type="range" min="-40" max="40" step="1" value="0">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Aggregate used in MV = PY</div>
+        <div class="tabs" id="tabs">
+          <button type="button" data-agg="B">B</button>
+          <button type="button" class="active" data-agg="M1">M1</button>
+          <button type="button" data-agg="M2">M2</button>
+        </div>
+      </div>
+    </aside>
+
+    <section class="main">
+      <section class="card model">
+        <div class="model-grid">
+          <div class="eqbox">
+            <div class="eq-title">Minimal symbolic model</div>
+            <div class="equations">
+              <div class="line">B ≡ C + R</div>
+              <div class="line">M₁ ≡ C + D</div>
+              <div class="line">M₂ ≡ M₁ + S + T + F</div>
+              <div class="line">P = MV / Y</div>
+            </div>
+          </div>
+
+          <div class="eqbox">
+            <div class="eq-title">Money multiplier geometry</div>
+            <div class="equations">
+              <div class="line">c ≡ C/D, &nbsp; rr ≡ R/D</div>
+              <div class="line">M₁ / B = (1 + c)/(rr + c)</div>
+            </div>
+            <div class="note">Stylized taxonomy. Official definitions differ across countries, but the liquidity logic is the same.</div>
+          </div>
+        </div>
+
+        <div class="diagrams">
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>Liquidity hierarchy</h3>
+                <p>From central-bank money to transaction money to broad near-money.</p>
+              </div>
+              <div class="badge" id="aggBadge">M1 selected</div>
+            </div>
+            <div class="svgbox">
+              <svg id="hierarchySvg" viewBox="0 0 760 510" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>Money, velocity, prices</h3>
+                <p>Holding Y fixed, higher M or V raises nominal expenditure PY.</p>
+              </div>
+              <div class="badge" id="priceBadge">P</div>
+            </div>
+            <div class="svgbox small">
+              <svg id="quantitySvg" viewBox="0 0 620 370" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bottom">
+        <div class="card info">
+          <div class="title-row">
+            <h3>Current state</h3>
+            <span>computed live</span>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><small>B = C + R</small><strong id="kBase"></strong></div>
+            <div class="kpi"><small>M1 = C + D</small><strong id="kM1"></strong></div>
+            <div class="kpi"><small>M2</small><strong id="kM2"></strong></div>
+            <div class="kpi"><small>M1 / B</small><strong id="kMult"></strong></div>
+          </div>
+          <div class="notice">
+            <h4>What to notice</h4>
+            <ul>
+              <li>B is the monetary base: central-bank money held as currency and reserves.</li>
+              <li>M1 is payment money: currency plus checkable deposits.</li>
+              <li>M2 is broader: M1 plus liquid stores of value.</li>
+              <li>The multiplier falls when reserves are high relative to deposits.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card info">
+          <div class="title-row">
+            <h3>Functions of money</h3>
+            <span>why liquidity matters</span>
+          </div>
+          <div class="functions">
+            <div class="fcard">
+              <h4>Unit of account</h4>
+              <p>Money is the common language of prices, debts, and contracts.</p>
+            </div>
+            <div class="fcard">
+              <h4>Medium of exchange</h4>
+              <p>Money separates buying from selling and avoids the double coincidence of wants.</p>
+            </div>
+            <div class="fcard">
+              <h4>Store of value</h4>
+              <p>Money carries purchasing power through time, imperfectly when inflation is high.</p>
+            </div>
+          </div>
+
+          <div class="notice">
+            <h4>Exam-style summary</h4>
+            <ul>
+              <li>Money aggregates are nested by liquidity, not by “importance.”</li>
+              <li>Central-bank money is not the same as broad money.</li>
+              <li>Deposits make M1 exceed the monetary base when the banking system creates inside money.</li>
+              <li>MV = PY links money to nominal expenditure; it is not by itself a full causal theory.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const state = {
+  theme: localStorage.getItem("money-theme") || "light",
+  aggregate: "M1",
+  animating: false
+};
+
+const $ = id => document.getElementById(id);
+
+const inputs = {
+  currency: $("currency"),
+  reserves: $("reserves"),
+  deposits: $("deposits"),
+  savings: $("savings"),
+  time: $("time"),
+  funds: $("funds"),
+  velocity: $("velocity"),
+  output: $("output"),
+  shock: $("shock")
+};
+
+const values = {
+  currency: $("vCurrency"),
+  reserves: $("vReserves"),
+  deposits: $("vDeposits"),
+  savings: $("vSavings"),
+  time: $("vTime"),
+  funds: $("vFunds"),
+  velocity: $("vVelocity"),
+  output: $("vOutput"),
+  shock: $("vShock")
+};
+
+const hierarchySvg = $("hierarchySvg");
+const quantitySvg = $("quantitySvg");
+const tooltip = $("tooltip");
+
+function num(x) { return Number(x); }
+
+function fmt(x, d = 0) {
+  return Number(x).toLocaleString("en-US", {
+    maximumFractionDigits: d,
+    minimumFractionDigits: d
+  });
+}
+
+function v(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function data() {
+  const shock = num(inputs.shock.value) / 100;
+
+  const C = num(inputs.currency.value) * (1 + Math.max(shock, 0) * 0.28);
+  const R = num(inputs.reserves.value) * (1 + Math.max(shock, 0) * 0.42);
+  const D = num(inputs.deposits.value) * (1 - shock * 0.12);
+  const S = num(inputs.savings.value) * (1 - shock * 0.10);
+  const T = num(inputs.time.value) * (1 - shock * 0.08);
+  const F = num(inputs.funds.value) * (1 - shock * 0.07);
+
+  const B = C + R;
+  const M1 = C + D;
+  const M2 = M1 + S + T + F;
+  const c = C / Math.max(D, 1);
+  const rr = R / Math.max(D, 1);
+  const mult = M1 / Math.max(B, 1);
+
+  const V = num(inputs.velocity.value) * (1 + shock * 0.14);
+  const Y = num(inputs.output.value);
+  const M = state.aggregate === "B" ? B : state.aggregate === "M1" ? M1 : M2;
+  const P = M * V / Y;
+
+  return { C, R, D, S, T, F, B, M1, M2, c, rr, mult, V, Y, M, P, shock };
+}
+
+function setTheme() {
+  document.documentElement.dataset.theme = state.theme;
+  localStorage.setItem("money-theme", state.theme);
+}
+
+function svgEl(tag, attrs = {}) {
+  const e = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  Object.entries(attrs).forEach(([k, val]) => e.setAttribute(k, val));
+  return e;
+}
+
+function add(parent, child) {
+  parent.appendChild(child);
+  return child;
+}
+
+function text(parent, x, y, content, attrs = {}) {
+  const e = svgEl("text", {
+    x, y,
+    fill: attrs.fill || v("--ink"),
+    "font-size": attrs.size || 14,
+    "font-weight": attrs.weight || 500,
+    "text-anchor": attrs.anchor || "start",
+    "dominant-baseline": attrs.base || "auto",
+    opacity: attrs.opacity ?? 1
+  });
+  e.textContent = content;
+  return add(parent, e);
+}
+
+function rect(parent, x, y, width, height, attrs = {}) {
+  return add(parent, svgEl("rect", {
+    x, y, width, height,
+    rx: attrs.rx || 14,
+    fill: attrs.fill || "transparent",
+    stroke: attrs.stroke || "none",
+    "stroke-width": attrs.sw || 1,
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function line(parent, x1, y1, x2, y2, attrs = {}) {
+  return add(parent, svgEl("line", {
+    x1, y1, x2, y2,
+    stroke: attrs.stroke || v("--line"),
+    "stroke-width": attrs.sw || 1,
+    "stroke-dasharray": attrs.dash || "",
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function path(parent, d, attrs = {}) {
+  return add(parent, svgEl("path", {
+    d,
+    fill: attrs.fill || "none",
+    stroke: attrs.stroke || v("--ink"),
+    "stroke-width": attrs.sw || 2,
+    "stroke-linecap": "round",
+    "stroke-linejoin": "round",
+    "stroke-dasharray": attrs.dash || "",
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function circle(parent, cx, cy, r, attrs = {}) {
+  return add(parent, svgEl("circle", {
+    cx, cy, r,
+    fill: attrs.fill || "transparent",
+    stroke: attrs.stroke || "none",
+    "stroke-width": attrs.sw || 1,
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function tip(ev, html) {
+  tooltip.innerHTML = html;
+  tooltip.style.left = ev.clientX + "px";
+  tooltip.style.top = ev.clientY + "px";
+  tooltip.style.opacity = 1;
+}
+
+function untip() { tooltip.style.opacity = 0; }
+
+function updateLabels(d) {
+  values.currency.textContent = fmt(num(inputs.currency.value));
+  values.reserves.textContent = fmt(num(inputs.reserves.value));
+  values.deposits.textContent = fmt(num(inputs.deposits.value));
+  values.savings.textContent = fmt(num(inputs.savings.value));
+  values.time.textContent = fmt(num(inputs.time.value));
+  values.funds.textContent = fmt(num(inputs.funds.value));
+  values.velocity.textContent = fmt(num(inputs.velocity.value), 1);
+  values.output.textContent = fmt(num(inputs.output.value));
+  values.shock.textContent = `${num(inputs.shock.value)}%`;
+
+  $("kBase").textContent = fmt(d.B);
+  $("kM1").textContent = fmt(d.M1);
+  $("kM2").textContent = fmt(d.M2);
+  $("kMult").textContent = fmt(d.mult, 2);
+  $("aggBadge").textContent = `${state.aggregate} selected`;
+  $("priceBadge").textContent = `P = ${fmt(d.P, 2)}`;
+}
+
+function drawHierarchy(d) {
+  hierarchySvg.innerHTML = "";
+
+  const accent = v("--accent");
+  const muted = v("--muted");
+  const linec = v("--line");
+  const paper2 = v("--paper2");
+  const ink = v("--ink");
+  const gold = v("--gold");
+  const blue = v("--blue");
+  const red = v("--red");
+
+  const x0 = 70, y0 = 118, W = 610, H = 255;
+  const max = Math.max(d.M2, 1);
+
+  const bands = [
+    { key: "B", label: "B = C + R", value: d.B, y: y0, color: accent, desc: "Monetary base: central-bank liabilities held as currency and reserves." },
+    { key: "M1", label: "M1 = C + D", value: d.M1, y: y0 + 86, color: gold, desc: "Transaction money: currency plus checkable deposits." },
+    { key: "M2", label: "M2 = M1 + near-money", value: d.M2, y: y0 + 172, color: blue, desc: "Broad money: transaction money plus liquid stores of value." }
+  ];
+
+  text(hierarchySvg, x0, 52, "more liquid", { fill: muted, size: 13, weight: 800 });
+  text(hierarchySvg, x0 + W, 52, "less directly spendable", { fill: muted, size: 13, weight: 800, anchor: "end" });
+  line(hierarchySvg, x0, 70, x0 + W, 70, { stroke: linec, sw: 1.3 });
+  path(hierarchySvg, `M${x0 + W - 13},62 L${x0 + W},70 L${x0 + W - 13},78`, { stroke: linec, sw: 1.3 });
+
+  bands.forEach((b) => {
+    const width = Math.max(36, W * b.value / max);
+    const active = state.aggregate === b.key;
+
+    const g = svgEl("g", { style: "cursor:pointer" });
+    g.appendChild(svgEl("rect", {
+      x: x0, y: b.y, width: W, height: 58, rx: 18,
+      fill: paper2, stroke: linec, "stroke-width": 1
+    }));
+    g.appendChild(svgEl("rect", {
+      x: x0, y: b.y, width, height: 58, rx: 18,
+      fill: b.color, opacity: active ? 0.25 : 0.15,
+      stroke: active ? accent : "none", "stroke-width": active ? 2.5 : 0
+    }));
+    g.appendChild(svgEl("text", {
+      x: x0 + 18, y: b.y + 25, fill: active ? accent : ink,
+      "font-size": 15, "font-weight": 850
+    })).textContent = b.label;
+    g.appendChild(svgEl("text", {
+      x: x0 + 18, y: b.y + 45, fill: muted,
+      "font-size": 12, "font-weight": 650
+    })).textContent = `${fmt(b.value)} billion`;
+
+    g.addEventListener("mousemove", ev => tip(ev, `<b>${b.key}</b><br>${b.desc}<br>${fmt(b.value)} billion`));
+    g.addEventListener("mouseleave", untip);
+    g.addEventListener("click", () => {
+      state.aggregate = b.key;
+      document.querySelectorAll("#tabs button").forEach(btn => btn.classList.toggle("active", btn.dataset.agg === b.key));
+      update();
+    });
+
+    hierarchySvg.appendChild(g);
+  });
+
+  const comp = [
+    { label: "C", val: d.C, color: accent, y: 404 },
+    { label: "R", val: d.R, color: red, y: 404 },
+    { label: "D", val: d.D, color: gold, y: 440 },
+    { label: "S+T+F", val: d.S + d.T + d.F, color: blue, y: 476 }
+  ];
+
+  text(hierarchySvg, 70, 397, "composition", { fill: muted, size: 12, weight: 800 });
+
+  let x = 170;
+  const totalWidth = 500;
+  const total = d.M2;
+  comp.forEach(c => {
+    const w = Math.max(26, totalWidth * c.val / total);
+    const g = svgEl("g", { style: "cursor:pointer" });
+    g.appendChild(svgEl("rect", {
+      x, y: 390, width: w, height: 36, rx: 12,
+      fill: c.color, opacity: 0.16, stroke: linec, "stroke-width": 1
+    }));
+    g.appendChild(svgEl("text", {
+      x: x + 10, y: 413, fill: ink, "font-size": 12, "font-weight": 800
+    })).textContent = c.label;
+    g.addEventListener("mousemove", ev => tip(ev, `<b>${c.label}</b><br>${fmt(c.val)} billion`));
+    g.addEventListener("mouseleave", untip);
+    hierarchySvg.appendChild(g);
+    x += w + 6;
+  });
+
+  rect(hierarchySvg, 70, 24, 258, 36, { fill: "transparent", stroke: "none" });
+}
+
+function drawQuantity(d) {
+  quantitySvg.innerHTML = "";
+
+  const accent = v("--accent");
+  const muted = v("--muted");
+  const linec = v("--line");
+  const ink = v("--ink");
+  const paper2 = v("--paper2");
+  const gold = v("--gold");
+  const blue = v("--blue");
+  const red = v("--red");
+
+  const x0 = 72, y0 = 314, W = 486, H = 202;
+  const plotX = x0 - 14, plotY = y0 - H - 16, plotW = W + 28, plotH = H + 28;
+
+  const maxM = Math.max(d.M2 * 1.18, 1000);
+  const maxP = Math.max(7, d.M2 * 6.0 / Math.max(800, d.Y) * 1.18);
+
+  rect(quantitySvg, plotX, plotY, plotW, plotH, {
+    fill: "rgba(0,0,0,0.01)",
+    stroke: linec,
+    rx: 20
+  });
+
+  const gridV = 6, gridH = 5;
+  for (let i = 1; i < gridV; i++) {
+    const gx = x0 + i * W / gridV;
+    line(quantitySvg, gx, y0 - H, gx, y0, { stroke: linec, sw: 1, opacity: 0.55 });
+  }
+  for (let j = 1; j < gridH; j++) {
+    const gy = y0 - j * H / gridH;
+    line(quantitySvg, x0, gy, x0 + W, gy, { stroke: linec, sw: 1, opacity: 0.55 });
+  }
+
+  line(quantitySvg, x0, y0, x0 + W, y0, { stroke: linec, sw: 1.5 });
+  line(quantitySvg, x0, y0, x0, y0 - H, { stroke: linec, sw: 1.5 });
+  path(quantitySvg, `M${x0 + W - 8},${y0 - 5} L${x0 + W},${y0} L${x0 + W - 8},${y0 + 5}`, { stroke: linec, sw: 1.4 });
+  path(quantitySvg, `M${x0 - 5},${y0 - H + 8} L${x0},${y0 - H} L${x0 + 5},${y0 - H + 8}`, { stroke: linec, sw: 1.4 });
+
+  text(quantitySvg, x0 + W - 2, y0 + 28, "money aggregate M", { fill: muted, size: 12, anchor: "end", weight: 700 });
+  text(quantitySvg, x0 - 16, y0 - H - 6, "price level P", { fill: muted, size: 12, anchor: "start", weight: 700 });
+
+  function curvePoints(multV) {
+    const pts = [];
+    for (let i = 0; i <= 120; i++) {
+      const M = maxM * i / 120;
+      const P = M * d.V * multV / d.Y;
+      const x = x0 + M / maxM * W;
+      const y = y0 - P / maxP * H;
+      pts.push([x, y]);
+    }
+    return pts;
+  }
+
+  function toPath(pts) {
+    return pts.map((p, i) => `${i === 0 ? "M" : "L"}${p[0]},${p[1]}`).join(" ");
+  }
+
+  const lowPts = curvePoints(0.72);
+  const midPts = curvePoints(1.00);
+  const highPts = curvePoints(1.28);
+
+  const fillPath = `M${x0},${y0} ` + midPts.map(p => `L${p[0]},${p[1]}`).join(" ") + ` L${x0 + W},${y0} Z`;
+  path(quantitySvg, fillPath, { fill: accent, stroke: "none", opacity: 0.08 });
+
+  path(quantitySvg, toPath(lowPts), { stroke: blue, dash: "5 7", sw: 1.7, opacity: 0.78 });
+  path(quantitySvg, toPath(highPts), { stroke: gold, dash: "5 7", sw: 1.7, opacity: 0.78 });
+  path(quantitySvg, toPath(midPts), { stroke: accent, sw: 3.2, opacity: 1 });
+
+  const x = x0 + d.M / maxM * W;
+  const y = y0 - d.P / maxP * H;
+
+  line(quantitySvg, x, y0, x, y, { stroke: muted, sw: 1.1, dash: "5 5", opacity: 0.9 });
+  line(quantitySvg, x0, y, x, y, { stroke: muted, sw: 1.1, dash: "5 5", opacity: 0.9 });
+
+  circle(quantitySvg, x, y, 11, { fill: accent, opacity: 0.16, stroke: "none" });
+  const dot = circle(quantitySvg, x, y, 6.2, { fill: accent, stroke: ink, sw: 1.5 });
+  dot.addEventListener("mousemove", ev => tip(ev, `<b>${state.aggregate}</b><br>M = ${fmt(d.M)}<br>V = ${fmt(d.V, 2)}<br>Y = ${fmt(d.Y)}<br>P = ${fmt(d.P, 2)}`));
+  dot.addEventListener("mouseleave", untip);
+
+  rect(quantitySvg, 88, 32, 188, 48, { fill: paper2, stroke: linec, rx: 16 });
+  text(quantitySvg, 104, 51, "identity", { fill: muted, size: 11, weight: 800 });
+  text(quantitySvg, 104, 67, `${state.aggregate} · V = P · Y`, { fill: ink, size: 17, weight: 850 });
+
+  rect(quantitySvg, 376, 32, 154, 48, { fill: paper2, stroke: linec, rx: 16 });
+  text(quantitySvg, 392, 51, "current price level", { fill: muted, size: 11, weight: 800 });
+  text(quantitySvg, 392, 67, `P = ${fmt(d.P, 2)}`, { fill: red, size: 17, weight: 850 });
+
+  rect(quantitySvg, 92, 90, 438, 34, { fill: paper2, stroke: linec, rx: 14, opacity: 0.95 });
+
+  function legendItem(x, color, dash, label) {
+    line(quantitySvg, x, 107, x + 18, 107, { stroke: color, sw: 2.6, dash: dash || "" });
+    text(quantitySvg, x + 27, 111, label, { fill: muted, size: 11.5, weight: 750 });
+  }
+  legendItem(110, blue, "4 6", "lower V");
+  legendItem(245, accent, "", "current V");
+  legendItem(378, gold, "4 6", "higher V");
+
+  rect(quantitySvg, x + 10, Math.max(132, y - 42), 92, 34, { fill: paper2, stroke: linec, rx: 12 });
+  text(quantitySvg, x + 20, Math.max(151, y - 23), "current point", { fill: muted, size: 10.5, weight: 800 });
+  text(quantitySvg, x + 20, Math.max(165, y - 9), `(${fmt(d.M)}, ${fmt(d.P, 2)})`, { fill: ink, size: 11.5, weight: 750 });
+
+  rect(quantitySvg, x0 + W - 116, y0 - H + 16, 96, 30, { fill: paper2, stroke: linec, rx: 12, opacity: 0.95 });
+  text(quantitySvg, x0 + W - 68, y0 - H + 35, `slope = V / Y`, { fill: muted, size: 10.8, anchor: "middle", weight: 800 });
+}
+
+function update() {
+  const d = data();
+  updateLabels(d);
+  drawHierarchy(d);
+  drawQuantity(d);
+}
+
+function animateShock() {
+  if (state.animating) return;
+  state.animating = true;
+  $("shockBtn").classList.add("active");
+
+  const start = num(inputs.shock.value);
+  const frames = [0, 8, 16, 24, 32, 40, 32, 24, 16, 8, 0, -8, -16, -24, -16, -8, 0, start];
+  let i = 0;
+  const timer = setInterval(() => {
+    inputs.shock.value = frames[i];
+    update();
+    i++;
+    if (i >= frames.length) {
+      clearInterval(timer);
+      state.animating = false;
+      $("shockBtn").classList.remove("active");
+    }
+  }, 170);
+}
+
+Object.values(inputs).forEach(input => input.addEventListener("input", update));
+
+document.querySelectorAll("#tabs button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    state.aggregate = btn.dataset.agg;
+    document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("active", b === btn));
+    update();
+  });
+});
+
+$("themeBtn").addEventListener("click", () => {
+  state.theme = state.theme === "dark" ? "light" : "dark";
+  setTheme();
+  update();
+});
+
+$("shockBtn").addEventListener("click", animateShock);
+
+setTheme();
+update();
+</script>
+</body>
+</html>

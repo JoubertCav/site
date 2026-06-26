@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive macroeconomics diagram for open-market operations and reserve requirements, classical monetary-policy instruments, and their effects on the monetary base.">
+<title>Open-Market Operations and Reserve Requirements | Monetary Economics Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+
+<style>
+:root {
+  --bg: #f6f1e7;
+  --paper: #fffaf1;
+  --paper2: #f1eadc;
+  --ink: #172123;
+  --muted: #64706e;
+  --line: rgba(31,45,48,.14);
+  --grid: rgba(31,45,48,.07);
+  --accent: #2f8f83;
+  --soft: rgba(47,143,131,.13);
+  --gold: #b8944b;
+  --blue: #577f9e;
+  --red: #a85e50;
+  --purple: #85699d;
+  --shadow: 0 16px 36px rgba(55,45,31,.095);
+}
+[data-theme="dark"] {
+  --bg: #0b1116;
+  --paper: #111a21;
+  --paper2: #17232b;
+  --ink: #eef5f3;
+  --muted: #a2afad;
+  --line: rgba(238,245,243,.13);
+  --grid: rgba(238,245,243,.06);
+  --accent: #77c9bd;
+  --soft: rgba(119,201,189,.13);
+  --gold: #d4ba74;
+  --blue: #8fb7d5;
+  --red: #d39080;
+  --purple: #b5a0cf;
+  --shadow: 0 22px 52px rgba(0,0,0,.34);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 8% 0%, var(--soft), transparent 30rem),
+    radial-gradient(circle at 92% 8%, rgba(184,148,75,.10), transparent 28rem),
+    var(--bg);
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.45;
+}
+.app {
+  width: min(1460px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 26px 0 42px;
+}
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+.eyebrow {
+  color: var(--accent);
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.72rem, 3.05vw, 3.05rem);
+  line-height: 1.04;
+  letter-spacing: -.035em;
+  font-weight: 500;
+}
+.subtitle {
+  max-width: 890px;
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: clamp(.95rem, 1.35vw, 1.05rem);
+}
+.top-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+button { font: inherit; }
+.toggle, .pill {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 96%, transparent);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 9px 13px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.pill.active {
+  background: var(--soft);
+  border-color: var(--accent);
+}
+.layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0,1fr);
+  gap: 18px;
+  align-items: start;
+}
+.card {
+  background: color-mix(in srgb, var(--paper) 95%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+}
+.controls {
+  position: sticky;
+  top: 16px;
+  padding: 17px;
+}
+.title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.title-row h2, .title-row h3 {
+  margin: 0;
+  font-size: .96rem;
+  letter-spacing: -.015em;
+}
+.title-row span {
+  color: var(--muted);
+  font-size: .74rem;
+}
+.group {
+  border-top: 1px solid var(--line);
+  padding: 14px 0;
+}
+.group:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+.group-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .105em;
+  font-size: .72rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+.row { margin: 13px 0; }
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: .86rem;
+  margin-bottom: 7px;
+}
+.label label { font-weight: 650; }
+.value {
+  color: var(--accent);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 8px;
+}
+.tabs button {
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--paper2);
+  color: var(--muted);
+  padding: 9px 7px;
+  cursor: pointer;
+  font-size: .84rem;
+}
+.tabs button.active {
+  background: var(--soft);
+  color: var(--ink);
+  border-color: var(--accent);
+  font-weight: 800;
+}
+.main {
+  display: grid;
+  gap: 18px;
+}
+.model { padding: 17px; }
+.model-grid {
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 14px;
+  margin-bottom: 17px;
+}
+.eqbox {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 15px;
+}
+.eq-title {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .105em;
+  font-size: .72rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+.equations {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1rem,1.25vw,1.14rem);
+  line-height: 1.75;
+  overflow-x: auto;
+}
+.equations .line { white-space: nowrap; }
+.note {
+  color: var(--muted);
+  font-size: .83rem;
+  margin-top: 8px;
+}
+.diagrams {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+.diagram { padding: 15px; }
+.dhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.dhead h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+.dhead p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: .84rem;
+}
+.badge {
+  border: 1px solid var(--line);
+  background: var(--soft);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: .76rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.svgbox {
+  height: 560px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 42px 42px;
+  overflow: hidden;
+}
+.svgbox.small { height: 500px; }
+svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.bottom {
+  display: grid;
+  grid-template-columns: .9fr 1.1fr;
+  gap: 18px;
+}
+.info { padding: 17px; }
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 10px;
+}
+.kpi {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  padding: 12px;
+}
+.kpi small {
+  display: block;
+  color: var(--muted);
+  font-size: .71rem;
+  margin-bottom: 3px;
+}
+.kpi strong {
+  font-size: 1.02rem;
+  font-variant-numeric: tabular-nums;
+}
+.functions {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 11px;
+}
+.fcard {
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+}
+.fcard h4 {
+  margin: 0 0 6px;
+  font-size: .9rem;
+}
+.fcard p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .84rem;
+}
+.notice {
+  margin-top: 13px;
+  border-left: 3px solid var(--accent);
+  background: var(--soft);
+  border-radius: 16px;
+  padding: 13px 14px;
+}
+.notice h4 {
+  margin: 0 0 7px;
+  font-size: .9rem;
+}
+.notice ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: .84rem;
+}
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 12px));
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 12px;
+  padding: 9px 11px;
+  font-size: .78rem;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transition: opacity 120ms ease;
+  z-index: 100;
+  max-width: 280px;
+}
+@media (max-width: 1100px) {
+  .layout, .diagrams, .bottom, .model-grid { grid-template-columns: 1fr; }
+  .controls { position: static; }
+  .kpis, .functions { grid-template-columns: repeat(2,1fr); }
+  .svgbox { height: 520px; }
+  .svgbox.small { height: 470px; }
+}
+@media (max-width: 640px) {
+  .app { width: min(100% - 18px, 1380px); padding-top: 18px; }
+  .header { grid-template-columns: 1fr; }
+  .top-actions { justify-content: flex-start; }
+  .kpis, .functions { grid-template-columns: 1fr; }
+  .svgbox { height: 420px; }
+  .svgbox.small { height: 390px; }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <header class="header">
+    <div>
+      <div class="eyebrow">Macroeconomics notebook</div>
+      <h1>Open-Market Operations and Reserve Requirements</h1>
+      <p class="subtitle">
+        A cleaner separation of the two channels: open-market operations change reserves and the monetary base; reserve requirements change the amount of deposits and broad money a given base can support.
+      </p>
+    </div>
+    <div class="top-actions">
+      <button class="toggle" id="themeBtn" type="button">◐ Theme</button>
+      <button class="pill" id="animateBtn" type="button">Animate policy shock</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="card controls">
+      <div class="title-row">
+        <h2>Controls</h2>
+        <span>policy</span>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Instrument</div>
+        <div class="tabs" id="instrumentTabs">
+          <button type="button" class="active" data-mode="purchase">OMO purchase</button>
+          <button type="button" data-mode="sale">OMO sale</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Balance-sheet operation</div>
+        <div class="row">
+          <div class="label"><label for="base0">Initial monetary base B₀</label><span class="value" id="vBase0"></span></div>
+          <input id="base0" type="range" min="500" max="12000" step="100" value="4000">
+        </div>
+        <div class="row">
+          <div class="label"><label for="omoSize">Open-market operation</label><span class="value" id="vOmoSize"></span></div>
+          <input id="omoSize" type="range" min="0" max="3000" step="50" value="800">
+        </div>
+        <div class="row">
+          <div class="label"><label for="currencyShare">Initial currency share of base</label><span class="value" id="vCurrencyShare"></span></div>
+          <input id="currencyShare" type="range" min="0.1" max="0.9" step="0.01" value="0.42">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">Multiplier channel</div>
+        <div class="row">
+          <div class="label"><label for="currencyRatio">Currency-deposit ratio c</label><span class="value" id="vCurrencyRatio"></span></div>
+          <input id="currencyRatio" type="range" min="0" max="0.8" step="0.01" value="0.20">
+        </div>
+        <div class="row">
+          <div class="label"><label for="rr0">Initial reserve requirement rr₀</label><span class="value" id="vRr0"></span></div>
+          <input id="rr0" type="range" min="0.02" max="0.5" step="0.01" value="0.10">
+        </div>
+        <div class="row">
+          <div class="label"><label for="rr1">New reserve requirement rr₁</label><span class="value" id="vRr1"></span></div>
+          <input id="rr1" type="range" min="0.02" max="0.5" step="0.01" value="0.14">
+        </div>
+        <div class="row">
+          <div class="label"><label for="excessReserve">Excess reserve ratio er</label><span class="value" id="vExcessReserve"></span></div>
+          <input id="excessReserve" type="range" min="0" max="0.35" step="0.01" value="0.04">
+        </div>
+      </div>
+    </aside>
+
+    <section class="main">
+      <section class="card model">
+        <div class="model-grid">
+          <div class="eqbox">
+            <div class="eq-title">Base channel</div>
+            <div class="equations">
+              <div class="line">B = C + R</div>
+              <div class="line">OMO purchase: central bank buys securities → reserves rise → B rises</div>
+              <div class="line">OMO sale: central bank sells securities → reserves fall → B falls</div>
+            </div>
+          </div>
+
+          <div class="eqbox">
+            <div class="eq-title">Multiplier channel</div>
+            <div class="equations">
+              <div class="line">m = (1+c)/(c+rr+er)</div>
+              <div class="line">M = mB</div>
+              <div class="line">rr ↑ ⇒ m ↓ for given c and er</div>
+            </div>
+            <div class="note">Reserve requirements do not create base money by themselves; they change how much deposit money banks can support with a given base.</div>
+          </div>
+        </div>
+
+        <div class="diagrams">
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>Base channel</h3>
+                <p>Open-market operations move reserves and therefore the monetary base.</p>
+              </div>
+              <div class="badge" id="baseBadge">ΔB</div>
+            </div>
+            <div class="svgbox">
+              <svg id="balanceSvg" viewBox="0 0 760 530" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+
+          <div class="card diagram">
+            <div class="dhead">
+              <div>
+                <h3>Multiplier channel</h3>
+                <p>Reserve requirements change the broad-money capacity of a given base.</p>
+              </div>
+              <div class="badge" id="multBadge">m</div>
+            </div>
+            <div class="svgbox small">
+              <svg id="multSvg" viewBox="0 0 620 390" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bottom">
+        <div class="card info">
+          <div class="title-row">
+            <h3>Current state</h3>
+            <span>computed live</span>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><small>New base B₁</small><strong id="kBase1"></strong></div>
+            <div class="kpi"><small>Multiplier m₁</small><strong id="kMult1"></strong></div>
+            <div class="kpi"><small>Broad money M₁</small><strong id="kMoney1"></strong></div>
+            <div class="kpi"><small>Reserve pressure</small><strong id="kPressure"></strong></div>
+          </div>
+          <div class="notice">
+            <h4>What to notice</h4>
+            <ul>
+              <li>OMO purchases expand reserves; OMO sales drain reserves.</li>
+              <li>The monetary base changes through the central bank balance sheet.</li>
+              <li>Reserve requirements change the multiplier, not the base directly.</li>
+              <li>If rr rises, banks may need more reserves or must contract deposits and loans.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card info">
+          <div class="title-row">
+            <h3>Economic interpretation</h3>
+            <span>classical instruments</span>
+          </div>
+          <div class="functions">
+            <div class="fcard">
+              <h4>Open-market purchase</h4>
+              <p>The central bank buys securities and pays by creating reserves.</p>
+            </div>
+            <div class="fcard">
+              <h4>Open-market sale</h4>
+              <p>The central bank sells securities and removes reserves from banks.</p>
+            </div>
+            <div class="fcard">
+              <h4>Reserve requirement</h4>
+              <p>A higher rr makes each deposit require more reserves, lowering m.</p>
+            </div>
+          </div>
+
+          <div class="notice">
+            <h4>Exam-style summary</h4>
+            <ul>
+              <li>OMO purchase: ΔB &gt; 0 and reserves rise.</li>
+              <li>OMO sale: ΔB &lt; 0 and reserves fall.</li>
+              <li>Multiplier: m = (1+c)/(c+rr+er).</li>
+              <li>rr ↑ ⇒ m ↓ ⇒ supported M falls for a given B.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const state = {
+  theme: localStorage.getItem("omo-reserve-theme-clean") || "light",
+  mode: "purchase",
+  animating: false,
+  shockScale: 1
+};
+
+const $ = id => document.getElementById(id);
+
+const inputs = {
+  base0: $("base0"),
+  omoSize: $("omoSize"),
+  currencyShare: $("currencyShare"),
+  currencyRatio: $("currencyRatio"),
+  rr0: $("rr0"),
+  rr1: $("rr1"),
+  excessReserve: $("excessReserve")
+};
+
+const values = {
+  base0: $("vBase0"),
+  omoSize: $("vOmoSize"),
+  currencyShare: $("vCurrencyShare"),
+  currencyRatio: $("vCurrencyRatio"),
+  rr0: $("vRr0"),
+  rr1: $("vRr1"),
+  excessReserve: $("vExcessReserve")
+};
+
+const balanceSvg = $("balanceSvg");
+const multSvg = $("multSvg");
+const tooltip = $("tooltip");
+
+function num(x) { return Number(x); }
+
+function fmt(x, d = 0) {
+  return Number(x).toLocaleString("en-US", {
+    maximumFractionDigits: d,
+    minimumFractionDigits: d
+  });
+}
+
+function pct(x, d = 0) {
+  return `${fmt(100 * x, d)}%`;
+}
+
+function v(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function data() {
+  const B0 = num(inputs.base0.value);
+  const chosenSize = num(inputs.omoSize.value) * state.shockScale;
+  const sign = state.mode === "purchase" ? 1 : -1;
+
+  const sC = num(inputs.currencyShare.value);
+  const C0 = sC * B0;
+  const R0 = (1 - sC) * B0;
+
+  const requestedDeltaR = sign * chosenSize;
+  const R1 = Math.max(0, R0 + requestedDeltaR);
+  const effectiveDeltaR = R1 - R0;
+  const B1 = C0 + R1;
+
+  const c = num(inputs.currencyRatio.value);
+  const rr0 = num(inputs.rr0.value);
+  const rr1 = num(inputs.rr1.value);
+  const er = num(inputs.excessReserve.value);
+
+  const m0 = (1 + c) / Math.max(c + rr0 + er, 0.001);
+  const m1 = (1 + c) / Math.max(c + rr1 + er, 0.001);
+
+  const M0 = m0 * B0;
+  const MBaseOnly = m0 * B1;
+  const M1 = m1 * B1;
+
+  const D0 = B0 / Math.max(c + rr0 + er, 0.001);
+  const D1 = B1 / Math.max(c + rr1 + er, 0.001);
+
+  const availableReservesAtOldDeposits = (rr0 + er) * D0 + effectiveDeltaR;
+  const requiredAtOldDeposits = rr1 * D0;
+  const pressure = availableReservesAtOldDeposits - requiredAtOldDeposits;
+  const pressureLabel = pressure >= 0 ? "surplus" : "shortage";
+
+  const isCappedSale = state.mode === "sale" && Math.abs(effectiveDeltaR - requestedDeltaR) > 1e-6;
+
+  return {
+    B0, C0, R0, B1, C1: C0, R1,
+    c, rr0, rr1, er, m0, m1,
+    M0, MBaseOnly, M1,
+    D0, D1,
+    chosenSize,
+    requestedDeltaR,
+    effectiveDeltaR,
+    pressure,
+    pressureLabel,
+    isCappedSale
+  };
+}
+
+function setTheme() {
+  document.documentElement.dataset.theme = state.theme;
+  localStorage.setItem("omo-reserve-theme-clean", state.theme);
+}
+
+function svgEl(tag, attrs = {}) {
+  const e = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  Object.entries(attrs).forEach(([k, val]) => e.setAttribute(k, val));
+  return e;
+}
+function add(parent, child) { parent.appendChild(child); return child; }
+
+function text(parent, x, y, content, attrs = {}) {
+  const e = svgEl("text", {
+    x, y,
+    fill: attrs.fill || v("--ink"),
+    "font-size": attrs.size || 14,
+    "font-weight": attrs.weight || 500,
+    "text-anchor": attrs.anchor || "start",
+    "dominant-baseline": attrs.base || "auto",
+    opacity: attrs.opacity ?? 1
+  });
+  e.textContent = content;
+  return add(parent, e);
+}
+
+function rect(parent, x, y, width, height, attrs = {}) {
+  return add(parent, svgEl("rect", {
+    x, y, width, height,
+    rx: attrs.rx || 14,
+    fill: attrs.fill || "transparent",
+    stroke: attrs.stroke || "none",
+    "stroke-width": attrs.sw || 1,
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function line(parent, x1, y1, x2, y2, attrs = {}) {
+  return add(parent, svgEl("line", {
+    x1, y1, x2, y2,
+    stroke: attrs.stroke || v("--line"),
+    "stroke-width": attrs.sw || 1,
+    "stroke-dasharray": attrs.dash || "",
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function path(parent, d, attrs = {}) {
+  return add(parent, svgEl("path", {
+    d,
+    fill: attrs.fill || "none",
+    stroke: attrs.stroke || v("--ink"),
+    "stroke-width": attrs.sw || 2,
+    "stroke-linecap": "round",
+    "stroke-linejoin": "round",
+    "stroke-dasharray": attrs.dash || "",
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function circle(parent, cx, cy, r, attrs = {}) {
+  return add(parent, svgEl("circle", {
+    cx, cy, r,
+    fill: attrs.fill || "transparent",
+    stroke: attrs.stroke || "none",
+    "stroke-width": attrs.sw || 1,
+    opacity: attrs.opacity ?? 1
+  }));
+}
+
+function tip(ev, html) {
+  tooltip.innerHTML = html;
+  tooltip.style.left = ev.clientX + "px";
+  tooltip.style.top = ev.clientY + "px";
+  tooltip.style.opacity = 1;
+}
+
+function untip() { tooltip.style.opacity = 0; }
+
+function updateLabels(d) {
+  values.base0.textContent = fmt(num(inputs.base0.value));
+  values.omoSize.textContent = `${state.mode === "purchase" ? "+" : "−"}${fmt(num(inputs.omoSize.value) * state.shockScale)}`;
+  values.currencyShare.textContent = pct(num(inputs.currencyShare.value), 0);
+  values.currencyRatio.textContent = fmt(num(inputs.currencyRatio.value), 2);
+  values.rr0.textContent = pct(num(inputs.rr0.value), 0);
+  values.rr1.textContent = pct(num(inputs.rr1.value), 0);
+  values.excessReserve.textContent = pct(num(inputs.excessReserve.value), 0);
+
+  $("kBase1").textContent = fmt(d.B1);
+  $("kMult1").textContent = fmt(d.m1, 2);
+  $("kMoney1").textContent = fmt(d.M1);
+  $("kPressure").textContent = d.pressure >= 0 ? `+${fmt(d.pressure)}` : fmt(d.pressure);
+  $("baseBadge").textContent = `ΔB = ${d.effectiveDeltaR >= 0 ? "+" : ""}${fmt(d.effectiveDeltaR)}`;
+  $("multBadge").textContent = `m₁ = ${fmt(d.m1, 2)}`;
+}
+
+function drawBaseChannel(d) {
+  balanceSvg.innerHTML = "";
+
+  const accent = v("--accent");
+  const muted = v("--muted");
+  const linec = v("--line");
+  const ink = v("--ink");
+  const paper2 = v("--paper2");
+  const gold = v("--gold");
+  const blue = v("--blue");
+  const red = v("--red");
+
+  const opColor = d.effectiveDeltaR >= 0 ? accent : red;
+  const action = state.mode === "purchase" ? "open-market purchase" : "open-market sale";
+  const verb = state.mode === "purchase" ? "injects reserves" : "drains reserves";
+
+  rect(balanceSvg, 42, 28, 676, 474, { fill: "rgba(0,0,0,0.01)", stroke: linec, rx: 24 });
+  text(balanceSvg, 72, 60, "base channel: central-bank balance sheet", { fill: muted, size: 12.5, weight: 800 });
+
+  function tAccount(x, y, title, assetVal, baseVal, reservesVal, color) {
+    rect(balanceSvg, x, y, 276, 174, { fill: paper2, stroke: linec, rx: 22 });
+    text(balanceSvg, x + 18, y + 30, title, { fill: ink, size: 16, weight: 850 });
+    text(balanceSvg, x + 18, y + 55, "Assets", { fill: muted, size: 11.2, weight: 800 });
+    text(balanceSvg, x + 150, y + 55, "Liabilities", { fill: muted, size: 11.2, weight: 800 });
+    line(balanceSvg, x + 132, y + 66, x + 132, y + 150, { stroke: linec, sw: 1.25 });
+
+    rect(balanceSvg, x + 18, y + 80, 98, 48, { fill: gold, opacity: .17, stroke: gold, sw: 1.15, rx: 14 });
+    text(balanceSvg, x + 32, y + 99, "securities", { fill: muted, size: 10.4, weight: 760 });
+    text(balanceSvg, x + 32, y + 118, fmt(assetVal), { fill: gold, size: 14, weight: 850 });
+
+    rect(balanceSvg, x + 150, y + 80, 98, 48, { fill: color, opacity: .17, stroke: color, sw: 1.15, rx: 14 });
+    text(balanceSvg, x + 164, y + 99, "base B", { fill: muted, size: 10.4, weight: 760 });
+    text(balanceSvg, x + 164, y + 118, fmt(baseVal), { fill: color, size: 14, weight: 850 });
+
+    text(balanceSvg, x + 150, y + 146, `reserves R = ${fmt(reservesVal)}`, { fill: blue, size: 11.5, weight: 800 });
+  }
+
+  tAccount(78, 94, "Before policy", d.B0, d.B0, d.R0, accent);
+  tAccount(406, 94, "After policy", d.B1, d.B1, d.R1, opColor);
+
+  line(balanceSvg, 368, 176, 390, 176, { stroke: opColor, sw: 3 });
+  path(balanceSvg, `M382,166 L396,176 L382,186`, { stroke: opColor, sw: 3 });
+
+  rect(balanceSvg, 286, 216, 188, 60, { fill: paper2, stroke: linec, rx: 18 });
+  text(balanceSvg, 304, 238, action, { fill: muted, size: 11.2, weight: 800 });
+  text(balanceSvg, 304, 258, `ΔR = ΔB = ${d.effectiveDeltaR >= 0 ? "+" : ""}${fmt(d.effectiveDeltaR)}`, {
+    fill: opColor, size: 16.2, weight: 850
+  });
+
+  // Composition bars
+  text(balanceSvg, 82, 318, "composition of the monetary base", { fill: muted, size: 12, weight: 800 });
+
+  function stackedBar(x, y, title, C, R, B) {
+    rect(balanceSvg, x, y, 276, 62, { fill: paper2, stroke: linec, rx: 18 });
+    const cW = Math.max(0, 276 * C / Math.max(B, 1));
+    const rW = Math.max(0, 276 * R / Math.max(B, 1));
+    rect(balanceSvg, x, y, cW, 62, { fill: gold, opacity: .24, stroke: gold, sw: 1.1, rx: 18 });
+    rect(balanceSvg, x + cW, y, rW, 62, { fill: blue, opacity: .23, stroke: blue, sw: 1.1, rx: 18 });
+    text(balanceSvg, x + 16, y - 10, title, { fill: muted, size: 11.3, weight: 800 });
+    text(balanceSvg, x + 16, y + 27, `Currency C: ${fmt(C)}`, { fill: gold, size: 12.2, weight: 850 });
+    text(balanceSvg, x + 148, y + 27, `Reserves R: ${fmt(R)}`, { fill: blue, size: 12.2, weight: 850 });
+    text(balanceSvg, x + 16, y + 48, `B = C + R = ${fmt(B)}`, { fill: ink, size: 11.6, weight: 800 });
+  }
+
+  stackedBar(82, 356, "before", d.C0, d.R0, d.B0);
+  stackedBar(402, 356, "after", d.C1, d.R1, d.B1);
+
+  rect(balanceSvg, 104, 444, 552, 38, { fill: paper2, stroke: linec, rx: 15, opacity: .98 });
+  text(balanceSvg, 124, 468, `OMO ${verb}: the central bank changes reserves, so the monetary base changes one-for-one.`, {
+    fill: opColor,
+    size: 12.2,
+    weight: 820
+  });
+
+  if (d.isCappedSale) {
+    text(balanceSvg, 124, 498, "In this simple diagram, a sale cannot push bank reserves below zero.", {
+      fill: red, size: 10.8, weight: 760
+    });
+  }
+}
+
+function drawMultiplierChannel(d) {
+  multSvg.innerHTML = "";
+
+  const accent = v("--accent");
+  const muted = v("--muted");
+  const linec = v("--line");
+  const ink = v("--ink");
+  const paper2 = v("--paper2");
+  const gold = v("--gold");
+  const blue = v("--blue");
+  const red = v("--red");
+
+  rect(multSvg, 34, 26, 552, 324, { fill: "rgba(0,0,0,0.01)", stroke: linec, rx: 22 });
+  text(multSvg, 62, 56, "multiplier channel: reserve requirement and broad money", { fill: muted, size: 12.5, weight: 800 });
+
+  // Main multiplier curve.
+  const x0 = 62, y0 = 254, W = 318, H = 178;
+  line(multSvg, x0, y0, x0 + W, y0, { stroke: linec, sw: 1.4 });
+  line(multSvg, x0, y0, x0, y0 - H, { stroke: linec, sw: 1.4 });
+
+  for (let j = 1; j < 5; j++) {
+    const gy = y0 - j * H / 5;
+    line(multSvg, x0, gy, x0 + W, gy, { stroke: linec, sw: 1, opacity: .36 });
+  }
+  for (let k = 1; k < 6; k++) {
+    const gx = x0 + k * W / 6;
+    line(multSvg, gx, y0 - H, gx, y0, { stroke: linec, sw: 1, opacity: .30 });
+  }
+
+  const rrMin = 0.02, rrMax = 0.5;
+  const maxM = (1 + d.c) / (d.c + rrMin + d.er);
+  function X(rr) { return x0 + (rr - rrMin) / (rrMax - rrMin) * W; }
+  function Yp(m) { return y0 - m / maxM * H; }
+
+  const pts = [];
+  for (let rr = rrMin; rr <= rrMax; rr += 0.004) {
+    const m = (1 + d.c) / (d.c + rr + d.er);
+    pts.push([X(rr), Yp(m)]);
+  }
+  const area = `M${x0},${y0} ` + pts.map(p => `L${p[0]},${p[1]}`).join(" ") + ` L${x0 + W},${y0} Z`;
+  path(multSvg, area, { fill: accent, stroke: "none", opacity: .06 });
+  path(multSvg, pts.map((p, i) => `${i === 0 ? "M" : "L"}${p[0]},${p[1]}`).join(" "), { stroke: accent, sw: 3.2 });
+
+  line(multSvg, X(d.rr0), y0, X(d.rr0), Yp(d.m0), { stroke: muted, sw: 1.05, dash: "4 5" });
+  circle(multSvg, X(d.rr0), Yp(d.m0), 5.8, { fill: muted, stroke: ink, sw: 1.1 });
+  text(multSvg, X(d.rr0) + 8, Yp(d.m0) - 8, "rr₀", { fill: muted, size: 10.8, weight: 800 });
+
+  line(multSvg, X(d.rr1), y0, X(d.rr1), Yp(d.m1), { stroke: red, sw: 1.05, dash: "4 5" });
+  circle(multSvg, X(d.rr1), Yp(d.m1), 7.2, { fill: red, stroke: ink, sw: 1.15 });
+  text(multSvg, X(d.rr1) + 8, Yp(d.m1) + 16, "rr₁", { fill: red, size: 10.8, weight: 800 });
+
+  text(multSvg, x0 + W, y0 + 24, "reserve requirement rr", { fill: muted, size: 11.4, weight: 740, anchor: "end" });
+  text(multSvg, x0 - 18, y0 - H - 7, "money multiplier m", { fill: muted, size: 11.4, weight: 740 });
+
+  // Right-side theoretical cards.
+  function miniCard(x, y, title, val, color) {
+    rect(multSvg, x, y, 150, 38, { fill: paper2, stroke: linec, rx: 14 });
+    text(multSvg, x + 13, y + 16, title, { fill: muted, size: 9.8, weight: 800 });
+    text(multSvg, x + 13, y + 31, val, { fill: color, size: 12.8, weight: 850 });
+  }
+
+  miniCard(414, 78, "multiplier", `${fmt(d.m0,2)} → ${fmt(d.m1,2)}`, red);
+  miniCard(414, 124, "base after OMO", fmt(d.B1), blue);
+  miniCard(414, 170, "supported M", fmt(d.M1), accent);
+
+  // Broad-money capacity bars.
+  const bx = 80, by = 294, bw = 454, bh = 13;
+  const maxMoney = Math.max(d.M0, d.MBaseOnly, d.M1, 1);
+  text(multSvg, bx, by - 16, "broad-money capacity", { fill: muted, size: 11.5, weight: 800 });
+
+  const items = [
+    ["before", d.M0, muted],
+    ["after OMO only", d.MBaseOnly, gold],
+    ["after OMO + rr₁", d.M1, accent]
+  ];
+  items.forEach((it, idx) => {
+    const y = by + idx * 23;
+    rect(multSvg, bx + 118, y, bw - 118, bh, { fill: paper2, stroke: linec, rx: 7 });
+    rect(multSvg, bx + 118, y, (bw - 118) * it[1] / maxMoney, bh, { fill: it[2], opacity: .25, stroke: it[2], sw: 1, rx: 7 });
+    text(multSvg, bx, y + 10, it[0], { fill: muted, size: 10.2, weight: 760 });
+    text(multSvg, bx + 464, y + 10, fmt(it[1]), { fill: it[2], size: 10.5, weight: 850, anchor: "end" });
+  });
+
+  const pressureColor = d.pressure >= 0 ? accent : red;
+  rect(multSvg, 78, 364, 456, 22, { fill: paper2, stroke: linec, rx: 11, opacity: .96 });
+  text(multSvg, 94, 379, `${d.pressureLabel}: ${d.pressure >= 0 ? "+" : ""}${fmt(d.pressure)} reserves relative to rr₁ at old deposits.`, {
+    fill: pressureColor,
+    size: 10.7,
+    weight: 820
+  });
+}
+
+function update() {
+  const d = data();
+  updateLabels(d);
+  drawBaseChannel(d);
+  drawMultiplierChannel(d);
+}
+
+let timer = null;
+function animatePolicy() {
+  if (state.animating) {
+    state.animating = false;
+    $("animateBtn").classList.remove("active");
+    if (timer) clearInterval(timer);
+    state.shockScale = 1;
+    update();
+    return;
+  }
+
+  state.animating = true;
+  $("animateBtn").classList.add("active");
+  const frames = [0, .12, .25, .38, .52, .68, .84, 1, .84, .68, .52, .38, .25, .12, 1];
+  let i = 0;
+  timer = setInterval(() => {
+    state.shockScale = frames[i];
+    update();
+    i++;
+    if (i >= frames.length) {
+      clearInterval(timer);
+      state.shockScale = 1;
+      state.animating = false;
+      $("animateBtn").classList.remove("active");
+      update();
+    }
+  }, 170);
+}
+
+Object.values(inputs).forEach(input => input.addEventListener("input", update));
+
+document.querySelectorAll("#instrumentTabs button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    state.mode = btn.dataset.mode;
+    document.querySelectorAll("#instrumentTabs button").forEach(b => b.classList.toggle("active", b === btn));
+    update();
+  });
+});
+
+$("themeBtn").addEventListener("click", () => {
+  state.theme = state.theme === "dark" ? "light" : "dark";
+  setTheme();
+  update();
+});
+
+$("animateBtn").addEventListener("click", animatePolicy);
+
+setTheme();
+update();
+</script>
+</body>
+</html>
