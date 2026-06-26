@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive real analysis diagram for the implicit function theorem.">
+  <title>Implicit Function Theorem | Real Analysis Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  <style>
+    :root{
+      --bg:#f7f3ea;
+      --paper:#fffdf8;
+      --card:rgba(255,255,255,.86);
+      --text:#1d2830;
+      --muted:#6d7982;
+      --line:#ddd5c7;
+      --grid:rgba(29,40,48,.075);
+      --good:#287a76;
+      --goodSoft:rgba(40,122,118,.13);
+      --model:#536f91;
+      --modelSoft:rgba(83,111,145,.15);
+      --bad:#c46a55;
+      --badSoft:rgba(196,106,85,.13);
+      --gold:#b58a3c;
+      --goldSoft:rgba(181,138,60,.14);
+      --violet:#7b64ae;
+      --violetSoft:rgba(123,100,174,.13);
+      --shadow:0 18px 44px rgba(38,48,58,.08);
+      --switch:#eee7da;
+      --thumb:#fffaf0;
+    }
+    body.dark{
+      --bg:#0d1318;
+      --paper:#121b22;
+      --card:rgba(18,27,34,.86);
+      --text:#edf4f6;
+      --muted:#aab7c0;
+      --line:#26333d;
+      --grid:rgba(237,244,246,.08);
+      --good:#6ccbc3;
+      --goodSoft:rgba(108,203,195,.14);
+      --model:#9abce0;
+      --modelSoft:rgba(154,188,224,.16);
+      --bad:#ef9a82;
+      --badSoft:rgba(239,154,130,.17);
+      --gold:#e0bd70;
+      --goldSoft:rgba(224,189,112,.15);
+      --violet:#c0a7ff;
+      --violetSoft:rgba(192,167,255,.14);
+      --shadow:0 22px 54px rgba(0,0,0,.28);
+      --switch:#1a242c;
+      --thumb:#17222b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%,rgba(40,122,118,.07),transparent 25%),
+        radial-gradient(circle at 100% 0%,rgba(83,111,145,.06),transparent 22%),
+        linear-gradient(180deg,#fbf8f2,var(--bg));
+    }
+    body.dark{
+      background:
+        radial-gradient(circle at 0% 0%,rgba(108,203,195,.08),transparent 25%),
+        radial-gradient(circle at 100% 0%,rgba(154,188,224,.08),transparent 22%),
+        linear-gradient(180deg,#101920,var(--bg));
+    }
+
+    .wrap{max-width:1720px;margin:0 auto;padding:24px 18px 34px}
+    header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+    h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.05rem,4vw,3.35rem);letter-spacing:-.035em;line-height:1.05}
+    .subtitle{margin:.55rem 0 0;color:var(--muted);font-size:1.04rem;line-height:1.55;max-width:1040px}
+    .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04);font-size:.92rem}
+    .theme{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04)}
+    .theme .label{font-size:.92rem;color:var(--muted);min-width:70px}
+    .switch{position:relative;width:70px;height:36px;border-radius:999px;background:var(--switch);border:1px solid var(--line)}
+    .switch:before,.switch:after{position:absolute;top:50%;transform:translateY(-50%);font-size:13px;opacity:.75}
+    .switch:before{content:"☀";left:10px}.switch:after{content:"☾";right:10px}
+    .knob{position:absolute;left:3px;top:3px;width:28px;height:28px;border-radius:50%;background:var(--thumb);border:1px solid var(--line);box-shadow:0 4px 12px rgba(0,0,0,.16);transition:left .25s ease;display:grid;place-items:center;font-size:13px}
+    body.dark .knob{left:37px}
+
+    .layout{display:grid;grid-template-columns:350px minmax(0,1fr);gap:18px;align-items:start}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+    aside{padding:18px;position:sticky;top:16px}
+    .head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px}
+    h2,h3{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.02em;margin:0}
+    .head p{margin:4px 0 0;color:var(--muted);font-size:.94rem;line-height:1.42}
+    .tag{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:var(--muted);font-size:.82rem;white-space:nowrap;background:rgba(127,127,127,.04)}
+    .eq,.note{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:12px 14px;margin-bottom:14px}
+    .eq{font-size:.89rem}
+    .note{color:var(--muted);font-size:.93rem;line-height:1.5}
+    .control{margin:14px 0 16px}
+    .control label{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;font-weight:650}
+    .control small{color:var(--muted);font-weight:500}
+    select{width:100%;background:var(--paper);color:var(--text);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.98rem}
+    input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:8px;border-radius:999px;border:1px solid var(--line);background:linear-gradient(90deg,var(--good),var(--good));background-repeat:no-repeat;background-size:50% 100%}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--good);border:2px solid var(--paper);box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer}
+    .miniMatrix{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:10px}
+    .miniMatrix strong{display:block;font-size:.86rem;margin-bottom:8px;color:var(--muted)}
+    .matrixBox{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.90rem;line-height:1.5;white-space:pre;text-align:center}
+
+    main{display:grid;gap:18px}
+    .hero{padding:18px}
+    .heroTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+    .heroTop p{margin:4px 0 0;color:var(--muted);line-height:1.45;max-width:960px}
+    .status{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:.92rem;background:var(--goodSoft);color:var(--good);white-space:nowrap}
+    .split{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .svgBox{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:10px}
+    .plotSvg{display:block;width:100%;height:auto}
+    .metrics{display:grid;gap:10px}
+    .metric{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:14px}
+    .metric h4{font-family:Georgia,"Times New Roman",serif;margin:0 0 6px;font-size:1rem}
+    .metric p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.4}
+    .metric strong{display:block;margin-top:7px;color:var(--good)}
+    .panel{padding:18px}
+    .explainRow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+    .explainBox,.explainMini{background:linear-gradient(180deg, rgba(127,127,127,.05), rgba(127,127,127,.02)), var(--paper);border:1px solid var(--line);border-radius:18px;padding:12px 14px}
+    .explainBox h4,.explainMini h4{margin:0 0 6px;font-family:Georgia,"Times New Roman",serif;font-size:1rem;letter-spacing:-.01em}
+    .explainBox p,.explainMini p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.46}
+    .footer{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .footer div{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.92rem;line-height:1.42}
+    @media(max-width:1240px){.layout{grid-template-columns:1fr}aside{position:static}.split,.grid2{grid-template-columns:1fr}}
+    @media(max-width:900px){.footer,.explainRow{grid-template-columns:1fr}.wrap{padding:18px 14px 28px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Implicit function theorem</h1>
+        <p class="subtitle">The theorem says that a level equation \(F(x,y)=c\) can be solved locally as a graph when the differential has full rank. In \(\mathbb R^2\), this means \(\nabla F(a)\neq 0\): the level set is a smooth curve, its tangent space is the kernel of \(DF(a)\), and one coordinate can be solved as a function of the other.</p>
+      </div>
+      <div class="actions">
+        <div class="pill">level set geometry</div>
+        <div class="pill">local graph solver</div>
+        <div class="pill">tangent space + 3D section</div>
+        <div id="theme" class="theme" role="button" tabindex="0">
+          <span id="themeLabel" class="label">light mode</span>
+          <div class="switch"><div id="knob" class="knob">☀</div></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="card">
+        <div class="head">
+          <div>
+            <h2>Controls</h2>
+            <p>Choose a level equation, a point on the level set, and how to solve locally.</p>
+          </div>
+          <div class="tag">\(F(x,y)=c\)</div>
+        </div>
+
+        <div class="eq">
+          \[
+          F(x,y)=c,\qquad \nabla F(a)\neq 0
+          \]
+          \[
+          \Longrightarrow \ \{F=c\}
+          \text{ is locally a smooth curve near } a
+          \]
+          \[
+          F_y(a)\neq 0 \Rightarrow y=\varphi(x)\text{ locally}
+          \]
+          \[
+          F_x(a)\neq 0 \Rightarrow x=\psi(y)\text{ locally}
+          \]
+          \[
+          T_a\{F=c\}=\ker DF(a),\qquad
+          \nabla F(a)\perp T_a\{F=c\}
+          \]
+        </div>
+
+        <div class="control">
+          <label>Example <small id="exampleLabel"></small></label>
+          <select id="exampleSelect">
+            <option value="circle">circle: \(x^2+y^2=c\)</option>
+            <option value="parabola">sideways parabola: \(y^2-x=c\)</option>
+            <option value="cross">hyperbolic cross: \(y^2-x^2=c\)</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label>Level \(c\) <small id="levelLabel"></small></label>
+          <input id="levelSlider" type="range" min="-1.20" max="1.60" step="0.01" value="0.80">
+        </div>
+
+        <div class="control">
+          <label>Point parameter <small id="paramLabel"></small></label>
+          <input id="paramSlider" type="range" min="0" max="6.28318" step="0.01" value="0.65">
+        </div>
+
+        <div class="control">
+          <label>Local solve as <small id="solveLabel"></small></label>
+          <select id="solveSelect">
+            <option value="auto">auto</option>
+            <option value="y">\(y=\varphi(x)\)</option>
+            <option value="x">\(x=\psi(y)\)</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label>Local window radius \(\rho\) <small id="rhoLabel"></small></label>
+          <input id="rhoSlider" type="range" min="0.18" max="0.90" step="0.01" value="0.42">
+        </div>
+
+        <div class="miniMatrix">
+          <strong>Pointwise data</strong>
+          <div id="matrixBox" class="matrixBox"></div>
+        </div>
+
+        <div class="note" id="formulaBox"></div>
+        <div class="note" id="noticeBox"></div>
+      </aside>
+
+      <main>
+        <section class="card hero">
+          <div class="heroTop">
+            <div>
+              <h2>Main theorem picture</h2>
+              <p>Left: the global level set \(F(x,y)=c\) with a highlighted point \(a\), its tangent line, and its normal vector \(\nabla F(a)\). Right: the local graph picture. If the chosen derivative is nonzero, the level set becomes the graph of a function in a small window.</p>
+            </div>
+            <div id="status" class="status">regular point test</div>
+          </div>
+
+          <div class="split">
+            <div class="svgBox">
+              <svg id="mainSvg" class="plotSvg" viewBox="0 0 1420 760"></svg>
+            </div>
+            <div class="metrics">
+              <div class="metric">
+                <h4>Rank test</h4>
+                <p>Regularity is \(\operatorname{rank} DF(a)=1\), equivalently \(\nabla F(a)\neq 0\).</p>
+                <strong id="rankMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Normal vector</h4>
+                <p>The gradient is perpendicular to the level set.</p>
+                <strong id="gradMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Local solver</h4>
+                <p>Which coordinate can be solved locally?</p>
+                <strong id="solveMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Tangent slope</h4>
+                <p>At regular points the tangent comes from implicit differentiation.</p>
+                <strong id="slopeMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Singular warning</h4>
+                <p>If the gradient vanishes, the theorem does not guarantee a graph.</p>
+                <strong id="warnMetric"></strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="explainRow">
+            <div class="explainBox">
+              <h4>Regular level set</h4>
+              <p>When \(\nabla F(a)\neq 0\), the level set is a smooth one-dimensional manifold near \(a\): visually, just one clean curve with a well-defined tangent.</p>
+            </div>
+            <div class="explainBox">
+              <h4>Local solvability</h4>
+              <p>If \(F_y(a)\neq 0\), then the curve can be written as \(y=\varphi(x)\). If instead \(F_x(a)\neq 0\), then \(x=\psi(y)\). The right panel makes this local graph explicit.</p>
+            </div>
+            <div class="explainBox">
+              <h4>Failure at singular points</h4>
+              <p>When \(\nabla F(a)=0\), the regular level-set picture can fail: the set may pinch, cross, or stop being a graph. The theorem correctly refuses to conclude.</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="grid2">
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Tangent-space interpretation</h3>
+                <p>For \(F:\mathbb R^2\to\mathbb R\), the derivative \(DF(a)\) is a row vector. Its kernel is the tangent line. The gradient is orthogonal to that kernel.</p>
+              </div>
+              <div class="tag">\(\ker DF(a)\)</div>
+            </div>
+            <div class="svgBox">
+              <svg id="tangentSvg" class="plotSvg" viewBox="0 0 1120 560"></svg>
+            </div>
+            <div class="explainMini">
+              <h4>Short explanation</h4>
+              <p>The tangent line is the set of first-order displacements \(h\) that do not change the level value: \(DF(a)\,h=0\). This is why it is the kernel of the derivative.</p>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Surface-section picture</h3>
+                <p>The curve \(F(x,y)=c\) is the intersection of the surface \(z=F(x,y)\) with the horizontal plane \(z=c\). Regularity means the intersection is transverse and locally smooth.</p>
+              </div>
+              <div class="tag">\(z=F(x,y)\)</div>
+            </div>
+            <div class="svgBox">
+              <svg id="surfaceSvg" class="plotSvg" viewBox="0 0 1120 560"></svg>
+            </div>
+            <div class="explainMini">
+              <h4>Short explanation</h4>
+              <p>The 3D panel explains why the theorem is about solving equations locally: a regular cut of the surface by a horizontal plane produces a smooth intersection curve.</p>
+            </div>
+          </section>
+        </div>
+
+        <section class="footer">
+          <div><strong>Test.</strong> In \(\mathbb R^2\), regularity is simply \(\nabla F(a)\neq 0\).</div>
+          <div><strong>Conclusion.</strong> Near a regular point, the level equation defines a smooth local graph and the level set has tangent line \(\ker DF(a)\).</div>
+          <div><strong>Choice of variable.</strong> The nonzero partial determines which variable can be solved as a function of the other.</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+<script>
+  const examples = {
+    circle:{
+      label:'circle',
+      formula:'\\[F(x,y)=x^2+y^2,\\qquad F(x,y)=c.\\]',
+      note:'For \(c>0\) the level set is a circle and every point is regular. At \(c=0\), the level set collapses to the singular point \((0,0)\).',
+      getLevel:c=>Math.max(0,c),
+      F:(x,y,c)=>x*x+y*y-c,
+      Fx:(x,y,c)=>2*x,
+      Fy:(x,y,c)=>2*y,
+      point:(c,t)=>{
+        c=Math.max(0,c);
+        if(c<1e-6) return [0,0];
+        const r=Math.sqrt(c);
+        return [r*Math.cos(t), r*Math.sin(t)];
+      },
+      segments:(c,view=1.8)=>{
+        c=Math.max(0,c);
+        if(c<1e-6) return [[[0,0]]];
+        const r=Math.sqrt(c), pts=[];
+        for(let i=0;i<=260;i++){
+          const s=2*Math.PI*i/260;
+          pts.push([r*Math.cos(s), r*Math.sin(s)]);
+        }
+        return [pts];
+      },
+      solveY:(x,c,sign)=>{
+        c=Math.max(0,c); const v=c-x*x;
+        if(v<0) return null;
+        return sign*Math.sqrt(Math.max(0,v));
+      },
+      solveX:(y,c,sign)=>{
+        c=Math.max(0,c); const v=c-y*y;
+        if(v<0) return null;
+        return sign*Math.sqrt(Math.max(0,v));
+      },
+      paramName:'angle'
+    },
+    parabola:{
+      label:'sideways parabola',
+      formula:'\\[F(x,y)=y^2-x,\\qquad F(x,y)=c \iff x=y^2-c.\\]',
+      note:'This level set is always regular because \((F_x,F_y)=(-1,2y)\) never vanishes. At the vertex, \(F_y=0\), so the theorem does not solve for \(y\), but it still solves for \(x\).',
+      getLevel:c=>c,
+      F:(x,y,c)=>y*y-x-c,
+      Fx:(x,y,c)=>-1,
+      Fy:(x,y,c)=>2*y,
+      point:(c,t)=>{
+        const u=1.15*Math.sin(t);
+        return [u*u-c, u];
+      },
+      segments:(c,view=1.8)=>{
+        const pts=[];
+        for(let i=0;i<=260;i++){
+          const y=-1.65+3.30*i/260;
+          pts.push([y*y-c, y]);
+        }
+        return [pts];
+      },
+      solveY:(x,c,sign)=>{
+        const v=x+c;
+        if(v<0) return null;
+        const base=Math.sqrt(Math.max(0,v));
+        return sign>=0 ? base : -base;
+      },
+      solveX:(y,c,sign)=>{
+        return y*y-c;
+      },
+      paramName:'branch point'
+    },
+    cross:{
+      label:'hyperbolic cross',
+      formula:'\\[F(x,y)=y^2-x^2,\\qquad F(x,y)=c.\\]',
+      note:'For \(c\neq0\), the level set is a smooth hyperbola. At \(c=0\), it becomes the crossing pair \(y=\pm x\), singular at the origin because \(\nabla F(0,0)=0\).',
+      getLevel:c=>c,
+      F:(x,y,c)=>y*y-x*x-c,
+      Fx:(x,y,c)=>-2*x,
+      Fy:(x,y,c)=>2*y,
+      point:(c,t)=>{
+        const s=1.15*Math.sin(t);
+        const branch = Math.cos(t)>=0 ? 1 : -1;
+        if(Math.abs(c)<1e-6){
+          if(Math.abs(s)<0.08) return [0,0];
+          return [s, branch*Math.abs(s)];
+        }
+        if(c>0){
+          return [s, branch*Math.sqrt(s*s+c)];
+        }else{
+          return [branch*Math.sqrt(s*s-c), s];
+        }
+      },
+      segments:(c,view=1.8)=>{
+        const segs=[];
+        if(Math.abs(c)<1e-6){
+          const p1=[], p2=[];
+          for(let i=0;i<=240;i++){
+            const s=-1.6+3.2*i/240;
+            p1.push([s,s]);
+            p2.push([s,-s]);
+          }
+          return [p1,p2];
+        }
+        if(c>0){
+          const up=[], down=[];
+          for(let i=0;i<=240;i++){
+            const x=-1.6+3.2*i/240;
+            const y=Math.sqrt(x*x+c);
+            up.push([x,y]); down.push([x,-y]);
+          }
+          return [up,down];
+        }else{
+          const left=[], right=[];
+          for(let i=0;i<=240;i++){
+            const y=-1.6+3.2*i/240;
+            const x=Math.sqrt(y*y-c);
+            right.push([x,y]); left.push([-x,y]);
+          }
+          return [left,right];
+        }
+      },
+      solveY:(x,c,sign)=>{
+        const v=x*x+c;
+        if(v<0) return null;
+        return sign*Math.sqrt(Math.max(0,v));
+      },
+      solveX:(y,c,sign)=>{
+        const v=y*y-c;
+        if(v<0) return null;
+        return sign*Math.sqrt(Math.max(0,v));
+      },
+      paramName:'branch point'
+    }
+  };
+
+  const state = {
+    example:'circle',
+    level:0.80,
+    param:0.65,
+    solve:'auto',
+    rho:0.42,
+    theme:localStorage.getItem('ift-implicit-theme') || 'light',
+    initialized:false
+  };
+
+  const el = {
+    theme:document.getElementById('theme'),
+    themeLabel:document.getElementById('themeLabel'),
+    knob:document.getElementById('knob'),
+    exampleSelect:document.getElementById('exampleSelect'),
+    levelSlider:document.getElementById('levelSlider'),
+    paramSlider:document.getElementById('paramSlider'),
+    solveSelect:document.getElementById('solveSelect'),
+    rhoSlider:document.getElementById('rhoSlider'),
+    exampleLabel:document.getElementById('exampleLabel'),
+    levelLabel:document.getElementById('levelLabel'),
+    paramLabel:document.getElementById('paramLabel'),
+    solveLabel:document.getElementById('solveLabel'),
+    rhoLabel:document.getElementById('rhoLabel'),
+    matrixBox:document.getElementById('matrixBox'),
+    formulaBox:document.getElementById('formulaBox'),
+    noticeBox:document.getElementById('noticeBox'),
+    status:document.getElementById('status'),
+    mainSvg:document.getElementById('mainSvg'),
+    tangentSvg:document.getElementById('tangentSvg'),
+    surfaceSvg:document.getElementById('surfaceSvg'),
+    rankMetric:document.getElementById('rankMetric'),
+    gradMetric:document.getElementById('gradMetric'),
+    solveMetric:document.getElementById('solveMetric'),
+    slopeMetric:document.getElementById('slopeMetric'),
+    warnMetric:document.getElementById('warnMetric')
+  };
+
+  const css=v=>getComputedStyle(document.body).getPropertyValue(v).trim();
+  const fmt=x=>{
+    if(!Number.isFinite(x)) return '—';
+    if(Math.abs(x)>9999) return x.toExponential(2);
+    return (x<0?'−':'')+Math.abs(x).toFixed(3);
+  };
+  const fmtVec=v=>`(${fmt(v[0])}, ${fmt(v[1])})`;
+  const norm=v=>Math.hypot(v[0],v[1]);
+  const lin=(x,a,b,c,d)=>c+(x-a)*(d-c)/(b-a);
+  function fill(input){
+    const min=+input.min,max=+input.max,val=+input.value;
+    input.style.backgroundSize=((val-min)/(max-min)*100)+'% 100%';
+  }
+  function txt(x,y,s,o={}){
+    return `<text x="${x}" y="${y}" fill="${o.fill||css('--text')}" font-size="${o.size||14}" font-family="${o.family||'Inter, sans-serif'}" font-weight="${o.weight||500}" text-anchor="${o.anchor||'start'}">${s}</text>`;
+  }
+  function arrow(x1,y1,x2,y2,color,w=3,dash=''){
+    const ang=Math.atan2(y2-y1,x2-x1), h=10;
+    const a1=ang-Math.PI/7, a2=ang+Math.PI/7;
+    const hx1=x2-h*Math.cos(a1), hy1=y2-h*Math.sin(a1);
+    const hx2=x2-h*Math.cos(a2), hy2=y2-h*Math.sin(a2);
+    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${w}" stroke-linecap="round" ${dash?`stroke-dasharray="${dash}"`:''}/>
+            <path d="M ${x2} ${y2} L ${hx1} ${hy1} M ${x2} ${y2} L ${hx2} ${hy2}" stroke="${color}" stroke-width="${w}" fill="none" stroke-linecap="round" ${dash?`stroke-dasharray="${dash}"`:''}/>`;
+  }
+  function polyline(points, T){
+    return points.map((p,i)=>{
+      const q=T(p);
+      return `${i?'L':'M'} ${q[0].toFixed(2)} ${q[1].toFixed(2)}`;
+    }).join(' ');
+  }
+
+  function setTheme(t){
+    state.theme=t;
+    document.body.classList.toggle('dark',t==='dark');
+    localStorage.setItem('ift-implicit-theme',t);
+    el.themeLabel.textContent=t==='dark'?'dark mode':'light mode';
+    el.knob.textContent=t==='dark'?'☾':'☀';
+    if(state.initialized) render();
+  }
+
+  function current(){
+    const ex=examples[state.example];
+    const c=ex.getLevel(state.level);
+    const a=ex.point(c,state.param);
+    const Fx=ex.Fx(a[0],a[1],c);
+    const Fy=ex.Fy(a[0],a[1],c);
+    const grad=[Fx,Fy];
+    const gradNorm=norm(grad);
+    const regular=gradNorm>1e-5;
+    let solveVar=state.solve;
+    if(solveVar==='auto'){
+      if(Math.abs(Fy)>=Math.abs(Fx) && Math.abs(Fy)>1e-5) solveVar='y';
+      else if(Math.abs(Fx)>1e-5) solveVar='x';
+      else solveVar='none';
+    }
+    const canSolveY=Math.abs(Fy)>1e-5;
+    const canSolveX=Math.abs(Fx)>1e-5;
+    const possible = (solveVar==='y' && canSolveY) || (solveVar==='x' && canSolveX);
+    const tangent = regular ? [-Fy, Fx] : [0,0];
+    const tnorm = norm(tangent) || 1;
+    const tdir = [tangent[0]/tnorm, tangent[1]/tnorm];
+    const gdir = regular ? [Fx/gradNorm, Fy/gradNorm] : [0,0];
+    let slopeText='—', tangentSlope=null;
+    if(regular){
+      if(solveVar==='y' && canSolveY){
+        tangentSlope = -Fx/Fy;
+        slopeText = `y' = ${fmt(tangentSlope)}`;
+      }else if(solveVar==='x' && canSolveX){
+        tangentSlope = -Fy/Fx;
+        slopeText = `x' = ${fmt(tangentSlope)}`;
+      }
+    }
+
+    return {ex,c,a,Fx,Fy,grad,gradNorm,regular,solveVar,canSolveX,canSolveY,possible,tdir,gdir,tangentSlope,slopeText};
+  }
+
+  function renderMainSvg(){
+    const C=current();
+    const left={x:58,y:96,w:560,h:540};
+    const right={x:792,y:96,w:570,h:540};
+    const view=1.8;
+    const LX=x=>lin(x,-view,view,left.x+28,left.x+left.w-28);
+    const LY=y=>lin(y,-view,view,left.y+left.h-28,left.y+28);
+
+    // local graph bounds
+    const rho=state.rho;
+    const ax=C.a[0], ay=C.a[1];
+    const RX=u=>lin(u,-rho,rho,right.x+48,right.x+right.w-48);
+    const RY=v=>lin(v,-rho,rho,right.y+right.h-48,right.y+48);
+
+    let grid='', curves='';
+    for(let k=-1.5;k<=1.5001;k+=0.3){
+      grid += `<line x1="${LX(k)}" y1="${LY(-view)}" x2="${LX(k)}" y2="${LY(view)}" stroke="${css('--grid')}" stroke-width="1.2"/>`;
+      grid += `<line x1="${LX(-view)}" y1="${LY(k)}" x2="${LX(view)}" y2="${LY(k)}" stroke="${css('--grid')}" stroke-width="1.2"/>`;
+    }
+
+    C.ex.segments(C.c).forEach(seg=>{
+      if(seg.length===1){
+        curves += `<circle cx="${LX(seg[0][0])}" cy="${LY(seg[0][1])}" r="7" fill="${css('--bad')}" />`;
+      }else{
+        curves += `<path d="${polyline(seg,p=>[LX(p[0]),LY(p[1])])}" fill="none" stroke="${css('--good')}" stroke-width="3.8"/>`;
+      }
+    });
+
+    // tangent / normal
+    const T=0.55;
+    const p1=[ax-T*C.tdir[0], ay-T*C.tdir[1]];
+    const p2=[ax+T*C.tdir[0], ay+T*C.tdir[1]];
+    const n2=[ax+0.42*C.gdir[0], ay+0.42*C.gdir[1]];
+    const neighborhoodRect = {
+      x: Math.max(-view, ax-rho), y: Math.max(-view, ay-rho),
+      w: Math.min(2*rho, view-(ax-rho))+Math.min(0, view-(ax-rho))*0
+    };
+
+    let leftOverlay = `
+      <rect x="${LX(ax-rho)}" y="${LY(ay+rho)}" width="${LX(ax+rho)-LX(ax-rho)}" height="${LY(ay-rho)-LY(ay+rho)}" rx="20" fill="${css('--modelSoft')}" stroke="${css('--model')}" stroke-dasharray="8 6"/>
+      <circle cx="${LX(ax)}" cy="${LY(ay)}" r="7" fill="${css('--gold')}" stroke="${css('--paper')}" stroke-width="2"/>
+      ${txt(LX(ax)+10,LY(ay)-10,'a',{size:16,fill:css('--gold'),weight:800})}
+    `;
+    if(C.regular){
+      leftOverlay += `
+        <line x1="${LX(p1[0])}" y1="${LY(p1[1])}" x2="${LX(p2[0])}" y2="${LY(p2[1])}" stroke="${css('--bad')}" stroke-width="3.2"/>
+        ${arrow(LX(ax),LY(ay),LX(n2[0]),LY(n2[1]),css('--violet'),3.4)}
+        ${txt(LX(n2[0])+8,LY(n2[1])-8,'∇F(a)',{size:14,fill:css('--violet'),weight:750})}
+        ${txt(LX(p2[0])+10,LY(p2[1])+18,'tangent', {size:14,fill:css('--bad'),weight:750})}
+      `;
+    }
+
+    // right local graph panel
+    let rightContent = `
+      <line x1="${RX(-rho)}" y1="${RY(0)}" x2="${RX(rho)}" y2="${RY(0)}" stroke="${css('--line')}" stroke-width="1.6"/>
+      <line x1="${RX(0)}" y1="${RY(-rho)}" x2="${RX(0)}" y2="${RY(rho)}" stroke="${css('--line')}" stroke-width="1.6"/>
+      ${txt(RX(rho)-4,RY(0)-10,C.solveVar==='x'?'Δy':'Δx',{size:14,fill:css('--muted'),weight:700,anchor:'end'})}
+      ${txt(RX(0)+10,RY(-rho)+14,C.solveVar==='x'?'Δx':'Δy',{size:14,fill:css('--muted'),weight:700})}
+      <circle cx="${RX(0)}" cy="${RY(0)}" r="6" fill="${css('--gold')}" stroke="${css('--paper')}" stroke-width="2"/>
+      ${txt(RX(0)+8,RY(0)-8,'a',{size:14,fill:css('--gold'),weight:800})}
+    `;
+
+    if(C.solveVar==='none'){
+      rightContent += `${txt(RX(0),RY(0)-110,'singular point',{size:22,fill:css('--bad'),weight:800,anchor:'middle',family:'Georgia, serif'})}
+      ${txt(RX(0),RY(0)-80,'no local graph guaranteed',{size:15,fill:css('--muted'),weight:650,anchor:'middle'})}`;
+    } else if(!C.possible){
+      const msg = C.solveVar==='y' ? 'cannot solve locally for y' : 'cannot solve locally for x';
+      const alt = C.solveVar==='y' ? (C.canSolveX ? 'but x can be solved locally' : 'no variable passes the test') : (C.canSolveY ? 'but y can be solved locally' : 'no variable passes the test');
+      rightContent += `${txt(RX(0),RY(0)-110,msg,{size:22,fill:css('--bad'),weight:800,anchor:'middle',family:'Georgia, serif'})}
+      ${txt(RX(0),RY(0)-80,alt,{size:15,fill:css('--muted'),weight:650,anchor:'middle'})}`;
+    } else {
+      let graphPts=[], tanPts=[];
+      const signY = Math.abs(ay)<1e-8 ? 1 : Math.sign(ay);
+      const signX = Math.abs(ax)<1e-8 ? 1 : Math.sign(ax);
+      if(C.solveVar==='y'){
+        for(let i=0;i<=220;i++){
+          const x=ax-rho+2*rho*i/220;
+          const y=C.ex.solveY(x,C.c,signY);
+          if(y!==null && Number.isFinite(y) && Math.abs(y-ay) < 2.5*rho) graphPts.push([x-ax, y-ay]);
+        }
+        if(C.canSolveY){
+          for(let i=0;i<=80;i++){
+            const u=-rho+2*rho*i/80;
+            tanPts.push([u, C.tangentSlope*u]);
+          }
+        }
+        rightContent += `
+          <path d="${polyline(graphPts,p=>[RX(p[0]),RY(p[1])])}" fill="none" stroke="${css('--good')}" stroke-width="4"/>
+          <path d="${polyline(tanPts,p=>[RX(p[0]),RY(p[1])])}" fill="none" stroke="${css('--bad')}" stroke-width="2.8" stroke-dasharray="8 6"/>
+          ${txt(RX(rho)-6,RY(graphPts.length?graphPts[graphPts.length-1][1]:0)-14,'y = φ(x)',{size:15,fill:css('--good'),weight:750,anchor:'end'})}
+          ${txt(RX(rho)-6,RY(C.tangentSlope*rho)+18,'linear tangent',{size:14,fill:css('--bad'),weight:750,anchor:'end'})}
+        `;
+      } else {
+        for(let i=0;i<=220;i++){
+          const y=ay-rho+2*rho*i/220;
+          const x=C.ex.solveX(y,C.c,signX);
+          if(x!==null && Number.isFinite(x) && Math.abs(x-ax) < 2.5*rho) graphPts.push([y-ay, x-ax]);
+        }
+        if(C.canSolveX){
+          for(let i=0;i<=80;i++){
+            const u=-rho+2*rho*i/80;
+            tanPts.push([u, C.tangentSlope*u]);
+          }
+        }
+        rightContent += `
+          <path d="${polyline(graphPts,p=>[RX(p[0]),RY(p[1])])}" fill="none" stroke="${css('--good')}" stroke-width="4"/>
+          <path d="${polyline(tanPts,p=>[RX(p[0]),RY(p[1])])}" fill="none" stroke="${css('--bad')}" stroke-width="2.8" stroke-dasharray="8 6"/>
+          ${txt(RX(rho)-6,RY(graphPts.length?graphPts[graphPts.length-1][1]:0)-14,'x = ψ(y)',{size:15,fill:css('--good'),weight:750,anchor:'end'})}
+          ${txt(RX(rho)-6,RY(C.tangentSlope*rho)+18,'linear tangent',{size:14,fill:css('--bad'),weight:750,anchor:'end'})}
+        `;
+      }
+    }
+
+    const statusColor = C.regular ? css('--good') : css('--bad');
+
+    el.mainSvg.innerHTML = `
+      <rect x="0" y="0" width="1420" height="760" rx="28" fill="${css('--paper')}"/>
+      <rect x="${left.x}" y="${left.y}" width="${left.w}" height="${left.h}" rx="26" fill="transparent" stroke="${css('--line')}"/>
+      <rect x="${right.x}" y="${right.y}" width="${right.w}" height="${right.h}" rx="26" fill="transparent" stroke="${css('--line')}"/>
+      ${txt(left.x+18,left.y+30,'global level set',{size:20,weight:800,family:'Georgia, serif'})}
+      ${txt(left.x+18,left.y+52,'F(x,y)=c in the ambient plane',{size:13,fill:css('--muted'),weight:650})}
+      ${txt(right.x+18,right.y+30,'local graph picture',{size:20,weight:800,family:'Georgia, serif'})}
+      ${txt(right.x+18,right.y+52,'centered at the chosen point a',{size:13,fill:css('--muted'),weight:650})}
+
+      ${grid}
+      <line x1="${LX(-view)}" y1="${LY(0)}" x2="${LX(view)}" y2="${LY(0)}" stroke="${css('--line')}" stroke-width="1.6"/>
+      <line x1="${LX(0)}" y1="${LY(-view)}" x2="${LX(0)}" y2="${LY(view)}" stroke="${css('--line')}" stroke-width="1.6"/>
+      ${curves}
+      ${leftOverlay}
+      ${rightContent}
+
+      <path d="M 647 366 C 714 366, 730 366, 774 366" fill="none" stroke="${css('--line')}" stroke-width="2.6" marker-end="url(#arrIFT)"/>
+      ${txt(710,346,'local microscope',{size:18,fill:css('--muted'),weight:800,family:'Georgia, serif',anchor:'middle'})}
+      <defs>
+        <marker id="arrIFT" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 Z" fill="${css('--line')}"/>
+        </marker>
+      </defs>
+
+      <rect x="510" y="670" width="400" height="58" rx="20" fill="${C.regular?css('--goodSoft'):css('--badSoft')}" stroke="${css('--line')}"/>
+      ${txt(710,693,C.regular?'regular point: smooth local level curve':'singular point: theorem does not conclude',{size:18,fill:statusColor,weight:800,family:'Georgia, serif',anchor:'middle'})}
+      ${txt(710,715,`‖∇F(a)‖ ≈ ${fmt(C.gradNorm)}`,{size:14,fill:css('--muted'),weight:700,anchor:'middle'})}
+    `;
+  }
+
+  function renderTangentSvg(){
+    const C=current();
+    const W=1120,H=560;
+    const left={x:70,y:92,w:450,h:390};
+    const right={x:610,y:92,w:440,h:390};
+    const s=1.0;
+    const X=x=>lin(x,-s,s,left.x+42,left.x+left.w-42);
+    const Y=y=>lin(y,-s,s,left.y+left.h-42,left.y+42);
+
+    let leftContent = `
+      <line x1="${X(-s)}" y1="${Y(0)}" x2="${X(s)}" y2="${Y(0)}" stroke="${css('--line')}" stroke-width="1.6"/>
+      <line x1="${X(0)}" y1="${Y(-s)}" x2="${X(0)}" y2="${Y(s)}" stroke="${css('--line')}" stroke-width="1.6"/>
+      <circle cx="${X(0)}" cy="${Y(0)}" r="6" fill="${css('--gold')}" stroke="${css('--paper')}" stroke-width="2"/>
+      ${txt(X(0)+8,Y(0)-8,'0',{size:14,fill:css('--gold'),weight:800})}
+    `;
+
+    if(C.regular){
+      const p1=[-0.72*C.tdir[0],-0.72*C.tdir[1]];
+      const p2=[ 0.72*C.tdir[0], 0.72*C.tdir[1]];
+      const g2=[0.56*C.gdir[0],0.56*C.gdir[1]];
+      leftContent += `
+        <line x1="${X(p1[0])}" y1="${Y(p1[1])}" x2="${X(p2[0])}" y2="${Y(p2[1])}" stroke="${css('--good')}" stroke-width="3.8"/>
+        ${arrow(X(0),Y(0),X(g2[0]),Y(g2[1]),css('--violet'),3.6)}
+        ${txt(X(p2[0])+10,Y(p2[1])+16,'ker DF(a)',{size:15,fill:css('--good'),weight:750})}
+        ${txt(X(g2[0])+10,Y(g2[1])-10,'∇F(a)',{size:15,fill:css('--violet'),weight:750})}
+      `;
+    } else {
+      leftContent += `
+        <circle cx="${X(0)}" cy="${Y(0)}" r="76" fill="${css('--badSoft')}" stroke="${css('--bad')}" stroke-dasharray="7 6" stroke-width="2.5"/>
+        ${txt(X(0),Y(0)-10,'rank 0',{size:24,fill:css('--bad'),weight:800,anchor:'middle',family:'Georgia, serif'})}
+        ${txt(X(0),Y(0)+20,'no regular tangent-space conclusion',{size:15,fill:css('--muted'),weight:650,anchor:'middle'})}
+      `;
+    }
+
+    const algebra = C.regular
+      ? [
+        `DF(a) = [${fmt(C.Fx)}  ${fmt(C.Fy)}]`,
+        `ker DF(a) = { h : ${fmt(C.Fx)} h₁ + ${fmt(C.Fy)} h₂ = 0 }`,
+        `tangent direction ∝ (${fmt(-C.Fy)}, ${fmt(C.Fx)})`
+      ]
+      : [
+        `DF(a) = [${fmt(C.Fx)}  ${fmt(C.Fy)}] = [0  0]`,
+        `gradient vanishes`,
+        `the regular-level-set theorem cannot be applied`
+      ];
+
+    el.tangentSvg.innerHTML = `
+      <rect x="0" y="0" width="${W}" height="${H}" rx="26" fill="${css('--paper')}"/>
+      <rect x="${left.x}" y="${left.y}" width="${left.w}" height="${left.h}" rx="24" fill="transparent" stroke="${css('--line')}"/>
+      <rect x="${right.x}" y="${right.y}" width="${right.w}" height="${right.h}" rx="24" fill="${css('--card')}" stroke="${css('--line')}"/>
+      ${txt(left.x+18,left.y+30,'kernel picture in h-space',{size:20,weight:800,family:'Georgia, serif'})}
+      ${txt(left.x+18,left.y+52,'small displacements h with DF(a)h = 0',{size:13,fill:css('--muted'),weight:650})}
+      ${txt(right.x+18,right.y+30,'algebraic interpretation',{size:20,weight:800,family:'Georgia, serif'})}
+      ${txt(right.x+18,right.y+52,'the tangent space is the kernel',{size:13,fill:css('--muted'),weight:650})}
+      ${leftContent}
+
+      ${txt(right.x+28,right.y+112,algebra[0],{size:20,fill:css('--text'),weight:700,family:'Georgia, serif'})}
+      ${txt(right.x+28,right.y+182,algebra[1],{size:16,fill:css('--muted'),weight:700})}
+      ${txt(right.x+28,right.y+252,algebra[2],{size:16,fill:css('--muted'),weight:700})}
+      ${C.regular
+        ? `<rect x="${right.x+24}" y="${right.y+296}" width="388" height="106" rx="20" fill="${css('--goodSoft')}" stroke="${css('--line')}"/>
+           ${txt(right.x+218,right.y+332,'∇F(a) ⟂ ker DF(a)',{size:24,fill:css('--good'),weight:800,anchor:'middle',family:'Georgia, serif'})}
+           ${txt(right.x+218,right.y+362,'normal direction versus tangent direction',{size:14,fill:css('--muted'),weight:650,anchor:'middle'})}`
+        : `<rect x="${right.x+24}" y="${right.y+296}" width="388" height="106" rx="20" fill="${css('--badSoft')}" stroke="${css('--line')}"/>
+           ${txt(right.x+218,right.y+332,'no regular manifold structure is guaranteed',{size:20,fill:css('--bad'),weight:800,anchor:'middle',family:'Georgia, serif'})}
+           ${txt(right.x+218,right.y+362,'the kernel test does not give a tangent line',{size:14,fill:css('--muted'),weight:650,anchor:'middle'})}`
+      }
+    `;
+  }
+
+  function project3D(x,y,z,cx,cy,scale){
+    const u = x - 0.82*y;
+    const v = 0.55*y + 0.46*z + 0.10*x;
+    return [cx + scale*u, cy - scale*v];
+  }
+
+  function renderSurfaceSvg(){
+    const C=current();
+    const W=1120,H=560;
+    const box={x:50,y:62,w:1020,h:450};
+    const cx=565, cy=375, scale=86;
+    const view=1.45;
+
+    let mesh='', plane='', levelCurve='';
+    for(let x=-1.4;x<=1.4001;x+=0.25){
+      const pts=[];
+      for(let j=0;j<=70;j++){
+        const y=-view+2*view*j/70;
+        const z=C.ex.F(x,y,0); // actual F without subtracting c; for examples F(x,y)=base
+        pts.push(project3D(x,y,z,cx,cy,scale));
+      }
+      mesh += `<path d="${pts.map((p,i)=>`${i?'L':'M'} ${p[0].toFixed(2)} ${p[1].toFixed(2)}`).join(' ')}" fill="none" stroke="${css('--grid')}" stroke-width="1.2"/>`;
+    }
+    for(let y=-1.4;y<=1.4001;y+=0.25){
+      const pts=[];
+      for(let i=0;i<=70;i++){
+        const x=-view+2*view*i/70;
+        const z=C.ex.F(x,y,0);
+        pts.push(project3D(x,y,z,cx,cy,scale));
+      }
+      mesh += `<path d="${pts.map((p,i)=>`${i?'L':'M'} ${p[0].toFixed(2)} ${p[1].toFixed(2)}`).join(' ')}" fill="none" stroke="${css('--grid')}" stroke-width="1.2"/>`;
+    }
+
+    const corners=[
+      project3D(-view,-view,C.c,cx,cy,scale),
+      project3D( view,-view,C.c,cx,cy,scale),
+      project3D( view, view,C.c,cx,cy,scale),
+      project3D(-view, view,C.c,cx,cy,scale)
+    ];
+    plane = `<polygon points="${corners.map(p=>`${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' ')}" fill="${css('--modelSoft')}" stroke="${css('--model')}" stroke-width="2.0"/>`;
+
+    C.ex.segments(C.c).forEach(seg=>{
+      if(seg.length>1){
+        levelCurve += `<path d="${polyline(seg,p=>project3D(p[0],p[1],C.c,cx,cy,scale))}" fill="none" stroke="${css('--bad')}" stroke-width="3.8"/>`;
+      } else {
+        const q=project3D(seg[0][0],seg[0][1],C.c,cx,cy,scale);
+        levelCurve += `<circle cx="${q[0]}" cy="${q[1]}" r="7" fill="${css('--bad')}"/>`;
+      }
+    });
+    const qa=project3D(C.a[0],C.a[1],C.c,cx,cy,scale);
+    const qsurf=project3D(C.a[0],C.a[1],C.ex.F(C.a[0],C.a[1],0),cx,cy,scale);
+
+    el.surfaceSvg.innerHTML = `
+      <rect x="0" y="0" width="${W}" height="${H}" rx="26" fill="${css('--paper')}"/>
+      <rect x="${box.x}" y="${box.y}" width="${box.w}" height="${box.h}" rx="24" fill="transparent" stroke="${css('--line')}"/>
+      ${txt(box.x+18,box.y+30,'surface z = F(x,y) and plane z = c',{size:20,weight:800,family:'Georgia, serif'})}
+      ${txt(box.x+18,box.y+52,'their intersection is the implicit level set',{size:13,fill:css('--muted'),weight:650})}
+      ${mesh}
+      ${plane}
+      ${levelCurve}
+      <circle cx="${qa[0]}" cy="${qa[1]}" r="7" fill="${css('--gold')}" stroke="${css('--paper')}" stroke-width="2"/>
+      ${txt(qa[0]+10,qa[1]-10,'a on z=c',{size:14,fill:css('--gold'),weight:750})}
+      ${txt(corners[1][0]+16,corners[1][1]-10,'z = c',{size:15,fill:css('--model'),weight:750})}
+      <rect x="344" y="492" width="430" height="42" rx="18" fill="${C.regular?css('--goodSoft'):css('--badSoft')}" stroke="${css('--line')}"/>
+      ${txt(559,519,C.regular?'transverse cut → smooth local intersection':'singular cut → local smoothness is not guaranteed',{size:17,fill:C.regular?css('--good'):css('--bad'),weight:800,family:'Georgia, serif',anchor:'middle'})}
+    `;
+  }
+
+  function updateText(){
+    const C=current();
+    el.exampleLabel.textContent = C.ex.label;
+    el.levelLabel.textContent = fmt(C.c);
+    el.paramLabel.textContent = C.ex.paramName + ' · ' + fmt(state.param);
+    el.solveLabel.textContent = (C.solveVar==='none'?'none':(C.solveVar==='x'?'solve x':'solve y'));
+    el.rhoLabel.textContent = fmt(state.rho);
+    [el.levelSlider, el.paramSlider, el.rhoSlider].forEach(fill);
+
+    el.matrixBox.textContent =
+      `a = ${fmtVec(C.a)}\n` +
+      `F(a) = ${fmt(C.c)}\n` +
+      `∇F(a) = ${fmtVec(C.grad)}\n` +
+      `rank DF(a) = ${C.regular ? '1' : '0'}\n` +
+      `solve for y? ${C.canSolveY ? 'yes' : 'no'}\n` +
+      `solve for x? ${C.canSolveX ? 'yes' : 'no'}`;
+    el.formulaBox.innerHTML = C.ex.formula;
+    el.noticeBox.innerHTML = C.ex.note;
+
+    const statusColor = C.regular ? css('--good') : css('--bad');
+    el.status.textContent = C.regular ? 'regular point · smooth local level curve' : 'singular point · theorem does not conclude';
+    el.status.style.color = statusColor;
+    el.status.style.background = C.regular ? css('--goodSoft') : css('--badSoft');
+
+    el.rankMetric.textContent = C.regular ? 'rank 1 · regular level set' : 'rank 0 · singular point';
+    el.gradMetric.textContent = `∇F(a) ≈ ${fmtVec(C.grad)}`;
+    if(C.solveVar==='none'){
+      el.solveMetric.textContent = 'no coordinate can be solved by the theorem here';
+    } else if(C.possible){
+      el.solveMetric.textContent = C.solveVar==='y' ? 'yes · y = φ(x) locally' : 'yes · x = ψ(y) locally';
+    } else {
+      el.solveMetric.textContent = C.solveVar==='y'
+        ? (C.canSolveX ? 'not for y, but x can be solved' : 'not solvable by the theorem here')
+        : (C.canSolveY ? 'not for x, but y can be solved' : 'not solvable by the theorem here');
+    }
+    el.slopeMetric.textContent = C.slopeText;
+    el.warnMetric.textContent = C.regular ? 'no singularity at the chosen point' : 'gradient vanishes';
+
+    if(window.MathJax) MathJax.typesetPromise().catch(()=>{});
+  }
+
+  function render(){
+    updateText();
+    renderMainSvg();
+    renderTangentSvg();
+    renderSurfaceSvg();
+  }
+
+  function sync(){
+    state.example = el.exampleSelect.value;
+    state.level = +el.levelSlider.value;
+    state.param = +el.paramSlider.value;
+    state.solve = el.solveSelect.value;
+    state.rho = +el.rhoSlider.value;
+    render();
+  }
+
+  function init(){
+    state.initialized = true;
+    el.exampleSelect.value = state.example;
+    el.levelSlider.value = state.level;
+    el.paramSlider.value = state.param;
+    el.solveSelect.value = state.solve;
+    el.rhoSlider.value = state.rho;
+
+    el.exampleSelect.addEventListener('change', sync);
+    el.levelSlider.addEventListener('input', sync);
+    el.paramSlider.addEventListener('input', sync);
+    el.solveSelect.addEventListener('change', sync);
+    el.rhoSlider.addEventListener('input', sync);
+
+    el.theme.addEventListener('click',()=>setTheme(state.theme==='dark'?'light':'dark'));
+    el.theme.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); setTheme(state.theme==='dark'?'light':'dark'); } });
+
+    setTheme(state.theme);
+  }
+
+  window.addEventListener('load', init);
+</script>
+</body>
+</html>

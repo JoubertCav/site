@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive real analysis diagram for the inverse function theorem.">
+  <title>Inverse Function Theorem | Real Analysis Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  <style>
+    :root{
+      --bg:#f7f3ea;
+      --paper:#fffdf8;
+      --card:rgba(255,255,255,.86);
+      --text:#1d2830;
+      --muted:#6d7982;
+      --line:#ddd5c7;
+      --grid:rgba(29,40,48,.075);
+      --good:#287a76;
+      --goodSoft:rgba(40,122,118,.13);
+      --model:#536f91;
+      --modelSoft:rgba(83,111,145,.15);
+      --bad:#c46a55;
+      --badSoft:rgba(196,106,85,.13);
+      --gold:#b58a3c;
+      --goldSoft:rgba(181,138,60,.14);
+      --violet:#7b64ae;
+      --violetSoft:rgba(123,100,174,.13);
+      --shadow:0 18px 44px rgba(38,48,58,.08);
+      --switch:#eee7da;
+      --thumb:#fffaf0;
+    }
+    body.dark{
+      --bg:#0d1318;
+      --paper:#121b22;
+      --card:rgba(18,27,34,.86);
+      --text:#edf4f6;
+      --muted:#aab7c0;
+      --line:#26333d;
+      --grid:rgba(237,244,246,.08);
+      --good:#6ccbc3;
+      --goodSoft:rgba(108,203,195,.14);
+      --model:#9abce0;
+      --modelSoft:rgba(154,188,224,.16);
+      --bad:#ef9a82;
+      --badSoft:rgba(239,154,130,.17);
+      --gold:#e0bd70;
+      --goldSoft:rgba(224,189,112,.15);
+      --violet:#c0a7ff;
+      --violetSoft:rgba(192,167,255,.14);
+      --shadow:0 22px 54px rgba(0,0,0,.28);
+      --switch:#1a242c;
+      --thumb:#17222b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%,rgba(40,122,118,.07),transparent 25%),
+        radial-gradient(circle at 100% 0%,rgba(83,111,145,.06),transparent 22%),
+        linear-gradient(180deg,#fbf8f2,var(--bg));
+    }
+    body.dark{
+      background:
+        radial-gradient(circle at 0% 0%,rgba(108,203,195,.08),transparent 25%),
+        radial-gradient(circle at 100% 0%,rgba(154,188,224,.08),transparent 22%),
+        linear-gradient(180deg,#101920,var(--bg));
+    }
+    .wrap{max-width:1720px;margin:0 auto;padding:24px 18px 34px}
+    header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+    h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.05rem,4vw,3.35rem);letter-spacing:-.035em;line-height:1.05}
+    .subtitle{margin:.55rem 0 0;color:var(--muted);font-size:1.04rem;line-height:1.55;max-width:1040px}
+    .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04);font-size:.92rem}
+    .theme{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04)}
+    .theme .label{font-size:.92rem;color:var(--muted);min-width:70px}
+    .switch{position:relative;width:70px;height:36px;border-radius:999px;background:var(--switch);border:1px solid var(--line)}
+    .switch:before,.switch:after{position:absolute;top:50%;transform:translateY(-50%);font-size:13px;opacity:.75}
+    .switch:before{content:"☀";left:10px}.switch:after{content:"☾";right:10px}
+    .knob{position:absolute;left:3px;top:3px;width:28px;height:28px;border-radius:50%;background:var(--thumb);border:1px solid var(--line);box-shadow:0 4px 12px rgba(0,0,0,.16);transition:left .25s ease;display:grid;place-items:center;font-size:13px}
+    body.dark .knob{left:37px}
+
+    .layout{display:grid;grid-template-columns:350px minmax(0,1fr);gap:18px;align-items:start}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+    aside{padding:18px;position:sticky;top:16px}
+    .head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px}
+    h2,h3{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.02em;margin:0}
+    .head p{margin:4px 0 0;color:var(--muted);font-size:.94rem;line-height:1.42}
+    .tag{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:var(--muted);font-size:.82rem;white-space:nowrap;background:rgba(127,127,127,.04)}
+    .eq,.note{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:12px 14px;margin-bottom:14px}
+    .eq{font-size:.89rem}
+    .note{color:var(--muted);font-size:.93rem;line-height:1.5}
+    .control{margin:14px 0 16px}
+    .control label{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;font-weight:650}
+    .control small{color:var(--muted);font-weight:500}
+    select{width:100%;background:var(--paper);color:var(--text);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.98rem}
+    input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:8px;border-radius:999px;border:1px solid var(--line);background:linear-gradient(90deg,var(--good),var(--good));background-repeat:no-repeat;background-size:50% 100%}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--good);border:2px solid var(--paper);box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer}
+    .pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .miniMatrix{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:10px}
+    .miniMatrix strong{display:block;font-size:.86rem;margin-bottom:8px;color:var(--muted)}
+    .matrixBox{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.90rem;line-height:1.5;white-space:pre;text-align:center}
+
+    main{display:grid;gap:18px}
+    .hero{padding:18px}
+    .heroTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+    .heroTop p{margin:4px 0 0;color:var(--muted);line-height:1.45;max-width:960px}
+    .status{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:.92rem;background:var(--goodSoft);color:var(--good);white-space:nowrap}
+    .split{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .svgBox{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:10px}
+    .plotSvg{display:block;width:100%;height:auto}
+    .metrics{display:grid;gap:10px}
+    .metric{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:14px}
+    .metric h4{font-family:Georgia,"Times New Roman",serif;margin:0 0 6px;font-size:1rem}
+    .metric p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.4}
+    .metric strong{display:block;margin-top:7px;color:var(--good)}
+    .panel{padding:18px}
+    .explainRow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+    .explainBox,.explainMini{background:linear-gradient(180deg, rgba(127,127,127,.05), rgba(127,127,127,.02)), var(--paper);border:1px solid var(--line);border-radius:18px;padding:12px 14px}
+    .explainBox h4,.explainMini h4{margin:0 0 6px;font-family:Georgia,"Times New Roman",serif;font-size:1rem;letter-spacing:-.01em}
+    .explainBox p,.explainMini p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.46}
+    .footer{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .footer div{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.92rem;line-height:1.42}
+
+    @media(max-width:1240px){.layout{grid-template-columns:1fr}aside{position:static}.split,.grid2{grid-template-columns:1fr}}
+    @media(max-width:900px){.footer,.pair,.explainRow{grid-template-columns:1fr}.wrap{padding:18px 14px 28px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Inverse function theorem</h1>
+        <p class="subtitle">The right picture for the theorem is a microscope: zoom near \(a\), replace \(F\) by its best linear map \(DF(a)\), and ask whether that linear map collapses any direction. If it does not, \(F\) is locally reversible.</p>
+      </div>
+      <div class="actions">
+        <div class="pill">clean local microscope</div>
+        <div class="pill">domain disk → image patch</div>
+        <div class="pill">regular versus singular geometry</div>
+        <div id="theme" class="theme" role="button" tabindex="0">
+          <span id="themeLabel" class="label">light mode</span>
+          <div class="switch"><div id="knob" class="knob">☀</div></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="card">
+        <div class="head">
+          <div>
+            <h2>Controls</h2>
+            <p>Choose a map, move the point, and test how a nearby target point is pulled back.</p>
+          </div>
+          <div class="tag">local inverse</div>
+        </div>
+
+        <div class="eq">
+          \[
+          F:\mathbb R^n\to\mathbb R^n,\quad F\in C^1,
+          \qquad \det DF(a)\neq0
+          \]
+          \[
+          \Longrightarrow
+          \exists U\ni a,\ V\ni F(a):
+          F|_U:U\to V\text{ is a }C^1\text{ diffeomorphism}
+          \]
+          \[
+          D(F^{-1})(F(a))=(DF(a))^{-1}
+          \]
+          \[
+          \det DF(a)=0
+          \quad\text{means the theorem gives no local inverse.}
+          \]
+        </div>
+
+        <div class="control">
+          <label>Map \(F\) <small id="mapLabel"></small></label>
+          <select id="mapSelect">
+            <option value="twist">regular smooth twist</option>
+            <option value="square">complex square: local vs global</option>
+            <option value="fold">fold map: singular line</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label>Point mode <small id="modeLabel"></small></label>
+          <select id="modeSelect">
+            <option value="regular">regular point</option>
+            <option value="singular">singular point</option>
+            <option value="free">free point</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label>Base point \(a=(a_1,a_2)\) <small id="pointLabel"></small></label>
+          <div class="pair">
+            <input id="pxSlider" type="range" min="-1.4" max="1.4" step="0.01" value="0.45">
+            <input id="pySlider" type="range" min="-1.4" max="1.4" step="0.01" value="-0.35">
+          </div>
+        </div>
+
+        <div class="control">
+          <label>Microscope radius \(\rho\) <small id="rhoLabel"></small></label>
+          <input id="rhoSlider" type="range" min="0.14" max="0.72" step="0.01" value="0.34">
+        </div>
+
+        <div class="control">
+          <label>Target perturbation size <small id="etaLabel"></small></label>
+          <input id="etaSlider" type="range" min="0.03" max="0.55" step="0.01" value="0.18">
+        </div>
+
+        <div class="control">
+          <label>Target perturbation angle \(\theta\) <small id="thetaLabel"></small></label>
+          <input id="thetaSlider" type="range" min="0" max="6.28318" step="0.01" value="0.82">
+        </div>
+
+        <div class="miniMatrix">
+          <strong>Local data</strong>
+          <div id="matrixBox" class="matrixBox"></div>
+        </div>
+
+        <div class="note" id="formulaBox"></div>
+        <div class="note" id="noticeBox"></div>
+      </aside>
+
+      <main>
+        <section class="card hero">
+          <div class="heroTop">
+            <div>
+              <h2>Main theorem diagram</h2>
+              <p>Left: a small disk \(U\) around \(a\). Right: its image under \(F\). The dashed blue ellipse is the linear prediction \(F(a)+DF(a)(U-a)\). If the dashed ellipse has area, the nonlinear image is locally reversible.</p>
+            </div>
+            <div id="status" class="status">local diffeomorphism test</div>
+          </div>
+
+          <div class="split">
+            <div class="svgBox">
+              <svg id="mainSvg" class="plotSvg" viewBox="0 0 1420 760"></svg>
+            </div>
+            <div class="metrics">
+              <div class="metric">
+                <h4>Jacobian determinant</h4>
+                <p>Area scale of the local linear map.</p>
+                <strong id="detMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Local inverse</h4>
+                <p>Nearby target \(y\) traced back to a source point.</p>
+                <strong id="invMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Linear inverse</h4>
+                <p>First approximation \(a+(DF(a))^{-1}(y-F(a))\).</p>
+                <strong id="linMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Orientation</h4>
+                <p>Sign of the determinant.</p>
+                <strong id="oriMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Singularity</h4>
+                <p>Collapse or fold warning.</p>
+                <strong id="warnMetric"></strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="explainRow">
+            <div class="explainBox">
+              <h4>Nonsingular Jacobian</h4>
+              <p>Invertibility of \(DF(a)\) means the local linear map sends small disks to non-collapsed ellipses. No direction is lost.</p>
+            </div>
+            <div class="explainBox">
+              <h4>Local diffeomorphism</h4>
+              <p>The conclusion is local: around \(a\), \(F\) has a smooth inverse even if the same map may fail to be globally one-to-one elsewhere.</p>
+            </div>
+            <div class="explainBox">
+              <h4>Singular failure</h4>
+              <p>If \(\det DF(a)=0\), the theorem no longer applies. The examples show typical failures: folding or angle-doubling at the origin.</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="grid2">
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Jacobian microscope</h3>
+                <p>This removes the nonlinear map and shows only \(h\mapsto DF(a)h\). A circle becomes an ellipse if \(DF(a)\) is nonsingular and collapses when singular.</p>
+              </div>
+              <div class="tag">linear core</div>
+            </div>
+            <div class="svgBox">
+              <svg id="microSvg" class="plotSvg" viewBox="0 0 1180 620"></svg>
+            </div>
+            <div class="explainMini">
+              <h4>Short explanation</h4>
+              <p>The theorem works because the nonlinear map is close to its Jacobian at small scales. When the Jacobian is invertible, the nonlinear image inherits a local inverse.</p>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Regular versus singular behavior</h3>
+                <p>Regular points create one clean nearby preimage. Singular points can produce two nearby preimages or a flattened image direction.</p>
+              </div>
+              <div class="tag">failure modes</div>
+            </div>
+            <div class="svgBox">
+              <svg id="failureSvg" class="plotSvg" viewBox="0 0 1180 620"></svg>
+            </div>
+            <div class="explainMini">
+              <h4>Short explanation</h4>
+              <p>Singularity does not logically prove non-invertibility in every possible example, but it removes the theorem's guarantee. These maps show the canonical geometric failures.</p>
+            </div>
+          </section>
+        </div>
+
+        <section class="footer">
+          <div><strong>IFT condition.</strong> \(F\in C^1\), same input/output dimension, and \(\det DF(a)\neq0\).</div>
+          <div><strong>Geometric meaning.</strong> A small neighborhood around \(a\) is deformed without folding or flattening into a neighborhood around \(F(a)\).</div>
+          <div><strong>Derivative of inverse.</strong> The inverse map has derivative \((DF(a))^{-1}\) at \(F(a)\).</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+<script>
+  const maps = {
+    twist:{
+      label:'regular smooth twist',
+      formula:'\\[F(x,y)=\\big(x+0.32\\sin y,\\ y+0.24\\sin x\\big).\\]',
+      notice:'A gentle nonlinear deformation. In the visible range its determinant stays away from zero, so the theorem applies robustly.',
+      regular:[0.45,-0.35],
+      singular:[0,0],
+      hasTrueSingular:false,
+      f:(x,y)=>[x+0.32*Math.sin(y), y+0.24*Math.sin(x)],
+      J:(x,y)=>[[1,0.32*Math.cos(y)],[0.24*Math.cos(x),1]]
+    },
+    square:{
+      label:'complex square map',
+      formula:'\\[F(x,y)=\\big(x^2-y^2,\\ 2xy\\big).\\]',
+      notice:'Away from the origin the map is locally invertible. At the origin the Jacobian is zero; nearby targets usually have two square-root preimages.',
+      regular:[0.80,0.45],
+      singular:[0,0],
+      hasTrueSingular:true,
+      f:(x,y)=>[x*x-y*y,2*x*y],
+      J:(x,y)=>[[2*x,-2*y],[2*y,2*x]]
+    },
+    fold:{
+      label:'fold map',
+      formula:'\\[F(x,y)=\\big(x^2+0.20y,\\ y\\big).\\]',
+      notice:'The singular set is the vertical line \(x=0\). The image folds across this line, so one nearby target can have two nearby source points.',
+      regular:[0.82,0.20],
+      singular:[0,0.20],
+      hasTrueSingular:true,
+      f:(x,y)=>[x*x+0.20*y,y],
+      J:(x,y)=>[[2*x,0.20],[0,1]]
+    }
+  };
+
+  const state = {
+    map:'twist',
+    mode:'regular',
+    px:0.45,
+    py:-0.35,
+    rho:0.34,
+    eta:0.18,
+    theta:0.82,
+    theme:localStorage.getItem('ift-refined-theme') || 'light',
+    initialized:false
+  };
+
+  const el = {
+    theme:document.getElementById('theme'),
+    themeLabel:document.getElementById('themeLabel'),
+    knob:document.getElementById('knob'),
+    mapSelect:document.getElementById('mapSelect'),
+    modeSelect:document.getElementById('modeSelect'),
+    pxSlider:document.getElementById('pxSlider'),
+    pySlider:document.getElementById('pySlider'),
+    rhoSlider:document.getElementById('rhoSlider'),
+    etaSlider:document.getElementById('etaSlider'),
+    thetaSlider:document.getElementById('thetaSlider'),
+    mapLabel:document.getElementById('mapLabel'),
+    modeLabel:document.getElementById('modeLabel'),
+    pointLabel:document.getElementById('pointLabel'),
+    rhoLabel:document.getElementById('rhoLabel'),
+    etaLabel:document.getElementById('etaLabel'),
+    thetaLabel:document.getElementById('thetaLabel'),
+    matrixBox:document.getElementById('matrixBox'),
+    formulaBox:document.getElementById('formulaBox'),
+    noticeBox:document.getElementById('noticeBox'),
+    status:document.getElementById('status'),
+    mainSvg:document.getElementById('mainSvg'),
+    microSvg:document.getElementById('microSvg'),
+    failureSvg:document.getElementById('failureSvg'),
+    detMetric:document.getElementById('detMetric'),
+    invMetric:document.getElementById('invMetric'),
+    linMetric:document.getElementById('linMetric'),
+    oriMetric:document.getElementById('oriMetric'),
+    warnMetric:document.getElementById('warnMetric')
+  };
+
+  const css=v=>getComputedStyle(document.body).getPropertyValue(v).trim();
+  const add=(a,b)=>[a[0]+b[0],a[1]+b[1]];
+  const sub=(a,b)=>[a[0]-b[0],a[1]-b[1]];
+  const mul=(c,v)=>[c*v[0],c*v[1]];
+  const norm=v=>Math.hypot(v[0],v[1]);
+  const matVec=(A,v)=>[A[0][0]*v[0]+A[0][1]*v[1],A[1][0]*v[0]+A[1][1]*v[1]];
+  const det2=A=>A[0][0]*A[1][1]-A[0][1]*A[1][0];
+  const inv2=A=>{
+    const d=det2(A);
+    if(Math.abs(d)<1e-10) return null;
+    return [[A[1][1]/d,-A[0][1]/d],[-A[1][0]/d,A[0][0]/d]];
+  };
+  const fmt=x=>{
+    if(!Number.isFinite(x)) return '—';
+    if(Math.abs(x)>9999) return x.toExponential(2);
+    return (x<0?'−':'')+Math.abs(x).toFixed(3);
+  };
+  const fmtVec=v=>`(${fmt(v[0])}, ${fmt(v[1])})`;
+  const lin=(x,a,b,c,d)=>c+(x-a)*(d-c)/(b-a);
+  function fill(input){
+    const min=+input.min,max=+input.max,val=+input.value;
+    input.style.backgroundSize=((val-min)/(max-min)*100)+'% 100%';
+  }
+  function txt(x,y,s,o={}){
+    return `<text x="${x}" y="${y}" fill="${o.fill||css('--text')}" font-size="${o.size||14}" font-family="${o.family||'Inter, sans-serif'}" font-weight="${o.weight||500}" text-anchor="${o.anchor||'start'}">${s}</text>`;
+  }
+  function arrow(x1,y1,x2,y2,color,w=3,dash=''){
+    const ang=Math.atan2(y2-y1,x2-x1), h=11;
+    const a1=ang-Math.PI/7, a2=ang+Math.PI/7;
+    const hx1=x2-h*Math.cos(a1), hy1=y2-h*Math.sin(a1);
+    const hx2=x2-h*Math.cos(a2), hy2=y2-h*Math.sin(a2);
+    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${w}" stroke-linecap="round" ${dash?`stroke-dasharray="${dash}"`:''}/>
+            <path d="M ${x2} ${y2} L ${hx1} ${hy1} M ${x2} ${y2} L ${hx2} ${hy2}" stroke="${color}" stroke-width="${w}" fill="none" stroke-linecap="round" ${dash?`stroke-dasharray="${dash}"`:''}/>`;
+  }
+  function circlePoints(c,r,n=180){
+    const pts=[];
+    for(let i=0;i<=n;i++){
+      const t=2*Math.PI*i/n;
+      pts.push([c[0]+r*Math.cos(t),c[1]+r*Math.sin(t)]);
+    }
+    return pts;
+  }
+  function polyline(points,T){
+    return points.map((p,i)=>{
+      const q=T(p);
+      return `${i?'L':'M'} ${q[0].toFixed(2)} ${q[1].toFixed(2)}`;
+    }).join(' ');
+  }
+
+  function setTheme(t){
+    state.theme=t;
+    document.body.classList.toggle('dark',t==='dark');
+    localStorage.setItem('ift-refined-theme',t);
+    el.themeLabel.textContent=t==='dark'?'dark mode':'light mode';
+    el.knob.textContent=t==='dark'?'☾':'☀';
+    if(state.initialized) render();
+  }
+
+  function sampleBounds(points, padRatio=.16){
+    let xmin=Infinity,xmax=-Infinity,ymin=Infinity,ymax=-Infinity;
+    points.forEach(p=>{
+      if(!Number.isFinite(p[0])||!Number.isFinite(p[1])) return;
+      xmin=Math.min(xmin,p[0]); xmax=Math.max(xmax,p[0]);
+      ymin=Math.min(ymin,p[1]); ymax=Math.max(ymax,p[1]);
+    });
+    if(!Number.isFinite(xmin)){xmin=-1;xmax=1;ymin=-1;ymax=1;}
+    const w=Math.max(xmax-xmin,0.2), h=Math.max(ymax-ymin,0.2);
+    const pad=padRatio*Math.max(w,h);
+    return {xmin:xmin-pad,xmax:xmax+pad,ymin:ymin-pad,ymax:ymax+pad};
+  }
+
+  function imageBounds(mp){
+    const pts=[];
+    const L=1.55;
+    for(let i=0;i<=44;i++){
+      const x=-L+2*L*i/44;
+      for(let j=0;j<=44;j++){
+        const y=-L+2*L*j/44;
+        pts.push(mp.f(x,y));
+      }
+    }
+    return sampleBounds(pts,.14);
+  }
+
+  function newtonInverse(mp,y,x0){
+    let x=[x0[0],x0[1]];
+    for(let k=0;k<12;k++){
+      const Fx=mp.f(x[0],x[1]);
+      const J=mp.J(x[0],x[1]);
+      const Ji=inv2(J);
+      if(!Ji) return {ok:false,x,residual:norm(sub(Fx,y))};
+      const step=matVec(Ji,sub(Fx,y));
+      x=sub(x,step);
+      if(norm(step)<1e-9) break;
+    }
+    const r=norm(sub(mp.f(x[0],x[1]),y));
+    return {ok:r<1e-5,x,residual:r};
+  }
+
+  function singularPreimages(mapName,y){
+    if(mapName==='fold'){
+      const disc=y[0]-0.20*y[1];
+      if(disc<=1e-7) return null;
+      const s=Math.sqrt(disc);
+      return [[s,y[1]],[-s,y[1]]];
+    }
+    if(mapName==='square'){
+      const r=Math.hypot(y[0],y[1]);
+      if(r<=1e-7) return null;
+      const a=Math.atan2(y[1],y[0]);
+      const m=Math.sqrt(r);
+      const p=[m*Math.cos(a/2),m*Math.sin(a/2)];
+      return [p,[-p[0],-p[1]]];
+    }
+    return null;
+  }
+
+  function current(){
+    const mp=maps[state.map];
+    let a=[state.px,state.py];
+    if(state.mode==='regular') a=[mp.regular[0],mp.regular[1]];
+    if(state.mode==='singular') a=[mp.singular[0],mp.singular[1]];
+    const b=mp.f(a[0],a[1]);
+    const J=mp.J(a[0],a[1]);
+    const det=det2(J);
+    const Ji=inv2(J);
+    const eta=[state.eta*Math.cos(state.theta),state.eta*Math.sin(state.theta)];
+    const y=add(b,eta);
+    const xLin=Ji?add(a,matVec(Ji,eta)):null;
+    const inv=Ji?newtonInverse(mp,y,xLin):{ok:false,x:a,residual:NaN};
+    const singularish=Math.abs(det)<0.06;
+    const two=(singularish&&mp.hasTrueSingular)?singularPreimages(state.map,y):null;
+    return {mp,a,b,J,det,Ji,eta,y,xLin,inv,singularish,two};
+  }
+
+  function panel(x,y,w,h,title,subtitle){
+    return `
+      <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="26" fill="transparent" stroke="${css('--line')}" stroke-width="1.4"/>
+      ${txt(x+18,y+31,title,{size:20,weight:700,family:'Georgia, serif'})}
+      ${txt(x+18,y+54,subtitle,{size:13,fill:css('--muted'),weight:650})}
+    `;
+  }
+
+  function makeAxes(box,X,Y){
+    return `
+      <line x1="${X(-10)}" y1="${Y(0)}" x2="${X(10)}" y2="${Y(0)}" stroke="${css('--line')}" stroke-width="1.7"/>
+      <line x1="${X(0)}" y1="${Y(-10)}" x2="${X(0)}" y2="${Y(10)}" stroke="${css('--line')}" stroke-width="1.7"/>
+    `;
+  }
+
+  function drawLocalGrid(a,box,X,Y,opts={}){
+    const r=opts.r || state.rho*1.8;
+    const step=r/3;
+    let s='';
+    for(let k=-3;k<=3;k++){
+      const dx=k*step;
+      s += `<path d="${polyline([[a[0]+dx,a[1]-r],[a[0]+dx,a[1]+r]],p=>[X(p[0]),Y(p[1])])}" stroke="${css('--grid')}" stroke-width="1.25" fill="none"/>`;
+      s += `<path d="${polyline([[a[0]-r,a[1]+dx],[a[0]+r,a[1]+dx]],p=>[X(p[0]),Y(p[1])])}" stroke="${css('--grid')}" stroke-width="1.25" fill="none"/>`;
+    }
+    return s;
+  }
+
+  function renderMainSvg(){
+    const C=current();
+    const left={x:58,y:92,w:560,h:520};
+    const right={x:804,y:92,w:560,h:520};
+    const L=1.65;
+    const DX=x=>lin(x,-L,L,left.x+30,left.x+left.w-30);
+    const DY=y=>lin(y,-L,L,left.y+left.h-30,left.y+30);
+
+    const imgGridPts=[];
+    const imgDiskPts=circlePoints(C.a,state.rho,200).map(p=>C.mp.f(p[0],p[1]));
+    const imgLinPts=circlePoints([0,0],state.rho,200).map(h=>add(C.b,matVec(C.J,h)));
+    for(let i=-4;i<=4;i++){
+      for(let j=0;j<=80;j++){
+        const t=-1.55+3.1*j/80;
+        imgGridPts.push(C.mp.f(i*0.35,t));
+        imgGridPts.push(C.mp.f(t,i*0.35));
+      }
+    }
+    imgGridPts.push(...imgDiskPts,...imgLinPts,C.b,C.y);
+    if(C.xLin) imgGridPts.push(C.mp.f(C.xLin[0],C.xLin[1]));
+    const ib=sampleBounds(imgGridPts,.12);
+    const IX=x=>lin(x,ib.xmin,ib.xmax,right.x+30,right.x+right.w-30);
+    const IY=y=>lin(y,ib.ymin,ib.ymax,right.y+right.h-30,right.y+30);
+
+    let domainGrid='', imageGrid='';
+    for(let k=-4;k<=4;k++){
+      const c=k*0.35;
+      const vLine=[], hLine=[];
+      for(let i=0;i<=90;i++){
+        const t=-1.55+3.1*i/90;
+        vLine.push([c,t]); hLine.push([t,c]);
+      }
+      domainGrid += `<path d="${polyline(vLine,p=>[DX(p[0]),DY(p[1])])}" fill="none" stroke="${css('--grid')}" stroke-width="1.2"/>`;
+      domainGrid += `<path d="${polyline(hLine,p=>[DX(p[0]),DY(p[1])])}" fill="none" stroke="${css('--grid')}" stroke-width="1.2"/>`;
+      imageGrid += `<path d="${polyline(vLine,p=>{const q=C.mp.f(p[0],p[1]);return [IX(q[0]),IY(q[1])];})}" fill="none" stroke="${css('--grid')}" stroke-width="1.2"/>`;
+      imageGrid += `<path d="${polyline(hLine,p=>{const q=C.mp.f(p[0],p[1]);return [IX(q[0]),IY(q[1])];})}" fill="none" stroke="${css('--grid')}" stroke-width="1.2"/>`;
+    }
+
+    const disk=circlePoints(C.a,state.rho,200);
+    const e1=add(C.a,[0.27,0]), e2=add(C.a,[0,0.27]);
+    const e1i=add(C.b,matVec(C.J,[0.27,0])), e2i=add(C.b,matVec(C.J,[0,0.27]));
+    const actualPre=C.inv.ok ? C.inv.x : null;
+
+    const color=Math.abs(C.det)>0.06 ? css('--good') : css('--bad');
+
+    el.mainSvg.innerHTML=`
+      <defs>
+        <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="2.2" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <marker id="arrMain" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 Z" fill="${css('--line')}"/>
+        </marker>
+      </defs>
+      <rect x="0" y="0" width="1420" height="760" rx="28" fill="${css('--paper')}"/>
+      ${panel(left.x,left.y,left.w,left.h,'source neighborhood U','small disk around a')}
+      ${panel(right.x,right.y,right.w,right.h,'target neighborhood V','image of U around F(a)')}
+
+      ${domainGrid}
+      <path d="${polyline(disk,p=>[DX(p[0]),DY(p[1])])}" fill="${css('--badSoft')}" stroke="${css('--bad')}" stroke-width="3.4"/>
+      ${arrow(DX(C.a[0]),DY(C.a[1]),DX(e1[0]),DY(e1[1]),css('--gold'),3.3)}
+      ${arrow(DX(C.a[0]),DY(C.a[1]),DX(e2[0]),DY(e2[1]),css('--violet'),3.3)}
+      <circle cx="${DX(C.a[0])}" cy="${DY(C.a[1])}" r="7" fill="${css('--gold')}" stroke="${css('--paper')}" stroke-width="2"/>
+      ${txt(DX(C.a[0])+10,DY(C.a[1])-10,'a',{size:16,fill:css('--gold'),weight:800})}
+
+      ${actualPre ? `<circle cx="${DX(actualPre[0])}" cy="${DY(actualPre[1])}" r="6" fill="${css('--good')}" stroke="${css('--paper')}" stroke-width="2"/>
+      <line x1="${DX(C.a[0])}" y1="${DY(C.a[1])}" x2="${DX(actualPre[0])}" y2="${DY(actualPre[1])}" stroke="${css('--good')}" stroke-width="2.5" stroke-dasharray="6 5"/>
+      ${txt(DX(actualPre[0])+8,DY(actualPre[1])+18,'actual inverse',{size:14,fill:css('--good'),weight:750})}` : ''}
+
+      ${C.xLin ? `<circle cx="${DX(C.xLin[0])}" cy="${DY(C.xLin[1])}" r="5.5" fill="${css('--model')}" stroke="${css('--paper')}" stroke-width="2"/>
+      ${txt(DX(C.xLin[0])+8,DY(C.xLin[1])-10,'linear inverse',{size:13,fill:css('--model'),weight:750})}` : ''}
+
+      <path d="M 650 315 C 710 315, 740 315, 790 315" fill="none" stroke="${css('--line')}" stroke-width="2.6" marker-end="url(#arrMain)"/>
+      ${txt(720,295,'F',{size:22,fill:css('--muted'),weight:800,family:'Georgia, serif',anchor:'middle'})}
+
+      ${imageGrid}
+      <path d="${polyline(imgDiskPts,p=>[IX(p[0]),IY(p[1])])}" fill="${Math.abs(C.det)>0.06?css('--goodSoft'):css('--badSoft')}" stroke="${color}" stroke-width="3.4" filter="url(#softGlow)"/>
+      <path d="${polyline(imgLinPts,p=>[IX(p[0]),IY(p[1])])}" fill="none" stroke="${css('--model')}" stroke-width="3.2" stroke-dasharray="9 7"/>
+      ${arrow(IX(C.b[0]),IY(C.b[1]),IX(e1i[0]),IY(e1i[1]),css('--gold'),3.3)}
+      ${arrow(IX(C.b[0]),IY(C.b[1]),IX(e2i[0]),IY(e2i[1]),css('--violet'),3.3)}
+      <circle cx="${IX(C.b[0])}" cy="${IY(C.b[1])}" r="7" fill="${css('--gold')}" stroke="${css('--paper')}" stroke-width="2"/>
+      ${txt(IX(C.b[0])+10,IY(C.b[1])-10,'F(a)',{size:16,fill:css('--gold'),weight:800})}
+      <circle cx="${IX(C.y[0])}" cy="${IY(C.y[1])}" r="6.5" fill="${css('--model')}" stroke="${css('--paper')}" stroke-width="2"/>
+      ${txt(IX(C.y[0])+8,IY(C.y[1])-10,'target y',{size:14,fill:css('--model'),weight:750})}
+
+      <rect x="510" y="642" width="400" height="64" rx="22" fill="${Math.abs(C.det)>0.06?css('--goodSoft'):css('--badSoft')}" stroke="${css('--line')}"/>
+      ${txt(710,668,Math.abs(C.det)>0.06?'non-collapsed local image: inverse theorem applies':'collapsed/folded local image: theorem does not apply',{size:17,fill:color,weight:800,family:'Georgia, serif',anchor:'middle'})}
+      ${txt(710,694,`det DF(a) ≈ ${fmt(C.det)}`,{size:15,fill:css('--muted'),weight:750,anchor:'middle'})}
+    `;
+  }
+
+  function renderMicroSvg(){
+    const C=current();
+    const left={x:58,y:94,w:490,h:400};
+    const right={x:632,y:94,w:490,h:400};
+    const r=state.rho;
+    const hs=Math.max(r*1.45,0.35);
+    const X=x=>lin(x,-hs,hs,left.x+40,left.x+left.w-40);
+    const Y=y=>lin(y,-hs,hs,left.y+left.h-40,left.y+40);
+    const circle=circlePoints([0,0],r,200);
+    const square=[[-r,-r],[r,-r],[r,r],[-r,r],[-r,-r]];
+    const ell=circle.map(h=>matVec(C.J,h));
+    const psq=square.map(h=>matVec(C.J,h));
+    const bounds=sampleBounds([...ell,...psq,C.eta],.25);
+    const KX=x=>lin(x,bounds.xmin,bounds.xmax,right.x+40,right.x+right.w-40);
+    const KY=y=>lin(y,bounds.ymin,bounds.ymax,right.y+right.h-40,right.y+40);
+
+    const hLin=C.xLin?sub(C.xLin,C.a):[0,0];
+    const color=Math.abs(C.det)>0.06?css('--good'):css('--bad');
+
+    el.microSvg.innerHTML=`
+      <defs><marker id="marr" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="${css('--line')}"/></marker></defs>
+      <rect x="0" y="0" width="1180" height="620" rx="26" fill="${css('--paper')}"/>
+      ${panel(left.x,left.y,left.w,left.h,'source displacement h','circle and square near 0')}
+      ${panel(right.x,right.y,right.w,right.h,'linear image DF(a)h','ellipse/parallelogram local model')}
+
+      ${makeAxes(left,X,Y)}
+      <path d="${polyline(circle,p=>[X(p[0]),Y(p[1])])}" fill="${css('--badSoft')}" stroke="${css('--bad')}" stroke-width="3.2"/>
+      <path d="${polyline(square,p=>[X(p[0]),Y(p[1])])}" fill="none" stroke="${css('--gold')}" stroke-width="2.8"/>
+      ${arrow(X(0),Y(0),X(r*0.72),Y(0),css('--gold'),3)}
+      ${arrow(X(0),Y(0),X(0),Y(r*0.72),css('--violet'),3)}
+      <circle cx="${X(hLin[0])}" cy="${Y(hLin[1])}" r="6" fill="${css('--model')}" stroke="${css('--paper')}" stroke-width="2"/>
+      ${txt(X(hLin[0])+8,Y(hLin[1])-8,'J⁻¹η',{size:14,fill:css('--model'),weight:750})}
+
+      ${makeAxes(right,KX,KY)}
+      <path d="${polyline(ell,p=>[KX(p[0]),KY(p[1])])}" fill="${Math.abs(C.det)>0.06?css('--goodSoft'):css('--badSoft')}" stroke="${color}" stroke-width="3.2"/>
+      <path d="${polyline(psq,p=>[KX(p[0]),KY(p[1])])}" fill="none" stroke="${css('--gold')}" stroke-width="2.8"/>
+      ${arrow(KX(0),KY(0),KX(matVec(C.J,[r*0.72,0])[0]),KY(matVec(C.J,[r*0.72,0])[1]),css('--gold'),3)}
+      ${arrow(KX(0),KY(0),KX(matVec(C.J,[0,r*0.72])[0]),KY(matVec(C.J,[0,r*0.72])[1]),css('--violet'),3)}
+      <circle cx="${KX(C.eta[0])}" cy="${KY(C.eta[1])}" r="6" fill="${css('--model')}" stroke="${css('--paper')}" stroke-width="2"/>
+      ${txt(KX(C.eta[0])+8,KY(C.eta[1])-8,'η',{size:14,fill:css('--model'),weight:750})}
+
+      <path d="M 565 265 C 590 265, 600 265, 618 265" fill="none" stroke="${css('--line')}" stroke-width="2.6" marker-end="url(#marr)"/>
+      ${txt(590,246,'DF(a)',{size:20,fill:css('--muted'),weight:800,family:'Georgia, serif',anchor:'middle'})}
+
+      <rect x="432" y="520" width="316" height="58" rx="20" fill="${Math.abs(C.det)>0.06?css('--goodSoft'):css('--badSoft')}" stroke="${css('--line')}"/>
+      ${txt(590,544,Math.abs(C.det)>0.06?'ellipse has nonzero area':'ellipse collapses toward a segment',{size:17,fill:color,weight:800,family:'Georgia, serif',anchor:'middle'})}
+      ${txt(590,568,`area scale = |det DF(a)| ≈ ${fmt(Math.abs(C.det))}`,{size:14,fill:css('--muted'),weight:750,anchor:'middle'})}
+    `;
+  }
+
+  function renderFailureSvg(){
+    const C=current();
+    const left={x:58,y:94,w:490,h:400};
+    const right={x:632,y:94,w:490,h:400};
+    const L=1.15;
+    const XL=x=>lin(x,-L,L,left.x+45,left.x+left.w-45);
+    const YL=y=>lin(y,-L,L,left.y+left.h-45,left.y+45);
+    const XR=x=>lin(x,-L,L,right.x+45,right.x+right.w-45);
+    const YR=y=>lin(y,-L,L,right.y+right.h-45,right.y+45);
+
+    let leftContent='', rightContent='', subtitle='', title='';
+    if(Math.abs(C.det)>0.06 && C.inv.ok){
+      const hActual=sub(C.inv.x,C.a);
+      const hLin=C.xLin?sub(C.xLin,C.a):hActual;
+      leftContent=`
+        <path d="${polyline(circlePoints([0,0],state.rho,150),p=>[XL(p[0]),YL(p[1])])}" fill="${css('--badSoft')}" stroke="${css('--bad')}" stroke-width="3.0"/>
+        <circle cx="${XL(0)}" cy="${YL(0)}" r="6" fill="${css('--gold')}"/>
+        <circle cx="${XL(hActual[0])}" cy="${YL(hActual[1])}" r="6" fill="${css('--good')}"/>
+        <circle cx="${XL(hLin[0])}" cy="${YL(hLin[1])}" r="5.5" fill="${css('--model')}"/>
+        ${arrow(XL(0),YL(0),XL(hActual[0]),YL(hActual[1]),css('--good'),3,'6 5')}
+        ${txt(XL(hActual[0])+8,YL(hActual[1])+18,'unique nearby source',{size:14,fill:css('--good'),weight:750})}
+      `;
+      rightContent=`
+        <circle cx="${XR(0)}" cy="${YR(0)}" r="6" fill="${css('--gold')}"/>
+        <circle cx="${XR(C.eta[0])}" cy="${YR(C.eta[1])}" r="6" fill="${css('--model')}"/>
+        ${arrow(XR(0),YR(0),XR(C.eta[0]),YR(C.eta[1]),css('--model'),3,'6 5')}
+        ${txt(XR(C.eta[0])+8,YR(C.eta[1])-8,'nearby target',{size:14,fill:css('--model'),weight:750})}
+      `;
+      title='regular point';
+      subtitle='one target near F(a) corresponds to one source near a';
+    } else {
+      const two=C.two;
+      if(two){
+        const h1=sub(two[0],C.a), h2=sub(two[1],C.a);
+        leftContent=`
+          <path d="${polyline(circlePoints([0,0],state.rho,150),p=>[XL(p[0]),YL(p[1])])}" fill="${css('--badSoft')}" stroke="${css('--bad')}" stroke-width="3.0"/>
+          <circle cx="${XL(0)}" cy="${YL(0)}" r="6" fill="${css('--gold')}"/>
+          <circle cx="${XL(h1[0])}" cy="${YL(h1[1])}" r="6" fill="${css('--good')}"/>
+          <circle cx="${XL(h2[0])}" cy="${YL(h2[1])}" r="6" fill="${css('--violet')}"/>
+          ${txt(XL(h1[0])+8,YL(h1[1])-8,'x₁',{size:14,fill:css('--good'),weight:750})}
+          ${txt(XL(h2[0])+8,YL(h2[1])+18,'x₂',{size:14,fill:css('--violet'),weight:750})}
+        `;
+        rightContent=`
+          <circle cx="${XR(0)}" cy="${YR(0)}" r="6" fill="${css('--gold')}"/>
+          <circle cx="${XR(C.eta[0])}" cy="${YR(C.eta[1])}" r="6" fill="${css('--bad')}"/>
+          ${arrow(XR(0),YR(0),XR(C.eta[0]),YR(C.eta[1]),css('--bad'),3,'6 5')}
+          ${txt(XR(C.eta[0])+8,YR(C.eta[1])-8,'same target',{size:14,fill:css('--bad'),weight:750})}
+        `;
+        title='singular fold / branching';
+        subtitle='near singularity, one target can have two nearby preimages';
+      } else {
+        leftContent=`
+          <path d="${polyline(circlePoints([0,0],state.rho,150),p=>[XL(p[0]),YL(p[1])])}" fill="${css('--badSoft')}" stroke="${css('--bad')}" stroke-width="3.0"/>
+          <circle cx="${XL(0)}" cy="${YL(0)}" r="6" fill="${css('--gold')}"/>
+          ${txt(XL(0)+8,YL(0)-8,'singular center',{size:14,fill:css('--gold'),weight:750})}
+        `;
+        rightContent=`
+          <path d="M ${XR(-0.75)} ${YR(0)} L ${XR(0.75)} ${YR(0)}" stroke="${css('--bad')}" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="${XR(0)}" cy="${YR(0)}" r="6" fill="${css('--gold')}"/>
+          ${txt(XR(-0.65),YR(0)-18,'collapsed linear image',{size:14,fill:css('--bad'),weight:750})}
+        `;
+        title='singular collapse';
+        subtitle='the Jacobian loses rank and the theorem cannot start';
+      }
+    }
+
+    el.failureSvg.innerHTML=`
+      <defs><marker id="farr" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="${css('--line')}"/></marker></defs>
+      <rect x="0" y="0" width="1180" height="620" rx="26" fill="${css('--paper')}"/>
+      ${txt(70,48,title,{size:24,weight:800,family:'Georgia, serif'})}
+      ${txt(70,76,subtitle,{size:15,fill:css('--muted'),weight:650})}
+      ${panel(left.x,left.y,left.w,left.h,'source view','centered at a')}
+      ${panel(right.x,right.y,right.w,right.h,'target view','centered at F(a)')}
+
+      ${makeAxes(left,XL,YL)}
+      ${makeAxes(right,XR,YR)}
+      ${leftContent}
+      ${rightContent}
+      <path d="M 560 285 C 590 285, 600 285, 620 285" fill="none" stroke="${css('--line')}" stroke-width="2.6" marker-end="url(#farr)"/>
+      ${txt(590,266,Math.abs(C.det)>0.06?'F locally reversible':'singular geometry',{size:18,fill:css('--muted'),weight:800,family:'Georgia, serif',anchor:'middle'})}
+    `;
+  }
+
+  function updateText(){
+    const C=current();
+    el.mapLabel.textContent=C.mp.label;
+    el.modeLabel.textContent=state.mode;
+    el.pointLabel.textContent=`(${fmt(C.a[0])}, ${fmt(C.a[1])})`;
+    el.rhoLabel.textContent=fmt(state.rho);
+    el.etaLabel.textContent=fmt(state.eta);
+    el.thetaLabel.textContent=fmt(state.theta)+' rad';
+    [el.pxSlider,el.pySlider,el.rhoSlider,el.etaSlider,el.thetaSlider].forEach(fill);
+    el.pxSlider.disabled=state.mode!=='free';
+    el.pySlider.disabled=state.mode!=='free';
+
+    el.matrixBox.textContent=
+      `F(a) = ${fmtVec(C.b)}\n`+
+      `DF(a) = [[${fmt(C.J[0][0])}, ${fmt(C.J[0][1])}],\n`+
+      `         [${fmt(C.J[1][0])}, ${fmt(C.J[1][1])}]]\n`+
+      `det DF(a) = ${fmt(C.det)}\n`+
+      (C.Ji?`DF(a)^(-1) = [[${fmt(C.Ji[0][0])}, ${fmt(C.Ji[0][1])}],\n            [${fmt(C.Ji[1][0])}, ${fmt(C.Ji[1][1])}]]`:'DF(a)^(-1) does not exist');
+
+    el.formulaBox.innerHTML=C.mp.formula;
+    el.noticeBox.innerHTML=C.mp.notice;
+
+    const regular=Math.abs(C.det)>0.06;
+    const col=regular?css('--good'):css('--bad');
+    el.status.textContent=regular?'regular point · local diffeomorphism':'singular point · theorem does not apply';
+    el.status.style.color=col;
+    el.status.style.background=regular?css('--goodSoft'):css('--badSoft');
+
+    el.detMetric.textContent=`det DF(a) ≈ ${fmt(C.det)}`;
+    el.invMetric.textContent=regular&&C.inv.ok?`unique nearby preimage · residual ${fmt(C.inv.residual)}`:(C.two?'two nearby preimages appear':'no local inverse guaranteed');
+    el.linMetric.textContent=C.xLin?`linear preimage ≈ ${fmtVec(C.xLin)}`:'no linear inverse';
+    el.oriMetric.textContent=C.det>0.06?'orientation preserved':(C.det<-0.06?'orientation reversed':'orientation collapses');
+    el.warnMetric.textContent=regular?'non-collapsed local image':(C.two?'fold/branching behavior':'rank loss / collapse');
+  }
+
+  function render(){
+    updateText();
+    renderMainSvg();
+    renderMicroSvg();
+    renderFailureSvg();
+    if(window.MathJax) MathJax.typesetPromise().catch(()=>{});
+  }
+
+  function sync(){
+    const oldMap=state.map;
+    state.map=el.mapSelect.value;
+    state.mode=el.modeSelect.value;
+    if(oldMap!==state.map || state.mode!=='free'){
+      const mp=maps[state.map];
+      const p=state.mode==='singular'?mp.singular:mp.regular;
+      state.px=p[0]; state.py=p[1];
+      el.pxSlider.value=state.px;
+      el.pySlider.value=state.py;
+    }
+    state.px=+el.pxSlider.value;
+    state.py=+el.pySlider.value;
+    state.rho=+el.rhoSlider.value;
+    state.eta=+el.etaSlider.value;
+    state.theta=+el.thetaSlider.value;
+    render();
+  }
+
+  function init(){
+    state.initialized=true;
+    el.mapSelect.value=state.map;
+    el.modeSelect.value=state.mode;
+    el.pxSlider.value=state.px;
+    el.pySlider.value=state.py;
+    el.rhoSlider.value=state.rho;
+    el.etaSlider.value=state.eta;
+    el.thetaSlider.value=state.theta;
+
+    el.mapSelect.addEventListener('change',sync);
+    el.modeSelect.addEventListener('change',sync);
+    el.pxSlider.addEventListener('input',sync);
+    el.pySlider.addEventListener('input',sync);
+    el.rhoSlider.addEventListener('input',sync);
+    el.etaSlider.addEventListener('input',sync);
+    el.thetaSlider.addEventListener('input',sync);
+
+    el.theme.addEventListener('click',()=>setTheme(state.theme==='dark'?'light':'dark'));
+    el.theme.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); setTheme(state.theme==='dark'?'light':'dark'); } });
+
+    setTheme(state.theme);
+  }
+
+  window.addEventListener('load', init);
+</script>
+</body>
+</html>
