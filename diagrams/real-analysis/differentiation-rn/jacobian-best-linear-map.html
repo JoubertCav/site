@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive real analysis diagram for the Jacobian as best linear map.">
+  <title>Jacobian as Best Linear Map | Real Analysis Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script defer src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#f7f3ea;
+      --paper:#fffdf8;
+      --card:rgba(255,255,255,.80);
+      --text:#1d2830;
+      --muted:#6d7982;
+      --line:#ddd5c7;
+      --grid:rgba(29,40,48,.08);
+      --good:#287a76;
+      --goodSoft:rgba(40,122,118,.12);
+      --model:#536f91;
+      --modelSoft:rgba(83,111,145,.16);
+      --bad:#c46a55;
+      --badSoft:rgba(196,106,85,.12);
+      --gold:#b58a3c;
+      --violet:#7b64ae;
+      --violetSoft:rgba(123,100,174,.14);
+      --shadow:0 18px 44px rgba(38,48,58,.08);
+      --switch:#eee7da;
+      --thumb:#fffaf0;
+    }
+    body.dark{
+      --bg:#0d1318;
+      --paper:#121b22;
+      --card:rgba(18,27,34,.84);
+      --text:#edf4f6;
+      --muted:#aab7c0;
+      --line:#26333d;
+      --grid:rgba(237,244,246,.09);
+      --good:#6ccbc3;
+      --goodSoft:rgba(108,203,195,.12);
+      --model:#9abce0;
+      --modelSoft:rgba(154,188,224,.15);
+      --bad:#ef9a82;
+      --badSoft:rgba(239,154,130,.15);
+      --gold:#e0bd70;
+      --violet:#c0a7ff;
+      --violetSoft:rgba(192,167,255,.14);
+      --shadow:0 22px 54px rgba(0,0,0,.28);
+      --switch:#1a242c;
+      --thumb:#17222b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%,rgba(40,122,118,.07),transparent 25%),
+        radial-gradient(circle at 100% 0%,rgba(83,111,145,.05),transparent 22%),
+        linear-gradient(180deg,#fbf8f2,var(--bg));
+    }
+    body.dark{
+      background:
+        radial-gradient(circle at 0% 0%,rgba(108,203,195,.08),transparent 25%),
+        radial-gradient(circle at 100% 0%,rgba(154,188,224,.07),transparent 22%),
+        linear-gradient(180deg,#101920,var(--bg));
+    }
+    .wrap{max-width:1640px;margin:0 auto;padding:24px 18px 34px}
+    header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+    h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.05rem,4vw,3.35rem);letter-spacing:-.035em;line-height:1.04}
+    .subtitle{margin:.55rem 0 0;color:var(--muted);font-size:1.04rem;line-height:1.55;max-width:980px}
+    .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04);font-size:.92rem}
+    .theme{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04)}
+    .theme .label{font-size:.92rem;color:var(--muted);min-width:70px}
+    .switch{position:relative;width:70px;height:36px;border-radius:999px;background:var(--switch);border:1px solid var(--line)}
+    .switch:before,.switch:after{position:absolute;top:50%;transform:translateY(-50%);font-size:13px;opacity:.75}
+    .switch:before{content:"☀";left:10px}.switch:after{content:"☾";right:10px}
+    .knob{position:absolute;left:3px;top:3px;width:28px;height:28px;border-radius:50%;background:var(--thumb);border:1px solid var(--line);box-shadow:0 4px 12px rgba(0,0,0,.16);transition:left .25s ease;display:grid;place-items:center;font-size:13px}
+    body.dark .knob{left:37px}
+
+    .layout{display:grid;grid-template-columns:340px minmax(0,1fr);gap:18px;align-items:start}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+    aside{padding:18px;position:sticky;top:16px}
+    .head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px}
+    h2,h3{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.02em;margin:0}
+    .head p{margin:4px 0 0;color:var(--muted);font-size:.94rem;line-height:1.42}
+    .tag{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:var(--muted);font-size:.82rem;white-space:nowrap;background:rgba(127,127,127,.04)}
+    .eq,.note{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:12px 14px;margin-bottom:14px}
+    .eq{font-size:.89rem}
+    .note{color:var(--muted);font-size:.93rem;line-height:1.5;margin:14px 0 0}
+    .control{margin:14px 0 16px}
+    .control label{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;font-weight:650}
+    .control small{color:var(--muted);font-weight:500}
+    select{width:100%;background:var(--paper);color:var(--text);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.98rem}
+    input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:8px;border-radius:999px;border:1px solid var(--line);background:linear-gradient(90deg,var(--good),var(--good));background-repeat:no-repeat;background-size:50% 100%}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--good);border:2px solid var(--paper);box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer}
+    .pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .matrix{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .miniMatrix{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:10px}
+    .miniMatrix strong{display:block;font-size:.86rem;margin-bottom:8px;color:var(--muted)}
+    .matrixBox{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92rem;line-height:1.5;white-space:pre;text-align:center}
+
+    main{display:grid;gap:18px}
+    .hero{padding:18px}
+    .heroTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+    .heroTop p{margin:4px 0 0;color:var(--muted);line-height:1.45;max-width:860px}
+    .status{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:.92rem;background:var(--goodSoft);color:var(--good);white-space:nowrap}
+    .split{display:grid;grid-template-columns:minmax(0,1fr) 316px;gap:16px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .plotBox,.svgBox{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:10px}
+    .plotSvg{display:block;width:100%;height:auto}
+    #mainPlot{width:100%;height:690px;border-radius:18px;overflow:hidden}
+    .mini3d{width:100%;height:335px;border-radius:18px;overflow:hidden}
+    .metrics{display:grid;gap:10px}
+    .metric{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:14px}
+    .metric h4{font-family:Georgia,"Times New Roman",serif;margin:0 0 6px;font-size:1rem}
+    .metric p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.4}
+    .metric strong{display:block;margin-top:7px;color:var(--good)}
+    .panel{padding:18px}
+    .smallGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .mini{background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.02)), var(--paper);border:1px solid var(--line);border-radius:24px;padding:14px;box-shadow:0 10px 26px rgba(0,0,0,.05);position:relative;overflow:hidden}
+    .mini h4{margin:0 0 10px;font-family:Georgia,"Times New Roman",serif;font-size:1.02rem;letter-spacing:-.015em}
+    .mini p{margin:10px 0 0;color:var(--muted);font-size:.9rem;line-height:1.42}
+    .miniTop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+    .hintPill{padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(127,127,127,.05);color:var(--muted);font-size:.76rem;white-space:nowrap}
+    .miniLegend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .miniLegend span{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);font-size:.76rem;color:var(--muted);background:rgba(127,127,127,.04)}
+    .miniLegend i{display:inline-block;width:10px;height:10px;border-radius:50%}
+    .footer{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .footer div{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.92rem;line-height:1.42}
+    @media(max-width:1240px){.layout{grid-template-columns:1fr}aside{position:static}.split,.grid2{grid-template-columns:1fr}}
+    @media(max-width:900px){.smallGrid,.footer,.pair,.matrix{grid-template-columns:1fr}.wrap{padding:18px 14px 28px}#mainPlot{height:560px}.mini3d{height:300px}}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Jacobian as best linear map</h1>
+        <p class="subtitle">The Jacobian is the matrix of the total derivative: it is the best local linear map. This app makes the approximation visible through local deformation, column vectors, and the chain rule in \(\mathbb R^n\).</p>
+      </div>
+      <div class="actions">
+        <div class="pill">interactive 3D geometry</div>
+        <div class="pill">local deformation</div>
+        <div class="pill">chain rule in \(\mathbb R^n\)</div>
+        <div id="theme" class="theme" role="button" tabindex="0">
+          <span id="themeLabel" class="label">light mode</span>
+          <div class="switch"><div id="knob" class="knob">☀</div></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="card">
+        <div class="head">
+          <div>
+            <h2>Controls</h2>
+            <p>Choose a nonlinear map \(F:\mathbb R^2\to\mathbb R^2\), a base point \(a\), and a local displacement \(h\).</p>
+          </div>
+          <div class="tag">\(J_F(a)\)</div>
+        </div>
+
+        <div class="eq">
+          \[
+          F(a+h)=F(a)+J_F(a)h+r(h),
+          \qquad
+          \frac{\|r(h)\|}{\|h\|}\to 0.
+          \]
+          \[
+          DF(a)\equiv J_F(a):\mathbb R^n\to\mathbb R^m
+          \]
+        </div>
+
+        <div class="control">
+          <label>Inner map \(F\) <small id="mapLabel"></small></label>
+          <select id="mapSelect">
+            <option value="shear">quadratic shear</option>
+            <option value="twist">radial twist</option>
+            <option value="bend">saddle bend</option>
+            <option value="exp">exponential stretch</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label>Outer map \(G\) for chain rule <small id="outerLabel"></small></label>
+          <select id="outerSelect">
+            <option value="affine">affine stretch</option>
+            <option value="nonlinear">nonlinear bend</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label>Base point \(a=(a_1,a_2)\) <small id="pointLabel"></small></label>
+          <div class="pair">
+            <input id="pxSlider" type="range" min="-1.2" max="1.2" step="0.01" value="0.25">
+            <input id="pySlider" type="range" min="-1.2" max="1.2" step="0.01" value="-0.15">
+          </div>
+        </div>
+
+        <div class="control">
+          <label>Displacement angle \(\theta\) <small id="thetaLabel"></small></label>
+          <input id="thetaSlider" type="range" min="0" max="6.28318" step="0.01" value="0.70">
+        </div>
+
+        <div class="control">
+          <label>Displacement length \(t\) <small id="tLabel"></small></label>
+          <input id="tSlider" type="range" min="0.04" max="0.85" step="0.01" value="0.34">
+        </div>
+
+        <div class="control">
+          <label>Neighborhood radius \(\rho\) <small id="rhoLabel"></small></label>
+          <input id="rhoSlider" type="range" min="0.18" max="1.05" step="0.01" value="0.55">
+        </div>
+
+        <div class="matrix">
+          <div class="miniMatrix">
+            <strong>\(J_F(a)\)</strong>
+            <div id="jacBox" class="matrixBox"></div>
+          </div>
+          <div class="miniMatrix">
+            <strong>\(J_G(F(a))\)</strong>
+            <div id="outerJacBox" class="matrixBox"></div>
+          </div>
+        </div>
+
+        <div class="note" id="formulaBox"></div>
+        <div class="note" id="noticeBox"></div>
+      </aside>
+
+      <main>
+        <section class="card hero">
+          <div class="heroTop">
+            <div>
+              <h2>Main 3D local deformation</h2>
+              <p>The lower plane is the domain near \(a\). The upper plane shows the true image patch \(F(a+u)\) and the Jacobian's linear image \(F(a)+J_F(a)u\). Drag to rotate.</p>
+            </div>
+            <div id="status" class="status">best local linear map</div>
+          </div>
+
+          <div class="split">
+            <div class="plotBox">
+              <div id="mainPlot"></div>
+            </div>
+            <div class="metrics">
+              <div class="metric">
+                <h4>Total derivative</h4>
+                <p>Action of \(J_F(a)\) on the chosen vector \(h\).</p>
+                <strong id="linMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>True increment</h4>
+                <p>The actual increment \(F(a+h)-F(a)\).</p>
+                <strong id="actualMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Remainder</h4>
+                <p>Error after subtracting the linear part.</p>
+                <strong id="errorMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Area scaling</h4>
+                <p>\(\det J_F(a)\) gives local signed area deformation in \(\mathbb R^2\).</p>
+                <strong id="detMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Chain rule test</h4>
+                <p>Compare \(J_{G\circ F}(a)\) with \(J_G(F(a))J_F(a)\).</p>
+                <strong id="chainMetric"></strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="grid2">
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Domain patch \(\to\) image patch</h3>
+                <p>The green curved image is the true deformation. The blue parallelogram is the linear image given by the Jacobian.</p>
+              </div>
+              <div class="tag">best local fit</div>
+            </div>
+            <div class="svgBox">
+              <svg id="deformSvg" class="plotSvg" viewBox="0 0 980 520"></svg>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Columns of the Jacobian</h3>
+                <p>The columns of \(J_F(a)\) are the images of the basis vectors \(e_1,e_2\). They generate the linearized local shape.</p>
+              </div>
+              <div class="tag">matrix picture</div>
+            </div>
+            <div class="svgBox">
+              <svg id="columnsSvg" class="plotSvg" viewBox="0 0 980 520"></svg>
+            </div>
+          </section>
+        </div>
+
+        <div class="grid2">
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Local remainder decay</h3>
+                <p>For differentiability, the normalized error \(\|F(a+h)-F(a)-J_F(a)h\|/\|h\|\) tends to \(0\) as \(h\to0\).</p>
+              </div>
+              <div class="tag">differentiability test</div>
+            </div>
+            <div class="svgBox">
+              <svg id="remainderSvg" class="plotSvg" viewBox="0 0 980 520"></svg>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Chain rule as composition of linear maps</h3>
+                <p>The derivative of \(G\circ F\) is the composition of the two Jacobians at the right points.</p>
+              </div>
+              <div class="tag">\(J_{G\circ F}=J_GJ_F\)</div>
+            </div>
+            <div class="svgBox">
+              <svg id="chainSvg" class="plotSvg" viewBox="0 0 980 520"></svg>
+            </div>
+          </section>
+        </div>
+
+        <section class="card panel">
+          <div class="head">
+            <div>
+              <h3>Interactive 3D basis slices</h3>
+              <p>Each small 3D diagram isolates one coordinate column picture: moving only in the \(x\)- or \(y\)-direction and observing the local linear response.</p>
+            </div>
+            <div class="tag">3D too</div>
+          </div>
+          <div class="smallGrid">
+            <div class="mini">
+              <div class="miniTop">
+                <h4>\(e_1\)-direction slice</h4>
+                <div class="hintPill">drag to rotate</div>
+              </div>
+              <div id="basisXPlot" class="mini3d"></div>
+              <div class="miniLegend">
+                <span><i style="background:var(--good)"></i>surface patch</span>
+                <span><i style="background:var(--bad)"></i>slice image</span>
+                <span><i style="background:var(--model)"></i>linear response</span>
+              </div>
+              <p>The first column of \(J_F(a)\) is the linear response to \(e_1\).</p>
+            </div>
+            <div class="mini">
+              <div class="miniTop">
+                <h4>\(e_2\)-direction slice</h4>
+                <div class="hintPill">drag to rotate</div>
+              </div>
+              <div id="basisYPlot" class="mini3d"></div>
+              <div class="miniLegend">
+                <span><i style="background:var(--good)"></i>surface patch</span>
+                <span><i style="background:var(--bad)"></i>slice image</span>
+                <span><i style="background:var(--model)"></i>linear response</span>
+              </div>
+              <p>The second column of \(J_F(a)\) is the linear response to \(e_2\).</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="footer">
+          <div><strong>Best linear map.</strong> The Jacobian is not just a matrix of partials: it is the unique linear map that matches the first-order local deformation.</div>
+          <div><strong>Columns and determinant.</strong> Columns show where basis directions go; the determinant shows local signed area scaling and orientation.</div>
+          <div><strong>Chain rule.</strong> Linearization commutes with composition: first linearize \(F\), then linearize \(G\) at \(F(a)\).</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+<script>
+  const maps = {
+    shear:{
+      label:'quadratic shear',
+      formula:'\\[F(x,y)=\\big(x+0.55y^2,\\ y+0.35x^2\\big).\\]',
+      notice:'A mild nonlinear shear. The image of a small square is curved, but the Jacobian still gives the best local parallelogram.',
+      suggested:[0.25,-0.15],
+      f:(x,y)=>[x+0.55*y*y, y+0.35*x*x],
+      J:(x,y)=>[[1,1.10*y],[0.70*x,1]]
+    },
+    twist:{
+      label:'radial twist',
+      formula:'\\[F(x,y)=R_{0.9r}(x,y),\\quad r=\\sqrt{x^2+y^2}.\\]',
+      notice:'The map rotates by an angle depending on radius. Near one fixed base point, this nonlinear twist still looks almost linear.',
+      suggested:[0.55,0.20],
+      f:(x,y)=>{
+        const r=Math.hypot(x,y);
+        const th=0.9*r;
+        const c=Math.cos(th), s=Math.sin(th);
+        return [c*x - s*y, s*x + c*y];
+      },
+      J:(x,y)=>{
+        const r=Math.hypot(x,y);
+        if(r<1e-8) return [[1,0],[0,1]];
+        const th=0.9*r;
+        const c=Math.cos(th), s=Math.sin(th);
+        const dthdx=0.9*x/r, dthdy=0.9*y/r;
+        const fx_theta = -s*x - c*y;
+        const fy_theta =  c*x - s*y;
+        const fx_x = c + fx_theta*dthdx;
+        const fx_y = -s + fx_theta*dthdy;
+        const fy_x = s + fy_theta*dthdx;
+        const fy_y =  c + fy_theta*dthdy;
+        return [[fx_x,fx_y],[fy_x,fy_y]];
+      }
+    },
+    bend:{
+      label:'saddle bend',
+      formula:'\\[F(x,y)=\\big(x+0.5xy,\\ y+0.25(x^2-y^2)\\big).\\]',
+      notice:'The first component shears with the product \(xy\), while the second bends like a saddle. The Jacobian captures the local deformation at \(a\).',
+      suggested:[0.35,-0.28],
+      f:(x,y)=>[x+0.5*x*y, y+0.25*(x*x-y*y)],
+      J:(x,y)=>[[1+0.5*y,0.5*x],[0.5*x,1-0.5*y]]
+    },
+    exp:{
+      label:'exponential stretch',
+      formula:'\\[F(x,y)=\\big(e^{0.35x}\\cos(0.3y)-1,\\ e^{0.35x}\\sin(0.3y)\\big).\\]',
+      notice:'This map combines angular bending and exponential stretching. Close to a point, the Jacobian is the correct first-order model.',
+      suggested:[0.45,0.35],
+      f:(x,y)=>{
+        const ex=Math.exp(0.35*x);
+        return [ex*Math.cos(0.3*y)-1, ex*Math.sin(0.3*y)];
+      },
+      J:(x,y)=>{
+        const ex=Math.exp(0.35*x), cy=Math.cos(0.3*y), sy=Math.sin(0.3*y);
+        return [[0.35*ex*cy, -0.3*ex*sy],[0.35*ex*sy,0.3*ex*cy]];
+      }
+    }
+  };
+
+  const outers = {
+    affine:{
+      label:'affine stretch',
+      formula:'\\[G(u,v)=\\big(1.2u+0.4v,\\ -0.3u+0.9v\\big).\\]',
+      g:(u,v)=>[1.2*u+0.4*v,-0.3*u+0.9*v],
+      J:(u,v)=>[[1.2,0.4],[-0.3,0.9]]
+    },
+    nonlinear:{
+      label:'nonlinear bend',
+      formula:'\\[G(u,v)=\\big(u+0.25v^2,\\ v+0.2u^2\\big).\\]',
+      g:(u,v)=>[u+0.25*v*v, v+0.2*u*u],
+      J:(u,v)=>[[1,0.5*v],[0.4*u,1]]
+    }
+  };
+
+  const state = {
+    map:'shear',
+    outer:'affine',
+    px:0.25,
+    py:-0.15,
+    theta:0.70,
+    t:0.34,
+    rho:0.55,
+    theme:localStorage.getItem('jacobian-best-linear-map-theme') || 'light',
+    initialized:false
+  };
+
+  const el = {
+    theme:document.getElementById('theme'),
+    themeLabel:document.getElementById('themeLabel'),
+    knob:document.getElementById('knob'),
+    mapSelect:document.getElementById('mapSelect'),
+    outerSelect:document.getElementById('outerSelect'),
+    pxSlider:document.getElementById('pxSlider'),
+    pySlider:document.getElementById('pySlider'),
+    thetaSlider:document.getElementById('thetaSlider'),
+    tSlider:document.getElementById('tSlider'),
+    rhoSlider:document.getElementById('rhoSlider'),
+    mapLabel:document.getElementById('mapLabel'),
+    outerLabel:document.getElementById('outerLabel'),
+    pointLabel:document.getElementById('pointLabel'),
+    thetaLabel:document.getElementById('thetaLabel'),
+    tLabel:document.getElementById('tLabel'),
+    rhoLabel:document.getElementById('rhoLabel'),
+    jacBox:document.getElementById('jacBox'),
+    outerJacBox:document.getElementById('outerJacBox'),
+    formulaBox:document.getElementById('formulaBox'),
+    noticeBox:document.getElementById('noticeBox'),
+    status:document.getElementById('status'),
+    mainPlot:document.getElementById('mainPlot'),
+    deformSvg:document.getElementById('deformSvg'),
+    columnsSvg:document.getElementById('columnsSvg'),
+    remainderSvg:document.getElementById('remainderSvg'),
+    chainSvg:document.getElementById('chainSvg'),
+    basisXPlot:document.getElementById('basisXPlot'),
+    basisYPlot:document.getElementById('basisYPlot'),
+    linMetric:document.getElementById('linMetric'),
+    actualMetric:document.getElementById('actualMetric'),
+    errorMetric:document.getElementById('errorMetric'),
+    detMetric:document.getElementById('detMetric'),
+    chainMetric:document.getElementById('chainMetric')
+  };
+
+  const css=v=>getComputedStyle(document.body).getPropertyValue(v).trim();
+  const lin=(x,a,b,c,d)=>c+(x-a)*(d-c)/(b-a);
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const fmt=x=>{
+    if(!Number.isFinite(x)) return '—';
+    if(Math.abs(x)>9999) return x.toExponential(2);
+    return (x<0?'−':'')+Math.abs(x).toFixed(3);
+  };
+  const fmtVec=v=>`(${fmt(v[0])}, ${fmt(v[1])})`;
+  const matVec=(A,v)=>[A[0][0]*v[0]+A[0][1]*v[1], A[1][0]*v[0]+A[1][1]*v[1]];
+  const matMul=(A,B)=>[
+    [A[0][0]*B[0][0]+A[0][1]*B[1][0], A[0][0]*B[0][1]+A[0][1]*B[1][1]],
+    [A[1][0]*B[0][0]+A[1][1]*B[1][0], A[1][0]*B[0][1]+A[1][1]*B[1][1]]
+  ];
+  const det=A=>A[0][0]*A[1][1]-A[0][1]*A[1][0];
+  const norm=v=>Math.hypot(v[0],v[1]);
+  function fill(input){
+    const min=+input.min,max=+input.max,val=+input.value;
+    input.style.backgroundSize=((val-min)/(max-min)*100)+'% 100%';
+  }
+  function text(x,y,s,o={}){
+    return `<text x="${x}" y="${y}" fill="${o.fill||css('--text')}" font-size="${o.size||14}" font-family="${o.family||'Inter, sans-serif'}" font-weight="${o.weight||500}" text-anchor="${o.anchor||'start'}">${s}</text>`;
+  }
+  function path(points,X,Y){
+    return points.map((p,i)=>`${i?'L':'M'} ${X(p.x).toFixed(2)} ${Y(p.y).toFixed(2)}`).join(' ');
+  }
+  function arrow(x1,y1,x2,y2,color,w=3){
+    const ang=Math.atan2(y2-y1,x2-x1), h=10;
+    const a1=ang-Math.PI/7, a2=ang+Math.PI/7;
+    const hx1=x2-h*Math.cos(a1), hy1=y2-h*Math.sin(a1);
+    const hx2=x2-h*Math.cos(a2), hy2=y2-h*Math.sin(a2);
+    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/>
+            <path d="M ${x2} ${y2} L ${hx1} ${hy1} M ${x2} ${y2} L ${hx2} ${hy2}" stroke="${color}" stroke-width="${w}" fill="none" stroke-linecap="round"/>`;
+  }
+  function matString(A){
+    return `⎡ ${fmt(A[0][0]).padStart(6,' ')}   ${fmt(A[0][1]).padStart(6,' ')} ⎤\n⎣ ${fmt(A[1][0]).padStart(6,' ')}   ${fmt(A[1][1]).padStart(6,' ')} ⎦`;
+  }
+
+  function setTheme(t){
+    state.theme=t;
+    document.body.classList.toggle('dark',t==='dark');
+    localStorage.setItem('jacobian-best-linear-map-theme',t);
+    el.themeLabel.textContent=t==='dark'?'dark mode':'light mode';
+    el.knob.textContent=t==='dark'?'☾':'☀';
+    if(state.initialized) render();
+  }
+
+  function current(){
+    const map=maps[state.map];
+    const outer=outers[state.outer];
+    const a=[state.px,state.py];
+    const h=[state.t*Math.cos(state.theta), state.t*Math.sin(state.theta)];
+    const Fa=map.f(a[0],a[1]);
+    const J=map.J(a[0],a[1]);
+    const actual=map.f(a[0]+h[0], a[1]+h[1]);
+    const Jh=matVec(J,h);
+    const pred=[Fa[0]+Jh[0], Fa[1]+Jh[1]];
+    const inc=[actual[0]-Fa[0], actual[1]-Fa[1]];
+    const rem=[inc[0]-Jh[0], inc[1]-Jh[1]];
+    const GFa=outer.g(Fa[0],Fa[1]);
+    const JG=outer.J(Fa[0],Fa[1]);
+    const comp=matMul(JG,J);
+    const actualComp=outer.g(actual[0],actual[1]);
+    const compInc=[actualComp[0]-GFa[0], actualComp[1]-GFa[1]];
+    const compLin=matVec(comp,h);
+    const compRem=[compInc[0]-compLin[0], compInc[1]-compLin[1]];
+    return {map,outer,a,h,Fa,J,actual,Jh,pred,inc,rem,GFa,JG,comp,actualComp,compInc,compLin,compRem};
+  }
+
+  function renderMainPlot(){
+    if(typeof Plotly==='undefined') return;
+    const C=current(), a=C.a, rho=state.rho;
+    const H=1.8;
+    const n=21;
+
+    const domX=[], domY=[], domZ=[];
+    const imgX=[], imgY=[], imgZ=[];
+    const linX=[], linY=[], linZ=[];
+    const uMin=-rho, uMax=rho, vMin=-rho, vMax=rho;
+
+    for(let j=0;j<n;j++){
+      const v=vMin+(vMax-vMin)*j/(n-1);
+      const rowDX=[], rowDY=[], rowDZ=[];
+      const rowIX=[], rowIY=[], rowIZ=[];
+      const rowLX=[], rowLY=[], rowLZ=[];
+      for(let i=0;i<n;i++){
+        const u=uMin+(uMax-uMin)*i/(n-1);
+        rowDX.push(a[0]+u); rowDY.push(a[1]+v); rowDZ.push(0);
+
+        const Fuv=C.map.f(a[0]+u,a[1]+v);
+        rowIX.push(Fuv[0]); rowIY.push(Fuv[1]); rowIZ.push(H);
+
+        const Luv=[C.Fa[0] + C.J[0][0]*u + C.J[0][1]*v, C.Fa[1] + C.J[1][0]*u + C.J[1][1]*v];
+        rowLX.push(Luv[0]); rowLY.push(Luv[1]); rowLZ.push(H+0.04);
+      }
+      domX.push(rowDX); domY.push(rowDY); domZ.push(rowDZ);
+      imgX.push(rowIX); imgY.push(rowIY); imgZ.push(rowIZ);
+      linX.push(rowLX); linY.push(rowLY); linZ.push(rowLZ);
+    }
+
+    const domainBase=[a[0],a[1],0];
+    const domainTip=[a[0]+C.h[0], a[1]+C.h[1],0];
+    const imgBase=[C.Fa[0], C.Fa[1], H];
+    const imgTip=[C.actual[0], C.actual[1], H];
+    const linTip=[C.pred[0], C.pred[1], H+0.04];
+
+    const traces = [
+      {
+        type:'surface', x:domX, y:domY, z:domZ,
+        colorscale:[[0, css('--violetSoft')],[1, css('--violet')]],
+        opacity:0.36, showscale:false, hoverinfo:'skip'
+      },
+      {
+        type:'surface', x:imgX, y:imgY, z:imgZ,
+        colorscale:[[0, css('--goodSoft')],[1, css('--good')]],
+        opacity:0.94, showscale:false,
+        hovertemplate:'true image patch<br>u=%{x:.3f}<br>v=%{y:.3f}<extra></extra>'
+      },
+      {
+        type:'surface', x:linX, y:linY, z:linZ,
+        colorscale:[[0, css('--modelSoft')],[1, css('--model')]],
+        opacity:0.55, showscale:false,
+        hovertemplate:'linearized patch<extra></extra>'
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:[domainBase[0],domainTip[0]], y:[domainBase[1],domainTip[1]], z:[0,0],
+        line:{color:css('--gold'), width:8}, hovertemplate:'domain h<extra></extra>', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:[imgBase[0],imgTip[0]], y:[imgBase[1],imgTip[1]], z:[H,H],
+        line:{color:css('--bad'), width:8}, hovertemplate:'actual increment<extra></extra>', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:[imgBase[0],linTip[0]], y:[imgBase[1],linTip[1]], z:[H+0.04,H+0.04],
+        line:{color:css('--model'), width:8, dash:'dash'}, hovertemplate:'J(a)h<extra></extra>', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:[imgTip[0],linTip[0]], y:[imgTip[1],linTip[1]], z:[H,H+0.04],
+        line:{color:css('--bad'), width:7}, hoverinfo:'skip', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'markers+text',
+        x:[a[0], C.Fa[0], C.actual[0], C.pred[0]],
+        y:[a[1], C.Fa[1], C.actual[1], C.pred[1]],
+        z:[0,H,H,H+0.04],
+        text:['a','F(a)','F(a+h)','F(a)+J(a)h'],
+        textposition:['bottom center','top center','top center','bottom center'],
+        textfont:{size:12,color:css('--text')},
+        marker:{size:[5,5,5,5], color:[css('--gold'),css('--gold'),css('--bad'),css('--model')]},
+        hoverinfo:'skip', showlegend:false
+      }
+    ];
+
+    const axisBg = state.theme==='dark' ? '#16222b' : '#faf7f1';
+    const layout = {
+      margin:{l:0,r:0,t:0,b:0},
+      paper_bgcolor:'rgba(0,0,0,0)',
+      plot_bgcolor:'rgba(0,0,0,0)',
+      showlegend:false,
+      scene:{
+        bgcolor:'rgba(0,0,0,0)',
+        xaxis:{title:'coordinate 1', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg},
+        yaxis:{title:'coordinate 2', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg},
+        zaxis:{title:'domain → image', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg, range:[-0.1,2.05], tickvals:[0,H,H+0.04], ticktext:['domain','true image','linear image']},
+        aspectmode:'manual',
+        aspectratio:{x:1.05,y:1.0,z:0.72},
+        camera:{eye:{x:1.65,y:1.45,z:0.94}}
+      }
+    };
+    Plotly.react(el.mainPlot, traces, layout, {displayModeBar:false, responsive:true});
+  }
+
+  function renderDeformation(){
+    const C=current(), W=980,H=520;
+    const L={x:58,y:92,w:350,h:340}, R={x:565,y:92,w:350,h:340};
+    const X1=x=>lin(x,C.a[0]-state.rho,C.a[0]+state.rho,L.x,L.x+L.w);
+    const Y1=y=>lin(y,C.a[1]-state.rho,C.a[1]+state.rho,L.y+L.h,L.y);
+    const samples=[];
+    let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+    const N=36;
+    for(let i=0;i<=N;i++){
+      for(let j=0;j<=N;j++){
+        const u=-state.rho + 2*state.rho*i/N;
+        const v=-state.rho + 2*state.rho*j/N;
+        const p=C.map.f(C.a[0]+u,C.a[1]+v);
+        minX=Math.min(minX,p[0]); maxX=Math.max(maxX,p[0]);
+        minY=Math.min(minY,p[1]); maxY=Math.max(maxY,p[1]);
+        samples.push({u,v,p});
+      }
+    }
+    const padX=0.18*(maxX-minX||1), padY=0.18*(maxY-minY||1);
+    minX-=padX; maxX+=padX; minY-=padY; maxY+=padY;
+    const X2=x=>lin(x,minX,maxX,R.x,R.x+R.w);
+    const Y2=y=>lin(y,minY,maxY,R.y+R.h,R.y);
+
+    let grid1='', grid2='';
+    for(let k=0;k<=5;k++){
+      const gx=L.x+L.w*k/5, gy=L.y+L.h*k/5;
+      grid1 += `<line x1="${gx}" y1="${L.y}" x2="${gx}" y2="${L.y+L.h}" stroke="${css('--grid')}"/>`;
+      grid1 += `<line x1="${L.x}" y1="${gy}" x2="${L.x+L.w}" y2="${gy}" stroke="${css('--grid')}"/>`;
+      const gx2=R.x+R.w*k/5, gy2=R.y+R.h*k/5;
+      grid2 += `<line x1="${gx2}" y1="${R.y}" x2="${gx2}" y2="${R.y+R.h}" stroke="${css('--grid')}"/>`;
+      grid2 += `<line x1="${R.x}" y1="${gy2}" x2="${R.x+R.w}" y2="${gy2}" stroke="${css('--grid')}"/>`;
+    }
+
+    // domain square
+    const q=[[-state.rho,-state.rho],[state.rho,-state.rho],[state.rho,state.rho],[-state.rho,state.rho]];
+    const domPoly=q.map(p=>`${X1(C.a[0]+p[0])},${Y1(C.a[1]+p[1])}`).join(' ');
+
+    // true image boundary
+    const curve=[];
+    for(let i=0;i<=50;i++){
+      const s=-state.rho+2*state.rho*i/50; curve.push(C.map.f(C.a[0]+s,C.a[1]-state.rho));
+    }
+    for(let i=0;i<=50;i++){
+      const s=-state.rho+2*state.rho*i/50; curve.push(C.map.f(C.a[0]+state.rho,C.a[1]+s));
+    }
+    for(let i=50;i>=0;i--){
+      const s=-state.rho+2*state.rho*i/50; curve.push(C.map.f(C.a[0]+s,C.a[1]+state.rho));
+    }
+    for(let i=50;i>=0;i--){
+      const s=-state.rho+2*state.rho*i/50; curve.push(C.map.f(C.a[0]-state.rho,C.a[1]+s));
+    }
+    const imgPath = curve.map((p,i)=>`${i?'L':'M'} ${X2(p[0]).toFixed(2)} ${Y2(p[1]).toFixed(2)}`).join(' ') + ' Z';
+
+    // linear parallelogram
+    const linQ=q.map(([u,v])=>[C.Fa[0]+C.J[0][0]*u+C.J[0][1]*v, C.Fa[1]+C.J[1][0]*u+C.J[1][1]*v]);
+    const linPoly=linQ.map(p=>`${X2(p[0])},${Y2(p[1])}`).join(' ');
+
+    el.deformSvg.innerHTML = `
+      <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+      ${text(L.x,40,'domain near a',{size:22,weight:700,family:'Georgia, serif'})}
+      ${text(R.x,40,'true image and Jacobian image',{size:22,weight:700,family:'Georgia, serif'})}
+
+      <rect x="${L.x}" y="${L.y}" width="${L.w}" height="${L.h}" rx="22" fill="transparent" stroke="${css('--line')}"/>
+      ${grid1}
+      <polygon points="${domPoly}" fill="${css('--violetSoft')}" stroke="${css('--violet')}" stroke-width="2.2"/>
+      ${arrow(X1(C.a[0]),Y1(C.a[1]),X1(C.a[0]+C.h[0]),Y1(C.a[1]+C.h[1]),css('--gold'),3.4)}
+      <circle cx="${X1(C.a[0])}" cy="${Y1(C.a[1])}" r="6" fill="${css('--gold')}"/>
+      ${text(X1(C.a[0])+8,Y1(C.a[1])-8,'a',{size:15,fill:css('--gold'),weight:700})}
+      ${text(X1(C.a[0]+C.h[0])+6,Y1(C.a[1]+C.h[1])-6,'a+h',{size:14,fill:css('--gold'),weight:700})}
+
+      ${arrow(446,260,528,260,css('--muted'),3.0)}
+      ${text(487,246,'F',{size:18,fill:css('--muted'),weight:700,family:'Georgia, serif',anchor:'middle'})}
+
+      <rect x="${R.x}" y="${R.y}" width="${R.w}" height="${R.h}" rx="22" fill="transparent" stroke="${css('--line')}"/>
+      ${grid2}
+      <path d="${imgPath}" fill="${css('--goodSoft')}" stroke="${css('--good')}" stroke-width="2.2"/>
+      <polygon points="${linPoly}" fill="${css('--modelSoft')}" stroke="${css('--model')}" stroke-width="2.2"/>
+      ${arrow(X2(C.Fa[0]),Y2(C.Fa[1]),X2(C.actual[0]),Y2(C.actual[1]),css('--bad'),3.5)}
+      ${arrow(X2(C.Fa[0]),Y2(C.Fa[1]),X2(C.pred[0]),Y2(C.pred[1]),css('--model'),3.5)}
+      <circle cx="${X2(C.Fa[0])}" cy="${Y2(C.Fa[1])}" r="6" fill="${css('--gold')}"/>
+      ${text(X2(C.Fa[0])+8,Y2(C.Fa[1])-8,'F(a)',{size:15,fill:css('--gold'),weight:700})}
+      ${text(X2(C.actual[0])+6,Y2(C.actual[1])-6,'F(a+h)',{size:14,fill:css('--bad'),weight:700})}
+      ${text(X2(C.pred[0])+6,Y2(C.pred[1])+16,'F(a)+J(a)h',{size:14,fill:css('--model'),weight:700})}
+    `;
+  }
+
+  function renderColumns(){
+    const C=current(), W=980,H=520;
+    const plot={x:82,y:82,w:780,h:360};
+    let maxR=Math.max(1.15, norm(C.Fa)+2.2*state.rho, norm(matVec(C.J,[1,0]))+norm(matVec(C.J,[0,1]))+0.8);
+    maxR=Math.max(maxR, norm(C.actual)+0.8, norm(C.pred)+0.8);
+    const X=x=>lin(x,-maxR,maxR,plot.x,plot.x+plot.w);
+    const Y=y=>lin(y,-maxR,maxR,plot.y+plot.h,plot.y);
+    let grid='';
+    for(let k=0;k<=8;k++){
+      const val=-maxR+2*maxR*k/8;
+      grid += `<line x1="${X(val)}" y1="${plot.y}" x2="${X(val)}" y2="${plot.y+plot.h}" stroke="${css('--grid')}"/>`;
+      grid += `<line x1="${plot.x}" y1="${Y(val)}" x2="${plot.x+plot.w}" y2="${Y(val)}" stroke="${css('--grid')}"/>`;
+    }
+    const c1=[C.J[0][0],C.J[1][0]], c2=[C.J[0][1],C.J[1][1]];
+    el.columnsSvg.innerHTML = `
+      <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+      ${text(plot.x,40,'columns = images of basis vectors',{size:22,weight:700,family:'Georgia, serif'})}
+      <rect x="${plot.x}" y="${plot.y}" width="${plot.w}" height="${plot.h}" rx="22" fill="transparent" stroke="${css('--line')}"/>
+      ${grid}
+      <line x1="${X(-maxR)}" y1="${Y(0)}" x2="${X(maxR)}" y2="${Y(0)}" stroke="${css('--line')}" stroke-width="2"/>
+      <line x1="${X(0)}" y1="${Y(-maxR)}" x2="${X(0)}" y2="${Y(maxR)}" stroke="${css('--line')}" stroke-width="2"/>
+
+      ${arrow(X(C.Fa[0]),Y(C.Fa[1]),X(C.Fa[0]+c1[0]),Y(C.Fa[1]+c1[1]),css('--good'),4)}
+      ${arrow(X(C.Fa[0]),Y(C.Fa[1]),X(C.Fa[0]+c2[0]),Y(C.Fa[1]+c2[1]),css('--violet'),4)}
+      ${arrow(X(C.Fa[0]),Y(C.Fa[1]),X(C.pred[0]),Y(C.pred[1]),css('--model'),4)}
+      ${arrow(X(C.Fa[0]),Y(C.Fa[1]),X(C.actual[0]),Y(C.actual[1]),css('--bad'),4)}
+
+      <circle cx="${X(C.Fa[0])}" cy="${Y(C.Fa[1])}" r="6" fill="${css('--gold')}"/>
+      ${text(X(C.Fa[0])+8,Y(C.Fa[1])-8,'F(a)',{size:15,fill:css('--gold'),weight:700})}
+      ${text(X(C.Fa[0]+c1[0])+6,Y(C.Fa[1]+c1[1])-6,'column 1 = J(a)e₁',{size:14,fill:css('--good'),weight:700})}
+      ${text(X(C.Fa[0]+c2[0])+6,Y(C.Fa[1]+c2[1])+16,'column 2 = J(a)e₂',{size:14,fill:css('--violet'),weight:700})}
+      ${text(X(C.pred[0])+6,Y(C.pred[1])-8,'J(a)h',{size:14,fill:css('--model'),weight:700})}
+      ${text(X(C.actual[0])+6,Y(C.actual[1])+16,'actual increment',{size:14,fill:css('--bad'),weight:700})}
+
+      <polygon points="${X(C.Fa[0])},${Y(C.Fa[1])} ${X(C.Fa[0]+c1[0])},${Y(C.Fa[1]+c1[1])} ${X(C.Fa[0]+c1[0]+c2[0])},${Y(C.Fa[1]+c1[1]+c2[1])} ${X(C.Fa[0]+c2[0])},${Y(C.Fa[1]+c2[1])}" fill="${css('--modelSoft')}" stroke="${css('--model')}" stroke-width="2" opacity="0.6"/>
+    `;
+  }
+
+  function renderRemainder(){
+    const C=current(), W=980,H=520, plot={x:86,y:84,w:812,h:340};
+    const data=[]; let maxY=0;
+    for(let i=0;i<=120;i++){
+      const t=0.01+state.rho*i/120;
+      const dirs=[[1,0],[0,1],[Math.cos(Math.PI/4),Math.sin(Math.PI/4)],[Math.cos(1.17),Math.sin(1.17)]];
+      let worst=0;
+      dirs.forEach(v=>{
+        const h=[t*v[0], t*v[1]];
+        const Fh=C.map.f(C.a[0]+h[0], C.a[1]+h[1]);
+        const inc=[Fh[0]-C.Fa[0], Fh[1]-C.Fa[1]];
+        const Jh=matVec(C.J,h);
+        const val=norm([inc[0]-Jh[0], inc[1]-Jh[1]])/norm(h);
+        worst=Math.max(worst,val);
+      });
+      data.push({x:t,y:worst});
+      maxY=Math.max(maxY,worst);
+    }
+    maxY=Math.max(maxY,0.03)*1.15;
+    const X=t=>lin(t,0,state.rho,plot.x,plot.x+plot.w);
+    const Y=z=>lin(z,0,maxY,plot.y+plot.h,plot.y);
+
+    let grid='';
+    for(let k=0;k<=5;k++){
+      const yy=maxY*k/5;
+      grid += `<line x1="${plot.x}" y1="${Y(yy)}" x2="${plot.x+plot.w}" y2="${Y(yy)}" stroke="${css('--grid')}"/>`;
+    }
+    el.remainderSvg.innerHTML = `
+      <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+      ${text(plot.x,40,'worst sampled normalized error',{size:22,weight:700,family:'Georgia, serif'})}
+      <rect x="${plot.x}" y="${plot.y}" width="${plot.w}" height="${plot.h}" rx="22" fill="transparent" stroke="${css('--line')}"/>
+      ${grid}
+      <path d="${path(data,X,Y)}" fill="none" stroke="${css('--bad')}" stroke-width="3.4"/>
+      <line x1="${X(state.t)}" y1="${plot.y}" x2="${X(state.t)}" y2="${plot.y+plot.h}" stroke="${css('--gold')}" stroke-dasharray="6 6" stroke-width="2.2"/>
+      ${text(X(state.t)+8,plot.y+26,'selected t',{size:14,fill:css('--gold'),weight:700})}
+      ${text(plot.x+plot.w-8,plot.y+plot.h+28,'t → 0',{size:14,fill:css('--muted'),weight:700,anchor:'end'})}
+    `;
+  }
+
+  function renderChain(){
+    const C=current(), W=980,H=520;
+    const L={x:72,y:104,w:180,h:170}, M={x:400,y:104,w:180,h:170}, R={x:728,y:104,w:180,h:170};
+    function box(b, title, subtitle, color){
+      return `<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="24" fill="${css('--paper')}" stroke="${css('--line')}"/>
+              ${text(b.x+16,b.y+32,title,{size:21,weight:700,family:'Georgia, serif'})}
+              ${text(b.x+16,b.y+58,subtitle,{size:14,fill:color,weight:700})}`;
+    }
+    const h1=C.h;
+    const h2=matVec(C.J,h1);
+    const h3=matVec(C.JG,h2);
+    const direct=matVec(C.comp,h1);
+    el.chainSvg.innerHTML = `
+      <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+      ${box(L,'domain','a and h',css('--gold'))}
+      ${box(M,'intermediate','F(a) and J_F(a)h',css('--model'))}
+      ${box(R,'final','G(F(a)) and J_G(F(a))J_F(a)h',css('--good'))}
+
+      ${text(L.x+16,L.y+98,`a = ${fmtVec(C.a)}`,{size:15,fill:css('--text'),weight:700})}
+      ${text(L.x+16,L.y+124,`h = ${fmtVec(h1)}`,{size:15,fill:css('--gold'),weight:700})}
+      ${text(M.x+16,M.y+98,`F(a) = ${fmtVec(C.Fa)}`,{size:15,fill:css('--text'),weight:700})}
+      ${text(M.x+16,M.y+124,`J_F(a)h = ${fmtVec(h2)}`,{size:15,fill:css('--model'),weight:700})}
+      ${text(R.x+16,R.y+98,`G(F(a)) = ${fmtVec(C.GFa)}`,{size:15,fill:css('--text'),weight:700})}
+      ${text(R.x+16,R.y+124,`J_G(F(a))J_F(a)h = ${fmtVec(h3)}`,{size:15,fill:css('--good'),weight:700})}
+
+      ${arrow(L.x+L.w+12,L.y+86,M.x-24,M.y+86,css('--muted'),3.2)}
+      ${arrow(M.x+M.w+12,M.y+86,R.x-24,R.y+86,css('--muted'),3.2)}
+      ${text(325,154,'linearize F',{size:17,fill:css('--muted'),weight:700,family:'Georgia, serif',anchor:'middle'})}
+      ${text(653,154,'linearize G at F(a)',{size:17,fill:css('--muted'),weight:700,family:'Georgia, serif',anchor:'middle'})}
+
+      <rect x="112" y="330" width="760" height="120" rx="22" fill="${css('--card')}" stroke="${css('--line')}"/>
+      ${text(132,370,'Chain rule matrix identity',{size:22,weight:700,family:'Georgia, serif'})}
+      ${text(132,406,`J_F(a) = ${fmtVec([C.J[0][0],C.J[0][1]])} / ${fmtVec([C.J[1][0],C.J[1][1]])}`,{size:14,fill:css('--muted'),weight:700})}
+      ${text(132,430,`J_G(F(a))J_F(a) h = ${fmtVec(direct)}`,{size:15,fill:css('--good'),weight:700})}
+      ${text(512,430,`actual composed increment ≈ ${fmtVec(C.compInc)}`,{size:15,fill:css('--bad'),weight:700})}
+      ${text(132,455,'\u2192 the composition of the two Jacobians is the best first-order map for G∘F at a.',{size:15,fill:css('--muted'),weight:700})}
+    `;
+  }
+
+  function renderBasisPlot(plotEl, axis){
+    if(typeof Plotly==='undefined' || !plotEl) return;
+    const C=current(), a=C.a;
+    const H=1.5, rho=Math.min(state.rho,0.6);
+    const n=17;
+    const domX=[], domY=[], domZ=[];
+    const imgX=[], imgY=[], imgZ=[];
+    const basis = axis==='x' ? [1,0] : [0,1];
+    for(let j=0;j<n;j++){
+      const v=-rho+2*rho*j/(n-1);
+      const rowDX=[], rowDY=[], rowDZ=[], rowIX=[], rowIY=[], rowIZ=[];
+      for(let i=0;i<n;i++){
+        const u=-rho+2*rho*i/(n-1);
+        rowDX.push(a[0]+u); rowDY.push(a[1]+v); rowDZ.push(0);
+        const Fuv=C.map.f(a[0]+u,a[1]+v);
+        rowIX.push(Fuv[0]); rowIY.push(Fuv[1]); rowIZ.push(H);
+      }
+      domX.push(rowDX); domY.push(rowDY); domZ.push(rowDZ);
+      imgX.push(rowIX); imgY.push(rowIY); imgZ.push(rowIZ);
+    }
+    const ccol = axis==='x' ? [C.J[0][0],C.J[1][0]] : [C.J[0][1],C.J[1][1]];
+    const scale=0.6;
+    const sliceX=[], sliceY=[], sliceZ=[], linX=[], linY=[], linZ=[];
+    for(let i=0;i<=70;i++){
+      const s=-scale+2*scale*i/70;
+      const x=a[0]+basis[0]*s, y=a[1]+basis[1]*s;
+      const Fxy=C.map.f(x,y);
+      sliceX.push(Fxy[0]); sliceY.push(Fxy[1]); sliceZ.push(H);
+      linX.push(C.Fa[0]+ccol[0]*s); linY.push(C.Fa[1]+ccol[1]*s); linZ.push(H+0.03);
+    }
+    const traces = [
+      {type:'surface', x:imgX, y:imgY, z:imgZ, colorscale:[[0,css('--goodSoft')],[1,css('--good')]], opacity:0.78, showscale:false, hoverinfo:'skip'},
+      {type:'scatter3d', mode:'lines', x:sliceX, y:sliceY, z:sliceZ, line:{color:css('--bad'), width:8}, showlegend:false, hoverinfo:'skip'},
+      {type:'scatter3d', mode:'lines', x:linX, y:linY, z:linZ, line:{color:css('--model'), width:8, dash:'dash'}, showlegend:false, hoverinfo:'skip'},
+      {type:'scatter3d', mode:'markers+text', x:[C.Fa[0]], y:[C.Fa[1]], z:[H], text:['F(a)'], textposition:'top center', textfont:{size:11,color:css('--text')}, marker:{size:4.8,color:css('--gold')}, showlegend:false, hoverinfo:'skip'}
+    ];
+    const axisBg = state.theme==='dark' ? '#16222b' : '#faf7f1';
+    const layout = {
+      margin:{l:0,r:0,t:0,b:0},
+      paper_bgcolor:'rgba(0,0,0,0)',
+      plot_bgcolor:'rgba(0,0,0,0)',
+      scene:{
+        bgcolor:'rgba(0,0,0,0)',
+        xaxis:{title:'1', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg},
+        yaxis:{title:'2', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg},
+        zaxis:{title:'', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg, range:[1.42,1.57], showticklabels:false},
+        aspectmode:'manual',
+        aspectratio:{x:1.0,y:1.0,z:0.22},
+        camera: axis==='x' ? {eye:{x:1.45,y:1.20,z:0.72}} : {eye:{x:1.10,y:1.55,z:0.72}}
+      }
+    };
+    Plotly.react(plotEl,traces,layout,{displayModeBar:false, responsive:true});
+  }
+
+  function updateText(){
+    const C=current();
+    el.mapLabel.textContent=C.map.label;
+    el.outerLabel.textContent=C.outer.label;
+    el.pointLabel.textContent=`(${fmt(C.a[0])}, ${fmt(C.a[1])})`;
+    el.thetaLabel.textContent=`${fmt(state.theta)} rad`;
+    el.tLabel.textContent=fmt(state.t);
+    el.rhoLabel.textContent=fmt(state.rho);
+    [el.pxSlider,el.pySlider,el.thetaSlider,el.tSlider,el.rhoSlider].forEach(fill);
+
+    el.jacBox.textContent=matString(C.J);
+    el.outerJacBox.textContent=matString(C.JG);
+    el.formulaBox.innerHTML=C.map.formula + '<br>' + C.outer.formula;
+    el.noticeBox.innerHTML=C.map.notice;
+
+    el.linMetric.textContent=`J_F(a)h ≈ ${fmtVec(C.Jh)}`;
+    el.actualMetric.textContent=`F(a+h)-F(a) ≈ ${fmtVec(C.inc)}`;
+    el.errorMetric.textContent=`remainder ≈ ${fmtVec(C.rem)} ;  ratio ≈ ${fmt(norm(C.rem)/norm(C.h))}`;
+    el.detMetric.textContent=`det J_F(a) ≈ ${fmt(det(C.J))}`;
+    el.chainMetric.textContent=`product error ratio ≈ ${fmt(norm(C.compRem)/norm(C.h))}`;
+  }
+
+  function render(){
+    const C=current();
+    updateText();
+    renderMainPlot();
+    renderDeformation();
+    renderColumns();
+    renderRemainder();
+    renderChain();
+    renderBasisPlot(el.basisXPlot,'x');
+    renderBasisPlot(el.basisYPlot,'y');
+    if(window.MathJax) MathJax.typesetPromise().catch(()=>{});
+  }
+
+  function sync(){
+    const prev=state.map;
+    state.map=el.mapSelect.value;
+    state.outer=el.outerSelect.value;
+    if(prev!==state.map){
+      const s=maps[state.map].suggested;
+      state.px=s[0]; state.py=s[1];
+      el.pxSlider.value=state.px;
+      el.pySlider.value=state.py;
+    }
+    state.px=+el.pxSlider.value;
+    state.py=+el.pySlider.value;
+    state.theta=+el.thetaSlider.value;
+    state.t=+el.tSlider.value;
+    state.rho=+el.rhoSlider.value;
+    render();
+  }
+
+  function init(){
+    state.initialized=true;
+    el.mapSelect.value=state.map;
+    el.outerSelect.value=state.outer;
+    el.pxSlider.value=state.px;
+    el.pySlider.value=state.py;
+    el.thetaSlider.value=state.theta;
+    el.tSlider.value=state.t;
+    el.rhoSlider.value=state.rho;
+
+    el.mapSelect.addEventListener('change',sync);
+    el.outerSelect.addEventListener('change',sync);
+    el.pxSlider.addEventListener('input',sync);
+    el.pySlider.addEventListener('input',sync);
+    el.thetaSlider.addEventListener('input',sync);
+    el.tSlider.addEventListener('input',sync);
+    el.rhoSlider.addEventListener('input',sync);
+
+    el.theme.addEventListener('click',()=>setTheme(state.theme==='dark'?'light':'dark'));
+    el.theme.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); setTheme(state.theme==='dark'?'light':'dark'); } });
+
+    setTheme(state.theme);
+  }
+
+  window.addEventListener('load', init);
+</script>
+</body>
+</html>

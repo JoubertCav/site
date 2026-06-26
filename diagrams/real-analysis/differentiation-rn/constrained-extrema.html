@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive real analysis diagram for constrained extrema.">
+  <title>Constrained Extrema | Real Analysis Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script defer src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#f7f3ea;
+      --paper:#fffdf8;
+      --card:rgba(255,255,255,.82);
+      --text:#1d2830;
+      --muted:#6d7982;
+      --line:#ddd5c7;
+      --grid:rgba(29,40,48,.08);
+      --good:#287a76;
+      --goodSoft:rgba(40,122,118,.13);
+      --model:#536f91;
+      --modelSoft:rgba(83,111,145,.16);
+      --bad:#c46a55;
+      --badSoft:rgba(196,106,85,.13);
+      --gold:#b58a3c;
+      --violet:#7b64ae;
+      --violetSoft:rgba(123,100,174,.14);
+      --shadow:0 18px 44px rgba(38,48,58,.08);
+      --switch:#eee7da;
+      --thumb:#fffaf0;
+    }
+    body.dark{
+      --bg:#0d1318;
+      --paper:#121b22;
+      --card:rgba(18,27,34,.84);
+      --text:#edf4f6;
+      --muted:#aab7c0;
+      --line:#26333d;
+      --grid:rgba(237,244,246,.09);
+      --good:#6ccbc3;
+      --goodSoft:rgba(108,203,195,.14);
+      --model:#9abce0;
+      --modelSoft:rgba(154,188,224,.17);
+      --bad:#ef9a82;
+      --badSoft:rgba(239,154,130,.18);
+      --gold:#e0bd70;
+      --violet:#c0a7ff;
+      --violetSoft:rgba(192,167,255,.14);
+      --shadow:0 22px 54px rgba(0,0,0,.28);
+      --switch:#1a242c;
+      --thumb:#17222b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%,rgba(40,122,118,.07),transparent 25%),
+        radial-gradient(circle at 100% 0%,rgba(83,111,145,.06),transparent 22%),
+        linear-gradient(180deg,#fbf8f2,var(--bg));
+    }
+    body.dark{
+      background:
+        radial-gradient(circle at 0% 0%,rgba(108,203,195,.08),transparent 25%),
+        radial-gradient(circle at 100% 0%,rgba(154,188,224,.08),transparent 22%),
+        linear-gradient(180deg,#101920,var(--bg));
+    }
+    .wrap{max-width:1640px;margin:0 auto;padding:24px 18px 34px}
+    header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+    h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.05rem,4vw,3.35rem);letter-spacing:-.035em;line-height:1.05}
+    .subtitle{margin:.55rem 0 0;color:var(--muted);font-size:1.04rem;line-height:1.55;max-width:1010px}
+    .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04);font-size:.92rem}
+    .theme{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04)}
+    .theme .label{font-size:.92rem;color:var(--muted);min-width:70px}
+    .switch{position:relative;width:70px;height:36px;border-radius:999px;background:var(--switch);border:1px solid var(--line)}
+    .switch:before,.switch:after{position:absolute;top:50%;transform:translateY(-50%);font-size:13px;opacity:.75}
+    .switch:before{content:"☀";left:10px}.switch:after{content:"☾";right:10px}
+    .knob{position:absolute;left:3px;top:3px;width:28px;height:28px;border-radius:50%;background:var(--thumb);border:1px solid var(--line);box-shadow:0 4px 12px rgba(0,0,0,.16);transition:left .25s ease;display:grid;place-items:center;font-size:13px}
+    body.dark .knob{left:37px}
+
+    .layout{display:grid;grid-template-columns:350px minmax(0,1fr);gap:18px;align-items:start}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+    aside{padding:18px;position:sticky;top:16px}
+    .head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px}
+    h2,h3{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.02em;margin:0}
+    .head p{margin:4px 0 0;color:var(--muted);font-size:.94rem;line-height:1.42}
+    .tag{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:var(--muted);font-size:.82rem;white-space:nowrap;background:rgba(127,127,127,.04)}
+    .eq,.note{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:12px 14px;margin-bottom:14px}
+    .eq{font-size:.89rem}
+    .note{color:var(--muted);font-size:.93rem;line-height:1.5}
+    .control{margin:14px 0 16px}
+    .control label{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;font-weight:650}
+    .control small{color:var(--muted);font-weight:500}
+    select{width:100%;background:var(--paper);color:var(--text);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.98rem}
+    input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:8px;border-radius:999px;border:1px solid var(--line);background:linear-gradient(90deg,var(--good),var(--good));background-repeat:no-repeat;background-size:50% 100%}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--good);border:2px solid var(--paper);box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer}
+    .miniMatrix{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:10px}
+    .miniMatrix strong{display:block;font-size:.86rem;margin-bottom:8px;color:var(--muted)}
+    .matrixBox{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.91rem;line-height:1.5;white-space:pre;text-align:center}
+    .pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+    main{display:grid;gap:18px}
+    .hero{padding:18px}
+    .heroTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+    .heroTop p{margin:4px 0 0;color:var(--muted);line-height:1.45;max-width:860px}
+    .status{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:.92rem;background:var(--goodSoft);color:var(--good);white-space:nowrap}
+    .split{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .plotBox,.svgBox{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:10px}
+    .plotSvg{display:block;width:100%;height:auto}
+    #mainPlot{width:100%;height:700px;border-radius:18px;overflow:hidden}
+    #contourPlot{width:100%;height:520px;border-radius:18px;overflow:hidden}
+    .metrics{display:grid;gap:10px}
+    .metric{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:14px}
+    .metric h4{font-family:Georgia,"Times New Roman",serif;margin:0 0 6px;font-size:1rem}
+    .metric p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.4}
+    .metric strong{display:block;margin-top:7px;color:var(--good)}
+    .panel{padding:18px}
+    .explainRow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+    .explainBox,.explainMini{background:linear-gradient(180deg, rgba(127,127,127,.05), rgba(127,127,127,.02)), var(--paper);border:1px solid var(--line);border-radius:18px;padding:12px 14px}
+    .explainBox h4,.explainMini h4{margin:0 0 6px;font-family:Georgia,"Times New Roman",serif;font-size:1rem;letter-spacing:-.01em}
+    .explainBox p,.explainMini p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.46}
+    .footer{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .footer div{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.92rem;line-height:1.42}
+
+    @media(max-width:1240px){.layout{grid-template-columns:1fr}aside{position:static}.split,.grid2{grid-template-columns:1fr}}
+    @media(max-width:900px){.footer,.pair,.explainRow{grid-template-columns:1fr}.wrap{padding:18px 14px 28px}#mainPlot{height:580px}#contourPlot{height:430px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Constrained extrema</h1>
+        <p class="subtitle">The constrained extremum problem asks where an objective \(f\) is largest or smallest while motion is restricted to a constraint manifold. The geometry combines 3D surfaces, 2D contours, normal directions, and second-order tests.</p>
+      </div>
+      <div class="actions">
+        <div class="pill">3D surface and lifted constraint</div>
+        <div class="pill">2D contour tangency</div>
+        <div class="pill">Lagrange and normal-cone view</div>
+        <div id="theme" class="theme" role="button" tabindex="0">
+          <span id="themeLabel" class="label">light mode</span>
+          <div class="switch"><div id="knob" class="knob">☀</div></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="card">
+        <div class="head">
+          <div>
+            <h2>Controls</h2>
+            <p>Choose an objective \(f\), a smooth closed constraint, and a point along the constraint.</p>
+          </div>
+          <div class="tag">Lagrange view</div>
+        </div>
+
+        <div class="eq">
+          \[
+          \text{maximize/minimize } f(x,y)
+          \quad\text{subject to } x\in M
+          \]
+          \[
+          \text{At a smooth constrained critical point,}
+          \quad \nabla f(a)=\lambda n(a)
+          \]
+          \[
+          \phi(\theta):=f(r(\theta)),
+          \qquad
+          \phi'(\theta_0)=0
+          \]
+          \[
+          \phi''(\theta_0)>0 \Rightarrow \text{local min},
+          \qquad
+          \phi''(\theta_0)<0 \Rightarrow \text{local max}
+          \]
+        </div>
+
+        <div class="control">
+          <label>Objective \(f\) <small id="objLabel"></small></label>
+          <select id="objSelect">
+            <option value="bowl">tilted bowl</option>
+            <option value="saddle">saddle</option>
+            <option value="ripple">oscillatory</option>
+            <option value="gaussian">Gaussian hill</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label>Constraint manifold \(M\) <small id="consLabel"></small></label>
+          <select id="consSelect">
+            <option value="circle">circle</option>
+            <option value="ellipse">ellipse</option>
+            <option value="rounded">rounded diamond</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label>Constraint size \(R\) <small id="sizeLabel"></small></label>
+          <input id="sizeSlider" type="range" min="0.55" max="1.35" step="0.01" value="0.95">
+        </div>
+
+        <div class="control">
+          <label>Point selection mode <small id="modeLabel"></small></label>
+          <select id="modeSelect">
+            <option value="free">free slider</option>
+            <option value="nearest">nearest critical point</option>
+            <option value="min">global minimum</option>
+            <option value="max">global maximum</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label>Constraint parameter \(\theta\) <small id="thetaLabel"></small></label>
+          <input id="thetaSlider" type="range" min="0" max="6.28318" step="0.002" value="0.60">
+        </div>
+
+        <div class="control">
+          <label>Neighborhood scale <small id="rhoLabel"></small></label>
+          <input id="rhoSlider" type="range" min="0.18" max="0.95" step="0.01" value="0.46">
+        </div>
+
+        <div class="miniMatrix">
+          <strong>Local constrained data</strong>
+          <div id="matrixBox" class="matrixBox"></div>
+        </div>
+
+        <div class="note" id="formulaBox"></div>
+        <div class="note" id="noticeBox"></div>
+      </aside>
+
+      <main>
+        <section class="card hero">
+          <div class="heroTop">
+            <div>
+              <h2>Main 3D constrained picture</h2>
+              <p>Green: the objective surface \(z=f(x,y)\). Red: the lifted constraint curve \(z=f(r(\theta))\). Blue: the tangent plane at the selected point. Gold: the surface normal direction generated by the active constraint normal. At a constrained extremum, the lifted-curve tangent has zero vertical slope.</p>
+            </div>
+            <div id="status" class="status">restricted critical point test</div>
+          </div>
+
+          <div class="split">
+            <div class="plotBox">
+              <div id="mainPlot"></div>
+            </div>
+            <div class="metrics">
+              <div class="metric">
+                <h4>Value on the constraint</h4>
+                <p>Current point \(a=r(\theta)\) and its objective value.</p>
+                <strong id="valueMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Lagrange condition</h4>
+                <p>Residual of \(\nabla f(a)-\lambda n(a)\).</p>
+                <strong id="lagrangeMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Tangential derivative</h4>
+                <p>The derivative of \(\phi(\theta)=f(r(\theta))\).</p>
+                <strong id="tanMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Second-order test</h4>
+                <p>Second derivative of the reduced problem.</p>
+                <strong id="secondMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Normal cone view</h4>
+                <p>For the filled feasible region, the normal cone is the ray \(\{\mu n(a):\mu\ge0\}\).</p>
+                <strong id="coneMetric"></strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="explainRow">
+            <div class="explainBox">
+              <h4>Lagrange multipliers</h4>
+              <p>At a constrained extremum you cannot move in an allowed tangent direction and improve the value. So the objective gradient cannot have a tangential component: it must point in a normal direction to the constraint.</p>
+            </div>
+            <div class="explainBox">
+              <h4>Constraint manifold</h4>
+              <p>The constraint is a smooth curve \(M\subset\mathbb R^2\). Restricting \(f\) to \(M\) turns the problem into a one-variable problem \(\phi(\theta)=f(r(\theta))\).</p>
+            </div>
+            <div class="explainBox">
+              <h4>Second-order test</h4>
+              <p>Once \(\phi'(\theta_0)=0\), the sign of \(\phi''(\theta_0)\) distinguishes local minima from local maxima along the constraint.</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="grid2">
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>2D contours and constraint tangency</h3>
+                <p>A constrained extremum occurs where a contour of \(f\) is tangent to the constraint. The objective gradient is then parallel to the constraint normal and orthogonal to the tangent direction.</p>
+              </div>
+              <div class="tag">2D geometry</div>
+            </div>
+            <div class="plotBox">
+              <div id="contourPlot"></div>
+            </div>
+            <div class="explainMini">
+              <h4>Short explanation</h4>
+              <p>In the plane, the picture is easiest: the red curve is the constraint, the green curves are objective level sets, and a constrained critical point occurs exactly when the two are tangent.</p>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Reduced 1D problem \(\phi(\theta)=f(r(\theta))\)</h3>
+                <p>The constrained problem becomes a one-dimensional problem along the parameter \(\theta\). Its derivative and curvature give the first- and second-order tests.</p>
+              </div>
+              <div class="tag">1D restriction</div>
+            </div>
+            <div class="svgBox">
+              <svg id="phiSvg" class="plotSvg" viewBox="0 0 980 520"></svg>
+            </div>
+            <div class="explainMini">
+              <h4>Short explanation</h4>
+              <p>Once the constraint is parameterized, the problem is classical calculus again: find where \(\phi'(\theta)=0\), then inspect \(\phi''(\theta)\) to determine whether the point is a constrained minimum or maximum.</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="grid2">
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Normal cone picture</h3>
+                <p>Replace the equality manifold by the filled feasible region \(K\) bounded by the same curve. At a smooth boundary point, the normal cone is a ray generated by the outward normal.</p>
+              </div>
+              <div class="tag">first-order inequality view</div>
+            </div>
+            <div class="svgBox">
+              <svg id="coneSvg" class="plotSvg" viewBox="0 0 980 520"></svg>
+            </div>
+            <div class="explainMini">
+              <h4>Short explanation</h4>
+              <p>For a smooth boundary, the normal cone is not a wide cone but a single ray. Boundary optima for inequality problems must align with that ray, up to sign depending on whether one minimizes or maximizes.</p>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Tangent vs normal decomposition</h3>
+                <p>Every objective gradient decomposes into a tangential part and a normal part relative to the constraint. At a constrained critical point the tangential part disappears.</p>
+              </div>
+              <div class="tag">orthogonal split</div>
+            </div>
+            <div class="svgBox">
+              <svg id="decompSvg" class="plotSvg" viewBox="0 0 980 520"></svg>
+            </div>
+            <div class="explainMini">
+              <h4>Short explanation</h4>
+              <p>The tangent component tells you how much \(f\) changes if you move along the constraint. Constrained criticality means that this component is zero, leaving only the normal component.</p>
+            </div>
+          </section>
+        </div>
+
+        <section class="footer">
+          <div><strong>Geometric condition.</strong> On a smooth manifold, constrained extrema happen where the objective gradient has no allowed tangential component.</div>
+          <div><strong>Multiplier meaning.</strong> The number \(\lambda\) measures how strongly the objective gradient aligns with the active normal direction.</div>
+          <div><strong>Second order.</strong> After the first-order tangency condition, the curvature of the restricted function decides min versus max along the constraint.</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+<script>
+  const objectives = {
+    bowl:{
+      label:'tilted bowl',
+      formula:'\\[f(x,y)=0.55(x-0.25)^2+0.85(y+0.35)^2+0.20xy+0.16x-0.08y.\\]',
+      notice:'A convex objective: along a compact constraint it has both a constrained maximum and a constrained minimum.',
+      f:(x,y)=>0.55*(x-0.25)*(x-0.25)+0.85*(y+0.35)*(y+0.35)+0.20*x*y+0.16*x-0.08*y,
+      fx:(x,y)=>1.10*(x-0.25)+0.20*y+0.16,
+      fy:(x,y)=>1.70*(y+0.35)+0.20*x-0.08
+    },
+    saddle:{
+      label:'saddle',
+      formula:'\\[f(x,y)=0.75x^2-0.58y^2+0.22xy+0.10x.\\]',
+      notice:'A saddle has uphill and downhill directions at the same point, yet along a closed constraint you still obtain ordinary extrema of the restricted problem.',
+      f:(x,y)=>0.75*x*x-0.58*y*y+0.22*x*y+0.10*x,
+      fx:(x,y)=>1.50*x+0.22*y+0.10,
+      fy:(x,y)=>-1.16*y+0.22*x
+    },
+    ripple:{
+      label:'oscillatory',
+      formula:'\\[f(x,y)=0.55\\sin(1.2x)+0.45\\cos(1.35y)+0.12xy.\\]',
+      notice:'The objective oscillates, so the restriction to the constraint can have several local minima and maxima.',
+      f:(x,y)=>0.55*Math.sin(1.2*x)+0.45*Math.cos(1.35*y)+0.12*x*y,
+      fx:(x,y)=>0.66*Math.cos(1.2*x)+0.12*y,
+      fy:(x,y)=>-0.6075*Math.sin(1.35*y)+0.12*x
+    },
+    gaussian:{
+      label:'Gaussian hill',
+      formula:'\\[f(x,y)=1.15e^{-0.75((x-0.3)^2+1.1(y+0.1)^2)}+0.10x-0.05y.\\]',
+      notice:'A smooth hill: on a closed constraint, the highest point is geometrically clear and the lowest point typically occurs on the opposite side.',
+      f:(x,y)=>1.15*Math.exp(-0.75*((x-0.3)*(x-0.3)+1.1*(y+0.1)*(y+0.1)))+0.10*x-0.05*y,
+      fx:(x,y)=>{
+        const e=Math.exp(-0.75*((x-0.3)*(x-0.3)+1.1*(y+0.1)*(y+0.1)));
+        return 1.15*e*(-1.5*(x-0.3))+0.10;
+      },
+      fy:(x,y)=>{
+        const e=Math.exp(-0.75*((x-0.3)*(x-0.3)+1.1*(y+0.1)*(y+0.1)));
+        return 1.15*e*(-1.65*(y+0.1))-0.05;
+      }
+    }
+  };
+
+  const constraints = {
+    circle:{
+      label:'circle',
+      formula:'\\[M=\\{(x,y):x^2+y^2=R^2\\},\\qquad r(\\theta)=\\big(R\\cos\\theta,R\\sin\\theta\\big).\\]',
+      notice:'The simplest closed smooth manifold. The feasible region \(K\) is the disk bounded by the circle.',
+      r:(th,R)=>[R*Math.cos(th), R*Math.sin(th)]
+    },
+    ellipse:{
+      label:'ellipse',
+      formula:'\\[r(\\theta)=\\big(1.22R\\cos\\theta,\\ 0.74R\\sin\\theta\\big).\\]',
+      notice:'The ellipse stretches the geometry differently in two directions, so the constrained extremum is no longer radially symmetric.',
+      r:(th,R)=>[1.22*R*Math.cos(th), 0.74*R*Math.sin(th)]
+    },
+    rounded:{
+      label:'rounded diamond',
+      formula:'\\[r(\\theta)=\\rho(\\theta)(\\cos\\theta,\\sin\\theta),\\qquad \\rho(\\theta)=\\frac{R}{\\big(|\\cos\\theta|^4+|\\sin\\theta|^4\\big)^{1/4}}.\\]',
+      notice:'A smooth rounded-diamond shape. It is still a one-dimensional manifold, but the curvature varies strongly around the boundary.',
+      r:(th,R)=>{
+        const c=Math.cos(th), s=Math.sin(th);
+        const rho=R/Math.pow(Math.abs(c)**4 + Math.abs(s)**4, 0.25);
+        return [rho*c, rho*s];
+      }
+    }
+  };
+
+  const state = {
+    obj:'bowl',
+    cons:'circle',
+    R:0.95,
+    mode:'free',
+    theta:0.60,
+    rho:0.46,
+    theme:localStorage.getItem('constrained-extrema-theme') || 'light',
+    initialized:false
+  };
+
+  const el = {
+    theme:document.getElementById('theme'),
+    themeLabel:document.getElementById('themeLabel'),
+    knob:document.getElementById('knob'),
+    objSelect:document.getElementById('objSelect'),
+    consSelect:document.getElementById('consSelect'),
+    modeSelect:document.getElementById('modeSelect'),
+    sizeSlider:document.getElementById('sizeSlider'),
+    thetaSlider:document.getElementById('thetaSlider'),
+    rhoSlider:document.getElementById('rhoSlider'),
+    objLabel:document.getElementById('objLabel'),
+    consLabel:document.getElementById('consLabel'),
+    modeLabel:document.getElementById('modeLabel'),
+    sizeLabel:document.getElementById('sizeLabel'),
+    thetaLabel:document.getElementById('thetaLabel'),
+    rhoLabel:document.getElementById('rhoLabel'),
+    matrixBox:document.getElementById('matrixBox'),
+    formulaBox:document.getElementById('formulaBox'),
+    noticeBox:document.getElementById('noticeBox'),
+    status:document.getElementById('status'),
+    mainPlot:document.getElementById('mainPlot'),
+    contourPlot:document.getElementById('contourPlot'),
+    phiSvg:document.getElementById('phiSvg'),
+    coneSvg:document.getElementById('coneSvg'),
+    decompSvg:document.getElementById('decompSvg'),
+    valueMetric:document.getElementById('valueMetric'),
+    lagrangeMetric:document.getElementById('lagrangeMetric'),
+    tanMetric:document.getElementById('tanMetric'),
+    secondMetric:document.getElementById('secondMetric'),
+    coneMetric:document.getElementById('coneMetric')
+  };
+
+  const css=v=>getComputedStyle(document.body).getPropertyValue(v).trim();
+  const lin=(x,a,b,c,d)=>c+(x-a)*(d-c)/(b-a);
+  const dot=(a,b)=>a[0]*b[0]+a[1]*b[1];
+  const norm=v=>Math.hypot(...v);
+  const fmt=x=>{
+    if(!Number.isFinite(x)) return '—';
+    if(Math.abs(x)>9999) return x.toExponential(2);
+    return (x<0?'−':'')+Math.abs(x).toFixed(3);
+  };
+  const fmtVec=v=>`(${fmt(v[0])}, ${fmt(v[1])})`;
+  function fill(input){
+    const min=+input.min,max=+input.max,val=+input.value;
+    input.style.backgroundSize=((val-min)/(max-min)*100)+'% 100%';
+  }
+  function text(x,y,s,o={}){
+    return `<text x="${x}" y="${y}" fill="${o.fill||css('--text')}" font-size="${o.size||14}" font-family="${o.family||'Inter, sans-serif'}" font-weight="${o.weight||500}" text-anchor="${o.anchor||'start'}">${s}</text>`;
+  }
+  function path(points,X,Y){
+    return points.map((p,i)=>`${i?'L':'M'} ${X(p.x).toFixed(2)} ${Y(p.y).toFixed(2)}`).join(' ');
+  }
+  function arrow(x1,y1,x2,y2,color,w=3,dash=''){
+    const ang=Math.atan2(y2-y1,x2-x1), h=10;
+    const a1=ang-Math.PI/7, a2=ang+Math.PI/7;
+    const hx1=x2-h*Math.cos(a1), hy1=y2-h*Math.sin(a1);
+    const hx2=x2-h*Math.cos(a2), hy2=y2-h*Math.sin(a2);
+    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${w}" stroke-linecap="round" ${dash?`stroke-dasharray="${dash}"`:''}/>
+            <path d="M ${x2} ${y2} L ${hx1} ${hy1} M ${x2} ${y2} L ${hx2} ${hy2}" stroke="${color}" stroke-width="${w}" fill="none" stroke-linecap="round" ${dash?`stroke-dasharray="${dash}"`:''}/>`;
+  }
+
+  function setTheme(t){
+    state.theme=t;
+    document.body.classList.toggle('dark',t==='dark');
+    localStorage.setItem('constrained-extrema-theme',t);
+    el.themeLabel.textContent=t==='dark'?'dark mode':'light mode';
+    el.knob.textContent=t==='dark'?'☾':'☀';
+    if(state.initialized) render();
+  }
+
+  function rAt(th){
+    return constraints[state.cons].r(th,state.R);
+  }
+  function deriv(th,h=1e-4){
+    const p1=rAt(th+h), p0=rAt(th-h);
+    return [(p1[0]-p0[0])/(2*h), (p1[1]-p0[1])/(2*h)];
+  }
+  function secondDeriv(th,h=1e-4){
+    const p1=rAt(th+h), p0=rAt(th), pm=rAt(th-h);
+    return [(p1[0]-2*p0[0]+pm[0])/(h*h), (p1[1]-2*p0[1]+pm[1])/(h*h)];
+  }
+  function phi(th){
+    const p=rAt(th);
+    return objectives[state.obj].f(p[0],p[1]);
+  }
+  function phiPrime(th,h=1e-4){
+    return (phi(th+h)-phi(th-h))/(2*h);
+  }
+  function phiSecond(th,h=3e-4){
+    return (phi(th+h)-2*phi(th)+phi(th-h))/(h*h);
+  }
+
+  function criticalData(){
+    const N=720, vals=[], phis=[];
+    for(let i=0;i<N;i++){
+      const th=2*Math.PI*i/N;
+      vals.push({th,phi:phi(th)});
+      phis.push(phi(th));
+    }
+    const crit=[];
+    for(let i=0;i<N;i++){
+      const im=(i-1+N)%N, ip=(i+1)%N;
+      const ym=phis[im], y=phis[i], yp=phis[ip];
+      if((y<=ym && y<=yp) || (y>=ym && y>=yp)){
+        let th=vals[i].th;
+        // a few Newton-like refinements using periodic derivatives
+        for(let k=0;k<4;k++){
+          const d1=phiPrime(th), d2=phiSecond(th);
+          if(Math.abs(d2)<1e-7) break;
+          th = th - d1/d2;
+          th = ((th%(2*Math.PI))+2*Math.PI)%(2*Math.PI);
+        }
+        const val=phi(th);
+        if(!crit.some(c=>Math.abs(Math.atan2(Math.sin(c.th-th),Math.cos(c.th-th)))<0.04)){
+          crit.push({th,val,d1:phiPrime(th),d2:phiSecond(th)});
+        }
+      }
+    }
+    crit.sort((a,b)=>a.th-b.th);
+    let minC=crit[0], maxC=crit[0];
+    crit.forEach(c=>{
+      if(c.val<minC.val) minC=c;
+      if(c.val>maxC.val) maxC=c;
+    });
+    return {crit,minC,maxC,samples:vals};
+  }
+
+  function current(){
+    const obj=objectives[state.obj], cons=constraints[state.cons];
+    const cd=criticalData();
+    let th=state.theta;
+    if(state.mode==='nearest' && cd.crit.length){
+      let best=cd.crit[0], bd=1e9;
+      cd.crit.forEach(c=>{
+        const d=Math.abs(Math.atan2(Math.sin(c.th-state.theta),Math.cos(c.th-state.theta)));
+        if(d<bd){bd=d;best=c;}
+      });
+      th=best.th;
+    } else if(state.mode==='min' && cd.minC){
+      th=cd.minC.th;
+    } else if(state.mode==='max' && cd.maxC){
+      th=cd.maxC.th;
+    }
+    const a=rAt(th);
+    const z0=obj.f(a[0],a[1]);
+    const grad=[obj.fx(a[0],a[1]), obj.fy(a[0],a[1])];
+    const tan=deriv(th);
+    const tnorm=norm(tan);
+    const tu=tnorm>1e-8 ? [tan[0]/tnorm, tan[1]/tnorm] : [1,0];
+    const n=[tu[1], -tu[0]]; // outward normal for CCW parameterization
+    const lam=dot(grad,n)/dot(n,n);
+    const residual=[grad[0]-lam*n[0], grad[1]-lam*n[1]];
+    const d1=phiPrime(th), d2=phiSecond(th);
+    let kind='not critical';
+    if(Math.abs(d1)<0.03){
+      if(d2>0.03) kind='local minimum';
+      else if(d2<-0.03) kind='local maximum';
+      else kind='flat / inconclusive';
+    }
+    const tangentPart = dot(grad,tu);
+    const normalPart = dot(grad,n);
+    return {obj,cons,cd,th,a,z0,grad,tan,tu,n,lam,residual,d1,d2,kind,tangentPart,normalPart};
+  }
+
+  function renderMainPlot(){
+    if(typeof Plotly==='undefined') return;
+    const C=current(), view=2.1, n=36;
+    const xs=[], ys=[], zs=[];
+    let zMin=Infinity,zMax=-Infinity;
+    for(let j=0;j<n;j++){
+      const y=-view+2*view*j/(n-1);
+      const rowX=[], rowY=[], rowZ=[];
+      for(let i=0;i<n;i++){
+        const x=-view+2*view*i/(n-1);
+        const z=C.obj.f(x,y);
+        rowX.push(x); rowY.push(y); rowZ.push(z);
+        zMin=Math.min(zMin,z); zMax=Math.max(zMax,z);
+      }
+      xs.push(rowX); ys.push(rowY); zs.push(rowZ);
+    }
+
+    const M=240, curveX=[], curveY=[], curveZ=[], floorX=[], floorY=[], floorZ=[];
+    for(let i=0;i<=M;i++){
+      const th=2*Math.PI*i/M;
+      const p=rAt(th), z=C.obj.f(p[0],p[1]);
+      curveX.push(p[0]); curveY.push(p[1]); curveZ.push(z);
+      floorX.push(p[0]); floorY.push(p[1]); floorZ.push(zMin-0.12*(zMax-zMin));
+    }
+
+    const pr=C.a, z0=C.z0, rho=state.rho;
+    const patchN=10, pxs=[], pys=[], pzs=[];
+    for(let j=0;j<=patchN;j++){
+      const v=-rho+2*rho*j/patchN;
+      const rowX=[], rowY=[], rowZ=[];
+      for(let i=0;i<=patchN;i++){
+        const u=-rho+2*rho*i/patchN;
+        const x=pr[0]+u, y=pr[1]+v;
+        rowX.push(x); rowY.push(y);
+        rowZ.push(z0 + C.grad[0]*u + C.grad[1]*v);
+      }
+      pxs.push(rowX); pys.push(rowY); pzs.push(rowZ);
+    }
+
+    const tSeg=0.24;
+    const a1=rAt(C.th-tSeg), a2=rAt(C.th+tSeg);
+    const z1=C.obj.f(a1[0],a1[1]), z2=C.obj.f(a2[0],a2[1]);
+    const liftTangent=[
+      [pr[0]-0.45*C.tu[0], pr[1]-0.45*C.tu[1], z0-0.45*C.tangentPart],
+      [pr[0]+0.45*C.tu[0], pr[1]+0.45*C.tu[1], z0+0.45*C.tangentPart]
+    ];
+    const nTip=[pr[0]+0.42*C.n[0], pr[1]+0.42*C.n[1], z0 + 0.42*C.normalPart];
+    const floorLevel=zMin-0.12*(zMax-zMin);
+
+    const traces = [
+      {
+        type:'surface', x:xs,y:ys,z:zs,
+        colorscale:[[0,css('--goodSoft')],[1,css('--good')]],
+        opacity:0.95, showscale:false,
+        hovertemplate:'x=%{x:.3f}<br>y=%{y:.3f}<br>z=%{z:.3f}<extra></extra>'
+      },
+      {
+        type:'surface', x:pxs,y:pys,z:pzs,
+        colorscale:[[0,css('--modelSoft')],[1,css('--model')]],
+        opacity:0.55, showscale:false,
+        hovertemplate:'tangent plane<extra></extra>'
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:curveX, y:curveY, z:curveZ,
+        line:{color:css('--bad'), width:7},
+        hovertemplate:'lifted constraint<extra></extra>', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:floorX, y:floorY, z:floorZ,
+        line:{color:css('--line'), width:4, dash:'dash'},
+        hoverinfo:'skip', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:[pr[0],pr[0]], y:[pr[1],pr[1]], z:[floorLevel,z0],
+        line:{color:css('--line'), width:4, dash:'dash'}, hoverinfo:'skip', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:[liftTangent[0][0], liftTangent[1][0]], y:[liftTangent[0][1], liftTangent[1][1]], z:[liftTangent[0][2], liftTangent[1][2]],
+        line:{color:css('--model'), width:7, dash:'dash'},
+        hovertemplate:'lifted tangent direction<extra></extra>', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:[pr[0], nTip[0]], y:[pr[1], nTip[1]], z:[z0, nTip[2]],
+        line:{color:css('--gold'), width:7},
+        hovertemplate:'constraint normal / Lagrange direction<extra></extra>', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'markers+text',
+        x:[pr[0]], y:[pr[1]], z:[z0],
+        text:['P'], textposition:'top center',
+        textfont:{size:12,color:css('--text')},
+        marker:{size:6,color:css('--gold')},
+        hovertemplate:'P<br>x=%{x:.3f}<br>y=%{y:.3f}<br>f=%{z:.3f}<extra></extra>',
+        showlegend:false
+      }
+    ];
+
+    const axisBg = state.theme==='dark' ? '#16222b' : '#faf7f1';
+    const layout = {
+      margin:{l:0,r:0,t:0,b:0},
+      paper_bgcolor:'rgba(0,0,0,0)',
+      plot_bgcolor:'rgba(0,0,0,0)',
+      showlegend:false,
+      scene:{
+        bgcolor:'rgba(0,0,0,0)',
+        xaxis:{title:'x', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg, range:[-view,view]},
+        yaxis:{title:'y', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg, range:[-view,view]},
+        zaxis:{title:'z', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg, range:[floorLevel,zMax+0.22*(zMax-zMin)]},
+        aspectmode:'manual',
+        aspectratio:{x:1.05,y:1.05,z:0.78},
+        camera:{eye:{x:1.68,y:1.45,z:0.98}}
+      }
+    };
+    Plotly.react(el.mainPlot,traces,layout,{displayModeBar:false,responsive:true});
+  }
+
+  function renderContourPlot(){
+    if(typeof Plotly==='undefined') return;
+    const C=current(), view=2.1, n=90;
+    const xs=[], ys=[], zs=[];
+    for(let i=0;i<n;i++) xs.push(-view+2*view*i/(n-1));
+    for(let j=0;j<n;j++) ys.push(-view+2*view*j/(n-1));
+    for(let j=0;j<n;j++){
+      const row=[];
+      for(let i=0;i<n;i++) row.push(C.obj.f(xs[i],ys[j]));
+      zs.push(row);
+    }
+
+    const M=260, cx=[], cy=[];
+    for(let i=0;i<=M;i++){
+      const p=rAt(2*Math.PI*i/M); cx.push(p[0]); cy.push(p[1]);
+    }
+    const p=C.a, L=0.56;
+    const gnorm=Math.max(norm(C.grad),1e-8);
+    const gdir=[C.grad[0]/gnorm,C.grad[1]/gnorm];
+    const tangentDir=C.tu;
+    const gradTip=[p[0]+L*gdir[0], p[1]+L*gdir[1]];
+    const tanTip=[p[0]+L*tangentDir[0], p[1]+L*tangentDir[1]];
+    const nTip=[p[0]+L*C.n[0], p[1]+L*C.n[1]];
+    const axisBg = state.theme==='dark' ? '#16222b' : '#faf7f1';
+
+    Plotly.react(el.contourPlot, [
+      {
+        type:'contour',
+        x:xs, y:ys, z:zs,
+        contours:{coloring:'lines', showlabels:false},
+        line:{color:css('--good'), width:1.8},
+        showscale:false,
+        hovertemplate:'x=%{x:.3f}<br>y=%{y:.3f}<br>f=%{z:.3f}<extra></extra>'
+      },
+      {
+        type:'contour',
+        x:xs, y:ys, z:zs,
+        contours:{start:C.z0, end:C.z0, size:1, coloring:'none'},
+        line:{color:css('--bad'), width:3.4},
+        showscale:false, hoverinfo:'skip'
+      },
+      {
+        type:'scatter', mode:'lines', x:cx,y:cy,
+        line:{color:css('--bad'), width:4},
+        hovertemplate:'constraint M<extra></extra>', showlegend:false
+      },
+      {
+        type:'scatter', mode:'lines+markers+text',
+        x:[p[0],gradTip[0]], y:[p[1],gradTip[1]],
+        marker:{size:[0,7],color:css('--gold')}, line:{color:css('--gold'),width:4},
+        text:['','∇f(a)'], textposition:'top center', textfont:{size:12,color:css('--gold')},
+        hoverinfo:'skip', showlegend:false
+      },
+      {
+        type:'scatter', mode:'lines+markers+text',
+        x:[p[0],tanTip[0]], y:[p[1],tanTip[1]],
+        marker:{size:[0,7],color:css('--model')}, line:{color:css('--model'),width:4},
+        text:['','tangent'], textposition:'bottom center', textfont:{size:12,color:css('--model')},
+        hoverinfo:'skip', showlegend:false
+      },
+      {
+        type:'scatter', mode:'lines+markers+text',
+        x:[p[0],nTip[0]], y:[p[1],nTip[1]],
+        marker:{size:[0,7],color:css('--violet')}, line:{color:css('--violet'),width:4,dash:'dash'},
+        text:['','normal'], textposition:'top center', textfont:{size:12,color:css('--violet')},
+        hoverinfo:'skip', showlegend:false
+      },
+      {
+        type:'scatter', mode:'markers+text', x:[p[0]], y:[p[1]],
+        marker:{size:8,color:css('--bad')}, text:['a'], textposition:'bottom center', textfont:{size:12,color:css('--bad')},
+        hoverinfo:'skip', showlegend:false
+      }
+    ], {
+      margin:{l:46,r:18,t:8,b:44},
+      paper_bgcolor:'rgba(0,0,0,0)',
+      plot_bgcolor:'rgba(0,0,0,0)',
+      showlegend:false,
+      xaxis:{title:'x', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), scaleanchor:'y', range:[-view,view], showbackground:true, backgroundcolor:axisBg},
+      yaxis:{title:'y', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), range:[-view,view], showbackground:true, backgroundcolor:axisBg}
+    }, {displayModeBar:false,responsive:true});
+  }
+
+  function renderPhiSvg(){
+    const C=current(), W=980,H=520, plot={x:84,y:84,w:820,h:340};
+    const vals=[], N=500;
+    let yMin=Infinity,yMax=-Infinity;
+    for(let i=0;i<=N;i++){
+      const th=2*Math.PI*i/N, val=phi(th);
+      vals.push({x:th,y:val});
+      yMin=Math.min(yMin,val); yMax=Math.max(yMax,val);
+    }
+    yMin-=0.12*(yMax-yMin||1); yMax+=0.12*(yMax-yMin||1);
+    const X=t=>lin(t,0,2*Math.PI,plot.x,plot.x+plot.w);
+    const Y=z=>lin(z,yMin,yMax,plot.y+plot.h,plot.y);
+    let grid='';
+    for(let k=0;k<=6;k++){
+      const xx=plot.x+plot.w*k/6;
+      grid += `<line x1="${xx}" y1="${plot.y}" x2="${xx}" y2="${plot.y+plot.h}" stroke="${css('--grid')}"/>`;
+    }
+    for(let k=0;k<=6;k++){
+      const yy=yMin+(yMax-yMin)*k/6;
+      grid += `<line x1="${plot.x}" y1="${Y(yy)}" x2="${plot.x+plot.w}" y2="${Y(yy)}" stroke="${css('--grid')}"/>`;
+    }
+    const criticalDots = C.cd.crit.map(c=>`<circle cx="${X(c.th)}" cy="${Y(c.val)}" r="4.8" fill="${c.d2>0?css('--good'):css('--bad')}"/>`).join('');
+    const pickColor = C.kind.includes('min') ? css('--good') : C.kind.includes('max') ? css('--bad') : css('--gold');
+    el.phiSvg.innerHTML = `
+      <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+      ${text(plot.x,40,'restricted objective along the constraint',{size:22,weight:700,family:'Georgia, serif'})}
+      <rect x="${plot.x}" y="${plot.y}" width="${plot.w}" height="${plot.h}" rx="22" fill="transparent" stroke="${css('--line')}"/>
+      ${grid}
+      <line x1="${X(0)}" y1="${Y(0)}" x2="${X(2*Math.PI)}" y2="${Y(0)}" stroke="${css('--line')}" stroke-width="1.7"/>
+      <path d="${path(vals,X,Y)}" fill="none" stroke="${css('--model')}" stroke-width="3.5"/>
+      ${criticalDots}
+      <line x1="${X(C.th)}" y1="${plot.y}" x2="${X(C.th)}" y2="${plot.y+plot.h}" stroke="${pickColor}" stroke-width="2.4" stroke-dasharray="6 6"/>
+      <circle cx="${X(C.th)}" cy="${Y(C.z0)}" r="6" fill="${pickColor}"/>
+      ${text(X(C.th)+8,Y(C.z0)-8,'selected point',{size:14,fill:pickColor,weight:700})}
+      ${text(plot.x+10,plot.y+24,`φ'(θ) ≈ ${fmt(C.d1)},   φ''(θ) ≈ ${fmt(C.d2)}`,{size:14,fill:css('--muted'),weight:700})}
+      ${text(plot.x+plot.w-8,plot.y+plot.h+28,'θ',{size:15,fill:css('--muted'),weight:700,anchor:'end'})}
+    `;
+  }
+
+  function renderConeSvg(){
+    const C=current(), W=980,H=520, plot={x:94,y:68,w:470,h:380}, side={x:620,y:92,w:260,h:260};
+    const view=2.1;
+    const X=x=>lin(x,-view,view,plot.x,plot.x+plot.w);
+    const Y=y=>lin(y,-view,view,plot.y+plot.h,plot.y);
+
+    const M=300, poly=[];
+    for(let i=0;i<=M;i++){
+      const p=rAt(2*Math.PI*i/M);
+      poly.push(`${X(p[0])},${Y(p[1])}`);
+    }
+    const p=C.a, L=0.72;
+    const nTip=[p[0]+L*C.n[0], p[1]+L*C.n[1]];
+    const minusGrad=[p[0]-0.40*C.grad[0], p[1]-0.40*C.grad[1]];
+    const plusGrad=[p[0]+0.40*C.grad[0], p[1]+0.40*C.grad[1]];
+    const choose = C.kind.includes('min') ? minusGrad : plusGrad;
+    const chooseLabel = C.kind.includes('min') ? '−∇f(a)' : '∇f(a)';
+
+    el.coneSvg.innerHTML = `
+      <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+      ${text(78,40,'smooth boundary and its normal cone',{size:22,weight:700,family:'Georgia, serif'})}
+      <rect x="${plot.x}" y="${plot.y}" width="${plot.w}" height="${plot.h}" rx="22" fill="transparent" stroke="${css('--line')}"/>
+      <polygon points="${poly.join(' ')}" fill="${css('--badSoft')}" stroke="${css('--bad')}" stroke-width="3"/>
+      ${arrow(X(p[0]),Y(p[1]),X(nTip[0]),Y(nTip[1]),css('--violet'),4)}
+      ${arrow(X(p[0]),Y(p[1]),X(choose[0]),Y(choose[1]),css('--gold'),4)}
+      <circle cx="${X(p[0])}" cy="${Y(p[1])}" r="6" fill="${css('--bad')}"/>
+      ${text(X(p[0])+8,Y(p[1])-8,'a',{size:14,fill:css('--bad'),weight:700})}
+      ${text(X(nTip[0])+8,Y(nTip[1])-8,'normal ray',{size:14,fill:css('--violet'),weight:700})}
+      ${text(X(choose[0])+8,Y(choose[1])+16,chooseLabel,{size:14,fill:css('--gold'),weight:700})}
+
+      <rect x="${side.x}" y="${side.y}" width="${side.w}" height="${side.h}" rx="22" fill="${css('--card')}" stroke="${css('--line')}"/>
+      ${text(side.x+18,side.y+34,'Normal cone statement',{size:20,weight:700,family:'Georgia, serif'})}
+      ${text(side.x+18,side.y+76,'For a smooth boundary point:',{size:14,fill:css('--muted'),weight:700})}
+      ${text(side.x+24,side.y+102,'N_K(a)= { μ n(a) : μ ≥ 0 }',{size:18,fill:css('--violet'),weight:700,family:'Georgia, serif'})}
+      ${text(side.x+18,side.y+146,'Boundary minima of f over K satisfy',{size:14,fill:css('--muted'),weight:700})}
+      ${text(side.x+24,side.y+172,'−∇f(a) ∈ N_K(a)',{size:18,fill:css('--gold'),weight:700,family:'Georgia, serif'})}
+      ${text(side.x+18,side.y+214,'Boundary maxima satisfy',{size:14,fill:css('--muted'),weight:700})}
+      ${text(side.x+24,side.y+240,'∇f(a) ∈ N_K(a)',{size:18,fill:css('--gold'),weight:700,family:'Georgia, serif'})}
+    `;
+  }
+
+  function renderDecompSvg(){
+    const C=current(), W=980,H=520, left={x:86,y:86,w:380,h:340}, right={x:540,y:86,w:360,h:340};
+    const center={x:left.x+left.w/2,y:left.y+left.h/2};
+    const scale=118;
+    const g=C.grad, tu=C.tu, n=C.n;
+    const tanComp=dot(g,tu), norComp=dot(g,n);
+    const gTip={x:center.x+scale*g[0]/Math.max(norm(g),1e-8), y:center.y-scale*g[1]/Math.max(norm(g),1e-8)};
+    const tTip={x:center.x+scale*tu[0], y:center.y-scale*tu[1]};
+    const nTip={x:center.x+scale*n[0], y:center.y-scale*n[1]};
+    const tanProj={x:center.x+0.85*scale*(tanComp/Math.max(norm(g),1e-8))*tu[0], y:center.y-0.85*scale*(tanComp/Math.max(norm(g),1e-8))*tu[1]};
+    const norProj={x:center.x+0.85*scale*(norComp/Math.max(norm(g),1e-8))*n[0], y:center.y-0.85*scale*(norComp/Math.max(norm(g),1e-8))*n[1]};
+
+    el.decompSvg.innerHTML = `
+      <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+      ${text(76,40,'decompose ∇f(a) into tangent + normal parts',{size:22,weight:700,family:'Georgia, serif'})}
+
+      <rect x="${left.x}" y="${left.y}" width="${left.w}" height="${left.h}" rx="22" fill="transparent" stroke="${css('--line')}"/>
+      <line x1="${left.x+20}" y1="${center.y}" x2="${left.x+left.w-20}" y2="${center.y}" stroke="${css('--grid')}"/>
+      <line x1="${center.x}" y1="${left.y+20}" x2="${center.x}" y2="${left.y+left.h-20}" stroke="${css('--grid')}"/>
+      ${arrow(center.x,center.y,gTip.x,gTip.y,css('--gold'),4)}
+      ${arrow(center.x,center.y,tTip.x,tTip.y,css('--model'),4)}
+      ${arrow(center.x,center.y,nTip.x,nTip.y,css('--violet'),4)}
+      ${arrow(center.x,center.y,tanProj.x,tanProj.y,css('--model'),4,'6 5')}
+      ${arrow(center.x,center.y,norProj.x,norProj.y,css('--violet'),4,'6 5')}
+      ${text(gTip.x+8,gTip.y-8,'∇f(a)',{size:14,fill:css('--gold'),weight:700})}
+      ${text(tTip.x+8,tTip.y+18,'tangent', {size:14,fill:css('--model'),weight:700})}
+      ${text(nTip.x+8,nTip.y-8,'normal', {size:14,fill:css('--violet'),weight:700})}
+      ${text(tanProj.x+8,tanProj.y-8,'tangential part', {size:13,fill:css('--model'),weight:700})}
+      ${text(norProj.x+8,norProj.y+18,'normal part', {size:13,fill:css('--violet'),weight:700})}
+
+      <rect x="${right.x}" y="${right.y}" width="${right.w}" height="${right.h}" rx="22" fill="${css('--card')}" stroke="${css('--line')}"/>
+      ${text(right.x+18,right.y+34,'Algebraic statement',{size:20,weight:700,family:'Georgia, serif'})}
+      ${text(right.x+18,right.y+78,'∇f(a) = (∇f·t)t + (∇f·n)n',{size:18,fill:css('--gold'),weight:700,family:'Georgia, serif'})}
+      ${text(right.x+18,right.y+120,'Tangential coefficient:',{size:14,fill:css('--muted'),weight:700})}
+      ${text(right.x+24,right.y+146,`∇f(a)·t ≈ ${fmt(C.tangentPart)}`,{size:18,fill:css('--model'),weight:700,family:'Georgia, serif'})}
+      ${text(right.x+18,right.y+190,'Normal coefficient:',{size:14,fill:css('--muted'),weight:700})}
+      ${text(right.x+24,right.y+216,`∇f(a)·n ≈ ${fmt(C.normalPart)}`,{size:18,fill:css('--violet'),weight:700,family:'Georgia, serif'})}
+      ${text(right.x+18,right.y+260,'At a constrained critical point,', {size:14,fill:css('--muted'),weight:700})}
+      ${text(right.x+24,right.y+286,'∇f(a)·t = 0', {size:18,fill:css('--bad'),weight:700,family:'Georgia, serif'})}
+      ${text(right.x+24,right.y+316,'so only the normal part remains.', {size:16,fill:css('--muted'),weight:700})}
+    `;
+  }
+
+  function updateText(){
+    const C=current();
+    el.objLabel.textContent=C.obj.label;
+    el.consLabel.textContent=C.cons.label;
+    el.modeLabel.textContent=state.mode;
+    el.sizeLabel.textContent=fmt(state.R);
+    el.thetaLabel.textContent=fmt(C.th)+' rad';
+    el.rhoLabel.textContent=fmt(state.rho);
+    [el.sizeSlider,el.thetaSlider,el.rhoSlider].forEach(fill);
+
+    el.matrixBox.textContent =
+      `a = ${fmtVec(C.a)}\n` +
+      `f(a) = ${fmt(C.z0)}\n` +
+      `∇f(a) = ${fmtVec(C.grad)}\n` +
+      `t(a) = ${fmtVec(C.tu)}\n` +
+      `n(a) = ${fmtVec(C.n)}\n` +
+      `λ ≈ ${fmt(C.lam)}`;
+    el.formulaBox.innerHTML = C.obj.formula + '<br>' + C.cons.formula;
+    el.noticeBox.innerHTML = C.obj.notice + '<br><br>' + C.cons.notice;
+
+    const crit = Math.abs(C.d1)<0.03 ? 'almost critical' : 'not critical yet';
+    el.status.textContent = `${C.kind} · ${crit}`;
+    el.valueMetric.textContent = `a ≈ ${fmtVec(C.a)} ;  f(a) ≈ ${fmt(C.z0)}`;
+    el.lagrangeMetric.textContent = `λ ≈ ${fmt(C.lam)} ;  residual ≈ ${fmt(norm(C.residual))}`;
+    el.tanMetric.textContent = `φ'(θ) ≈ ${fmt(C.d1)} ;  tangential part ≈ ${fmt(C.tangentPart)}`;
+    el.secondMetric.textContent = `φ''(θ) ≈ ${fmt(C.d2)} ;  classification: ${C.kind}`;
+    el.coneMetric.textContent = `normal ray direction n(a) ≈ ${fmtVec(C.n)}`;
+  }
+
+  function render(){
+    updateText();
+    renderMainPlot();
+    renderContourPlot();
+    renderPhiSvg();
+    renderConeSvg();
+    renderDecompSvg();
+    if(window.MathJax) MathJax.typesetPromise().catch(()=>{});
+  }
+
+  function sync(){
+    state.obj = el.objSelect.value;
+    state.cons = el.consSelect.value;
+    state.mode = el.modeSelect.value;
+    state.R = +el.sizeSlider.value;
+    state.theta = +el.thetaSlider.value;
+    state.rho = +el.rhoSlider.value;
+    render();
+  }
+
+  function init(){
+    state.initialized = true;
+    el.objSelect.value = state.obj;
+    el.consSelect.value = state.cons;
+    el.modeSelect.value = state.mode;
+    el.sizeSlider.value = state.R;
+    el.thetaSlider.value = state.theta;
+    el.rhoSlider.value = state.rho;
+
+    el.objSelect.addEventListener('change',sync);
+    el.consSelect.addEventListener('change',sync);
+    el.modeSelect.addEventListener('change',sync);
+    el.sizeSlider.addEventListener('input',sync);
+    el.thetaSlider.addEventListener('input',sync);
+    el.rhoSlider.addEventListener('input',sync);
+
+    el.theme.addEventListener('click',()=>setTheme(state.theme==='dark'?'light':'dark'));
+    el.theme.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); setTheme(state.theme==='dark'?'light':'dark'); } });
+
+    setTheme(state.theme);
+  }
+
+  window.addEventListener('load', init);
+</script>
+</body>
+</html>

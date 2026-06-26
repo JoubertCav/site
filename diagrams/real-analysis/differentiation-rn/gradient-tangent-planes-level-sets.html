@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive real analysis diagram for gradients, tangent planes, and level sets.">
+  <title>Gradient, Tangent Planes, and Level Sets | Real Analysis Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script defer src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#f7f3ea;
+      --paper:#fffdf8;
+      --card:rgba(255,255,255,.82);
+      --text:#1d2830;
+      --muted:#6d7982;
+      --line:#ddd5c7;
+      --grid:rgba(29,40,48,.08);
+      --good:#287a76;
+      --goodSoft:rgba(40,122,118,.13);
+      --model:#536f91;
+      --modelSoft:rgba(83,111,145,.16);
+      --bad:#c46a55;
+      --badSoft:rgba(196,106,85,.13);
+      --gold:#b58a3c;
+      --violet:#7b64ae;
+      --violetSoft:rgba(123,100,174,.14);
+      --shadow:0 18px 44px rgba(38,48,58,.08);
+      --switch:#eee7da;
+      --thumb:#fffaf0;
+    }
+    body.dark{
+      --bg:#0d1318;
+      --paper:#121b22;
+      --card:rgba(18,27,34,.84);
+      --text:#edf4f6;
+      --muted:#aab7c0;
+      --line:#26333d;
+      --grid:rgba(237,244,246,.09);
+      --good:#6ccbc3;
+      --goodSoft:rgba(108,203,195,.14);
+      --model:#9abce0;
+      --modelSoft:rgba(154,188,224,.17);
+      --bad:#ef9a82;
+      --badSoft:rgba(239,154,130,.18);
+      --gold:#e0bd70;
+      --violet:#c0a7ff;
+      --violetSoft:rgba(192,167,255,.14);
+      --shadow:0 22px 54px rgba(0,0,0,.28);
+      --switch:#1a242c;
+      --thumb:#17222b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%,rgba(40,122,118,.07),transparent 25%),
+        radial-gradient(circle at 100% 0%,rgba(83,111,145,.06),transparent 22%),
+        linear-gradient(180deg,#fbf8f2,var(--bg));
+    }
+    body.dark{
+      background:
+        radial-gradient(circle at 0% 0%,rgba(108,203,195,.08),transparent 25%),
+        radial-gradient(circle at 100% 0%,rgba(154,188,224,.08),transparent 22%),
+        linear-gradient(180deg,#101920,var(--bg));
+    }
+    .wrap{max-width:1640px;margin:0 auto;padding:24px 18px 34px}
+    header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+    h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.05rem,4vw,3.35rem);letter-spacing:-.035em;line-height:1.05}
+    .subtitle{margin:.55rem 0 0;color:var(--muted);font-size:1.04rem;line-height:1.55;max-width:990px}
+    .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04);font-size:.92rem}
+    .theme{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04)}
+    .theme .label{font-size:.92rem;color:var(--muted);min-width:70px}
+    .switch{position:relative;width:70px;height:36px;border-radius:999px;background:var(--switch);border:1px solid var(--line)}
+    .switch:before,.switch:after{position:absolute;top:50%;transform:translateY(-50%);font-size:13px;opacity:.75}
+    .switch:before{content:"☀";left:10px}.switch:after{content:"☾";right:10px}
+    .knob{position:absolute;left:3px;top:3px;width:28px;height:28px;border-radius:50%;background:var(--thumb);border:1px solid var(--line);box-shadow:0 4px 12px rgba(0,0,0,.16);transition:left .25s ease;display:grid;place-items:center;font-size:13px}
+    body.dark .knob{left:37px}
+
+    .layout{display:grid;grid-template-columns:340px minmax(0,1fr);gap:18px;align-items:start}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+    aside{padding:18px;position:sticky;top:16px}
+    .head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px}
+    h2,h3{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.02em;margin:0}
+    .head p{margin:4px 0 0;color:var(--muted);font-size:.94rem;line-height:1.42}
+    .tag{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:var(--muted);font-size:.82rem;white-space:nowrap;background:rgba(127,127,127,.04)}
+    .eq,.note{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:12px 14px;margin-bottom:14px}
+    .eq{font-size:.89rem}
+    .note{color:var(--muted);font-size:.93rem;line-height:1.5}
+    .control{margin:14px 0 16px}
+    .control label{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;font-weight:650}
+    .control small{color:var(--muted);font-weight:500}
+    select{width:100%;background:var(--paper);color:var(--text);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.98rem}
+    input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:8px;border-radius:999px;border:1px solid var(--line);background:linear-gradient(90deg,var(--good),var(--good));background-repeat:no-repeat;background-size:50% 100%}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--good);border:2px solid var(--paper);box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer}
+    .pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .matrix{display:grid;grid-template-columns:1fr;gap:10px}
+    .miniMatrix{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:10px}
+    .miniMatrix strong{display:block;font-size:.86rem;margin-bottom:8px;color:var(--muted)}
+    .matrixBox{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92rem;line-height:1.5;white-space:pre;text-align:center}
+
+    main{display:grid;gap:18px}
+    .hero{padding:18px}
+    .heroTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+    .heroTop p{margin:4px 0 0;color:var(--muted);line-height:1.45;max-width:860px}
+    .status{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:.92rem;background:var(--goodSoft);color:var(--good);white-space:nowrap}
+    .split{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .plotBox,.svgBox{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:10px}
+    .plotSvg{display:block;width:100%;height:auto}
+    #mainPlot{width:100%;height:690px;border-radius:18px;overflow:hidden}
+    #levelPlot,#basisPlot{width:100%;height:500px;border-radius:18px;overflow:hidden}
+    .metrics{display:grid;gap:10px}
+    .metric{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:14px}
+    .metric h4{font-family:Georgia,"Times New Roman",serif;margin:0 0 6px;font-size:1rem}
+    .metric p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.4}
+    .metric strong{display:block;margin-top:7px;color:var(--good)}
+    .panel{padding:18px}
+    .footer{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .footer div{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.92rem;line-height:1.42}
+    .explainRow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+    .explainBox,.explainMini{background:linear-gradient(180deg, rgba(127,127,127,.05), rgba(127,127,127,.02)), var(--paper);border:1px solid var(--line);border-radius:18px;padding:12px 14px}
+    .explainBox h4,.explainMini h4{margin:0 0 6px;font-family:Georgia,"Times New Roman",serif;font-size:1rem;letter-spacing:-.01em}
+    .explainBox p,.explainMini p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.46}
+
+    @media(max-width:1240px){.layout{grid-template-columns:1fr}aside{position:static}.split,.grid2{grid-template-columns:1fr}}
+    @media(max-width:900px){.footer,.pair,.explainRow{grid-template-columns:1fr}.wrap{padding:18px 14px 28px}#mainPlot{height:560px}#levelPlot,#basisPlot{height:420px}}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Gradient, tangent planes, and level sets</h1>
+        <p class="subtitle">The gradient points in the direction of steepest ascent, the tangent plane is the best local affine approximation to the graph, and the level set geometry is controlled by orthogonality: \(\nabla f(a)\) is normal to the contour through \(a\).</p>
+      </div>
+      <div class="actions">
+        <div class="pill">interactive 3D surface</div>
+        <div class="pill">level-set geometry</div>
+        <div class="pill">normal and tangent directions</div>
+        <div id="theme" class="theme" role="button" tabindex="0">
+          <span id="themeLabel" class="label">light mode</span>
+          <div class="switch"><div id="knob" class="knob">☀</div></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="card">
+        <div class="head">
+          <div>
+            <h2>Controls</h2>
+            <p>Choose a surface \(z=f(x,y)\), a base point \(a\), and a direction \(u\).</p>
+          </div>
+          <div class="tag">\(\nabla f(a)\)</div>
+        </div>
+
+        <div class="eq">
+          \[
+          \nabla f(a)=\big(f_x(a),f_y(a)\big),
+          \qquad
+          D_u f(a)=\nabla f(a)\cdot u
+          \]
+          \[
+          z=f(a)+f_x(a)(x-a_1)+f_y(a)(y-a_2)
+          \]
+          \[
+          \text{If }f(x,y)=c,\ \text{then }\nabla f(a)\perp T_aL_c
+          \]
+        </div>
+
+        <div class="control">
+          <label>Surface \(f\) <small id="funcLabel"></small></label>
+          <select id="funcSelect">
+            <option value="paraboloid">quadratic bowl</option>
+            <option value="saddle">saddle surface</option>
+            <option value="ripple">oscillatory surface</option>
+            <option value="gaussian">Gaussian bump</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label>Base point \(a=(a_1,a_2)\) <small id="pointLabel"></small></label>
+          <div class="pair">
+            <input id="pxSlider" type="range" min="-1.4" max="1.4" step="0.01" value="0.35">
+            <input id="pySlider" type="range" min="-1.4" max="1.4" step="0.01" value="-0.20">
+          </div>
+        </div>
+
+        <div class="control">
+          <label>Direction angle \(\theta\) <small id="thetaLabel"></small></label>
+          <input id="thetaSlider" type="range" min="0" max="6.28318" step="0.01" value="0.90">
+        </div>
+
+        <div class="control">
+          <label>Plane patch radius \(\rho\) <small id="rhoLabel"></small></label>
+          <input id="rhoSlider" type="range" min="0.18" max="1.00" step="0.01" value="0.52">
+        </div>
+
+        <div class="control">
+          <label>Vector emphasis <small id="scaleLabel"></small></label>
+          <input id="scaleSlider" type="range" min="0.25" max="1.50" step="0.01" value="0.85">
+        </div>
+
+        <div class="miniMatrix">
+          <strong>Gradient and normal data</strong>
+          <div id="matrixBox" class="matrixBox"></div>
+        </div>
+
+        <div class="note" id="formulaBox"></div>
+        <div class="note" id="noticeBox"></div>
+      </aside>
+
+      <main>
+        <section class="card hero">
+          <div class="heroTop">
+            <div>
+              <h2>Main 3D surface and tangent plane</h2>
+              <p>Green: the true surface \(z=f(x,y)\). Blue: the tangent plane at \(P=(a,f(a))\). Gold: the selected direction in the domain. Red: the tangent-plane directional vector. Violet: the graph normal \((-f_x,-f_y,1)\). Drag to rotate.</p>
+            </div>
+            <div id="status" class="status">best affine approximation</div>
+          </div>
+
+          <div class="split">
+            <div class="plotBox">
+              <div id="mainPlot"></div>
+            </div>
+            <div class="metrics">
+              <div class="metric">
+                <h4>Gradient</h4>
+                <p>Steepest ascent direction in the domain.</p>
+                <strong id="gradMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Directional derivative</h4>
+                <p>Slope along the chosen unit vector \(u\).</p>
+                <strong id="dirMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Tangent plane</h4>
+                <p>Best local affine model to first order.</p>
+                <strong id="planeMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Level-set tangent direction</h4>
+                <p>A tangent vector to the contour is orthogonal to \(\nabla f(a)\).</p>
+                <strong id="tanMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Normal to the graph</h4>
+                <p>\((-f_x(a),-f_y(a),1)\) is orthogonal to the tangent plane.</p>
+                <strong id="normalMetric"></strong>
+              </div>
+            </div>
+          </div>
+          <div class="explainRow">
+            <div class="explainBox">
+              <h4>Gradient</h4>
+              <p>The gradient lives in the \((x,y)\)-plane. It points in the direction where the function increases fastest, and its length is the maximal slope at the point.</p>
+            </div>
+            <div class="explainBox">
+              <h4>Tangent plane</h4>
+              <p>The tangent plane is the best local affine approximation to the surface. Very near \(a\), the graph and the plane are almost indistinguishable to first order.</p>
+            </div>
+            <div class="explainBox">
+              <h4>Normals and level sets</h4>
+              <p>The same gradient that controls steepest ascent is also normal to the contour through \(a\). This links 3D graph geometry to 2D level-set geometry.</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="grid2">
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Level sets and normal directions</h3>
+                <p>The contour through \(a\) is the level set \(f(x,y)=f(a)\). The gradient is normal to that contour, and the directional derivative is its projection onto \(u\).</p>
+              </div>
+              <div class="tag">contour geometry</div>
+            </div>
+            <div class="plotBox">
+              <div id="levelPlot"></div>
+            </div>
+            <div class="explainMini">
+              <h4>Short explanation</h4>
+              <p>A level set is the set of points where the function has the same value. Moving along that contour does not change \(f\), so the tangent direction must be orthogonal to the gradient.</p>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Directional derivative by angle</h3>
+                <p>As the direction rotates, the slope follows \(D_u f(a)=|\nabla f(a)|\cos(\theta-\theta_\nabla)\).</p>
+              </div>
+              <div class="tag">cosine law</div>
+            </div>
+            <div class="svgBox">
+              <svg id="angleSvg" class="plotSvg" viewBox="0 0 980 520"></svg>
+            </div>
+            <div class="explainMini">
+              <h4>Short explanation</h4>
+              <p>The directional derivative depends only on the angle between \(u\) and \(\nabla f(a)\). It is largest when \(u\) points with the gradient, zero when \(u\) is tangent to the level set, and most negative in the opposite direction.</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="grid2">
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>3D tangent basis and normal</h3>
+                <p>The tangent plane is spanned by \(r_x=(1,0,f_x)\) and \(r_y=(0,1,f_y)\). Their cross product gives a normal direction.</p>
+              </div>
+              <div class="tag">tangent space</div>
+            </div>
+            <div class="plotBox">
+              <div id="basisPlot"></div>
+            </div>
+            <div class="explainMini">
+              <h4>Short explanation</h4>
+              <p>The tangent plane is generated by two independent tangent vectors, one coming from changing \(x\) and one from changing \(y\). Their cross product produces a normal vector, which encodes the plane's orientation in space.</p>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Orthogonality on the level set</h3>
+                <p>Any tangent vector \(v\) to the contour satisfies \(\nabla f(a)\cdot v=0\). The gradient kills tangent motion along the level set.</p>
+              </div>
+              <div class="tag">\(\nabla f \perp T_aL_c\)</div>
+            </div>
+            <div class="svgBox">
+              <svg id="orthoSvg" class="plotSvg" viewBox="0 0 980 520"></svg>
+            </div>
+            <div class="explainMini">
+              <h4>Short explanation</h4>
+              <p>The identity \(\nabla f(a)\cdot v=0\) says that the gradient ignores motion along the contour. Only the component of a direction that points across level sets contributes to the change in the function value.</p>
+            </div>
+          </section>
+        </div>
+
+        <section class="footer">
+          <div><strong>Gradient.</strong> It lives in the domain plane. Its direction is steepest ascent and its norm is the maximal directional derivative.</div>
+          <div><strong>Tangent plane.</strong> The graph of \(f\) is locally approximated by the affine plane with slopes \(f_x(a)\) and \(f_y(a)\).</div>
+          <div><strong>Level-set geometry.</strong> Contours are tangent to vectors orthogonal to the gradient, so the gradient is the canonical normal direction.</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+<script>
+  const surfaces = {
+    paraboloid:{
+      label:'quadratic bowl',
+      formula:'\\[f(x,y)=0.45x^2+0.25xy+0.60y^2.\\]',
+      notice:'A smooth convex bowl. The gradient points outward from the bottom, and the tangent plane changes smoothly across the surface.',
+      suggested:[0.35,-0.20],
+      f:(x,y)=>0.45*x*x+0.25*x*y+0.60*y*y,
+      fx:(x,y)=>0.90*x+0.25*y,
+      fy:(x,y)=>0.25*x+1.20*y
+    },
+    saddle:{
+      label:'saddle surface',
+      formula:'\\[f(x,y)=0.70x^2-0.55y^2+0.25xy.\\]',
+      notice:'A saddle has uphill and downhill directions at the same point. The gradient still gives the unique steepest ascent direction in the domain.',
+      suggested:[0.50,0.28],
+      f:(x,y)=>0.70*x*x-0.55*y*y+0.25*x*y,
+      fx:(x,y)=>1.40*x+0.25*y,
+      fy:(x,y)=>-1.10*y+0.25*x
+    },
+    ripple:{
+      label:'oscillatory surface',
+      formula:'\\[f(x,y)=\\sin(1.1x)\\cos(0.9y).\\]',
+      notice:'Here the slope directions oscillate. The gradient and level-set picture make those local changes visible immediately.',
+      suggested:[0.55,0.40],
+      f:(x,y)=>Math.sin(1.1*x)*Math.cos(0.9*y),
+      fx:(x,y)=>1.1*Math.cos(1.1*x)*Math.cos(0.9*y),
+      fy:(x,y)=>-0.9*Math.sin(1.1*x)*Math.sin(0.9*y)
+    },
+    gaussian:{
+      label:'Gaussian bump',
+      formula:'\\[f(x,y)=e^{-0.8(x^2+y^2)}+0.12x.\\]',
+      notice:'Near the bump, the gradient points outward from the high peak, tilted slightly by the linear term.',
+      suggested:[0.55,-0.15],
+      f:(x,y)=>Math.exp(-0.8*(x*x+y*y))+0.12*x,
+      fx:(x,y)=>-1.6*x*Math.exp(-0.8*(x*x+y*y))+0.12,
+      fy:(x,y)=>-1.6*y*Math.exp(-0.8*(x*x+y*y))
+    }
+  };
+
+  const state = {
+    func:'paraboloid',
+    px:0.35,
+    py:-0.20,
+    theta:0.90,
+    rho:0.52,
+    scale:0.85,
+    theme:localStorage.getItem('gradient-tangent-level-sets-theme') || 'light',
+    initialized:false
+  };
+
+  const el = {
+    theme:document.getElementById('theme'),
+    themeLabel:document.getElementById('themeLabel'),
+    knob:document.getElementById('knob'),
+    funcSelect:document.getElementById('funcSelect'),
+    pxSlider:document.getElementById('pxSlider'),
+    pySlider:document.getElementById('pySlider'),
+    thetaSlider:document.getElementById('thetaSlider'),
+    rhoSlider:document.getElementById('rhoSlider'),
+    scaleSlider:document.getElementById('scaleSlider'),
+    funcLabel:document.getElementById('funcLabel'),
+    pointLabel:document.getElementById('pointLabel'),
+    thetaLabel:document.getElementById('thetaLabel'),
+    rhoLabel:document.getElementById('rhoLabel'),
+    scaleLabel:document.getElementById('scaleLabel'),
+    matrixBox:document.getElementById('matrixBox'),
+    formulaBox:document.getElementById('formulaBox'),
+    noticeBox:document.getElementById('noticeBox'),
+    status:document.getElementById('status'),
+    mainPlot:document.getElementById('mainPlot'),
+    levelPlot:document.getElementById('levelPlot'),
+    basisPlot:document.getElementById('basisPlot'),
+    angleSvg:document.getElementById('angleSvg'),
+    orthoSvg:document.getElementById('orthoSvg'),
+    gradMetric:document.getElementById('gradMetric'),
+    dirMetric:document.getElementById('dirMetric'),
+    planeMetric:document.getElementById('planeMetric'),
+    tanMetric:document.getElementById('tanMetric'),
+    normalMetric:document.getElementById('normalMetric')
+  };
+
+  const css=v=>getComputedStyle(document.body).getPropertyValue(v).trim();
+  const lin=(x,a,b,c,d)=>c+(x-a)*(d-c)/(b-a);
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const norm=v=>Math.hypot(...v);
+  const dot=(a,b)=>a[0]*b[0]+a[1]*b[1];
+  const fmt=x=>{
+    if(!Number.isFinite(x)) return '—';
+    if(Math.abs(x)>9999) return x.toExponential(2);
+    return (x<0?'−':'')+Math.abs(x).toFixed(3);
+  };
+  const fmtVec=v=>`(${fmt(v[0])}, ${fmt(v[1])})`;
+  function fill(input){
+    const min=+input.min,max=+input.max,val=+input.value;
+    input.style.backgroundSize=((val-min)/(max-min)*100)+'% 100%';
+  }
+  function text(x,y,s,o={}){
+    return `<text x="${x}" y="${y}" fill="${o.fill||css('--text')}" font-size="${o.size||14}" font-family="${o.family||'Inter, sans-serif'}" font-weight="${o.weight||500}" text-anchor="${o.anchor||'start'}">${s}</text>`;
+  }
+  function path(points,X,Y){
+    return points.map((p,i)=>`${i?'L':'M'} ${X(p.x).toFixed(2)} ${Y(p.y).toFixed(2)}`).join(' ');
+  }
+  function arrow(x1,y1,x2,y2,color,w=3){
+    const ang=Math.atan2(y2-y1,x2-x1), h=10;
+    const a1=ang-Math.PI/7, a2=ang+Math.PI/7;
+    const hx1=x2-h*Math.cos(a1), hy1=y2-h*Math.sin(a1);
+    const hx2=x2-h*Math.cos(a2), hy2=y2-h*Math.sin(a2);
+    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/>
+            <path d="M ${x2} ${y2} L ${hx1} ${hy1} M ${x2} ${y2} L ${hx2} ${hy2}" stroke="${color}" stroke-width="${w}" fill="none" stroke-linecap="round"/>`;
+  }
+  function matrixStr(g, nvec){
+    return `∇f(a) = ${fmtVec(g)}\n|∇f(a)| = ${fmt(norm(g))}\nN_graph = (${fmt(nvec[0])}, ${fmt(nvec[1])}, ${fmt(nvec[2])})`;
+  }
+
+  function setTheme(t){
+    state.theme=t;
+    document.body.classList.toggle('dark',t==='dark');
+    localStorage.setItem('gradient-tangent-level-sets-theme',t);
+    el.themeLabel.textContent=t==='dark'?'dark mode':'light mode';
+    el.knob.textContent=t==='dark'?'☾':'☀';
+    if(state.initialized) render();
+  }
+
+  function current(){
+    const fobj=surfaces[state.func];
+    const a=[state.px,state.py];
+    const z0=fobj.f(a[0],a[1]);
+    const gx=fobj.fx(a[0],a[1]), gy=fobj.fy(a[0],a[1]);
+    const g=[gx,gy];
+    const u=[Math.cos(state.theta), Math.sin(state.theta)];
+    const Du=dot(g,u);
+    const tvec=[-gy,gx];
+    const ngraph=[-gx,-gy,1];
+    const gradAngle=Math.atan2(gy,gx);
+    return {fobj,a,z0,g,u,Du,tvec,ngraph,gradAngle};
+  }
+
+  function renderMainPlot(){
+    if(typeof Plotly==='undefined') return;
+    const C=current(), a=C.a, rho=state.rho, z0=C.z0;
+    const view=2.05, n=33;
+    const xs=[], ys=[], zs=[], pxs=[], pys=[], pzs=[];
+    let zMin=Infinity, zMax=-Infinity;
+    for(let j=0;j<n;j++){
+      const y=-view+2*view*j/(n-1);
+      const rowX=[], rowY=[], rowZ=[], prowX=[], prowY=[], prowZ=[];
+      for(let i=0;i<n;i++){
+        const x=-view+2*view*i/(n-1);
+        const z=C.fobj.f(x,y);
+        rowX.push(x); rowY.push(y); rowZ.push(z);
+        zMin=Math.min(zMin,z); zMax=Math.max(zMax,z);
+        if(Math.abs(x-a[0])<=rho && Math.abs(y-a[1])<=rho){
+          prowX.push(x); prowY.push(y);
+          prowZ.push(z0 + C.g[0]*(x-a[0]) + C.g[1]*(y-a[1]));
+        } else {
+          prowX.push(x); prowY.push(y); prowZ.push(NaN);
+        }
+      }
+      xs.push(rowX); ys.push(rowY); zs.push(rowZ);
+      pxs.push(prowX); pys.push(prowY); pzs.push(prowZ);
+    }
+
+    const scale=state.scale;
+    const gnorm=Math.max(norm(C.g),1e-6);
+    const gdir=[C.g[0]/gnorm, C.g[1]/gnorm];
+    const domainGradTip=[a[0]+scale*0.50*gdir[0], a[1]+scale*0.50*gdir[1]];
+    const planeGradTip=[domainGradTip[0], domainGradTip[1], z0 + C.g[0]*(domainGradTip[0]-a[0]) + C.g[1]*(domainGradTip[1]-a[1])];
+    const dirTip=[a[0]+scale*0.60*C.u[0], a[1]+scale*0.60*C.u[1], z0 + scale*0.60*C.Du];
+    const nrm=norm(C.ngraph);
+    const nunit=[C.ngraph[0]/nrm,C.ngraph[1]/nrm,C.ngraph[2]/nrm];
+    const nTip=[a[0]+scale*0.48*nunit[0], a[1]+scale*0.48*nunit[1], z0+scale*0.48*nunit[2]];
+    const floorZ=zMin-0.18*(zMax-zMin);
+
+    const traces = [
+      {
+        type:'surface', x:xs, y:ys, z:zs,
+        colorscale:[[0, css('--goodSoft')],[1, css('--good')]],
+        opacity:0.95, showscale:false,
+        hovertemplate:'x=%{x:.3f}<br>y=%{y:.3f}<br>z=%{z:.3f}<extra></extra>'
+      },
+      {
+        type:'surface', x:pxs, y:pys, z:pzs,
+        colorscale:[[0, css('--modelSoft')],[1, css('--model')]],
+        opacity:0.60, showscale:false,
+        hovertemplate:'tangent plane<extra></extra>'
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:[a[0], domainGradTip[0]], y:[a[1], domainGradTip[1]], z:[floorZ,floorZ],
+        line:{color:css('--gold'), width:8},
+        hovertemplate:'gradient direction in domain<extra></extra>', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:[a[0], dirTip[0]], y:[a[1], dirTip[1]], z:[z0, dirTip[2]],
+        line:{color:css('--bad'), width:8},
+        hovertemplate:'directional tangent vector<extra></extra>', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:[a[0], planeGradTip[0]], y:[a[1], planeGradTip[1]], z:[z0, planeGradTip[2]],
+        line:{color:css('--gold'), width:8, dash:'dash'},
+        hovertemplate:'steepest tangent direction<extra></extra>', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:[a[0], nTip[0]], y:[a[1], nTip[1]], z:[z0, nTip[2]],
+        line:{color:css('--violet'), width:8},
+        hovertemplate:'normal to graph<extra></extra>', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:[a[0], a[0]], y:[a[1], a[1]], z:[floorZ,z0],
+        line:{color:css('--line'), width:5, dash:'dash'},
+        hoverinfo:'skip', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'markers+text',
+        x:[a[0], a[0], dirTip[0], planeGradTip[0]],
+        y:[a[1], a[1], dirTip[1], planeGradTip[1]],
+        z:[z0, floorZ, dirTip[2], planeGradTip[2]],
+        text:['P','a','D_u direction','steepest'],
+        textposition:['top center','bottom center','top center','bottom center'],
+        textfont:{size:12,color:css('--text')},
+        marker:{size:[5,5,5,5], color:[css('--gold'),css('--gold'),css('--bad'),css('--gold')]},
+        hoverinfo:'skip', showlegend:false
+      }
+    ];
+
+    const axisBg = state.theme==='dark' ? '#16222b' : '#faf7f1';
+    const layout = {
+      margin:{l:0,r:0,t:0,b:0},
+      paper_bgcolor:'rgba(0,0,0,0)',
+      plot_bgcolor:'rgba(0,0,0,0)',
+      showlegend:false,
+      scene:{
+        bgcolor:'rgba(0,0,0,0)',
+        xaxis:{title:'x', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg, range:[-view,view]},
+        yaxis:{title:'y', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg, range:[-view,view]},
+        zaxis:{title:'z', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg, range:[floorZ,zMax+0.25*(zMax-zMin)]},
+        aspectmode:'manual',
+        aspectratio:{x:1.02,y:1.02,z:0.72},
+        camera:{eye:{x:1.65,y:1.46,z:0.95}}
+      }
+    };
+    Plotly.react(el.mainPlot,traces,layout,{displayModeBar:false,responsive:true});
+  }
+
+  function renderLevelPlot(){
+    if(typeof Plotly==='undefined') return;
+    const C=current(), view=2.05, n=80;
+    const xs=[], ys=[], zs=[];
+    for(let i=0;i<n;i++) xs.push(-view+2*view*i/(n-1));
+    for(let j=0;j<n;j++) ys.push(-view+2*view*j/(n-1));
+    for(let j=0;j<n;j++){
+      const row=[];
+      for(let i=0;i<n;i++) row.push(C.fobj.f(xs[i],ys[j]));
+      zs.push(row);
+    }
+    const gnorm=Math.max(norm(C.g),1e-7);
+    const gdir=[C.g[0]/gnorm,C.g[1]/gnorm];
+    const tnorm=Math.max(norm(C.tvec),1e-7);
+    const tdir=[C.tvec[0]/tnorm,C.tvec[1]/tnorm];
+    const L=state.scale*0.52;
+    const p=C.a;
+    const gradTip=[p[0]+L*gdir[0], p[1]+L*gdir[1]];
+    const tanTip=[p[0]+L*tdir[0], p[1]+L*tdir[1]];
+    const dirTip=[p[0]+L*C.u[0], p[1]+L*C.u[1]];
+
+    const contour = {
+      type:'contour',
+      x:xs, y:ys, z:zs,
+      contours:{coloring:'lines', showlabels:false},
+      line:{color:css('--good'), width:1.8},
+      showscale:false,
+      hovertemplate:'x=%{x:.3f}<br>y=%{y:.3f}<br>f=%{z:.3f}<extra></extra>'
+    };
+    const sameLevel = {
+      type:'contour',
+      x:xs, y:ys, z:zs,
+      contours:{start:C.z0, end:C.z0, size:1, coloring:'none'},
+      line:{color:css('--bad'), width:3.6},
+      showscale:false,
+      hoverinfo:'skip'
+    };
+    const arrows = [
+      {
+        type:'scatter', mode:'lines+markers+text',
+        x:[p[0],gradTip[0]], y:[p[1],gradTip[1]],
+        marker:{size:[0,7], color:css('--gold')},
+        line:{color:css('--gold'), width:4},
+        text:['','∇f(a)'], textposition:'top center',
+        textfont:{size:12,color:css('--gold')},
+        hoverinfo:'skip', showlegend:false
+      },
+      {
+        type:'scatter', mode:'lines+markers+text',
+        x:[p[0],tanTip[0]], y:[p[1],tanTip[1]],
+        marker:{size:[0,7], color:css('--violet')},
+        line:{color:css('--violet'), width:4},
+        text:['','tangent'], textposition:'bottom center',
+        textfont:{size:12,color:css('--violet')},
+        hoverinfo:'skip', showlegend:false
+      },
+      {
+        type:'scatter', mode:'lines+markers+text',
+        x:[p[0],dirTip[0]], y:[p[1],dirTip[1]],
+        marker:{size:[0,7], color:css('--model')},
+        line:{color:css('--model'), width:4, dash:'dash'},
+        text:['','u'], textposition:'top center',
+        textfont:{size:12,color:css('--model')},
+        hoverinfo:'skip', showlegend:false
+      },
+      {
+        type:'scatter', mode:'markers+text',
+        x:[p[0]], y:[p[1]],
+        marker:{size:8,color:css('--bad')},
+        text:['a'], textposition:'bottom center',
+        textfont:{size:12,color:css('--bad')},
+        hoverinfo:'skip', showlegend:false
+      }
+    ];
+
+    const axisBg = state.theme==='dark' ? '#16222b' : '#faf7f1';
+    const layout = {
+      margin:{l:46,r:18,t:8,b:44},
+      paper_bgcolor:'rgba(0,0,0,0)',
+      plot_bgcolor:'rgba(0,0,0,0)',
+      showlegend:false,
+      xaxis:{title:'x', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), scaleanchor:'y', range:[-view,view], showbackground:true, backgroundcolor:axisBg},
+      yaxis:{title:'y', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), range:[-view,view], showbackground:true, backgroundcolor:axisBg},
+      shapes:[{
+        type:'path',
+        path:`M ${p[0]} ${p[1]} L ${p[0]+0.18*tdir[0]} ${p[1]+0.18*tdir[1]} L ${p[0]+0.18*(tdir[0]-gdir[0])} ${p[1]+0.18*(tdir[1]-gdir[1])}`,
+        line:{color:css('--line'),width:2}
+      }]
+    };
+    Plotly.react(el.levelPlot,[contour,sameLevel,...arrows],layout,{displayModeBar:false,responsive:true});
+  }
+
+  function renderBasisPlot(){
+    if(typeof Plotly==='undefined') return;
+    const C=current(), a=C.a, z0=C.z0, rho=Math.min(state.rho,0.55);
+    const n=23;
+    const xs=[], ys=[], zs=[], pxs=[], pys=[], pzs=[];
+    for(let j=0;j<n;j++){
+      const y=a[1]-rho+2*rho*j/(n-1);
+      const rowX=[], rowY=[], rowZ=[], prowX=[], prowY=[], prowZ=[];
+      for(let i=0;i<n;i++){
+        const x=a[0]-rho+2*rho*i/(n-1);
+        rowX.push(x); rowY.push(y); rowZ.push(C.fobj.f(x,y));
+        prowX.push(x); prowY.push(y); prowZ.push(z0 + C.g[0]*(x-a[0]) + C.g[1]*(y-a[1]));
+      }
+      xs.push(rowX); ys.push(rowY); zs.push(rowZ);
+      pxs.push(prowX); pys.push(prowY); pzs.push(prowZ);
+    }
+
+    const rx=[1,0,C.g[0]], ry=[0,1,C.g[1]], nvec=C.ngraph;
+    const s=0.42*state.scale;
+    const rxTip=[a[0]+s*rx[0], a[1]+s*rx[1], z0+s*rx[2]];
+    const ryTip=[a[0]+s*ry[0], a[1]+s*ry[1], z0+s*ry[2]];
+    const nn=norm(nvec); const nu=[nvec[0]/nn,nvec[1]/nn,nvec[2]/nn];
+    const nTip=[a[0]+s*nu[0], a[1]+s*nu[1], z0+s*nu[2]];
+    const traces = [
+      {type:'surface', x:xs,y:ys,z:zs, colorscale:[[0,css('--goodSoft')],[1,css('--good')]], opacity:0.88, showscale:false, hoverinfo:'skip'},
+      {type:'surface', x:pxs,y:pys,z:pzs, colorscale:[[0,css('--modelSoft')],[1,css('--model')]], opacity:0.45, showscale:false, hoverinfo:'skip'},
+      {type:'scatter3d',mode:'lines',x:[a[0],rxTip[0]],y:[a[1],rxTip[1]],z:[z0,rxTip[2]],line:{color:css('--gold'),width:8},showlegend:false,hoverinfo:'skip'},
+      {type:'scatter3d',mode:'lines',x:[a[0],ryTip[0]],y:[a[1],ryTip[1]],z:[z0,ryTip[2]],line:{color:css('--violet'),width:8},showlegend:false,hoverinfo:'skip'},
+      {type:'scatter3d',mode:'lines',x:[a[0],nTip[0]],y:[a[1],nTip[1]],z:[z0,nTip[2]],line:{color:css('--bad'),width:8},showlegend:false,hoverinfo:'skip'},
+      {type:'scatter3d',mode:'markers+text',x:[a[0],rxTip[0],ryTip[0],nTip[0]],y:[a[1],rxTip[1],ryTip[1],nTip[1]],z:[z0,rxTip[2],ryTip[2],nTip[2]],text:['P','r_x','r_y','N'],textposition:['top center','top center','top center','top center'],textfont:{size:11,color:css('--text')},marker:{size:[5,4,4,4],color:[css('--gold'),css('--gold'),css('--violet'),css('--bad')]},hoverinfo:'skip',showlegend:false}
+    ];
+    const axisBg = state.theme==='dark' ? '#16222b' : '#faf7f1';
+    const layout = {
+      margin:{l:0,r:0,t:0,b:0},
+      paper_bgcolor:'rgba(0,0,0,0)',
+      plot_bgcolor:'rgba(0,0,0,0)',
+      scene:{
+        bgcolor:'rgba(0,0,0,0)',
+        xaxis:{title:'x', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg},
+        yaxis:{title:'y', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg},
+        zaxis:{title:'z', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg},
+        aspectmode:'manual',
+        aspectratio:{x:1.0,y:1.0,z:0.75},
+        camera:{eye:{x:1.45,y:1.30,z:0.92}}
+      }
+    };
+    Plotly.react(el.basisPlot,traces,layout,{displayModeBar:false,responsive:true});
+  }
+
+  function renderAngleSvg(){
+    const C=current(), W=980,H=520, plot={x:80,y:80,w:820,h:340};
+    const data=[]; let maxY=Math.max(norm(C.g)*1.12,0.2);
+    for(let i=0;i<=360;i++){
+      const th=2*Math.PI*i/360;
+      const val=C.g[0]*Math.cos(th)+C.g[1]*Math.sin(th);
+      data.push({x:th,y:val});
+    }
+    const yMin=-maxY, yMax=maxY;
+    const X=t=>lin(t,0,2*Math.PI,plot.x,plot.x+plot.w);
+    const Y=z=>lin(z,yMin,yMax,plot.y+plot.h,plot.y);
+    let grid='';
+    for(let k=0;k<=6;k++){
+      const xx=plot.x+plot.w*k/6;
+      grid += `<line x1="${xx}" y1="${plot.y}" x2="${xx}" y2="${plot.y+plot.h}" stroke="${css('--grid')}"/>`;
+    }
+    for(let k=0;k<=6;k++){
+      const yy=yMin+(yMax-yMin)*k/6;
+      grid += `<line x1="${plot.x}" y1="${Y(yy)}" x2="${plot.x+plot.w}" y2="${Y(yy)}" stroke="${css('--grid')}"/>`;
+    }
+    el.angleSvg.innerHTML = `
+      <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+      ${text(plot.x,40,'rotating u around the unit circle',{size:22,weight:700,family:'Georgia, serif'})}
+      <rect x="${plot.x}" y="${plot.y}" width="${plot.w}" height="${plot.h}" rx="22" fill="transparent" stroke="${css('--line')}"/>
+      ${grid}
+      <line x1="${X(0)}" y1="${Y(0)}" x2="${X(2*Math.PI)}" y2="${Y(0)}" stroke="${css('--line')}" stroke-width="2"/>
+      <path d="${path(data,X,Y)}" fill="none" stroke="${css('--model')}" stroke-width="3.5"/>
+      <line x1="${X(state.theta)}" y1="${plot.y}" x2="${X(state.theta)}" y2="${plot.y+plot.h}" stroke="${css('--gold')}" stroke-dasharray="6 6" stroke-width="2.4"/>
+      <circle cx="${X(state.theta)}" cy="${Y(C.Du)}" r="6" fill="${css('--gold')}"/>
+      ${text(X(state.theta)+8,Y(C.Du)-8,'current slope',{size:14,fill:css('--gold'),weight:700})}
+      ${text(plot.x+plot.w-10,plot.y+plot.h+28,'θ',{size:15,fill:css('--muted'),weight:700,anchor:'end'})}
+      ${text(plot.x+12,plot.y+26,'D_u f(a)',{size:15,fill:css('--muted'),weight:700})}
+    `;
+  }
+
+  function renderOrthoSvg(){
+    const C=current(), W=980,H=520, plot={x:120,y:82,w:740,h:360};
+    const gnorm=Math.max(norm(C.g),1e-7);
+    const gdir=[C.g[0]/gnorm,C.g[1]/gnorm];
+    const tnorm=Math.max(norm(C.tvec),1e-7);
+    const tdir=[C.tvec[0]/tnorm,C.tvec[1]/tnorm];
+    const center={x:plot.x+plot.w*0.42,y:plot.y+plot.h*0.58};
+    const S=130;
+    const p1={x:center.x-S*tdir[0],y:center.y+S*tdir[1]};
+    const p2={x:center.x+S*tdir[0],y:center.y-S*tdir[1]};
+    const gradTip={x:center.x+110*gdir[0],y:center.y-110*gdir[1]};
+    const tanTip={x:center.x+110*tdir[0],y:center.y-110*tdir[1]};
+    const dirTip={x:center.x+105*C.u[0],y:center.y-105*C.u[1]};
+    const projLen=dot(C.g,C.u)/gnorm;
+    const projTip={x:center.x+110*(projLen/Math.max(gnorm,1e-8))*gdir[0], y:center.y-110*(projLen/Math.max(gnorm,1e-8))*gdir[1]};
+
+    el.orthoSvg.innerHTML = `
+      <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+      ${text(84,40,'tangent motion vs normal motion',{size:22,weight:700,family:'Georgia, serif'})}
+      <line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="${css('--bad')}" stroke-width="4"/>
+      ${arrow(center.x,center.y,gradTip.x,gradTip.y,css('--gold'),4)}
+      ${arrow(center.x,center.y,tanTip.x,tanTip.y,css('--violet'),4)}
+      ${arrow(center.x,center.y,dirTip.x,dirTip.y,css('--model'),4)}
+      ${arrow(center.x,center.y,projTip.x,projTip.y,css('--good'),4)}
+
+      <circle cx="${center.x}" cy="${center.y}" r="6" fill="${css('--bad')}"/>
+      ${text(center.x+8,center.y-8,'a on the level set',{size:15,fill:css('--bad'),weight:700})}
+      ${text(gradTip.x+8,gradTip.y-8,'∇f(a)',{size:15,fill:css('--gold'),weight:700})}
+      ${text(tanTip.x+8,tanTip.y+18,'v tangent', {size:15,fill:css('--violet'),weight:700})}
+      ${text(dirTip.x+8,dirTip.y-8,'u', {size:15,fill:css('--model'),weight:700})}
+      ${text(projTip.x+8,projTip.y+18,'projection of u on ∇f', {size:15,fill:css('--good'),weight:700})}
+
+      <path d="M ${center.x} ${center.y} L ${center.x+26*tdir[0]} ${center.y-26*tdir[1]} L ${center.x+26*(tdir[0]+gdir[0])} ${center.y-26*(tdir[1]+gdir[1])}" fill="none" stroke="${css('--line')}" stroke-width="2"/>
+      <rect x="640" y="100" width="232" height="220" rx="22" fill="${css('--card')}" stroke="${css('--line')}"/>
+      ${text(660,136,'What the picture says',{size:20,weight:700,family:'Georgia, serif'})}
+      ${text(660,172,'• contour tangent v satisfies', {size:14,fill:css('--muted'),weight:700})}
+      ${text(682,196,'∇f(a) · v = 0', {size:18,fill:css('--violet'),weight:700,family:'Georgia, serif'})}
+      ${text(660,234,'• directional slope along u is', {size:14,fill:css('--muted'),weight:700})}
+      ${text(682,258,'D_u f(a) = ∇f(a) · u', {size:18,fill:css('--model'),weight:700,family:'Georgia, serif'})}
+      ${text(660,296,'• maximal slope occurs when', {size:14,fill:css('--muted'),weight:700})}
+      ${text(682,320,'u is parallel to ∇f(a)', {size:18,fill:css('--gold'),weight:700,family:'Georgia, serif'})}
+    `;
+  }
+
+  function updateText(){
+    const C=current();
+    el.funcLabel.textContent=C.fobj.label;
+    el.pointLabel.textContent=`(${fmt(C.a[0])}, ${fmt(C.a[1])})`;
+    el.thetaLabel.textContent=`${fmt(state.theta)} rad`;
+    el.rhoLabel.textContent=fmt(state.rho);
+    el.scaleLabel.textContent=fmt(state.scale);
+    [el.pxSlider,el.pySlider,el.thetaSlider,el.rhoSlider,el.scaleSlider].forEach(fill);
+
+    el.matrixBox.textContent=matrixStr(C.g,C.ngraph);
+    el.formulaBox.innerHTML=C.fobj.formula;
+    el.noticeBox.innerHTML=C.fobj.notice;
+
+    el.gradMetric.textContent=`∇f(a) ≈ ${fmtVec(C.g)} ;  |∇f(a)| ≈ ${fmt(norm(C.g))}`;
+    el.dirMetric.textContent=`u ≈ ${fmtVec(C.u)} ;  D_u f(a) ≈ ${fmt(C.Du)}`;
+    el.planeMetric.textContent=`z ≈ ${fmt(C.z0)} + ${fmt(C.g[0])}(x-${fmt(C.a[0])}) + ${fmt(C.g[1])}(y-${fmt(C.a[1])})`;
+    el.tanMetric.textContent=`one tangent direction: ${fmtVec(C.tvec)} ;  dot ≈ ${fmt(dot(C.g,C.tvec))}`;
+    el.normalMetric.textContent=`N ≈ (${fmt(C.ngraph[0])}, ${fmt(C.ngraph[1])}, 1.000)`;
+  }
+
+  function render(){
+    updateText();
+    renderMainPlot();
+    renderLevelPlot();
+    renderBasisPlot();
+    renderAngleSvg();
+    renderOrthoSvg();
+    if(window.MathJax) MathJax.typesetPromise().catch(()=>{});
+  }
+
+  function sync(){
+    const prev=state.func;
+    state.func=el.funcSelect.value;
+    if(prev!==state.func){
+      const s=surfaces[state.func].suggested;
+      state.px=s[0]; state.py=s[1];
+      el.pxSlider.value=state.px;
+      el.pySlider.value=state.py;
+    }
+    state.px=+el.pxSlider.value;
+    state.py=+el.pySlider.value;
+    state.theta=+el.thetaSlider.value;
+    state.rho=+el.rhoSlider.value;
+    state.scale=+el.scaleSlider.value;
+    render();
+  }
+
+  function init(){
+    state.initialized=true;
+    el.funcSelect.value=state.func;
+    el.pxSlider.value=state.px;
+    el.pySlider.value=state.py;
+    el.thetaSlider.value=state.theta;
+    el.rhoSlider.value=state.rho;
+    el.scaleSlider.value=state.scale;
+
+    el.funcSelect.addEventListener('change',sync);
+    el.pxSlider.addEventListener('input',sync);
+    el.pySlider.addEventListener('input',sync);
+    el.thetaSlider.addEventListener('input',sync);
+    el.rhoSlider.addEventListener('input',sync);
+    el.scaleSlider.addEventListener('input',sync);
+
+    el.theme.addEventListener('click',()=>setTheme(state.theme==='dark'?'light':'dark'));
+    el.theme.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); setTheme(state.theme==='dark'?'light':'dark'); } });
+
+    setTheme(state.theme);
+  }
+
+  window.addEventListener('load', init);
+</script>
+</body>
+</html>

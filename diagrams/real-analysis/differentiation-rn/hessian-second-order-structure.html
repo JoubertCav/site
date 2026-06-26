@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hessian and Second-Order Structure — Interactive App</title>
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script defer src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#f7f3ea;
+      --paper:#fffdf8;
+      --card:rgba(255,255,255,.82);
+      --text:#1d2830;
+      --muted:#6d7982;
+      --line:#ddd5c7;
+      --grid:rgba(29,40,48,.08);
+      --good:#287a76;
+      --goodSoft:rgba(40,122,118,.13);
+      --model:#536f91;
+      --modelSoft:rgba(83,111,145,.16);
+      --bad:#c46a55;
+      --badSoft:rgba(196,106,85,.13);
+      --gold:#b58a3c;
+      --violet:#7b64ae;
+      --violetSoft:rgba(123,100,174,.14);
+      --shadow:0 18px 44px rgba(38,48,58,.08);
+      --switch:#eee7da;
+      --thumb:#fffaf0;
+    }
+    body.dark{
+      --bg:#0d1318;
+      --paper:#121b22;
+      --card:rgba(18,27,34,.84);
+      --text:#edf4f6;
+      --muted:#aab7c0;
+      --line:#26333d;
+      --grid:rgba(237,244,246,.09);
+      --good:#6ccbc3;
+      --goodSoft:rgba(108,203,195,.14);
+      --model:#9abce0;
+      --modelSoft:rgba(154,188,224,.17);
+      --bad:#ef9a82;
+      --badSoft:rgba(239,154,130,.18);
+      --gold:#e0bd70;
+      --violet:#c0a7ff;
+      --violetSoft:rgba(192,167,255,.14);
+      --shadow:0 22px 54px rgba(0,0,0,.28);
+      --switch:#1a242c;
+      --thumb:#17222b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%,rgba(40,122,118,.07),transparent 25%),
+        radial-gradient(circle at 100% 0%,rgba(83,111,145,.06),transparent 22%),
+        linear-gradient(180deg,#fbf8f2,var(--bg));
+    }
+    body.dark{
+      background:
+        radial-gradient(circle at 0% 0%,rgba(108,203,195,.08),transparent 25%),
+        radial-gradient(circle at 100% 0%,rgba(154,188,224,.08),transparent 22%),
+        linear-gradient(180deg,#101920,var(--bg));
+    }
+    .wrap{max-width:1660px;margin:0 auto;padding:24px 18px 34px}
+    header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+    h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.05rem,4vw,3.35rem);letter-spacing:-.035em;line-height:1.05}
+    .subtitle{margin:.55rem 0 0;color:var(--muted);font-size:1.04rem;line-height:1.55;max-width:1000px}
+    .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04);font-size:.92rem}
+    .theme{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card);box-shadow:0 10px 24px rgba(0,0,0,.04)}
+    .theme .label{font-size:.92rem;color:var(--muted);min-width:70px}
+    .switch{position:relative;width:70px;height:36px;border-radius:999px;background:var(--switch);border:1px solid var(--line)}
+    .switch:before,.switch:after{position:absolute;top:50%;transform:translateY(-50%);font-size:13px;opacity:.75}
+    .switch:before{content:"☀";left:10px}.switch:after{content:"☾";right:10px}
+    .knob{position:absolute;left:3px;top:3px;width:28px;height:28px;border-radius:50%;background:var(--thumb);border:1px solid var(--line);box-shadow:0 4px 12px rgba(0,0,0,.16);transition:left .25s ease;display:grid;place-items:center;font-size:13px}
+    body.dark .knob{left:37px}
+
+    .layout{display:grid;grid-template-columns:350px minmax(0,1fr);gap:18px;align-items:start}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+    aside{padding:18px;position:sticky;top:16px}
+    .head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px}
+    h2,h3{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.02em;margin:0}
+    .head p{margin:4px 0 0;color:var(--muted);font-size:.94rem;line-height:1.42}
+    .tag{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:var(--muted);font-size:.82rem;white-space:nowrap;background:rgba(127,127,127,.04)}
+    .eq,.note{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:12px 14px;margin-bottom:14px}
+    .eq{font-size:.89rem}
+    .note{color:var(--muted);font-size:.93rem;line-height:1.5}
+    .control{margin:14px 0 16px}
+    .control label{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;font-weight:650}
+    .control small{color:var(--muted);font-weight:500}
+    select{width:100%;background:var(--paper);color:var(--text);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.98rem}
+    input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:8px;border-radius:999px;border:1px solid var(--line);background:linear-gradient(90deg,var(--good),var(--good));background-repeat:no-repeat;background-size:50% 100%}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--good);border:2px solid var(--paper);box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer}
+    .pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .miniMatrix{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:10px}
+    .miniMatrix strong{display:block;font-size:.86rem;margin-bottom:8px;color:var(--muted)}
+    .matrixBox{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.91rem;line-height:1.5;white-space:pre;text-align:center}
+
+    main{display:grid;gap:18px}
+    .hero{padding:18px}
+    .heroTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+    .heroTop p{margin:4px 0 0;color:var(--muted);line-height:1.45;max-width:860px}
+    .status{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:.92rem;background:var(--goodSoft);color:var(--good);white-space:nowrap}
+    .split{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .plotBox,.svgBox{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:10px}
+    .plotSvg{display:block;width:100%;height:auto}
+    #mainPlot{width:100%;height:700px;border-radius:18px;overflow:hidden}
+    #contourPlot{width:100%;height:520px;border-radius:18px;overflow:hidden}
+    .metrics{display:grid;gap:10px}
+    .metric{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:14px}
+    .metric h4{font-family:Georgia,"Times New Roman",serif;margin:0 0 6px;font-size:1rem}
+    .metric p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.4}
+    .metric strong{display:block;margin-top:7px;color:var(--good)}
+    .panel{padding:18px}
+    .explainRow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+    .explainBox,.explainMini{background:linear-gradient(180deg, rgba(127,127,127,.05), rgba(127,127,127,.02)), var(--paper);border:1px solid var(--line);border-radius:18px;padding:12px 14px}
+    .explainBox h4,.explainMini h4{margin:0 0 6px;font-family:Georgia,"Times New Roman",serif;font-size:1rem;letter-spacing:-.01em}
+    .explainBox p,.explainMini p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.46}
+    .footer{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .footer div{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px 13px;font-size:.92rem;line-height:1.42}
+
+    @media(max-width:1240px){.layout{grid-template-columns:1fr}aside{position:static}.split,.grid2{grid-template-columns:1fr}}
+    @media(max-width:900px){.footer,.pair,.explainRow{grid-template-columns:1fr}.wrap{padding:18px 14px 28px}#mainPlot{height:580px}#contourPlot{height:430px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Hessian and second-order structure</h1>
+        <p class="subtitle">The Hessian is the matrix of second-order behavior. It controls the local quadratic model, the sign of curvature in each direction, and the classification of critical points into minima, maxima, saddles, or degenerate cases.</p>
+      </div>
+      <div class="actions">
+        <div class="pill">3D surface + quadratic model</div>
+        <div class="pill">2D contours + eigen-directions</div>
+        <div class="pill">directional curvature classification</div>
+        <div id="theme" class="theme" role="button" tabindex="0">
+          <span id="themeLabel" class="label">light mode</span>
+          <div class="switch"><div id="knob" class="knob">☀</div></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="card">
+        <div class="head">
+          <div>
+            <h2>Controls</h2>
+            <p>Choose a function, inspect a point \(a\), and compare the true surface with its quadratic approximation.</p>
+          </div>
+          <div class="tag">\(H_f(a)\)</div>
+        </div>
+
+        <div class="eq">
+          \[
+          f(a+h)\approx f(a)+\nabla f(a)\cdot h+\tfrac12 h^\top H_f(a)h
+          \]
+          \[
+          H_f(a)=
+          \begin{pmatrix}
+          f_{xx}(a) & f_{xy}(a)\\
+          f_{yx}(a) & f_{yy}(a)
+          \end{pmatrix}
+          \]
+          \[
+          D=\det H_f(a),\qquad
+          \text{at a critical point:}
+          \]
+          \[
+          D>0,\ f_{xx}>0 \Rightarrow \text{local min},\quad
+          D>0,\ f_{xx}<0 \Rightarrow \text{local max}
+          \]
+          \[
+          D<0 \Rightarrow \text{saddle},\qquad
+          D=0 \Rightarrow \text{inconclusive}
+          \]
+        </div>
+
+        <div class="control">
+          <label>Function \(f\) <small id="funcLabel"></small></label>
+          <select id="funcSelect">
+            <option value="bowl">positive definite bowl</option>
+            <option value="dome">negative definite dome</option>
+            <option value="saddle">indefinite saddle</option>
+            <option value="flatmin">degenerate flat minimum</option>
+            <option value="monkey">degenerate monkey saddle</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label>Point mode <small id="modeLabel"></small></label>
+          <select id="modeSelect">
+            <option value="critical">snap to distinguished point</option>
+            <option value="free">free point</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label>Base point \(a=(a_1,a_2)\) <small id="pointLabel"></small></label>
+          <div class="pair">
+            <input id="pxSlider" type="range" min="-1.6" max="1.6" step="0.01" value="0.25">
+            <input id="pySlider" type="range" min="-1.6" max="1.6" step="0.01" value="-0.15">
+          </div>
+        </div>
+
+        <div class="control">
+          <label>Quadratic patch radius \(\rho\) <small id="rhoLabel"></small></label>
+          <input id="rhoSlider" type="range" min="0.20" max="1.00" step="0.01" value="0.52">
+        </div>
+
+        <div class="control">
+          <label>Direction angle \(\theta\) <small id="thetaLabel"></small></label>
+          <input id="thetaSlider" type="range" min="0" max="6.28318" step="0.01" value="0.65">
+        </div>
+
+        <div class="miniMatrix">
+          <strong>Local second-order data</strong>
+          <div id="matrixBox" class="matrixBox"></div>
+        </div>
+
+        <div class="note" id="formulaBox"></div>
+        <div class="note" id="noticeBox"></div>
+      </aside>
+
+      <main>
+        <section class="card hero">
+          <div class="heroTop">
+            <div>
+              <h2>Main 3D surface and quadratic model</h2>
+              <p>Green: the true graph of \(f\). Blue: the local second-order model \(q(h)=f(a)+\nabla f(a)\cdot h+\frac12 h^\top H(a)h\). Gold: the selected point \(P\). The red and violet arrows show principal curvature directions determined by Hessian eigenvectors.</p>
+            </div>
+            <div id="status" class="status">second-order classification</div>
+          </div>
+
+          <div class="split">
+            <div class="plotBox">
+              <div id="mainPlot"></div>
+            </div>
+            <div class="metrics">
+              <div class="metric">
+                <h4>Gradient test</h4>
+                <p>The second-order test is for critical points, so first inspect \(\nabla f(a)\).</p>
+                <strong id="gradMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Hessian signature</h4>
+                <p>Trace, determinant, and eigenvalues summarize the quadratic form.</p>
+                <strong id="hessMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Directional curvature</h4>
+                <p>Along the chosen unit vector \(u\), the second directional derivative is \(u^\top H(a)u\).</p>
+                <strong id="dirMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Classification</h4>
+                <p>At a critical point, definiteness determines the local picture.</p>
+                <strong id="classMetric"></strong>
+              </div>
+              <div class="metric">
+                <h4>Quadratic remainder</h4>
+                <p>Difference between \(f\) and its second-order model on a short step.</p>
+                <strong id="errorMetric"></strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="explainRow">
+            <div class="explainBox">
+              <h4>Quadratic form</h4>
+              <p>The Hessian enters through \(\tfrac12 h^\top Hh\). This term is the first one capable of distinguishing bowl, dome, and saddle behavior once the linear part disappears.</p>
+            </div>
+            <div class="explainBox">
+              <h4>Definiteness</h4>
+              <p>If \(h^\top Hh>0\) for all nonzero \(h\), the quadratic form is positive definite and the graph curves upward in every direction. Negative definite means the opposite. Mixed signs produce saddles.</p>
+            </div>
+            <div class="explainBox">
+              <h4>Eigen-directions</h4>
+              <p>The Hessian's eigenvectors are the principal directions of curvature. Their eigenvalues give the strongest upward and downward second-order bending at the point.</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="grid2">
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>2D contours and principal directions</h3>
+                <p>The contour pattern around \(a\) reveals the second-order type. Near a minimum or maximum the contours are nested ellipses; near a saddle they cross in hyperbolic fashion.</p>
+              </div>
+              <div class="tag">contour geometry</div>
+            </div>
+            <div class="plotBox">
+              <div id="contourPlot"></div>
+            </div>
+            <div class="explainMini">
+              <h4>Short explanation</h4>
+              <p>The local contour geometry is the 2D footprint of the quadratic form. The Hessian eigenvectors pick the axes of the local ellipse or hyperbola.</p>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Directional curvature as the angle changes</h3>
+                <p>The function \(u^\top H(a)u\) over the unit circle shows how curvature depends on direction. Its maxima and minima occur along Hessian eigenvectors.</p>
+              </div>
+              <div class="tag">Rayleigh quotient on the circle</div>
+            </div>
+            <div class="svgBox">
+              <svg id="curvSvg" class="plotSvg" viewBox="0 0 980 520"></svg>
+            </div>
+            <div class="explainMini">
+              <h4>Short explanation</h4>
+              <p>When this directional second derivative stays positive, every direction bends upward; when it changes sign, some directions bend up and others down, which is the hallmark of a saddle.</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="grid2">
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Principal 1D slices</h3>
+                <p>Restrict \(f\) to the two principal curvature directions. These slices reveal the local one-dimensional shape encoded by the Hessian eigenvalues.</p>
+              </div>
+              <div class="tag">eigenvalue slices</div>
+            </div>
+            <div class="svgBox">
+              <svg id="sliceSvg" class="plotSvg" viewBox="0 0 980 520"></svg>
+            </div>
+            <div class="explainMini">
+              <h4>Short explanation</h4>
+              <p>Along each eigenvector, the quadratic part becomes a simple parabola with coefficient equal to the corresponding eigenvalue. So the two slices show the essential local second-order structure.</p>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <div class="head">
+              <div>
+                <h3>Definiteness and the test logic</h3>
+                <p>This panel summarizes the algebraic classification in a compact geometric way.</p>
+              </div>
+              <div class="tag">signature map</div>
+            </div>
+            <div class="svgBox">
+              <svg id="logicSvg" class="plotSvg" viewBox="0 0 980 520"></svg>
+            </div>
+            <div class="explainMini">
+              <h4>Short explanation</h4>
+              <p>The determinant decides whether the quadratic form keeps the same sign or changes sign. If it keeps the same sign, \(f_{xx}\) tells whether the local shape opens upward or downward.</p>
+            </div>
+          </section>
+        </div>
+
+        <section class="footer">
+          <div><strong>Second-order model.</strong> Near any point, the Hessian determines the local quadratic correction to the tangent plane.</div>
+          <div><strong>At critical points.</strong> When the gradient vanishes, the Hessian becomes the leading local term and therefore decides the local geometry—except in degenerate cases.</div>
+          <div><strong>Degeneracy.</strong> If the Hessian is singular or zero, the usual second-order test may fail. Then higher-order terms decide the true local behavior.</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+<script>
+  const examples = {
+    bowl:{
+      label:'positive definite bowl',
+      formula:'\\[f(x,y)=(x-0.25)^2+0.35(x-0.25)(y+0.15)+1.45(y+0.15)^2.\\]',
+      notice:'A classical local minimum. At the distinguished critical point the Hessian is positive definite, so every nearby direction bends upward.',
+      point:[0.25,-0.15],
+      f:(x,y)=>{const X=x-0.25,Y=y+0.15; return X*X+0.35*X*Y+1.45*Y*Y;},
+      fx:(x,y)=>{const X=x-0.25,Y=y+0.15; return 2*X+0.35*Y;},
+      fy:(x,y)=>{const X=x-0.25,Y=y+0.15; return 0.35*X+2.9*Y;},
+      fxx:(x,y)=>2,
+      fxy:(x,y)=>0.35,
+      fyy:(x,y)=>2.9
+    },
+    dome:{
+      label:'negative definite dome',
+      formula:'\\[f(x,y)=-1.10(x+0.35)^2-0.25(x+0.35)(y-0.25)-0.90(y-0.25)^2.\\]',
+      notice:'A classical local maximum. The Hessian is negative definite, so every principal slice opens downward.',
+      point:[-0.35,0.25],
+      f:(x,y)=>{const X=x+0.35,Y=y-0.25; return -1.10*X*X-0.25*X*Y-0.90*Y*Y;},
+      fx:(x,y)=>{const X=x+0.35,Y=y-0.25; return -2.2*X-0.25*Y;},
+      fy:(x,y)=>{const X=x+0.35,Y=y-0.25; return -0.25*X-1.8*Y;},
+      fxx:(x,y)=>-2.2,
+      fxy:(x,y)=>-0.25,
+      fyy:(x,y)=>-1.8
+    },
+    saddle:{
+      label:'indefinite saddle',
+      formula:'\\[f(x,y)=0.90(x+0.10)^2-1.20(y-0.05)^2+0.55(x+0.10)(y-0.05).\\]',
+      notice:'At the distinguished point the Hessian is indefinite: some directions curve up and some curve down, which creates the saddle geometry.',
+      point:[-0.10,0.05],
+      f:(x,y)=>{const X=x+0.10,Y=y-0.05; return 0.90*X*X-1.20*Y*Y+0.55*X*Y;},
+      fx:(x,y)=>{const X=x+0.10,Y=y-0.05; return 1.8*X+0.55*Y;},
+      fy:(x,y)=>{const X=x+0.10,Y=y-0.05; return 0.55*X-2.4*Y;},
+      fxx:(x,y)=>1.8,
+      fxy:(x,y)=>0.55,
+      fyy:(x,y)=>-2.4
+    },
+    flatmin:{
+      label:'degenerate flat minimum',
+      formula:'\\[f(x,y)=x^4+0.50y^2.\\]',
+      notice:'The distinguished point is a true local minimum, but the Hessian is only semidefinite. The ordinary second-order test is therefore inconclusive even though the point is a minimum.',
+      point:[0,0],
+      f:(x,y)=>x*x*x*x+0.50*y*y,
+      fx:(x,y)=>4*x*x*x,
+      fy:(x,y)=>y,
+      fxx:(x,y)=>12*x*x,
+      fxy:(x,y)=>0,
+      fyy:(x,y)=>1
+    },
+    monkey:{
+      label:'degenerate monkey saddle',
+      formula:'\\[f(x,y)=x^3-3xy^2.\\]',
+      notice:'At the origin the Hessian vanishes completely, so the second-order test says nothing. Higher-order terms reveal the true saddle-type behavior.',
+      point:[0,0],
+      f:(x,y)=>x*x*x-3*x*y*y,
+      fx:(x,y)=>3*x*x-3*y*y,
+      fy:(x,y)=>-6*x*y,
+      fxx:(x,y)=>6*x,
+      fxy:(x,y)=>-6*y,
+      fyy:(x,y)=>-6*x
+    }
+  };
+
+  const state = {
+    func:'bowl',
+    mode:'critical',
+    px:0.25,
+    py:-0.15,
+    rho:0.52,
+    theta:0.65,
+    theme:localStorage.getItem('hessian-second-order-theme') || 'light',
+    initialized:false
+  };
+
+  const el = {
+    theme:document.getElementById('theme'),
+    themeLabel:document.getElementById('themeLabel'),
+    knob:document.getElementById('knob'),
+    funcSelect:document.getElementById('funcSelect'),
+    modeSelect:document.getElementById('modeSelect'),
+    pxSlider:document.getElementById('pxSlider'),
+    pySlider:document.getElementById('pySlider'),
+    rhoSlider:document.getElementById('rhoSlider'),
+    thetaSlider:document.getElementById('thetaSlider'),
+    funcLabel:document.getElementById('funcLabel'),
+    modeLabel:document.getElementById('modeLabel'),
+    pointLabel:document.getElementById('pointLabel'),
+    rhoLabel:document.getElementById('rhoLabel'),
+    thetaLabel:document.getElementById('thetaLabel'),
+    matrixBox:document.getElementById('matrixBox'),
+    formulaBox:document.getElementById('formulaBox'),
+    noticeBox:document.getElementById('noticeBox'),
+    status:document.getElementById('status'),
+    mainPlot:document.getElementById('mainPlot'),
+    contourPlot:document.getElementById('contourPlot'),
+    curvSvg:document.getElementById('curvSvg'),
+    sliceSvg:document.getElementById('sliceSvg'),
+    logicSvg:document.getElementById('logicSvg'),
+    gradMetric:document.getElementById('gradMetric'),
+    hessMetric:document.getElementById('hessMetric'),
+    dirMetric:document.getElementById('dirMetric'),
+    classMetric:document.getElementById('classMetric'),
+    errorMetric:document.getElementById('errorMetric')
+  };
+
+  const css=v=>getComputedStyle(document.body).getPropertyValue(v).trim();
+  const norm=v=>Math.hypot(...v);
+  const dot=(a,b)=>a.reduce((s,x,i)=>s+x*b[i],0);
+  const matVec=(A,v)=>[A[0][0]*v[0]+A[0][1]*v[1], A[1][0]*v[0]+A[1][1]*v[1]];
+  const fmt=x=>{
+    if(!Number.isFinite(x)) return '—';
+    if(Math.abs(x)>9999) return x.toExponential(2);
+    return (x<0?'−':'')+Math.abs(x).toFixed(3);
+  };
+  const fmtVec=v=>`(${fmt(v[0])}, ${fmt(v[1])})`;
+  const lin=(x,a,b,c,d)=>c+(x-a)*(d-c)/(b-a);
+  function fill(input){
+    const min=+input.min,max=+input.max,val=+input.value;
+    input.style.backgroundSize=((val-min)/(max-min)*100)+'% 100%';
+  }
+  function text(x,y,s,o={}){
+    return `<text x="${x}" y="${y}" fill="${o.fill||css('--text')}" font-size="${o.size||14}" font-family="${o.family||'Inter, sans-serif'}" font-weight="${o.weight||500}" text-anchor="${o.anchor||'start'}">${s}</text>`;
+  }
+  function path(points,X,Y){
+    return points.map((p,i)=>`${i?'L':'M'} ${X(p.x).toFixed(2)} ${Y(p.y).toFixed(2)}`).join(' ');
+  }
+  function arrow(x1,y1,x2,y2,color,w=3,dash=''){
+    const ang=Math.atan2(y2-y1,x2-x1), h=10;
+    const a1=ang-Math.PI/7, a2=ang+Math.PI/7;
+    const hx1=x2-h*Math.cos(a1), hy1=y2-h*Math.sin(a1);
+    const hx2=x2-h*Math.cos(a2), hy2=y2-h*Math.sin(a2);
+    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${w}" stroke-linecap="round" ${dash?`stroke-dasharray="${dash}"`:''}/>
+            <path d="M ${x2} ${y2} L ${hx1} ${hy1} M ${x2} ${y2} L ${hx2} ${hy2}" stroke="${color}" stroke-width="${w}" fill="none" stroke-linecap="round" ${dash?`stroke-dasharray="${dash}"`:''}/>`;
+  }
+
+  function eigSym(a,b,c){
+    const tr=a+c, disc=Math.sqrt((a-c)*(a-c)+4*b*b);
+    const l1=(tr+disc)/2, l2=(tr-disc)/2;
+    function vec(l){
+      let v;
+      if(Math.abs(b)>1e-8){ v=[b, l-a]; }
+      else { v = Math.abs(a-l) < Math.abs(c-l) ? [1,0] : [0,1]; }
+      const n=Math.hypot(v[0],v[1]) || 1;
+      return [v[0]/n,v[1]/n];
+    }
+    return {l1,l2,v1:vec(l1),v2:vec(l2)};
+  }
+
+  function classify(grad,H){
+    const gnorm=norm(grad);
+    const a=H[0][0], b=H[0][1], c=H[1][1];
+    const D=a*c-b*b;
+    if(gnorm>0.04) return {label:'not a critical point', detail:'the second-order test is not yet the classification tool', color:css('--gold')};
+    if(D>0.04 && a>0) return {label:'local minimum', detail:'positive definite Hessian', color:css('--good')};
+    if(D>0.04 && a<0) return {label:'local maximum', detail:'negative definite Hessian', color:css('--bad')};
+    if(D<-0.04) return {label:'saddle point', detail:'indefinite Hessian', color:css('--violet')};
+    return {label:'inconclusive / degenerate', detail:'singular or nearly singular Hessian', color:css('--gold')};
+  }
+
+  function setTheme(t){
+    state.theme=t;
+    document.body.classList.toggle('dark',t==='dark');
+    localStorage.setItem('hessian-second-order-theme',t);
+    el.themeLabel.textContent=t==='dark'?'dark mode':'light mode';
+    el.knob.textContent=t==='dark'?'☾':'☀';
+    if(state.initialized) render();
+  }
+
+  function current(){
+    const ex=examples[state.func];
+    let a=[state.px,state.py];
+    if(state.mode==='critical') a=[ex.point[0], ex.point[1]];
+    const fa=ex.f(a[0],a[1]);
+    const grad=[ex.fx(a[0],a[1]), ex.fy(a[0],a[1])];
+    const H=[[ex.fxx(a[0],a[1]), ex.fxy(a[0],a[1])],[ex.fxy(a[0],a[1]), ex.fyy(a[0],a[1])]];
+    const eig=eigSym(H[0][0],H[0][1],H[1][1]);
+    const det=H[0][0]*H[1][1]-H[0][1]*H[1][0];
+    const tr=H[0][0]+H[1][1];
+    const u=[Math.cos(state.theta), Math.sin(state.theta)];
+    const dir2 = dot(u, matVec(H,u));
+    const step=0.48*state.rho;
+    const h=[step*u[0], step*u[1]];
+    const trueVal=ex.f(a[0]+h[0],a[1]+h[1]);
+    const quad = fa + dot(grad,h) + 0.5*dot(h,matVec(H,h));
+    const err = trueVal-quad;
+    const cls=classify(grad,H);
+    return {ex,a,fa,grad,H,eig,det,tr,u,dir2,trueVal,quad,err,cls};
+  }
+
+  function renderMainPlot(){
+    if(typeof Plotly==='undefined') return;
+    const C=current(), view=2.1, n=35;
+    const xs=[], ys=[], zs=[];
+    let zMin=Infinity,zMax=-Infinity;
+    for(let j=0;j<n;j++){
+      const y=-view+2*view*j/(n-1);
+      const rowX=[], rowY=[], rowZ=[];
+      for(let i=0;i<n;i++){
+        const x=-view+2*view*i/(n-1);
+        const z=C.ex.f(x,y);
+        rowX.push(x); rowY.push(y); rowZ.push(z);
+        zMin=Math.min(zMin,z); zMax=Math.max(zMax,z);
+      }
+      xs.push(rowX); ys.push(rowY); zs.push(rowZ);
+    }
+
+    const a=C.a, rho=state.rho, qx=[], qy=[], qz=[];
+    for(let j=0;j<=14;j++){
+      const v=-rho+2*rho*j/14;
+      const rowX=[], rowY=[], rowZ=[];
+      for(let i=0;i<=14;i++){
+        const u=-rho+2*rho*i/14;
+        const h=[u,v];
+        rowX.push(a[0]+u); rowY.push(a[1]+v);
+        rowZ.push(C.fa + dot(C.grad,h) + 0.5*dot(h,matVec(C.H,h)));
+      }
+      qx.push(rowX); qy.push(rowY); qz.push(rowZ);
+    }
+
+    const floorZ = zMin - 0.14*(zMax-zMin);
+    const e1=C.eig.v1, e2=C.eig.v2;
+    const L=0.56;
+    const p=[a[0],a[1],C.fa];
+    const q1=[a[0]+L*e1[0], a[1]+L*e1[1], C.fa + L*dot(C.grad,e1) + 0.5*L*L*C.eig.l1];
+    const q2=[a[0]+L*e2[0], a[1]+L*e2[1], C.fa + L*dot(C.grad,e2) + 0.5*L*L*C.eig.l2];
+
+    const traces = [
+      {
+        type:'surface', x:xs,y:ys,z:zs,
+        colorscale:[[0,css('--goodSoft')],[1,css('--good')]],
+        opacity:0.95, showscale:false,
+        hovertemplate:'x=%{x:.3f}<br>y=%{y:.3f}<br>z=%{z:.3f}<extra></extra>'
+      },
+      {
+        type:'surface', x:qx,qy,qz,
+        colorscale:[[0,css('--modelSoft')],[1,css('--model')]],
+        opacity:0.58, showscale:false,
+        hovertemplate:'quadratic model<extra></extra>'
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:[a[0],q1[0]], y:[a[1],q1[1]], z:[C.fa,q1[2]],
+        line:{color:css('--bad'), width:8},
+        hovertemplate:'principal direction 1<extra></extra>', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:[a[0],q2[0]], y:[a[1],q2[1]], z:[C.fa,q2[2]],
+        line:{color:css('--violet'), width:8},
+        hovertemplate:'principal direction 2<extra></extra>', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:[a[0],a[0]+0.62*state.rho*C.u[0]], y:[a[1],a[1]+0.62*state.rho*C.u[1]], z:[floorZ,floorZ],
+        line:{color:css('--gold'), width:8},
+        hovertemplate:'chosen direction u in the domain<extra></extra>', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'lines',
+        x:[a[0],a[0]], y:[a[1],a[1]], z:[floorZ,C.fa],
+        line:{color:css('--line'), width:5, dash:'dash'}, hoverinfo:'skip', showlegend:false
+      },
+      {
+        type:'scatter3d', mode:'markers+text',
+        x:[a[0]], y:[a[1]], z:[C.fa],
+        marker:{size:6,color:css('--gold')},
+        text:['P'], textposition:'top center',
+        textfont:{size:12,color:css('--text')},
+        hovertemplate:'P<br>x=%{x:.3f}<br>y=%{y:.3f}<br>f=%{z:.3f}<extra></extra>',
+        showlegend:false
+      }
+    ];
+
+    const axisBg = state.theme==='dark' ? '#16222b' : '#faf7f1';
+    const layout = {
+      margin:{l:0,r:0,t:0,b:0},
+      paper_bgcolor:'rgba(0,0,0,0)',
+      plot_bgcolor:'rgba(0,0,0,0)',
+      showlegend:false,
+      scene:{
+        bgcolor:'rgba(0,0,0,0)',
+        xaxis:{title:'x', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg, range:[-view,view]},
+        yaxis:{title:'y', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg, range:[-view,view]},
+        zaxis:{title:'z', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), showbackground:true, backgroundcolor:axisBg, range:[floorZ,zMax+0.22*(zMax-zMin)]},
+        aspectmode:'manual',
+        aspectratio:{x:1.04,y:1.04,z:0.80},
+        camera:{eye:{x:1.7,y:1.45,z:0.98}}
+      }
+    };
+    Plotly.react(el.mainPlot,traces,layout,{displayModeBar:false,responsive:true});
+  }
+
+  function renderContourPlot(){
+    if(typeof Plotly==='undefined') return;
+    const C=current(), view=2.1, n=90;
+    const xs=[], ys=[], zs=[], qq=[];
+    for(let i=0;i<n;i++) xs.push(-view+2*view*i/(n-1));
+    for(let j=0;j<n;j++) ys.push(-view+2*view*j/(n-1));
+    for(let j=0;j<n;j++){
+      const row=[], qrow=[];
+      for(let i=0;i<n;i++){
+        const x=xs[i], y=ys[j];
+        row.push(C.ex.f(x,y));
+        const h=[x-C.a[0], y-C.a[1]];
+        qrow.push(C.fa + dot(C.grad,h) + 0.5*dot(h,matVec(C.H,h)));
+      }
+      zs.push(row); qq.push(qrow);
+    }
+    const p=C.a, e1=C.eig.v1, e2=C.eig.v2, L=0.78;
+    const axisBg = state.theme==='dark' ? '#16222b' : '#faf7f1';
+
+    Plotly.react(el.contourPlot,[
+      {
+        type:'contour', x:xs,y:ys,z:zs,
+        contours:{coloring:'lines', showlabels:false},
+        line:{color:css('--good'), width:1.8},
+        showscale:false,
+        hovertemplate:'x=%{x:.3f}<br>y=%{y:.3f}<br>f=%{z:.3f}<extra></extra>'
+      },
+      {
+        type:'contour', x:xs,y:ys,z:qq,
+        contours:{coloring:'lines', showlabels:false},
+        line:{color:css('--model'), width:1.2, dash:'dash'},
+        opacity:0.75, showscale:false,
+        hoverinfo:'skip'
+      },
+      {
+        type:'scatter', mode:'lines+markers+text',
+        x:[p[0]-L*e1[0], p[0]+L*e1[0]], y:[p[1]-L*e1[1], p[1]+L*e1[1]],
+        marker:{size:[0,7],color:css('--bad')}, line:{color:css('--bad'),width:4},
+        text:['','e₁'], textposition:'top center', textfont:{size:12,color:css('--bad')},
+        hoverinfo:'skip', showlegend:false
+      },
+      {
+        type:'scatter', mode:'lines+markers+text',
+        x:[p[0]-L*e2[0], p[0]+L*e2[0]], y:[p[1]-L*e2[1], p[1]+L*e2[1]],
+        marker:{size:[0,7],color:css('--violet')}, line:{color:css('--violet'),width:4},
+        text:['','e₂'], textposition:'bottom center', textfont:{size:12,color:css('--violet')},
+        hoverinfo:'skip', showlegend:false
+      },
+      {
+        type:'scatter', mode:'markers+text', x:[p[0]], y:[p[1]],
+        marker:{size:8,color:css('--gold')}, text:['a'], textposition:'top center', textfont:{size:12,color:css('--gold')},
+        hoverinfo:'skip', showlegend:false
+      }
+    ],{
+      margin:{l:46,r:18,t:8,b:44},
+      paper_bgcolor:'rgba(0,0,0,0)',
+      plot_bgcolor:'rgba(0,0,0,0)',
+      showlegend:false,
+      xaxis:{title:'x', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), scaleanchor:'y', range:[-view,view], showbackground:true, backgroundcolor:axisBg},
+      yaxis:{title:'y', color:css('--muted'), gridcolor:css('--grid'), zerolinecolor:css('--line'), range:[-view,view], showbackground:true, backgroundcolor:axisBg}
+    },{displayModeBar:false,responsive:true});
+  }
+
+  function renderCurvSvg(){
+    const C=current(), W=980,H=520, plot={x:84,y:84,w:820,h:340};
+    const vals=[]; let ymin=Infinity,ymax=-Infinity;
+    for(let i=0;i<=360;i++){
+      const th=2*Math.PI*i/360;
+      const u=[Math.cos(th), Math.sin(th)];
+      const val=dot(u,matVec(C.H,u));
+      vals.push({x:th,y:val});
+      ymin=Math.min(ymin,val); ymax=Math.max(ymax,val);
+    }
+    ymin-=0.12*(ymax-ymin||1); ymax+=0.12*(ymax-ymin||1);
+    const X=t=>lin(t,0,2*Math.PI,plot.x,plot.x+plot.w);
+    const Y=z=>lin(z,ymin,ymax,plot.y+plot.h,plot.y);
+    let grid='';
+    for(let k=0;k<=6;k++){
+      const xx=plot.x+plot.w*k/6;
+      grid += `<line x1="${xx}" y1="${plot.y}" x2="${xx}" y2="${plot.y+plot.h}" stroke="${css('--grid')}"/>`;
+    }
+    for(let k=0;k<=6;k++){
+      const yy=ymin+(ymax-ymin)*k/6;
+      grid += `<line x1="${plot.x}" y1="${Y(yy)}" x2="${plot.x+plot.w}" y2="${Y(yy)}" stroke="${css('--grid')}"/>`;
+    }
+    const th1=((Math.atan2(C.eig.v1[1],C.eig.v1[0])%(2*Math.PI))+2*Math.PI)%(2*Math.PI);
+    const th2=((Math.atan2(C.eig.v2[1],C.eig.v2[0])%(2*Math.PI))+2*Math.PI)%(2*Math.PI);
+    el.curvSvg.innerHTML = `
+      <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+      ${text(plot.x,40,'uᵀ H(a) u on the unit circle',{size:22,weight:700,family:'Georgia, serif'})}
+      <rect x="${plot.x}" y="${plot.y}" width="${plot.w}" height="${plot.h}" rx="22" fill="transparent" stroke="${css('--line')}"/>
+      ${grid}
+      <line x1="${X(0)}" y1="${Y(0)}" x2="${X(2*Math.PI)}" y2="${Y(0)}" stroke="${css('--line')}" stroke-width="1.8"/>
+      <path d="${path(vals,X,Y)}" fill="none" stroke="${css('--model')}" stroke-width="3.5"/>
+      <line x1="${X(state.theta)}" y1="${plot.y}" x2="${X(state.theta)}" y2="${plot.y+plot.h}" stroke="${css('--gold')}" stroke-dasharray="6 6" stroke-width="2.4"/>
+      <circle cx="${X(state.theta)}" cy="${Y(C.dir2)}" r="6" fill="${css('--gold')}"/>
+      <line x1="${X(th1)}" y1="${plot.y}" x2="${X(th1)}" y2="${plot.y+plot.h}" stroke="${css('--bad')}" stroke-dasharray="5 5" stroke-width="2.0"/>
+      <line x1="${X(th2)}" y1="${plot.y}" x2="${X(th2)}" y2="${plot.y+plot.h}" stroke="${css('--violet')}" stroke-dasharray="5 5" stroke-width="2.0"/>
+      ${text(X(state.theta)+8,Y(C.dir2)-8,'chosen direction',{size:14,fill:css('--gold'),weight:700})}
+      ${text(X(th1)+8,plot.y+26,'e₁', {size:13,fill:css('--bad'),weight:700})}
+      ${text(X(th2)+8,plot.y+48,'e₂', {size:13,fill:css('--violet'),weight:700})}
+      ${text(plot.x+plot.w-8,plot.y+plot.h+28,'θ', {size:15,fill:css('--muted'),weight:700,anchor:'end'})}
+    `;
+  }
+
+  function renderSliceSvg(){
+    const C=current(), W=980,H=520, plot={x:84,y:88,w:820,h:340};
+    const sMin=-0.95, sMax=0.95;
+    const d1=[], d2=[]; let ymin=Infinity,ymax=-Infinity;
+    for(let i=0;i<=220;i++){
+      const s=sMin+(sMax-sMin)*i/220;
+      const p1=[C.a[0]+s*C.eig.v1[0], C.a[1]+s*C.eig.v1[1]];
+      const p2=[C.a[0]+s*C.eig.v2[0], C.a[1]+s*C.eig.v2[1]];
+      const y1=C.ex.f(p1[0],p1[1])-C.fa;
+      const y2=C.ex.f(p2[0],p2[1])-C.fa;
+      d1.push({x:s,y:y1}); d2.push({x:s,y:y2});
+      ymin=Math.min(ymin,y1,y2); ymax=Math.max(ymax,y1,y2);
+    }
+    ymin-=0.12*(ymax-ymin||1); ymax+=0.12*(ymax-ymin||1);
+    const X=s=>lin(s,sMin,sMax,plot.x,plot.x+plot.w);
+    const Y=z=>lin(z,ymin,ymax,plot.y+plot.h,plot.y);
+    let grid='';
+    for(let k=0;k<=6;k++){
+      const xx=plot.x+plot.w*k/6;
+      grid += `<line x1="${xx}" y1="${plot.y}" x2="${xx}" y2="${plot.y+plot.h}" stroke="${css('--grid')}"/>`;
+    }
+    for(let k=0;k<=6;k++){
+      const yy=ymin+(ymax-ymin)*k/6;
+      grid += `<line x1="${plot.x}" y1="${Y(yy)}" x2="${plot.x+plot.w}" y2="${Y(yy)}" stroke="${css('--grid')}"/>`;
+    }
+    el.sliceSvg.innerHTML = `
+      <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+      ${text(plot.x,40,'principal slices: s ↦ f(a + s eᵢ) − f(a)',{size:22,weight:700,family:'Georgia, serif'})}
+      <rect x="${plot.x}" y="${plot.y}" width="${plot.w}" height="${plot.h}" rx="22" fill="transparent" stroke="${css('--line')}"/>
+      ${grid}
+      <line x1="${X(sMin)}" y1="${Y(0)}" x2="${X(sMax)}" y2="${Y(0)}" stroke="${css('--line')}" stroke-width="1.8"/>
+      <path d="${path(d1,X,Y)}" fill="none" stroke="${css('--bad')}" stroke-width="3.5"/>
+      <path d="${path(d2,X,Y)}" fill="none" stroke="${css('--violet')}" stroke-width="3.5"/>
+      ${text(X(0.52),Y(d1[Math.floor(d1.length*0.74)].y)-10,'slice along e₁', {size:14,fill:css('--bad'),weight:700})}
+      ${text(X(0.40),Y(d2[Math.floor(d2.length*0.67)].y)+18,'slice along e₂', {size:14,fill:css('--violet'),weight:700})}
+      ${text(plot.x+plot.w-8,plot.y+plot.h+28,'s', {size:15,fill:css('--muted'),weight:700,anchor:'end'})}
+    `;
+  }
+
+  function renderLogicSvg(){
+    const C=current(), W=980,H=520;
+    const D=C.det, a=C.H[0][0];
+    const pointX = lin(Math.max(-4,Math.min(4,D)), -4,4,114,452);
+    const pointY = lin(Math.max(-4,Math.min(4,a)), -4,4,430,100);
+    const cls=C.cls;
+    el.logicSvg.innerHTML = `
+      <rect x="0" y="0" width="${W}" height="${H}" rx="22" fill="${css('--paper')}"/>
+      ${text(78,40,'classification map using D = det(H) and fₓₓ',{size:22,weight:700,family:'Georgia, serif'})}
+
+      <rect x="86" y="92" width="396" height="356" rx="22" fill="transparent" stroke="${css('--line')}"/>
+      <line x1="284" y1="92" x2="284" y2="448" stroke="${css('--line')}" stroke-width="2"/>
+      <line x1="86" y1="270" x2="482" y2="270" stroke="${css('--line')}" stroke-width="2"/>
+      ${text(382,462,'D = det(H)', {size:14,fill:css('--muted'),weight:700})}
+      ${text(96,108,'fₓₓ', {size:14,fill:css('--muted'),weight:700})}
+
+      <rect x="286" y="94" width="194" height="174" rx="18" fill="${css('--goodSoft')}" stroke="${css('--good')}"/>
+      <rect x="286" y="272" width="194" height="174" rx="18" fill="${css('--badSoft')}" stroke="${css('--bad')}"/>
+      <rect x="88" y="94" width="194" height="352" rx="18" fill="${css('--violetSoft')}" stroke="${css('--violet')}"/>
+
+      ${text(382,138,'D > 0, fₓₓ > 0', {size:18,fill:css('--good'),weight:700,anchor:'middle',family:'Georgia, serif'})}
+      ${text(382,170,'positive definite', {size:16,fill:css('--good'),weight:700,anchor:'middle'})}
+      ${text(382,198,'local minimum', {size:18,fill:css('--good'),weight:700,anchor:'middle'})}
+
+      ${text(382,318,'D > 0, fₓₓ < 0', {size:18,fill:css('--bad'),weight:700,anchor:'middle',family:'Georgia, serif'})}
+      ${text(382,350,'negative definite', {size:16,fill:css('--bad'),weight:700,anchor:'middle'})}
+      ${text(382,378,'local maximum', {size:18,fill:css('--bad'),weight:700,anchor:'middle'})}
+
+      ${text(186,170,'D < 0', {size:18,fill:css('--violet'),weight:700,anchor:'middle',family:'Georgia, serif'})}
+      ${text(186,202,'indefinite', {size:16,fill:css('--violet'),weight:700,anchor:'middle'})}
+      ${text(186,230,'saddle', {size:18,fill:css('--violet'),weight:700,anchor:'middle'})}
+
+      <circle cx="${pointX}" cy="${pointY}" r="8" fill="${cls.color}" stroke="${css('--paper')}" stroke-width="2.5"/>
+      ${text(pointX+12,pointY-10,'current point', {size:14,fill:cls.color,weight:700})}
+
+      <rect x="560" y="106" width="320" height="312" rx="22" fill="${css('--card')}" stroke="${css('--line')}"/>
+      ${text(580,142,'Current algebraic data',{size:20,weight:700,family:'Georgia, serif'})}
+      ${text(580,184,`det(H) ≈ ${fmt(C.det)}`,{size:17,fill:css('--muted'),weight:700})}
+      ${text(580,214,`fₓₓ(a) ≈ ${fmt(C.H[0][0])}`,{size:17,fill:css('--muted'),weight:700})}
+      ${text(580,244,`trace(H) ≈ ${fmt(C.tr)}`,{size:17,fill:css('--muted'),weight:700})}
+      ${text(580,282,`classification: ${cls.label}`,{size:18,fill:cls.color,weight:700,family:'Georgia, serif'})}
+      ${text(580,314,cls.detail,{size:15,fill:css('--muted'),weight:700})}
+      ${text(580,356,'Remember: if ∇f(a) ≠ 0,',{size:15,fill:css('--muted'),weight:700})}
+      ${text(580,382,'the point is not yet a candidate',{size:15,fill:css('--muted'),weight:700})}
+      ${text(580,408,'for the standard second-order test.',{size:15,fill:css('--muted'),weight:700})}
+    `;
+  }
+
+  function updateText(){
+    const C=current();
+    el.funcLabel.textContent=C.ex.label;
+    el.modeLabel.textContent=state.mode;
+    el.pointLabel.textContent=`(${fmt(C.a[0])}, ${fmt(C.a[1])})`;
+    el.rhoLabel.textContent=fmt(state.rho);
+    el.thetaLabel.textContent=fmt(state.theta)+' rad';
+    [el.pxSlider,el.pySlider,el.rhoSlider,el.thetaSlider].forEach(fill);
+    el.pxSlider.disabled = state.mode==='critical';
+    el.pySlider.disabled = state.mode==='critical';
+
+    el.matrixBox.textContent =
+      `a = ${fmtVec(C.a)}\n` +
+      `∇f(a) = ${fmtVec(C.grad)}\n` +
+      `H(a) = [[${fmt(C.H[0][0])}, ${fmt(C.H[0][1])}],\n` +
+      `        [${fmt(C.H[1][0])}, ${fmt(C.H[1][1])}]]\n` +
+      `λ₁ ≈ ${fmt(C.eig.l1)},  λ₂ ≈ ${fmt(C.eig.l2)}\n` +
+      `e₁ ≈ ${fmtVec(C.eig.v1)}\n` +
+      `e₂ ≈ ${fmtVec(C.eig.v2)}`;
+    el.formulaBox.innerHTML=C.ex.formula;
+    el.noticeBox.innerHTML=C.ex.notice;
+
+    el.status.textContent = `${C.cls.label} · ${C.cls.detail}`;
+    el.status.style.color = C.cls.color;
+    el.status.style.background = state.theme==='dark'
+      ? `color-mix(in srgb, ${C.cls.color} 18%, transparent)`
+      : `color-mix(in srgb, ${C.cls.color} 12%, transparent)`;
+
+    el.gradMetric.textContent = `∇f(a) ≈ ${fmtVec(C.grad)} ;  ||∇f(a)|| ≈ ${fmt(norm(C.grad))}`;
+    el.hessMetric.textContent = `det ≈ ${fmt(C.det)} ;  tr ≈ ${fmt(C.tr)} ;  eigenvalues ≈ (${fmt(C.eig.l1)}, ${fmt(C.eig.l2)})`;
+    el.dirMetric.textContent = `u ≈ ${fmtVec(C.u)} ;  uᵀHu ≈ ${fmt(C.dir2)}`;
+    el.classMetric.textContent = C.cls.label;
+    el.classMetric.style.color = C.cls.color;
+    el.errorMetric.textContent = `f(a+h)−q(h) ≈ ${fmt(C.err)}`;
+  }
+
+  function render(){
+    updateText();
+    renderMainPlot();
+    renderContourPlot();
+    renderCurvSvg();
+    renderSliceSvg();
+    renderLogicSvg();
+    if(window.MathJax) MathJax.typesetPromise().catch(()=>{});
+  }
+
+  function sync(){
+    const oldFunc = state.func;
+    state.func = el.funcSelect.value;
+    state.mode = el.modeSelect.value;
+    if(oldFunc !== state.func && state.mode==='critical'){
+      state.px = examples[state.func].point[0];
+      state.py = examples[state.func].point[1];
+      el.pxSlider.value = state.px;
+      el.pySlider.value = state.py;
+    }
+    state.px = +el.pxSlider.value;
+    state.py = +el.pySlider.value;
+    state.rho = +el.rhoSlider.value;
+    state.theta = +el.thetaSlider.value;
+    render();
+  }
+
+  function init(){
+    state.initialized = true;
+    el.funcSelect.value = state.func;
+    el.modeSelect.value = state.mode;
+    el.pxSlider.value = state.px;
+    el.pySlider.value = state.py;
+    el.rhoSlider.value = state.rho;
+    el.thetaSlider.value = state.theta;
+
+    el.funcSelect.addEventListener('change', sync);
+    el.modeSelect.addEventListener('change', sync);
+    el.pxSlider.addEventListener('input', sync);
+    el.pySlider.addEventListener('input', sync);
+    el.rhoSlider.addEventListener('input', sync);
+    el.thetaSlider.addEventListener('input', sync);
+
+    el.theme.addEventListener('click',()=>setTheme(state.theme==='dark'?'light':'dark'));
+    el.theme.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); setTheme(state.theme==='dark'?'light':'dark'); } });
+
+    setTheme(state.theme);
+  }
+
+  window.addEventListener('load', init);
+</script>
+</body>
+</html>
