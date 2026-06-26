@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive undergraduate microeconomics diagram for the Lerner index and elasticity.">
+<title>Lerner Index and Elasticity | Microeconomics Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+  :root{
+    --bg:#f6f1e8;
+    --surface:#fffaf2;
+    --surface-2:#f1eadf;
+    --text:#1f252a;
+    --muted:#6b7472;
+    --border:rgba(31,37,42,.12);
+    --grid:rgba(31,37,42,.09);
+    --accent:#2d8b81;
+    --accent-2:#73bbb1;
+    --danger:#be7d6b;
+    --danger-soft:rgba(190,125,107,.16);
+    --accent-soft:rgba(45,139,129,.12);
+    --accent-soft-2:rgba(115,187,177,.15);
+    --shadow:0 18px 44px rgba(34,30,25,.08);
+    --radius:22px;
+  }
+  [data-theme="dark"]{
+    --bg:#0f1418;
+    --surface:#171d22;
+    --surface-2:#20282e;
+    --text:#edf3ef;
+    --muted:#aab4b1;
+    --border:rgba(237,243,239,.10);
+    --grid:rgba(237,243,239,.08);
+    --accent:#67c7b8;
+    --accent-2:#9fe1d8;
+    --danger:#d29181;
+    --danger-soft:rgba(210,145,129,.16);
+    --accent-soft:rgba(103,199,184,.12);
+    --accent-soft-2:rgba(159,225,216,.14);
+    --shadow:0 18px 44px rgba(0,0,0,.28);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:radial-gradient(circle at top left, var(--accent-soft), transparent 34rem), var(--bg);
+    color:var(--text);
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height:1.45;
+  }
+  .app{width:min(1500px, calc(100% - 24px)); margin:0 auto; padding:26px 0 34px}
+  header{display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:18px}
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; padding:7px 11px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--muted); font-size:13px; box-shadow:var(--shadow)}
+  .dot{width:7px; height:7px; border-radius:50%; background:var(--accent)}
+  h1{margin:14px 0 6px; font-size:clamp(34px,5vw,62px); line-height:.95; letter-spacing:-.055em; font-weight:760}
+  .subtitle{margin:0; max-width:920px; color:var(--muted); font-size:clamp(16px,2vw,20px)}
+  .theme-btn{border:1px solid var(--border); background:var(--surface); color:var(--text); border-radius:999px; padding:10px 14px; font:inherit; cursor:pointer; box-shadow:var(--shadow); white-space:nowrap}
+  .layout{display:grid; grid-template-columns:310px minmax(0,1fr); gap:18px; align-items:start}
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow)}
+  .controls{padding:18px; position:sticky; top:16px}
+  .card-title{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:12px}
+  h2{margin:0; font-size:17px; letter-spacing:-.025em}
+  h3{margin:0; font-size:16px; letter-spacing:-.02em}
+  .small{color:var(--muted); font-size:13px}
+  .control{padding:14px 0; border-top:1px solid var(--border)} .control:first-of-type{border-top:0}
+  .label-row{display:flex; justify-content:space-between; gap:12px; margin-bottom:8px; font-size:14px}
+  .value{color:var(--accent); font-variant-numeric:tabular-nums}
+  input[type="range"]{width:100%; accent-color:var(--accent)}
+  .toggle-row{display:flex; justify-content:space-between; align-items:center; gap:14px; padding:14px 0 4px; border-top:1px solid var(--border)}
+  .switch{position:relative; width:48px; height:28px; display:inline-block}
+  .switch input{opacity:0; width:0; height:0}
+  .slider-switch{position:absolute; inset:0; cursor:pointer; border-radius:999px; background:var(--surface-2); border:1px solid var(--border)}
+  .slider-switch::before{content:""; position:absolute; width:20px; height:20px; left:4px; top:3px; border-radius:50%; background:var(--accent); transition:.2s ease}
+  .switch input:checked + .slider-switch::before{transform:translateX(20px)}
+  .pill{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px; border:1px solid var(--border); color:var(--muted); background:var(--surface-2); font-size:13px; margin-top:14px}
+  .main{display:grid; gap:18px}
+  .formula-row{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px}
+  .formula{padding:15px; min-height:120px; display:flex; flex-direction:column; justify-content:space-between}
+  .formula .name{color:var(--muted); font-size:13px; margin-bottom:8px}
+  .math,.math-inline{font-family:"STIX Two Text","Cambria Math","Times New Roman",Georgia,serif; letter-spacing:-.01em}
+  .math{font-size:22px; color:var(--text)}
+  .math-inline{font-size:16px; color:var(--text); white-space:nowrap}
+  .mathline{display:flex; align-items:center; gap:.34em; flex-wrap:wrap; min-height:34px}
+  .frac{display:inline-grid; grid-template-rows:auto auto; align-items:center; justify-items:center; line-height:1.05; vertical-align:middle; margin:0 .12em; transform:translateY(.08em)}
+  .frac .top{padding:0 .2em .12em; border-bottom:1.35px solid currentColor}
+  .frac .bottom{padding:.12em .2em 0}
+  .sup{font-size:.72em; vertical-align:super}
+  .formula-chip{display:inline-flex; align-items:center; justify-content:center; padding:8px 11px; border-radius:14px; background:var(--surface-2); border:1px solid var(--border)}
+  .soft-eq{color:var(--muted); font-size:14px}
+  .diagram-card{padding:18px}
+  .diagram-head{display:flex; justify-content:space-between; align-items:end; gap:16px; margin-bottom:10px}
+  .diagram-head p{margin:4px 0 0; color:var(--muted); font-size:14px}
+  svg{display:block; width:100%; height:auto; overflow:visible}
+  .legend{display:flex; flex-wrap:wrap; gap:10px 14px; margin-top:12px; color:var(--muted); font-size:13px}
+  .legend-item{display:inline-flex; align-items:center; gap:7px}
+  .swatch{width:22px; height:3px; border-radius:999px; background:var(--accent)}
+  .swatch.mr{background:var(--muted); opacity:.82}
+  .swatch.mc{background:var(--danger)}
+  .swatch.focus{background:var(--accent-2)}
+  .swatch.fill{width:15px; height:12px; background:var(--danger-soft); border:1px solid var(--border)}
+  .metrics{display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:10px; margin-top:14px}
+  .metric{padding:13px; border-radius:17px; border:1px solid var(--border); background:var(--surface-2)}
+  .metric .k{color:var(--muted); font-size:12px; margin-bottom:3px}
+  .metric .v{font-size:20px; font-weight:740; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+  .mini-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px}
+  .mini-card{padding:16px}
+  .mini-head{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:8px}
+  .mini-sub{color:var(--muted); font-size:13px}
+  .bottom{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+  .panel{padding:18px}
+  .panel p{margin:0; color:var(--muted)}
+  .notice-list{display:grid; gap:11px; margin-top:12px}
+  .notice{padding:12px 13px; border-radius:16px; border:1px solid var(--border); background:var(--surface-2); color:var(--muted); font-size:14px}
+  .notice strong{color:var(--text)}
+  .summary{display:grid; gap:11px; margin-top:12px}
+  .summary-line{display:flex; gap:10px; align-items:flex-start; color:var(--muted); font-size:14px}
+  .summary-line span:first-child{color:var(--accent); min-width:24px; font-weight:760}
+  .axis{stroke:var(--text); stroke-width:1.2}
+  .gridline{stroke:var(--grid); stroke-width:1}
+  .curve-demand{fill:none; stroke:var(--accent); stroke-width:3}
+  .curve-mr{fill:none; stroke:var(--muted); stroke-width:2.1; stroke-dasharray:6 6}
+  .curve-mc{fill:none; stroke:var(--danger); stroke-width:2.7}
+  .curve-focus{fill:none; stroke:var(--accent-2); stroke-width:2.7}
+  .curve-secondary{fill:none; stroke:var(--accent); stroke-width:2.7}
+  .helper{stroke:var(--muted); stroke-width:1.2; stroke-dasharray:5 6}
+  .helper-focus{stroke:var(--accent-2); stroke-width:1.5; stroke-dasharray:4 5}
+  .point{fill:var(--surface); stroke:var(--text); stroke-width:2}
+  .point-accent{fill:var(--accent); stroke:var(--surface); stroke-width:2.2}
+  .point-focus{fill:var(--accent-2); stroke:var(--surface); stroke-width:2.2}
+  .label{fill:var(--text); font-size:13px}
+  .muted-label{fill:var(--muted); font-size:12px}
+  .fill-cs{fill:var(--accent-soft); stroke:none}
+  .fill-ps{fill:var(--accent-soft-2); stroke:none}
+  .fill-dwl{fill:var(--danger-soft); stroke:none}
+  .cursor-zone{fill:transparent; cursor:crosshair}
+  @media (max-width:1150px){
+    .layout{grid-template-columns:1fr}
+    .controls{position:relative; top:auto}
+    .formula-row,.mini-grid,.bottom{grid-template-columns:1fr}
+    .metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
+  }
+  @media (max-width:700px){
+    .app{width:min(100% - 14px,1500px); padding-top:16px}
+    header{flex-direction:column}
+    .theme-btn{width:100%}
+    .formula-row{grid-template-columns:1fr}
+    .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+</style>
+</head>
+<body data-theme="light">
+<div class="app">
+  <header>
+    <div>
+      <div class="eyebrow"><span class="dot"></span> Microeconomics · Market Power</div>
+      <h1>Lerner index and elasticity</h1>
+      <p class="subtitle">A clean linked view of how the main monopoly diagram generates price, marginal revenue, elasticity, and the Lerner index. Move one quantity, and every function reacts.</p>
+    </div>
+    <button class="theme-btn" id="themeBtn">Dark mode</button>
+  </header>
+
+  <div class="layout">
+    <aside class="card controls">
+      <div class="card-title"><h2>Controls</h2><span class="small">all graphs linked</span></div>
+
+      <div class="control">
+        <div class="label-row"><label for="a">Demand intercept <b>a</b></label><span class="value" id="aVal"></span></div>
+        <input id="a" type="range" min="40" max="160" step="1" value="100" />
+      </div>
+
+      <div class="control">
+        <div class="label-row"><label for="b">Demand slope <b>b</b></label><span class="value" id="bVal"></span></div>
+        <input id="b" type="range" min="0.5" max="4.0" step="0.1" value="2.0" />
+      </div>
+
+      <div class="control">
+        <div class="label-row"><label for="c">Marginal cost <b>c</b></label><span class="value" id="cVal"></span></div>
+        <input id="c" type="range" min="0" max="120" step="1" value="20" />
+      </div>
+
+      <div class="control">
+        <div class="label-row"><label for="qFocus">Focus quantity <b>q</b></label><span class="value" id="qFocusVal"></span></div>
+        <input id="qFocus" type="range" min="0" max="40" step="0.1" value="20" />
+      </div>
+
+      <div class="toggle-row">
+        <div><div style="font-size:14px;">Snap to monopoly</div><div class="small">q = qᴹ</div></div>
+        <label class="switch"><input id="snapM" type="checkbox" /><span class="slider-switch"></span></label>
+      </div>
+
+      <div class="toggle-row">
+        <div><div style="font-size:14px;">Show welfare areas</div><div class="small">CS, PS, DWL</div></div>
+        <label class="switch"><input id="areas" type="checkbox" checked /><span class="slider-switch"></span></label>
+      </div>
+
+      <div class="toggle-row">
+        <div><div style="font-size:14px;">Show competitive benchmark</div><div class="small">D(q)=MC</div></div>
+        <label class="switch"><input id="comp" type="checkbox" checked /><span class="slider-switch"></span></label>
+      </div>
+
+      <div class="pill" id="statusPill">Linked quantity view</div>
+    </aside>
+
+    <main class="main">
+      <section class="formula-row">
+        <div class="card formula">
+          <div>
+            <div class="name">Demand</div>
+            <div class="math mathline">p(q) = a − bq</div>
+          </div>
+          <div class="soft-eq">the price read from the demand curve</div>
+        </div>
+
+        <div class="card formula">
+          <div>
+            <div class="name">Marginal revenue</div>
+            <div class="math mathline">MR(q) = a − 2bq</div>
+          </div>
+          <div class="soft-eq">steeper than demand</div>
+        </div>
+
+        <div class="card formula">
+          <div>
+            <div class="name">Elasticity magnitude</div>
+            <div class="math mathline">|ε(q)| = <span class="frac"><span class="top">p(q)</span><span class="bottom">bq</span></span></div>
+          </div>
+          <div class="soft-eq">how sensitive quantity is to price</div>
+        </div>
+
+        <div class="card formula">
+          <div>
+            <div class="name">Lerner index</div>
+            <div class="math mathline">L(q) = <span class="frac"><span class="top">p(q) − c</span><span class="bottom">p(q)</span></span></div>
+          </div>
+          <div class="soft-eq">share of price above marginal cost</div>
+        </div>
+      </section>
+
+      <section class="card diagram-card">
+        <div class="diagram-head">
+          <div>
+            <h2>Main market diagram</h2>
+            <p>Click or drag on the graph to choose a quantity. The same quantity is highlighted in every function below.</p>
+          </div>
+          <span class="small">q horizontal · p vertical</span>
+        </div>
+        <svg id="marketSvg" viewBox="0 0 980 560" aria-label="Main market diagram"></svg>
+        <div class="legend">
+          <span class="legend-item"><span class="swatch"></span> Demand</span>
+          <span class="legend-item"><span class="swatch mr"></span> Marginal revenue</span>
+          <span class="legend-item"><span class="swatch mc"></span> Marginal cost</span>
+          <span class="legend-item"><span class="swatch focus"></span> Focus quantity</span>
+          <span class="legend-item"><span class="swatch fill"></span> Deadweight loss</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="k">q</div><div class="v" id="qMetric"></div></div>
+          <div class="metric"><div class="k">p(q)</div><div class="v" id="pMetric"></div></div>
+          <div class="metric"><div class="k">MR(q)</div><div class="v" id="mrMetric"></div></div>
+          <div class="metric"><div class="k">MC</div><div class="v" id="mcMetric"></div></div>
+          <div class="metric"><div class="k">Markup p−MC</div><div class="v" id="muMetric"></div></div>
+          <div class="metric"><div class="k">|ε(q)|</div><div class="v" id="eMetric"></div></div>
+          <div class="metric"><div class="k">L(q)</div><div class="v" id="LMetric"></div></div>
+          <div class="metric"><div class="k">qᴹ</div><div class="v" id="qMMetric"></div></div>
+        </div>
+      </section>
+
+      <section class="mini-grid">
+        <section class="card mini-card">
+          <div class="mini-head"><h3>Price function</h3><span class="mini-sub">p(q)</span></div>
+          <svg id="priceSvg" viewBox="0 0 700 270" aria-label="Price function"></svg>
+        </section>
+        <section class="card mini-card">
+          <div class="mini-head"><h3>Marginal revenue function</h3><span class="mini-sub">MR(q)</span></div>
+          <svg id="mrSvg" viewBox="0 0 700 270" aria-label="Marginal revenue function"></svg>
+        </section>
+        <section class="card mini-card">
+          <div class="mini-head"><h3>Elasticity function</h3><span class="mini-sub">|ε(q)|</span></div>
+          <svg id="elasSvg" viewBox="0 0 700 270" aria-label="Elasticity function"></svg>
+        </section>
+        <section class="card mini-card">
+          <div class="mini-head"><h3>Lerner function</h3><span class="mini-sub">L(q)</span></div>
+          <svg id="lernerSvg" viewBox="0 0 700 270" aria-label="Lerner function"></svg>
+        </section>
+      </section>
+
+      <section class="bottom">
+        <section class="card panel">
+          <h2>Interpretation</h2>
+          <p id="interpretation"></p>
+          <div class="notice-list">
+            <div class="notice"><strong>One quantity, many objects.</strong> Choosing q on the main graph simultaneously determines price, marginal revenue, elasticity, and markup.</div>
+            <div class="notice"><strong>Why qᴹ matters.</strong> At the monopoly quantity, <span class="math-inline">MR = MC</span>. Exactly there, the Lerner index equals the inverse of elasticity in magnitude: <span class="math-inline">L = 1/|ε|</span>.</div>
+            <div class="notice"><strong>Core intuition.</strong> The less elastic demand is at the chosen point, the easier it is for the monopolist to keep price above marginal cost.</div>
+          </div>
+        </section>
+
+        <section class="card panel">
+          <h2>What to notice</h2>
+          <div class="notice-list">
+            <div class="notice" id="notice1"></div>
+            <div class="notice" id="notice2"></div>
+            <div class="notice" id="notice3"></div>
+          </div>
+          <div class="summary">
+            <div class="summary-line"><span>1</span><div>Demand tells you <span class="math-inline">p(q)</span>; MR tells you whether increasing output still raises revenue at the margin.</div></div>
+            <div class="summary-line"><span>2</span><div>Elasticity is high on the left and falls as q moves right toward the choke quantity.</div></div>
+            <div class="summary-line"><span>3</span><div>The Lerner index is the normalized markup, so it rises when price stays high relative to cost.</div></div>
+            <div class="summary-line"><span>4</span><div>At qᴹ the four objects become one story: <span class="math-inline">MR=MC</span>, demand is elastic, and <span class="math-inline">L=1/|ε|</span>.</div></div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const els = {
+    a:$("a"), b:$("b"), c:$("c"), qFocus:$("qFocus"), snapM:$("snapM"), areas:$("areas"), comp:$("comp"), themeBtn:$("themeBtn"),
+    marketSvg:$("marketSvg"), priceSvg:$("priceSvg"), mrSvg:$("mrSvg"), elasSvg:$("elasSvg"), lernerSvg:$("lernerSvg"),
+    aVal:$("aVal"), bVal:$("bVal"), cVal:$("cVal"), qFocusVal:$("qFocusVal"), statusPill:$("statusPill"),
+    qMetric:$("qMetric"), pMetric:$("pMetric"), mrMetric:$("mrMetric"), mcMetric:$("mcMetric"), muMetric:$("muMetric"), eMetric:$("eMetric"), LMetric:$("LMetric"), qMMetric:$("qMMetric"),
+    interpretation:$("interpretation"), notice1:$("notice1"), notice2:$("notice2"), notice3:$("notice3")
+  };
+
+  function fmt(x,d=2){ if(!Number.isFinite(x)) return '—'; if(Math.abs(x)>=100) return x.toFixed(1); return x.toFixed(d); }
+  function clamp(x,lo,hi){ return Math.max(lo, Math.min(hi, x)); }
+  function s(tag, attrs={}){ const el=document.createElementNS('http://www.w3.org/2000/svg', tag); for(const [k,v] of Object.entries(attrs)) el.setAttribute(k,v); return el; }
+  function line(svg,x1,y1,x2,y2,cls){ svg.appendChild(s('line',{x1,y1,x2,y2,class:cls})); }
+  function text(svg,x,y,str,cls='label',anchor='middle'){ const t=s('text',{x,y,class:cls,'text-anchor':anchor}); t.textContent=str; svg.appendChild(t); }
+  function path(svg,pts,cls){ const d=pts.map((p,i)=>(i?'L':'M')+' '+p[0]+' '+p[1]).join(' '); svg.appendChild(s('path',{d,class:cls})); }
+  function poly(svg,pts,cls){ const d=pts.map((p,i)=>(i?'L':'M')+' '+p[0]+' '+p[1]).join(' ')+' Z'; svg.appendChild(s('path',{d,class:cls})); }
+  function circle(svg,cx,cy,r,cls){ svg.appendChild(s('circle',{cx,cy,r,class:cls})); }
+
+  function clampParams(){ if(+els.c.value >= +els.a.value) els.c.value = Math.max(0, +els.a.value - 1); }
+
+  function model(){
+    const a=+els.a.value, b=+els.b.value, c=+els.c.value;
+    const qInt=a/b;
+    const qM=Math.max(0,(a-c)/(2*b));
+    const pM=a-b*qM;
+    const qC=Math.max(0,(a-c)/b);
+    let q=clamp(+els.qFocus.value,0,qInt);
+    if(els.snapM.checked) q=qM;
+    const p=Math.max(0,a-b*q);
+    const MR=a-2*b*q;
+    const MC=c;
+    const markup=Math.max(0,p-c);
+    const absE=(q>0 && p>0)? p/(b*q):Infinity;
+    const L=(p>0)? Math.max(0,(p-c)/p):0;
+    const LM=(pM-c)/pM;
+    const absEM=pM/(b*qM);
+    const dwl=0.5*Math.max(0,qC-qM)*Math.max(0,pM-c);
+    return {a,b,c,qInt,qM,pM,qC,q,p,MR,MC,markup,absE,L,LM,absEM,dwl};
+  }
+
+  function syncQSlider(m){
+    els.qFocus.max = m.qInt.toFixed(2);
+    if(els.snapM.checked) els.qFocus.value = m.qM.toFixed(2);
+    else els.qFocus.value = clamp(+els.qFocus.value,0,m.qInt).toFixed(2);
+  }
+
+  function drawAxes(svg,W,H,margin,xMax,yMin,yMax,yLabel='value', xTicks=5, yTicks=4){
+    const iw=W-margin.left-margin.right, ih=H-margin.top-margin.bottom;
+    const X=x=>margin.left + (x/xMax)*iw;
+    const Y=y=>margin.top + ih - ((y-yMin)/(yMax-yMin))*ih;
+    for(let i=0;i<=xTicks;i++){
+      const x=xMax*i/xTicks; line(svg,X(x),margin.top,X(x),margin.top+ih,'gridline'); text(svg,X(x),margin.top+ih+22,fmt(x,1),'muted-label');
+    }
+    for(let i=0;i<=yTicks;i++){
+      const y=yMin + (yMax-yMin)*i/yTicks; line(svg,margin.left,Y(y),margin.left+iw,Y(y),'gridline'); text(svg,margin.left-10,Y(y)+4,fmt(y, yMax<=2?1:0),'muted-label','end');
+    }
+    line(svg,margin.left,margin.top+ih,margin.left+iw,margin.top+ih,'axis');
+    line(svg,margin.left,margin.top,margin.left,margin.top+ih,'axis');
+    text(svg,margin.left+iw,margin.top+ih+40,'q','label');
+    text(svg,margin.left-38,margin.top+8,yLabel,'label');
+    return {X,Y,iw,ih};
+  }
+
+  function drawMarket(m){
+    const svg=els.marketSvg; svg.innerHTML='';
+    const W=980,H=560, margin={left:78,right:36,top:32,bottom:66};
+    const qMax=m.qInt*1.04, pMax=Math.max(m.a*1.08,m.c*1.25,m.pM*1.2), yMin=0;
+    const {X,Y,iw,ih}=drawAxes(svg,W,H,margin,qMax,yMin,pMax,'p');
+
+    const demandPts=[], mrPts=[];
+    for(let i=0;i<=240;i++){
+      const q=qMax*i/240, pD=Math.max(0,m.a-m.b*q), pMR=m.a-2*m.b*q;
+      demandPts.push([X(q),Y(pD)]);
+      if(pMR>=0) mrPts.push([X(q),Y(pMR)]);
+    }
+    if(els.areas.checked){
+      poly(svg,[[X(0),Y(m.a)],[X(m.qM),Y(m.pM)],[X(m.qM),Y(m.pM)],[X(0),Y(m.pM)]],'fill-cs');
+      poly(svg,[[X(0),Y(m.pM)],[X(m.qM),Y(m.pM)],[X(m.qM),Y(m.c)],[X(0),Y(m.c)]],'fill-ps');
+      poly(svg,[[X(m.qM),Y(m.pM)],[X(m.qC),Y(m.c)],[X(m.qM),Y(m.c)]],'fill-dwl');
+    }
+    path(svg,demandPts,'curve-demand'); path(svg,mrPts,'curve-mr'); line(svg,X(0),Y(m.c),X(qMax),Y(m.c),'curve-mc');
+    text(svg,X(qMax*0.84),Y(Math.max(0,m.a-m.b*qMax*0.84))-12,'D','label');
+    const qMrLab=Math.min(m.qInt*0.35,m.qM*0.9||m.qInt*0.25); text(svg,X(qMrLab),Y(Math.max(0,m.a-2*m.b*qMrLab))+18,'MR','muted-label');
+    text(svg,X(qMax*0.9),Y(m.c)-12,'MC','label');
+
+    line(svg,X(m.qM),Y(0),X(m.qM),Y(m.pM),'helper');
+    line(svg,X(0),Y(m.pM),X(m.qM),Y(m.pM),'helper');
+    circle(svg,X(m.qM),Y(m.pM),6.1,'point-accent'); circle(svg,X(m.qM),Y(m.c),5.3,'point');
+    text(svg,X(m.qM),Y(0)+28,'qᴹ','label'); text(svg,X(0)-14,Y(m.pM)+4,'pᴹ','label','end');
+
+    if(els.comp.checked){ line(svg,X(m.qC),Y(0),X(m.qC),Y(m.c),'helper'); circle(svg,X(m.qC),Y(m.c),5,'point'); text(svg,X(m.qC),Y(0)+28,'qᶜ','muted-label'); }
+
+    line(svg,X(m.q),Y(0),X(m.q),Y(m.p),'helper-focus');
+    line(svg,X(0),Y(m.p),X(m.q),Y(m.p),'helper-focus');
+    if(m.MR>=0) line(svg,X(0),Y(m.MR),X(m.q),Y(m.MR),'helper-focus');
+    circle(svg,X(m.q),Y(m.p),6.2,'point-focus');
+    if(m.MR>=0) circle(svg,X(m.q),Y(m.MR),5.2,'point-focus');
+    text(svg,X(m.q),Y(0)+28,'q','label'); text(svg,X(0)-14,Y(m.p)+4,'p(q)','label','end');
+    if(m.MR>=0) text(svg,X(0)-14,Y(m.MR)+4,'MR(q)','muted-label','end');
+
+    const overlay=s('rect',{x:margin.left,y:margin.top,width:iw,height:ih,class:'cursor-zone'});
+    svg.appendChild(overlay);
+    const setQ=(ev)=>{
+      if(els.snapM.checked) return;
+      const pt=svg.createSVGPoint(); pt.x=ev.clientX; pt.y=ev.clientY;
+      const loc=pt.matrixTransform(svg.getScreenCTM().inverse());
+      const q=clamp((loc.x-margin.left)/iw*qMax,0,m.qInt);
+      els.qFocus.value=q.toFixed(2); update();
+    };
+    overlay.addEventListener('pointerdown', setQ);
+    overlay.addEventListener('pointermove', ev=>{ if(ev.buttons===1) setQ(ev); });
+  }
+
+  function drawFunction(svg, m, options){
+    svg.innerHTML='';
+    const W=700,H=270, margin={left:62,right:22,top:18,bottom:46};
+    const qMax=m.qInt;
+    const {getter,label,curveClass='curve-secondary', yMin=0, yMax, focusLabel=''} = options;
+    const vals=[];
+    for(let i=1;i<=260;i++){
+      const q=qMax*i/260; vals.push({q, y:getter(q)});
+    }
+    const effectiveYMax = yMax ?? Math.max(...vals.filter(v=>Number.isFinite(v.y)).map(v=>v.y).concat([1]));
+    const axes=drawAxes(svg,W,H,margin,qMax,yMin,effectiveYMax,label,5,4);
+    const X=axes.X, Y=axes.Y;
+    const pts=[];
+    vals.forEach(v=>{ if(Number.isFinite(v.y)) pts.push([X(v.q),Y(clamp(v.y,yMin,effectiveYMax))]); });
+    path(svg,pts,curveClass);
+    line(svg,X(m.q),margin.top,X(m.q),margin.top+axes.ih,'helper-focus');
+    const fy=getter(m.q);
+    if(Number.isFinite(fy)){
+      line(svg,margin.left,Y(clamp(fy,yMin,effectiveYMax)),X(m.q),Y(clamp(fy,yMin,effectiveYMax)),'helper-focus');
+      circle(svg,X(m.q),Y(clamp(fy,yMin,effectiveYMax)),6.1,'point-focus');
+      if(focusLabel) text(svg,X(m.q)+8,Y(clamp(fy,yMin,effectiveYMax))-10,focusLabel,'muted-label','start');
+    }
+    line(svg,X(m.qM),margin.top,X(m.qM),margin.top+axes.ih,'helper');
+    text(svg,X(m.qM),margin.top+axes.ih+22,'qᴹ','muted-label');
+    text(svg,X(m.q),margin.top+axes.ih+22,'q','label');
+  }
+
+  function updateText(m){
+    els.aVal.textContent=fmt(m.a,0); els.bVal.textContent=fmt(m.b,1); els.cVal.textContent=fmt(m.c,0); els.qFocusVal.textContent=fmt(m.q);
+    els.qMetric.textContent=fmt(m.q); els.pMetric.textContent=fmt(m.p); els.mrMetric.textContent=fmt(m.MR); els.mcMetric.textContent=fmt(m.MC,0); els.muMetric.textContent=fmt(m.markup); els.eMetric.textContent=Number.isFinite(m.absE)?fmt(m.absE):'∞'; els.LMetric.textContent=fmt(m.L); els.qMMetric.textContent=fmt(m.qM);
+    els.statusPill.textContent = els.snapM.checked ? 'Snapped to monopoly quantity' : 'Linked quantity view';
+
+    const exact = Math.abs(m.q-m.qM) < 0.08;
+    const inverseText = exact ? `At this quantity, the inverse elasticity rule is exact: <span class="math-inline">L = ${fmt(m.L)}</span> and <span class="math-inline">1/|ε| = ${fmt(1/m.absE)}</span>.` : `At this quantity, <span class="math-inline">L(q)</span> and <span class="math-inline">1/|ε(q)|</span> need not coincide; the equality is a monopoly condition, not a general identity.`;
+
+    els.interpretation.innerHTML = `The chosen quantity is <span class="math-inline">q = ${fmt(m.q)}</span>. Reading upward on demand gives price <span class="math-inline">p(q) = ${fmt(m.p)}</span>. The same q implies marginal revenue <span class="math-inline">MR(q) = ${fmt(m.MR)}</span>, elasticity magnitude <span class="math-inline">|ε(q)| = ${Number.isFinite(m.absE)?fmt(m.absE):'∞'}</span>, and Lerner index <span class="math-inline">L(q) = ${fmt(m.L)}</span>. ${inverseText}`;
+
+    els.notice1.innerHTML = `<strong>Demand and MR react together.</strong> When q moves right, both <span class="math-inline">p(q)</span> and <span class="math-inline">MR(q)</span> fall, but MR falls faster because selling one more unit lowers revenue on all previous units.`;
+    els.notice2.innerHTML = `<strong>Elasticity reacts nonlinearly.</strong> On the left, demand is very elastic. As q rises, <span class="math-inline">|ε(q)|</span> drops toward 1. Monopoly always chooses in the elastic region, so <span class="math-inline">|ε(q^M)| = ${fmt(m.absEM)}</span> is greater than 1.`;
+    els.notice3.innerHTML = `<strong>Lerner as normalized markup.</strong> The raw markup is <span class="math-inline">p-c = ${fmt(m.markup)}</span>, while the Lerner index is the fraction of price above cost, <span class="math-inline">L = ${fmt(m.L)}</span>. This is why Lerner measures market power more cleanly than markup alone.`;
+  }
+
+  function update(){
+    clampParams();
+    let m=model();
+    syncQSlider(m);
+    m=model();
+    updateText(m);
+    drawMarket(m);
+    drawFunction(els.priceSvg,m,{getter:q=>m.a-m.b*q,label:'p',curveClass:'curve-secondary',yMin:0,yMax:Math.max(m.a*1.05,m.c*1.2),focusLabel:'p(q)'});
+    drawFunction(els.mrSvg,m,{getter:q=>m.a-2*m.b*q,label:'MR',curveClass:'curve-secondary',yMin:Math.min(0,m.a-2*m.b*m.qInt*1.02),yMax:m.a*1.05,focusLabel:'MR(q)'});
+    drawFunction(els.elasSvg,m,{getter:q=>{ const p=m.a-m.b*q; return (q>0 && p>0)? p/(m.b*q):Infinity; },label:'|ε|',curveClass:'curve-focus',yMin:0,yMax:Math.max(6,m.absEM*1.8),focusLabel:'|ε(q)|'});
+    drawFunction(els.lernerSvg,m,{getter:q=>{ const p=m.a-m.b*q; return p>0 ? Math.max(0,(p-m.c)/p) : 0; },label:'L',curveClass:'curve-focus',yMin:0,yMax:1.02,focusLabel:'L(q)'});
+  }
+
+  ['a','b','c','qFocus','snapM','areas','comp'].forEach(id=>{ els[id].addEventListener('input', update); els[id].addEventListener('change', update); });
+  els.themeBtn.addEventListener('click', ()=>{ const dark=document.body.getAttribute('data-theme')==='dark'; document.body.setAttribute('data-theme', dark ? 'light':'dark'); els.themeBtn.textContent = dark ? 'Dark mode' : 'Light mode'; update(); });
+  update();
+})();
+</script>
+</body>
+</html>

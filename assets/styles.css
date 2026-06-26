@@ -557,6 +557,29 @@ p {
   font-size: 1.12rem;
 }
 
+.coming-soon-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 0 0 0.75rem;
+  padding: 0.32rem 0.62rem;
+  border: 1px solid color-mix(in srgb, var(--claret) 36%, var(--line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--claret) 8%, var(--white));
+  color: var(--claret);
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+[data-theme="dark"] .coming-soon-badge {
+  background: color-mix(in srgb, var(--claret) 18%, transparent);
+  border-color: color-mix(in srgb, var(--claret) 56%, var(--line));
+}
+
 .book-card p {
   line-height: 1.5;
 }

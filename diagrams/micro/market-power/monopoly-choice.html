@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive undergraduate microeconomics diagram for monopoly choice.">
+<title>Monopoly Choice | Microeconomics Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+  :root {
+    --bg: #f6f1e8;
+    --surface: #fffaf3;
+    --surface2: #f1eadf;
+    --text: #202622;
+    --muted: #68736e;
+    --border: rgba(31, 42, 36, 0.13);
+    --grid: rgba(31, 42, 36, 0.085);
+    --accent: #2f8f83;
+    --accentSoft: rgba(47, 143, 131, 0.13);
+    --accentMid: rgba(47, 143, 131, 0.32);
+    --inkSoft: rgba(32, 38, 34, 0.10);
+    --warm: #b97952;
+    --warmSoft: rgba(185, 121, 82, 0.18);
+    --danger: #b76262;
+    --dangerSoft: rgba(183, 98, 98, 0.16);
+    --shadow: 0 22px 52px rgba(46, 39, 28, 0.09);
+    --radius: 24px;
+  }
+
+  [data-theme="dark"] {
+    --bg: #0f1416;
+    --surface: #171d20;
+    --surface2: #20282b;
+    --text: #edf3ee;
+    --muted: #a7b3ad;
+    --border: rgba(237, 243, 238, 0.11);
+    --grid: rgba(237, 243, 238, 0.095);
+    --accent: #6ed0bf;
+    --accentSoft: rgba(110, 208, 191, 0.13);
+    --accentMid: rgba(110, 208, 191, 0.28);
+    --inkSoft: rgba(237, 243, 238, 0.09);
+    --warm: #d5a47e;
+    --warmSoft: rgba(213, 164, 126, 0.18);
+    --danger: #d18b8b;
+    --dangerSoft: rgba(209, 139, 139, 0.16);
+    --shadow: 0 24px 60px rgba(0, 0, 0, 0.31);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 0% 0%, var(--accentSoft), transparent 36rem),
+      radial-gradient(circle at 100% 20%, var(--warmSoft), transparent 30rem),
+      var(--bg);
+    color: var(--text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.45;
+  }
+
+  .app {
+    width: min(1460px, calc(100% - 34px));
+    margin: 0 auto;
+    padding: 28px 0 42px;
+  }
+
+  header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    color: var(--muted);
+    font-size: 13px;
+    box-shadow: var(--shadow);
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--accent);
+  }
+
+  h1 {
+    margin: 14px 0 7px;
+    font-size: clamp(34px, 5.6vw, 70px);
+    line-height: 0.92;
+    letter-spacing: -0.06em;
+    font-weight: 790;
+  }
+
+  .subtitle {
+    max-width: 880px;
+    margin: 0;
+    color: var(--muted);
+    font-size: clamp(16px, 2vw, 20px);
+  }
+
+  button {
+    font: inherit;
+  }
+
+  .theme-toggle {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 10px 15px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    white-space: nowrap;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 304px minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+
+  .card {
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .controls {
+    position: sticky;
+    top: 16px;
+    padding: 18px;
+  }
+
+  .card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 17px;
+    letter-spacing: -0.025em;
+  }
+
+  .small {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .control {
+    padding: 13px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .control:first-of-type { border-top: 0; }
+
+  .label-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .value {
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    font-weight: 660;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
+  }
+
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 0 3px;
+    border-top: 1px solid var(--border);
+  }
+
+  .switch {
+    width: 48px;
+    height: 28px;
+    position: relative;
+    display: inline-block;
+    flex: 0 0 auto;
+  }
+
+  .switch input { opacity: 0; width: 0; height: 0; }
+
+  .sliderSwitch {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    transition: 0.18s;
+  }
+
+  .sliderSwitch::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 4px;
+    top: 3px;
+    border-radius: 50%;
+    background: var(--accent);
+    transition: 0.18s;
+  }
+
+  .switch input:checked + .sliderSwitch::before { transform: translateX(20px); }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 13px;
+    padding: 8px 11px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .main {
+    display: grid;
+    gap: 18px;
+  }
+
+  .formula-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .formula {
+    padding: 15px;
+    min-height: 122px;
+  }
+
+  .name {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .math {
+    font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    letter-spacing: -0.01em;
+  }
+
+  .formula .math {
+    font-size: 20px;
+    line-height: 1.28;
+  }
+
+  .diagram-card { padding: 18px; }
+
+  .diagram-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 18px;
+    margin-bottom: 8px;
+  }
+
+  .diagram-head p {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 760px;
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .axis { stroke: var(--text); stroke-width: 1.25; }
+  .gridline { stroke: var(--grid); stroke-width: 1; }
+  .minorline { stroke: var(--border); stroke-width: 1; }
+  .helper { stroke: var(--muted); stroke-width: 1.15; stroke-dasharray: 5 6; }
+  .bracket { stroke: var(--text); stroke-width: 1.6; }
+  .demand { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; }
+  .mr { fill: none; stroke: var(--muted); stroke-width: 2.1; stroke-dasharray: 7 7; stroke-linecap: round; }
+  .mc { fill: none; stroke: var(--danger); stroke-width: 2.7; stroke-linecap: round; }
+  .tr { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; }
+  .tc { fill: none; stroke: var(--warm); stroke-width: 3; stroke-linecap: round; }
+  .profitCurve { fill: none; stroke: var(--text); stroke-width: 2.45; stroke-linecap: round; }
+  .tangent { fill: none; stroke: var(--text); stroke-width: 1.35; stroke-dasharray: 2 5; opacity: .9; }
+  .cs { fill: var(--accentSoft); }
+  .ps { fill: var(--accentMid); }
+  .dwl { fill: var(--dangerSoft); }
+  .profitLens { fill: var(--accentSoft); stroke: none; }
+  .lossLens { fill: var(--dangerSoft); stroke: none; }
+  .panelBg { fill: var(--surface2); opacity: .42; stroke: var(--border); }
+  .point { fill: var(--surface); stroke: var(--text); stroke-width: 2.1; }
+  .pointAccent { fill: var(--accent); stroke: var(--surface); stroke-width: 2.2; }
+  .pointWarm { fill: var(--warm); stroke: var(--surface); stroke-width: 2.2; }
+  .label { fill: var(--text); font-size: 13px; }
+  .mutedLabel { fill: var(--muted); font-size: 12px; }
+  .tinyLabel { fill: var(--muted); font-size: 11px; }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 15px;
+    margin-top: 11px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .legend-item { display: inline-flex; align-items: center; gap: 7px; }
+  .swatch { width: 23px; height: 3px; border-radius: 999px; background: var(--accent); }
+  .swatch.mr { background: var(--muted); opacity: .75; }
+  .swatch.mc { background: var(--danger); }
+  .swatch.tc { background: var(--warm); }
+  .swatch.pi { background: var(--text); }
+  .swatch.area { height: 12px; background: var(--accentSoft); border: 1px solid var(--border); }
+  .swatch.dwl { height: 12px; background: var(--dangerSoft); border: 1px solid var(--border); }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .metric {
+    padding: 13px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    border-radius: 17px;
+  }
+
+  .metric .k {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+
+  .metric .v {
+    font-size: 19px;
+    font-weight: 770;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 1.03fr .97fr;
+    gap: 18px;
+  }
+
+  .panel { padding: 18px; }
+  .panel p { margin: 0; color: var(--muted); }
+
+  .notice-list {
+    display: grid;
+    gap: 11px;
+    margin-top: 12px;
+  }
+
+  .notice {
+    padding: 12px 13px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .notice strong { color: var(--text); }
+
+  .summary {
+    display: grid;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .summary-line {
+    display: flex;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .summary-line span:first-child {
+    min-width: 24px;
+    color: var(--accent);
+    font-weight: 780;
+  }
+
+  @media (max-width: 1120px) {
+    .layout { grid-template-columns: 1fr; }
+    .controls { position: relative; top: auto; }
+    .formula-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .bottom-grid { grid-template-columns: 1fr; }
+    .metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 680px) {
+    .app { width: min(100% - 20px, 1460px); padding-top: 16px; }
+    header { flex-direction: column; }
+    .theme-toggle { width: 100%; }
+    .formula-grid, .metrics { grid-template-columns: 1fr; }
+    .diagram-head { align-items: start; flex-direction: column; }
+  }
+</style>
+</head>
+<body data-theme="light">
+<div class="app">
+  <header>
+    <div>
+      <div class="eyebrow"><span class="dot"></span> Microeconomics · monopoly as a geometric maximization problem</div>
+      <h1>Monopoly choice</h1>
+      <p class="subtitle">The monopolist chooses a quantity by maximizing the vertical distance between total revenue and total cost. The marginal condition is the local version of that geometry.</p>
+    </div>
+    <button class="theme-toggle" id="themeBtn">Dark mode</button>
+  </header>
+
+  <div class="layout">
+    <aside class="card controls">
+      <div class="card-head">
+        <h2>Parameters</h2>
+        <span class="small">linear demand · affine MC</span>
+      </div>
+
+      <div class="control">
+        <div class="label-row"><label for="a">Demand intercept <b>a</b></label><span class="value" id="aVal"></span></div>
+        <input id="a" type="range" min="45" max="170" step="1" value="105" />
+      </div>
+
+      <div class="control">
+        <div class="label-row"><label for="b">Demand slope <b>b</b></label><span class="value" id="bVal"></span></div>
+        <input id="b" type="range" min="0.5" max="5" step="0.1" value="2" />
+      </div>
+
+      <div class="control">
+        <div class="label-row"><label for="c">MC intercept <b>c</b></label><span class="value" id="cVal"></span></div>
+        <input id="c" type="range" min="0" max="120" step="1" value="22" />
+      </div>
+
+      <div class="control">
+        <div class="label-row"><label for="d">MC slope <b>d</b></label><span class="value" id="dVal"></span></div>
+        <input id="d" type="range" min="0" max="3.5" step="0.1" value="0.5" />
+      </div>
+
+      <div class="control">
+        <div class="label-row"><label for="F">Fixed cost <b>F</b></label><span class="value" id="FVal"></span></div>
+        <input id="F" type="range" min="0" max="1200" step="10" value="160" />
+      </div>
+
+      <div class="toggle-row">
+        <div><div style="font-size:14px;">Welfare regions</div><div class="small">CS · PS · DWL</div></div>
+        <label class="switch"><input id="areas" type="checkbox" checked><span class="sliderSwitch"></span></label>
+      </div>
+
+      <div class="toggle-row">
+        <div><div style="font-size:14px;">Competitive benchmark</div><div class="small">D(q)=MC(q)</div></div>
+        <label class="switch"><input id="comp" type="checkbox" checked><span class="sliderSwitch"></span></label>
+      </div>
+
+      <div class="toggle-row">
+        <div><div style="font-size:14px;">Tangency in total curves</div><div class="small">parallel slopes</div></div>
+        <label class="switch"><input id="tangent" type="checkbox" checked><span class="sliderSwitch"></span></label>
+      </div>
+
+      <div class="pill" id="statusPill">Interior solution</div>
+    </aside>
+
+    <main class="main">
+      <section class="formula-grid">
+        <div class="card formula">
+          <div class="name">Problem</div>
+          <div class="math">max<sub>q≥0</sub> π(q) = (a−bq)q − [F+cq+½dq²]</div>
+        </div>
+        <div class="card formula">
+          <div class="name">First-order condition</div>
+          <div class="math">π′(q) = MR(q) − MC(q) = 0</div>
+        </div>
+        <div class="card formula">
+          <div class="name">Interior monopoly quantity</div>
+          <div class="math">q<sup>M</sup> = (a−c)/(2b+d)</div>
+        </div>
+        <div class="card formula">
+          <div class="name">Price and markup</div>
+          <div class="math">p<sup>M</sup>=a−bq<sup>M</sup><br>(p−MC)/p = −1/ε</div>
+        </div>
+      </section>
+
+      <section class="card diagram-card">
+        <div class="diagram-head">
+          <div>
+            <h2>Price geometry</h2>
+            <p>Quantity is chosen at the intersection of marginal revenue and marginal cost. Price is then read vertically from demand.</p>
+          </div>
+          <span class="small">marginal plane</span>
+        </div>
+        <svg id="priceSvg" viewBox="0 0 980 560" role="img" aria-label="Monopoly marginal revenue marginal cost diagram"></svg>
+        <div class="legend">
+          <span class="legend-item"><span class="swatch"></span> Demand</span>
+          <span class="legend-item"><span class="swatch mr"></span> MR</span>
+          <span class="legend-item"><span class="swatch mc"></span> MC</span>
+          <span class="legend-item"><span class="swatch dwl"></span> DWL</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="k">qᴹ</div><div class="v" id="qMMetric"></div></div>
+          <div class="metric"><div class="k">pᴹ</div><div class="v" id="pMMetric"></div></div>
+          <div class="metric"><div class="k">qᶜ</div><div class="v" id="qCMetric"></div></div>
+          <div class="metric"><div class="k">Markup</div><div class="v" id="markupMetric"></div></div>
+          <div class="metric"><div class="k">Profit π(qᴹ)</div><div class="v" id="profitMetric"></div></div>
+          <div class="metric"><div class="k">DWL</div><div class="v" id="dwlMetric"></div></div>
+        </div>
+      </section>
+
+      <section class="card diagram-card">
+        <div class="diagram-head">
+          <div>
+            <h2>Profit maximization geometry</h2>
+            <p>The optimal quantity maximizes the vertical gap between total revenue and total cost. At the maximum, the two total curves have parallel tangents: slope(TR)=MR and slope(TC)=MC.</p>
+          </div>
+          <span class="small">total plane · profit curve</span>
+        </div>
+        <svg id="profitSvg" viewBox="0 0 980 510" role="img" aria-label="Total revenue total cost and profit maximization diagram"></svg>
+        <div class="legend">
+          <span class="legend-item"><span class="swatch"></span> Total revenue</span>
+          <span class="legend-item"><span class="swatch tc"></span> Total cost</span>
+          <span class="legend-item"><span class="swatch area"></span> profit lens</span>
+          <span class="legend-item"><span class="swatch pi"></span> π(q)</span>
+        </div>
+      </section>
+
+      <section class="bottom-grid">
+        <div class="card panel">
+          <h2>Interpretation</h2>
+          <p id="interpretation"></p>
+          <div class="notice-list">
+            <div class="notice"><strong>Global object.</strong> Monopoly is a vertical-gap problem: choose q to maximize TR(q)−TC(q).</div>
+            <div class="notice"><strong>Local condition.</strong> At the largest vertical gap, the total curves stop pulling apart: MR(q)=MC(q).</div>
+            <div class="notice"><strong>Welfare distortion.</strong> The monopolist stops before D(q)=MC(q), leaving gains from trade unrealized.</div>
+          </div>
+        </div>
+
+        <div class="card panel">
+          <h2>Exam-style summary</h2>
+          <div class="summary">
+            <div class="summary-line"><span>1</span><div>Write <span class="math">TR(q)=(a-bq)q</span> and <span class="math">TC(q)=F+cq+½dq²</span>.</div></div>
+            <div class="summary-line"><span>2</span><div>Then <span class="math">π(q)=TR(q)-TC(q)</span> is strictly concave because <span class="math">π″(q)=−2b−d&lt;0</span>.</div></div>
+            <div class="summary-line"><span>3</span><div>Interior FOC: <span class="math">a−2bq=c+dq</span>, hence <span class="math">qᴹ=(a−c)/(2b+d)</span>.</div></div>
+            <div class="summary-line"><span>4</span><div>Price is not chosen independently: <span class="math">pᴹ=a−bqᴹ</span>.</div></div>
+            <div class="summary-line"><span>5</span><div>Efficiency solves <span class="math">D(qᶜ)=MC(qᶜ)</span>. Since <span class="math">MR&lt;D</span> for <span class="math">q&gt;0</span>, <span class="math">qᴹ&lt;qᶜ</span>.</div></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const els = {
+    a: $('a'), b: $('b'), c: $('c'), d: $('d'), F: $('F'),
+    areas: $('areas'), comp: $('comp'), tangent: $('tangent'),
+    priceSvg: $('priceSvg'), profitSvg: $('profitSvg'),
+    themeBtn: $('themeBtn'), statusPill: $('statusPill')
+  };
+
+  const out = {
+    a: $('aVal'), b: $('bVal'), c: $('cVal'), d: $('dVal'), F: $('FVal'),
+    qM: $('qMMetric'), pM: $('pMMetric'), qC: $('qCMetric'), markup: $('markupMetric'),
+    profit: $('profitMetric'), dwl: $('dwlMetric'), interpretation: $('interpretation')
+  };
+
+  const fmt = (x, k = 2) => {
+    if (!Number.isFinite(x)) return '—';
+    if (Math.abs(x) >= 1000) return x.toFixed(0);
+    if (Math.abs(x) >= 100) return x.toFixed(1);
+    return x.toFixed(k);
+  };
+
+  function svgEl(tag, attrs = {}, children = []) {
+    const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+    children.forEach(ch => el.appendChild(ch));
+    return el;
+  }
+
+  function line(x1, y1, x2, y2, cls = 'axis') {
+    return svgEl('line', { x1, y1, x2, y2, class: cls });
+  }
+
+  function text(x, y, s, cls = 'label', anchor = 'middle') {
+    const t = svgEl('text', { x, y, class: cls, 'text-anchor': anchor });
+    t.textContent = s;
+    return t;
+  }
+
+  function path(points, cls, close = false) {
+    if (!points.length) return svgEl('path');
+    const d = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p[0]} ${p[1]}`).join(' ') + (close ? ' Z' : '');
+    return svgEl('path', { d, class: cls });
+  }
+
+  function poly(points, cls) { return path(points, cls, true); }
+
+  function model() {
+    const a = +els.a.value, b = +els.b.value, c = +els.c.value, d = +els.d.value, F = +els.F.value;
+    const active = a > c;
+    const qM = active ? (a - c) / (2 * b + d) : 0;
+    const pM = active ? a - b * qM : NaN;
+    const mcM = c + d * qM;
+    const qC = active ? (a - c) / (b + d) : 0;
+    const pC = active ? a - b * qC : NaN;
+    const TR = q => (a - b * q) * q;
+    const TC = q => F + c * q + 0.5 * d * q * q;
+    const MC = q => c + d * q;
+    const MR = q => a - 2 * b * q;
+    const D = q => a - b * q;
+    const profit = active ? TR(qM) - TC(qM) : -F;
+    const markup = active ? pM - mcM : 0;
+    const dwl = active ? 0.5 * Math.max(0, qC - qM) * Math.max(0, markup) : 0;
+    const cs = active ? 0.5 * Math.max(0, a - pM) * qM : 0;
+    const ps = active ? TR(qM) - (c * qM + 0.5 * d * qM * qM) : 0;
+    const epsilon = active ? -pM / (b * qM) : NaN;
+    const lerner = active && pM > 0 ? markup / pM : NaN;
+    return { a, b, c, d, F, active, qM, pM, mcM, qC, pC, TR, TC, MC, MR, D, profit, markup, dwl, cs, ps, epsilon, lerner };
+  }
+
+  function drawAxes(svg, X, Y, box, xMax, yMin, yMax, xTicks = 5, yTicks = 5) {
+    const { left, top, width, height } = box;
+    svg.appendChild(svgEl('rect', { x: left, y: top, width, height, rx: 18, class: 'panelBg' }));
+
+    for (let i = 0; i <= xTicks; i++) {
+      const q = xMax * i / xTicks;
+      svg.appendChild(line(X(q), top, X(q), top + height, 'gridline'));
+      svg.appendChild(text(X(q), top + height + 24, fmt(q, 1), 'tinyLabel'));
+    }
+    for (let i = 0; i <= yTicks; i++) {
+      const y = yMin + (yMax - yMin) * i / yTicks;
+      svg.appendChild(line(left, Y(y), left + width, Y(y), 'gridline'));
+      svg.appendChild(text(left - 10, Y(y) + 4, fmt(y, 0), 'tinyLabel', 'end'));
+    }
+
+    svg.appendChild(line(left, Y(Math.max(yMin, Math.min(yMax, 0))), left + width, Y(Math.max(yMin, Math.min(yMax, 0))), 'axis'));
+    svg.appendChild(line(left, top, left, top + height, 'axis'));
+  }
+
+  function drawPrice(m) {
+    const svg = els.priceSvg;
+    svg.innerHTML = '';
+    const W = 980, H = 560;
+    const margin = { left: 74, right: 34, top: 32, bottom: 66 };
+    const width = W - margin.left - margin.right;
+    const height = H - margin.top - margin.bottom;
+    const qIntercept = m.a / m.b;
+    const qMax = Math.max(qIntercept * 1.04, m.qC * 1.17, 8);
+    const pMax = Math.max(m.a * 1.09, (m.c + m.d * qMax) * 1.04, 20);
+    const X = q => margin.left + q / qMax * width;
+    const Y = p => margin.top + height - p / pMax * height;
+
+    drawAxes(svg, X, Y, { left: margin.left, top: margin.top, width, height }, qMax, 0, pMax, 5, 5);
+    svg.appendChild(text(margin.left + width, margin.top + height + 48, 'q', 'label'));
+    svg.appendChild(text(margin.left - 42, margin.top + 8, 'p', 'label'));
+
+    if (els.areas.checked && m.active) {
+      const cs = [[X(0), Y(m.a)], [X(m.qM), Y(m.pM)], [X(0), Y(m.pM)]];
+      svg.appendChild(poly(cs, 'cs'));
+
+      const psTop = [[X(0), Y(m.pM)], [X(m.qM), Y(m.pM)]];
+      const psBottom = [];
+      for (let i = 0; i <= 80; i++) {
+        const q = m.qM * (1 - i / 80);
+        psBottom.push([X(q), Y(m.MC(q))]);
+      }
+      svg.appendChild(poly(psTop.concat(psBottom), 'ps'));
+
+      const dwl = [];
+      for (let i = 0; i <= 90; i++) {
+        const q = m.qM + (m.qC - m.qM) * i / 90;
+        dwl.push([X(q), Y(m.D(q))]);
+      }
+      for (let i = 90; i >= 0; i--) {
+        const q = m.qM + (m.qC - m.qM) * i / 90;
+        dwl.push([X(q), Y(m.MC(q))]);
+      }
+      svg.appendChild(poly(dwl, 'dwl'));
+    }
+
+    const demand = [], mr = [], mc = [];
+    for (let i = 0; i <= 260; i++) {
+      const q = qMax * i / 260;
+      demand.push([X(q), Y(Math.max(0, m.D(q)))]);
+      if (m.MR(q) >= 0) mr.push([X(q), Y(m.MR(q))]);
+      if (m.MC(q) <= pMax) mc.push([X(q), Y(m.MC(q))]);
+    }
+    svg.appendChild(path(demand, 'demand'));
+    svg.appendChild(path(mr, 'mr'));
+    svg.appendChild(path(mc, 'mc'));
+
+    svg.appendChild(text(X(qMax * 0.82), Y(Math.max(0, m.D(qMax * 0.82))) - 12, 'D', 'label'));
+    svg.appendChild(text(X(Math.min(qMax * 0.32, m.a / (2*m.b) * .78)), Y(Math.max(0, m.MR(Math.min(qMax * 0.32, m.a / (2*m.b) * .78)))) + 22, 'MR', 'mutedLabel'));
+    svg.appendChild(text(X(qMax * 0.78), Y(m.MC(qMax * 0.78)) - 12, 'MC', 'label'));
+
+    if (m.active) {
+      svg.appendChild(line(X(m.qM), Y(0), X(m.qM), Y(m.pM), 'helper'));
+      svg.appendChild(line(X(0), Y(m.pM), X(m.qM), Y(m.pM), 'helper'));
+      svg.appendChild(line(X(0), Y(m.mcM), X(m.qM), Y(m.mcM), 'helper'));
+      svg.appendChild(svgEl('circle', { cx: X(m.qM), cy: Y(m.pM), r: 6.5, class: 'pointAccent' }));
+      svg.appendChild(svgEl('circle', { cx: X(m.qM), cy: Y(m.mcM), r: 5.5, class: 'point' }));
+      svg.appendChild(text(X(m.qM) + 10, Y(m.pM) - 13, 'read price from demand', 'label', 'start'));
+      svg.appendChild(text(X(m.qM) + 10, Y(m.mcM) + 22, 'choose q where MR=MC', 'mutedLabel', 'start'));
+      svg.appendChild(text(X(m.qM), Y(0) + 28, 'qᴹ', 'label'));
+      svg.appendChild(text(X(0) - 14, Y(m.pM) + 4, 'pᴹ', 'label', 'end'));
+      svg.appendChild(text(X(0) - 14, Y(m.mcM) + 4, 'MCᴹ', 'mutedLabel', 'end'));
+
+      const xb = X(m.qM) - 26;
+      svg.appendChild(line(xb, Y(m.pM), xb, Y(m.mcM), 'bracket'));
+      svg.appendChild(line(xb - 5, Y(m.pM), xb + 5, Y(m.pM), 'bracket'));
+      svg.appendChild(line(xb - 5, Y(m.mcM), xb + 5, Y(m.mcM), 'bracket'));
+      svg.appendChild(text(xb - 9, (Y(m.pM) + Y(m.mcM)) / 2 + 4, 'markup', 'mutedLabel', 'end'));
+
+      if (els.comp.checked) {
+        svg.appendChild(line(X(m.qC), Y(0), X(m.qC), Y(m.pC), 'helper'));
+        svg.appendChild(svgEl('circle', { cx: X(m.qC), cy: Y(m.pC), r: 5.3, class: 'point' }));
+        svg.appendChild(text(X(m.qC), Y(0) + 28, 'qᶜ', 'mutedLabel'));
+        svg.appendChild(text(X(m.qC) + 9, Y(m.pC) - 12, 'efficient point', 'mutedLabel', 'start'));
+      }
+    } else {
+      svg.appendChild(text(margin.left + width / 2, margin.top + height / 2, 'Corner: no positive monopoly output because a ≤ c', 'label'));
+    }
+  }
+
+  function drawProfit(m) {
+    const svg = els.profitSvg;
+    svg.innerHTML = '';
+    const W = 980, H = 510;
+
+    const qIntercept = m.a / m.b;
+    const qMax = Math.max(qIntercept * 1.03, m.qC * 1.18, 8);
+
+    const left = { left: 70, top: 38, width: 585, height: 385 };
+    const right = { left: 735, top: 58, width: 205, height: 340 };
+
+    const samples = [];
+    let yMin = Infinity, yMax = -Infinity, piMin = Infinity, piMax = -Infinity;
+    for (let i = 0; i <= 320; i++) {
+      const q = qMax * i / 320;
+      const tr = m.TR(q);
+      const tc = m.TC(q);
+      const pi = tr - tc;
+      samples.push({ q, tr, tc, pi });
+      yMin = Math.min(yMin, tr, tc, 0);
+      yMax = Math.max(yMax, tr, tc, 0);
+      piMin = Math.min(piMin, pi, 0);
+      piMax = Math.max(piMax, pi, 0);
+    }
+    const yPad = Math.max(12, (yMax - yMin) * 0.08);
+    yMin -= yPad; yMax += yPad;
+    const piPad = Math.max(12, (piMax - piMin) * 0.12);
+    piMin -= piPad; piMax += piPad;
+
+    const XL = q => left.left + q / qMax * left.width;
+    const YL = y => left.top + left.height - (y - yMin) / (yMax - yMin) * left.height;
+    const XR = q => right.left + q / qMax * right.width;
+    const YR = y => right.top + right.height - (y - piMin) / (piMax - piMin) * right.height;
+
+    drawAxes(svg, XL, YL, left, qMax, yMin, yMax, 5, 5);
+    drawAxes(svg, XR, YR, right, qMax, piMin, piMax, 3, 4);
+
+    svg.appendChild(text(left.left, left.top - 16, 'A. Total revenue and total cost', 'label', 'start'));
+    svg.appendChild(text(right.left, right.top - 16, 'B. Profit function', 'label', 'start'));
+    svg.appendChild(text(left.left + left.width, left.top + left.height + 47, 'q', 'label'));
+    svg.appendChild(text(left.left - 42, left.top + 8, 'money', 'label'));
+    svg.appendChild(text(right.left + right.width, right.top + right.height + 45, 'q', 'label'));
+    svg.appendChild(text(right.left - 35, right.top + 8, 'π', 'label'));
+
+    if (m.active) {
+      let segment = [];
+      const flush = () => {
+        if (segment.length > 1) {
+          const upper = segment.map(s => [XL(s.q), YL(s.tr)]);
+          const lower = segment.slice().reverse().map(s => [XL(s.q), YL(s.tc)]);
+          svg.appendChild(poly(upper.concat(lower), 'profitLens'));
+        }
+        segment = [];
+      };
+      for (const s of samples) {
+        if (s.tr >= s.tc) segment.push(s); else flush();
+      }
+      flush();
+    }
+
+    const trPts = samples.map(s => [XL(s.q), YL(s.tr)]);
+    const tcPts = samples.map(s => [XL(s.q), YL(s.tc)]);
+    svg.appendChild(path(trPts, 'tr'));
+    svg.appendChild(path(tcPts, 'tc'));
+
+    const piPts = samples.map(s => [XR(s.q), YR(s.pi)]);
+    svg.appendChild(path(piPts, 'profitCurve'));
+
+    svg.appendChild(text(XL(qMax * .45), YL(m.TR(qMax * .45)) - 14, 'TR(q)=p(q)q', 'label'));
+    svg.appendChild(text(XL(qMax * .78), YL(m.TC(qMax * .78)) - 13, 'TC(q)', 'label'));
+    svg.appendChild(text(XR(qMax * .72), YR(samples[Math.floor(samples.length * .72)].pi) - 10, 'π(q)', 'label'));
+
+    if (m.active) {
+      const trM = m.TR(m.qM), tcM = m.TC(m.qM), piM = trM - tcM;
+      svg.appendChild(line(XL(m.qM), YL(yMin), XL(m.qM), YL(Math.max(trM, tcM)), 'helper'));
+      svg.appendChild(line(XR(m.qM), YR(piMin), XR(m.qM), YR(piM), 'helper'));
+
+      const clsGap = piM >= 0 ? 'bracket' : 'bracket';
+      const xgap = XL(m.qM) + 22;
+      svg.appendChild(line(xgap, YL(trM), xgap, YL(tcM), clsGap));
+      svg.appendChild(line(xgap - 6, YL(trM), xgap + 6, YL(trM), clsGap));
+      svg.appendChild(line(xgap - 6, YL(tcM), xgap + 6, YL(tcM), clsGap));
+      svg.appendChild(text(xgap + 10, (YL(trM) + YL(tcM)) / 2 + 4, piM >= 0 ? 'max vertical profit' : 'minimum loss conditional on output', piM >= 0 ? 'label' : 'mutedLabel', 'start'));
+
+      svg.appendChild(svgEl('circle', { cx: XL(m.qM), cy: YL(trM), r: 5.8, class: 'pointAccent' }));
+      svg.appendChild(svgEl('circle', { cx: XL(m.qM), cy: YL(tcM), r: 5.8, class: 'pointWarm' }));
+      svg.appendChild(svgEl('circle', { cx: XR(m.qM), cy: YR(piM), r: 6.3, class: 'pointAccent' }));
+      svg.appendChild(text(XL(m.qM), left.top + left.height + 24, 'qᴹ', 'label'));
+      svg.appendChild(text(XR(m.qM), right.top + right.height + 24, 'qᴹ', 'label'));
+      svg.appendChild(text(XR(m.qM) + 8, YR(piM) - 12, 'maximum π', 'label', 'start'));
+
+      if (els.tangent.checked) {
+        const slope = m.MR(m.qM);
+        const dq = qMax * 0.075;
+        const q1 = Math.max(0, m.qM - dq), q2 = Math.min(qMax, m.qM + dq);
+        const trTang = [[XL(q1), YL(trM + slope * (q1 - m.qM))], [XL(q2), YL(trM + slope * (q2 - m.qM))]];
+        const tcTang = [[XL(q1), YL(tcM + slope * (q1 - m.qM))], [XL(q2), YL(tcM + slope * (q2 - m.qM))]];
+        svg.appendChild(path(trTang, 'tangent'));
+        svg.appendChild(path(tcTang, 'tangent'));
+        svg.appendChild(text(XL(q2) + 6, YL(trM + slope * (q2 - m.qM)) - 2, 'slope TR = MR', 'tinyLabel', 'start'));
+        svg.appendChild(text(XL(q2) + 6, YL(tcM + slope * (q2 - m.qM)) + 12, 'slope TC = MC', 'tinyLabel', 'start'));
+        svg.appendChild(text(XL(m.qM) - 12, Math.min(YL(trM), YL(tcM)) - 22, 'parallel tangents ⇔ MR=MC', 'mutedLabel', 'end'));
+      }
+
+      svg.appendChild(line(right.left, YR(0), right.left + right.width, YR(0), 'minorline'));
+      svg.appendChild(text(right.left + right.width - 3, YR(0) - 7, 'π=0', 'tinyLabel', 'end'));
+    }
+  }
+
+  function updateText(m) {
+    out.a.textContent = fmt(m.a, 0);
+    out.b.textContent = fmt(m.b, 1);
+    out.c.textContent = fmt(m.c, 0);
+    out.d.textContent = fmt(m.d, 1);
+    out.F.textContent = fmt(m.F, 0);
+
+    out.qM.textContent = fmt(m.qM);
+    out.pM.textContent = m.active ? fmt(m.pM) : '—';
+    out.qC.textContent = fmt(m.qC);
+    out.markup.textContent = fmt(m.markup);
+    out.profit.textContent = fmt(m.profit);
+    out.dwl.textContent = fmt(m.dwl);
+
+    const viable = m.profit >= 0;
+    els.statusPill.textContent = !m.active ? 'Corner: qᴹ=0' : viable ? 'Interior optimum · positive profit' : 'Interior q · negative accounting profit';
+
+    if (!m.active) {
+      out.interpretation.innerHTML = 'Since <span class="math">a≤c</span>, the marginal cost at zero output is already above the highest willingness to pay. The monopoly quantity is the corner <span class="math">qᴹ=0</span>.';
+      return;
+    }
+
+    out.interpretation.innerHTML =
+      `The total-revenue curve and total-cost curve are farthest apart at <span class="math">qᴹ=${fmt(m.qM)}</span>. ` +
+      `At that same point, their slopes are equal: <span class="math">MR=MC=${fmt(m.mcM)}</span>. ` +
+      `The firm charges <span class="math">pᴹ=${fmt(m.pM)}</span>, creating markup <span class="math">${fmt(m.markup)}</span>. ` +
+      `The efficient quantity is <span class="math">qᶜ=${fmt(m.qC)}</span>, so the missing interval <span class="math">[qᴹ,qᶜ]</span> is the geometric source of deadweight loss.`;
+  }
+
+  function update() {
+    const m = model();
+    updateText(m);
+    drawPrice(m);
+    drawProfit(m);
+  }
+
+  ['a', 'b', 'c', 'd', 'F', 'areas', 'comp', 'tangent'].forEach(id => {
+    els[id].addEventListener('input', update);
+    els[id].addEventListener('change', update);
+  });
+
+  els.themeBtn.addEventListener('click', () => {
+    const dark = document.body.getAttribute('data-theme') === 'dark';
+    document.body.setAttribute('data-theme', dark ? 'light' : 'dark');
+    els.themeBtn.textContent = dark ? 'Dark mode' : 'Light mode';
+    update();
+  });
+
+  update();
+})();
+</script>
+</body>
+</html>

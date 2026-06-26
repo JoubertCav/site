@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive undergraduate microeconomics diagram for first-degree price discrimination.">
+<title>First-Degree Price Discrimination | Microeconomics Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+  :root{
+    --bg:#f7f3eb;
+    --surface:#fffaf4;
+    --surface-2:#f3ece2;
+    --text:#20262b;
+    --muted:#68726f;
+    --border:rgba(32,38,43,.11);
+    --grid:rgba(32,38,43,.08);
+    --accent:#2d8b81;
+    --accent-2:#7ac4b9;
+    --accent-3:#a7ddd6;
+    --danger:#be7f6d;
+    --danger-soft:rgba(190,127,109,.16);
+    --pd-fill:rgba(45,139,129,.18);
+    --pd-slice:rgba(45,139,129,.52);
+    --uniform-fill:rgba(122,196,185,.15);
+    --shadow:0 18px 44px rgba(28,24,20,.08);
+    --radius:22px;
+  }
+  [data-theme="dark"]{
+    --bg:#0f1418;
+    --surface:#171d22;
+    --surface-2:#20282e;
+    --text:#edf3ef;
+    --muted:#aab3b1;
+    --border:rgba(237,243,239,.10);
+    --grid:rgba(237,243,239,.08);
+    --accent:#66c7b8;
+    --accent-2:#9fe1d8;
+    --accent-3:#b7ece5;
+    --danger:#d18f7f;
+    --danger-soft:rgba(209,143,127,.17);
+    --pd-fill:rgba(102,199,184,.17);
+    --pd-slice:rgba(102,199,184,.55);
+    --uniform-fill:rgba(159,225,216,.13);
+    --shadow:0 18px 44px rgba(0,0,0,.28);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:radial-gradient(circle at top left, var(--pd-fill), transparent 34rem), var(--bg);
+    color:var(--text);
+    line-height:1.45;
+  }
+  .app{width:min(1500px, calc(100% - 24px)); margin:0 auto; padding:26px 0 34px}
+  header{display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:18px}
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; padding:7px 11px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--muted); font-size:13px; box-shadow:var(--shadow)}
+  .dot{width:7px; height:7px; border-radius:50%; background:var(--accent)}
+  h1{margin:14px 0 6px; font-size:clamp(34px,5vw,60px); line-height:.95; letter-spacing:-.055em; font-weight:760}
+  .subtitle{margin:0; max-width:980px; color:var(--muted); font-size:clamp(16px,2vw,20px)}
+  .theme-btn{border:1px solid var(--border); background:var(--surface); color:var(--text); border-radius:999px; padding:10px 14px; font:inherit; cursor:pointer; box-shadow:var(--shadow); white-space:nowrap}
+
+  .layout{display:grid; grid-template-columns:310px minmax(0,1fr); gap:18px; align-items:start}
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow)}
+  .controls{padding:18px; position:sticky; top:16px}
+  .card-title{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:12px}
+  h2{margin:0; font-size:17px; letter-spacing:-.025em}
+  h3{margin:0; font-size:16px; letter-spacing:-.02em}
+  .small{color:var(--muted); font-size:13px}
+  .control{padding:14px 0; border-top:1px solid var(--border)}
+  .control:first-of-type{border-top:0}
+  .label-row{display:flex; justify-content:space-between; gap:12px; margin-bottom:8px; font-size:14px}
+  .value{color:var(--accent); font-variant-numeric:tabular-nums}
+  input[type="range"]{width:100%; accent-color:var(--accent)}
+  .toggle-row{display:flex; justify-content:space-between; align-items:center; gap:14px; padding:14px 0 4px; border-top:1px solid var(--border)}
+  .switch{position:relative; width:48px; height:28px; display:inline-block}
+  .switch input{opacity:0; width:0; height:0}
+  .slider-switch{position:absolute; inset:0; cursor:pointer; border-radius:999px; background:var(--surface-2); border:1px solid var(--border)}
+  .slider-switch::before{content:""; position:absolute; width:20px; height:20px; left:4px; top:3px; border-radius:50%; background:var(--accent); transition:.2s ease}
+  .switch input:checked + .slider-switch::before{transform:translateX(20px)}
+  .pill{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px; border:1px solid var(--border); color:var(--muted); background:var(--surface-2); font-size:13px; margin-top:14px}
+
+  .main{display:grid; gap:18px}
+  .formula-row{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px}
+  .formula{padding:15px; min-height:116px; display:flex; flex-direction:column; justify-content:space-between}
+  .formula .name{color:var(--muted); font-size:13px; margin-bottom:8px}
+  .math,.math-inline{font-family:"STIX Two Text","Cambria Math","Times New Roman",Georgia,serif; letter-spacing:-.01em}
+  .math{font-size:22px; color:var(--text)}
+  .math-inline{font-size:16px; color:var(--text); white-space:nowrap}
+  .mathline{display:flex; align-items:center; gap:.34em; flex-wrap:wrap; min-height:34px}
+  .sup{font-size:.72em; vertical-align:super}
+  .formula-chip{display:inline-flex; align-items:center; justify-content:center; padding:8px 11px; border-radius:14px; background:var(--surface-2); border:1px solid var(--border)}
+  .soft-eq{color:var(--muted); font-size:14px}
+
+  .diagram-card{padding:18px}
+  .diagram-head{display:flex; justify-content:space-between; align-items:end; gap:16px; margin-bottom:10px}
+  .diagram-head p{margin:4px 0 0; color:var(--muted); font-size:14px}
+  .metrics{display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:10px; margin-top:14px}
+  .metric{padding:13px; border-radius:17px; border:1px solid var(--border); background:var(--surface-2)}
+  .metric .k{color:var(--muted); font-size:12px; margin-bottom:3px}
+  .metric .v{font-size:20px; font-weight:740; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+  .three-col{display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px}
+  .mini-card,.panel{padding:18px}
+  .mini-head{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:8px}
+  .mini-sub{color:var(--muted); font-size:13px}
+  .panel p{margin:0; color:var(--muted)}
+  .notice-list{display:grid; gap:11px; margin-top:12px}
+  .notice{padding:12px 13px; border-radius:16px; border:1px solid var(--border); background:var(--surface-2); color:var(--muted); font-size:14px}
+  .notice strong{color:var(--text)}
+  .summary{display:grid; gap:11px; margin-top:12px}
+  .summary-line{display:flex; gap:10px; align-items:flex-start; color:var(--muted); font-size:14px}
+  .summary-line span:first-child{color:var(--accent); min-width:24px; font-weight:760}
+  .legend{display:flex; flex-wrap:wrap; gap:10px 14px; margin-top:12px; color:var(--muted); font-size:13px}
+  .legend-item{display:inline-flex; align-items:center; gap:7px}
+  .swatch{width:22px; height:3px; border-radius:999px; background:var(--accent)}
+  .swatch.mr{background:var(--muted); opacity:.82}
+  .swatch.mc{background:var(--danger)}
+  .swatch.slice{width:15px; height:12px; background:var(--pd-slice); border:1px solid var(--border)}
+  .swatch.dwl{width:15px; height:12px; background:var(--danger-soft); border:1px solid var(--border)}
+  .swatch.focus{background:var(--accent-2)}
+
+  svg{display:block; width:100%; height:auto; overflow:hidden}
+  .axis{stroke:var(--text); stroke-width:1.2}
+  .gridline{stroke:var(--grid); stroke-width:1}
+  .curve-demand{fill:none; stroke:var(--accent); stroke-width:3}
+  .curve-mr{fill:none; stroke:var(--muted); stroke-width:2.1; stroke-dasharray:6 6}
+  .curve-mc{fill:none; stroke:var(--danger); stroke-width:2.7}
+  .curve-profitpd{fill:none; stroke:var(--accent); stroke-width:3}
+  .curve-profitu{fill:none; stroke:var(--muted); stroke-width:2.4; stroke-dasharray:6 5}
+  .helper{stroke:var(--muted); stroke-width:1.2; stroke-dasharray:5 6}
+  .helper-focus{stroke:var(--accent-2); stroke-width:1.5; stroke-dasharray:4 5}
+  .point{fill:var(--surface); stroke:var(--text); stroke-width:2}
+  .point-accent{fill:var(--accent); stroke:var(--surface); stroke-width:2.2}
+  .point-focus{fill:var(--accent-2); stroke:var(--surface); stroke-width:2.2}
+  .label{fill:var(--text); font-size:13px}
+  .muted-label{fill:var(--muted); font-size:12px}
+  .fill-pd{fill:var(--pd-fill); stroke:none}
+  .fill-dwl{fill:var(--danger-soft); stroke:none}
+  .fill-uniform{fill:var(--uniform-fill); stroke:none}
+  .slice-line{stroke:var(--pd-slice); stroke-width:2.2; stroke-linecap:round}
+  .slice-rect{fill:var(--pd-fill); stroke:var(--pd-slice); stroke-width:1}
+  .cursor-zone{fill:transparent; cursor:crosshair}
+  .bar-cs{fill:var(--accent-3)}
+  .bar-ps{fill:var(--accent)}
+  .bar-label{fill:var(--text); font-size:12px}
+
+  @media (max-width:1180px){
+    .layout{grid-template-columns:1fr}
+    .controls{position:relative; top:auto}
+    .formula-row,.two-col,.three-col{grid-template-columns:1fr}
+    .metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
+  }
+  @media (max-width:700px){
+    .app{width:min(100% - 14px,1500px); padding-top:16px}
+    header{flex-direction:column}
+    .theme-btn{width:100%}
+    .formula-row{grid-template-columns:1fr}
+    .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+</style>
+</head>
+<body data-theme="light">
+<div class="app">
+  <header>
+    <div>
+      <div class="eyebrow"><span class="dot"></span> Microeconomics · Market Power</div>
+      <h1>First-degree price discrimination</h1>
+      <p class="subtitle">Perfect discrimination is not one price. It is a price schedule: each unit is sold at that buyer’s willingness to pay, so the monopolist captures the whole surplus area.</p>
+    </div>
+    <button class="theme-btn" id="themeBtn">Dark mode</button>
+  </header>
+
+  <div class="layout">
+    <aside class="card controls">
+      <div class="card-title"><h2>Controls</h2><span class="small">price schedule</span></div>
+
+      <div class="control"><div class="label-row"><label for="a">Demand intercept <b>a</b></label><span class="value" id="aVal"></span></div><input id="a" type="range" min="40" max="180" step="1" value="120" /></div>
+      <div class="control"><div class="label-row"><label for="b">Demand slope <b>b</b></label><span class="value" id="bVal"></span></div><input id="b" type="range" min="0.4" max="4.0" step="0.1" value="1.5" /></div>
+      <div class="control"><div class="label-row"><label for="c">Marginal cost <b>c</b></label><span class="value" id="cVal"></span></div><input id="c" type="range" min="0" max="130" step="1" value="30" /></div>
+      <div class="control"><div class="label-row"><label for="qFocus">Focus quantity <b>q</b></label><span class="value" id="qFocusVal"></span></div><input id="qFocus" type="range" min="0" max="50" step="0.1" value="20" /></div>
+
+      <div class="toggle-row"><div><div style="font-size:14px;">Snap to efficient output</div><div class="small">q = qᴾᴰ</div></div><label class="switch"><input id="snapPD" type="checkbox" /><span class="slider-switch"></span></label></div>
+      <div class="toggle-row"><div><div style="font-size:14px;">Show unit price slices</div><div class="small">each unit has its own price</div></div><label class="switch"><input id="slices" type="checkbox" checked /><span class="slider-switch"></span></label></div>
+      <div class="toggle-row"><div><div style="font-size:14px;">Show uniform monopoly</div><div class="small">comparison: qᴹ, pᴹ, DWL</div></div><label class="switch"><input id="showUniform" type="checkbox" checked /><span class="slider-switch"></span></label></div>
+
+      <div class="pill" id="statusPill">Perfect-discrimination view</div>
+    </aside>
+
+    <main class="main">
+      <section class="formula-row">
+        <div class="card formula"><div><div class="name">Demand</div><div class="math mathline">p(q) = a − bq</div></div><div class="soft-eq">reservation price of the marginal buyer</div></div>
+        <div class="card formula"><div><div class="name">Perfect discrimination</div><div class="math mathline">pᵢ = willingness to payᵢ</div></div><div class="soft-eq">not one market price</div></div>
+        <div class="card formula"><div><div class="name">Efficient quantity</div><div class="math mathline">p(q<span class="sup">PD</span>) = MC</div></div><div class="soft-eq">serve every buyer with value ≥ cost</div></div>
+        <div class="card formula"><div><div class="name">Surplus extraction</div><div class="math mathline">CS<span class="sup">PD</span> = 0</div></div><div class="formula-chip math">PS<span class="sup">PD</span> = TS<span class="sup">PD</span></div></div>
+      </section>
+
+      <section class="card diagram-card">
+        <div class="diagram-head">
+          <div>
+            <h2>Main diagram: the price schedule</h2>
+            <p>The vertical slices are the key: each unit is charged its own reservation price on the demand curve.</p>
+          </div>
+          <span class="small">q horizontal · price/value vertical</span>
+        </div>
+        <svg id="marketSvg" viewBox="0 0 980 560" aria-label="First-degree price discrimination diagram"></svg>
+        <div class="legend">
+          <span class="legend-item"><span class="swatch"></span> Demand / willingness to pay</span>
+          <span class="legend-item"><span class="swatch mc"></span> Marginal cost</span>
+          <span class="legend-item"><span class="swatch slice"></span> Unit-by-unit extracted surplus</span>
+          <span class="legend-item"><span class="swatch mr"></span> Uniform monopoly comparison</span>
+          <span class="legend-item"><span class="swatch dwl"></span> Uniform monopoly DWL</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="k">q</div><div class="v" id="qMetric"></div></div>
+          <div class="metric"><div class="k">Price of marginal unit</div><div class="v" id="pMetric"></div></div>
+          <div class="metric"><div class="k">qᴹ</div><div class="v" id="qMMetric"></div></div>
+          <div class="metric"><div class="k">qᴾᴰ = qᴱ</div><div class="v" id="qPDMetric"></div></div>
+          <div class="metric"><div class="k">πᴹ</div><div class="v" id="piMMetric"></div></div>
+          <div class="metric"><div class="k">πᴾᴰ</div><div class="v" id="piPDMetric"></div></div>
+          <div class="metric"><div class="k">CSᴾᴰ</div><div class="v" id="csPDMetric"></div></div>
+          <div class="metric"><div class="k">DWLᴹ</div><div class="v" id="dwlMetric"></div></div>
+        </div>
+      </section>
+
+      <section class="two-col">
+        <section class="card mini-card">
+          <div class="mini-head"><h3>Unit-by-unit pricing</h3><span class="mini-sub">each vertical block is one personalized price</span></div>
+          <svg id="slicesSvg" viewBox="0 0 760 360" aria-label="Unit-by-unit prices"></svg>
+        </section>
+        <section class="card mini-card">
+          <div class="mini-head"><h3>Profit curves</h3><span class="mini-sub">uniform pricing versus perfect discrimination</span></div>
+          <svg id="profitSvg" viewBox="0 0 760 360" aria-label="Profit curves"></svg>
+        </section>
+      </section>
+
+      <section class="two-col">
+        <section class="card mini-card">
+          <div class="mini-head"><h3>Distributional effects</h3><span class="mini-sub">consumer surplus and producer surplus</span></div>
+          <svg id="barsSvg" viewBox="0 0 760 340" aria-label="Distributional effects"></svg>
+        </section>
+
+        <section class="card panel">
+          <h2>Interpretation</h2>
+          <p id="interpretation"></p>
+          <div class="notice-list">
+            <div class="notice"><strong>Graphically.</strong> Perfect discrimination is the entire area between demand and marginal cost up to qᴾᴰ, cut into personalized price slices.</div>
+            <div class="notice"><strong>Efficiency.</strong> Output expands until the last buyer’s willingness to pay equals marginal cost. No mutually beneficial units are left out.</div>
+            <div class="notice"><strong>Distribution.</strong> Efficiency is restored, but consumer surplus is extracted by the monopolist.</div>
+          </div>
+        </section>
+      </section>
+
+      <section class="card panel">
+        <h2>Exam-style summary</h2>
+        <div class="summary">
+          <div class="summary-line"><span>1</span><div>Uniform monopoly sells all units at one price. It chooses qᴹ from MR = MC.</div></div>
+          <div class="summary-line"><span>2</span><div>First-degree price discrimination charges each unit a different price: pᵢ equals that buyer’s willingness to pay.</div></div>
+          <div class="summary-line"><span>3</span><div>The firm keeps selling until p(q) = MC, so qᴾᴰ = qᴱ.</div></div>
+          <div class="summary-line"><span>4</span><div>The outcome is efficient, but CSᴾᴰ = 0 and PSᴾᴰ = total surplus.</div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const els = {
+    a:$("a"), b:$("b"), c:$("c"), qFocus:$("qFocus"), snapPD:$("snapPD"), slices:$("slices"), showUniform:$("showUniform"), themeBtn:$("themeBtn"),
+    marketSvg:$("marketSvg"), slicesSvg:$("slicesSvg"), profitSvg:$("profitSvg"), barsSvg:$("barsSvg"), statusPill:$("statusPill"),
+    aVal:$("aVal"), bVal:$("bVal"), cVal:$("cVal"), qFocusVal:$("qFocusVal"),
+    qMetric:$("qMetric"), pMetric:$("pMetric"), qMMetric:$("qMMetric"), qPDMetric:$("qPDMetric"), piMMetric:$("piMMetric"), piPDMetric:$("piPDMetric"), csPDMetric:$("csPDMetric"), dwlMetric:$("dwlMetric"),
+    interpretation:$("interpretation")
+  };
+
+  function fmt(x,d=2){ if(!Number.isFinite(x)) return "—"; if(Math.abs(x)>=100) return x.toFixed(1); return x.toFixed(d); }
+  function clamp(x,lo,hi){ return Math.max(lo, Math.min(hi, x)); }
+  function s(tag, attrs={}){ const el=document.createElementNS("http://www.w3.org/2000/svg", tag); for(const [k,v] of Object.entries(attrs)) el.setAttribute(k,v); return el; }
+  function line(svg,x1,y1,x2,y2,cls){ svg.appendChild(s("line",{x1,y1,x2,y2,class:cls})); }
+  function text(svg,x,y,str,cls="label",anchor="middle"){ const t=s("text",{x,y,class:cls,"text-anchor":anchor}); t.textContent=str; svg.appendChild(t); }
+  function path(svg,pts,cls){ const d=pts.map((p,i)=>(i?"L":"M")+" "+p[0]+" "+p[1]).join(" "); svg.appendChild(s("path",{d,class:cls})); }
+  function poly(svg,pts,cls){ const d=pts.map((p,i)=>(i?"L":"M")+" "+p[0]+" "+p[1]).join(" ")+" Z"; svg.appendChild(s("path",{d,class:cls})); }
+  function circle(svg,cx,cy,r,cls){ svg.appendChild(s("circle",{cx,cy,r,class:cls})); }
+  function rect(svg,x,y,w,h,cls,rx=7){ svg.appendChild(s("rect",{x,y,width:w,height:h,class:cls,rx})); }
+
+  function clampParams(){ if(+els.c.value >= +els.a.value) els.c.value = Math.max(0, +els.a.value - 1); }
+
+  function model(){
+    const a=+els.a.value, b=+els.b.value, c=+els.c.value;
+    const qInt=a/b;
+    const qM=Math.max(0,(a-c)/(2*b));
+    const qPD=Math.max(0,(a-c)/b);
+    const pM=a-b*qM;
+    const qMax=qInt*1.04;
+    let q=clamp(+els.qFocus.value,0,qPD);
+    if(els.snapPD.checked) q=qPD;
+    const p=Math.max(0,a-b*q);
+    const piM=(pM-c)*qM;
+    const piPD=(a-c)*qPD - 0.5*b*qPD*qPD;
+    const piUAtQ=Math.max(0,(p-c)*q);
+    const piPDAtQ=Math.max(0,(a-c)*q - 0.5*b*q*q);
+    const csM=0.5*(a-pM)*qM;
+    const psM=piM;
+    const tsM=csM+psM;
+    const csPD=0;
+    const psPD=piPD;
+    const tsPD=piPD;
+    const dwlM=0.5*(qPD-qM)*(pM-c);
+    return {a,b,c,qInt,qM,qPD,pM,qMax,q,p,piM,piPD,piUAtQ,piPDAtQ,csM,psM,tsM,csPD,psPD,tsPD,dwlM};
+  }
+
+  function syncSlider(m){
+    els.qFocus.max = m.qPD.toFixed(2);
+    if(els.snapPD.checked) els.qFocus.value = m.qPD.toFixed(2);
+    else els.qFocus.value = clamp(+els.qFocus.value,0,m.qPD).toFixed(2);
+  }
+
+  function axes(svg,W,H,margin,xMax,yMin,yMax,yLabel="value",xTicks=5,yTicks=4){
+    const iw=W-margin.left-margin.right, ih=H-margin.top-margin.bottom;
+    const X=x=>margin.left+(x/xMax)*iw;
+    const Y=y=>margin.top+ih-((y-yMin)/(yMax-yMin))*ih;
+    for(let i=0;i<=xTicks;i++){
+      const x=xMax*i/xTicks;
+      line(svg,X(x),margin.top,X(x),margin.top+ih,"gridline");
+      text(svg,X(x),margin.top+ih+22,fmt(x,1),"muted-label");
+    }
+    for(let i=0;i<=yTicks;i++){
+      const y=yMin+(yMax-yMin)*i/yTicks;
+      line(svg,margin.left,Y(y),margin.left+iw,Y(y),"gridline");
+      text(svg,margin.left-10,Y(y)+4,fmt(y,0),"muted-label","end");
+    }
+    line(svg,margin.left,margin.top+ih,margin.left+iw,margin.top+ih,"axis");
+    line(svg,margin.left,margin.top,margin.left,margin.top+ih,"axis");
+    text(svg,margin.left+iw,margin.top+ih+40,"q","label");
+    text(svg,margin.left-38,margin.top+8,yLabel,"label");
+    return {X,Y,iw,ih};
+  }
+
+  function drawMain(m){
+    const svg=els.marketSvg; svg.innerHTML="";
+    const W=980,H=560, margin={left:78,right:36,top:32,bottom:66};
+    const yMax=Math.max(m.a*1.08,m.c*1.2,m.pM*1.18);
+    const {X,Y,iw,ih}=axes(svg,W,H,margin,m.qMax,0,yMax,"value");
+
+    const dPts=[], mrPts=[];
+    for(let i=0;i<=280;i++){
+      const q=m.qMax*i/280;
+      dPts.push([X(q),Y(Math.max(0,m.a-m.b*q))]);
+      mrPts.push([X(q),Y(Math.max(0,m.a-2*m.b*q))]);
+    }
+
+    const profitPts=[[X(0),Y(m.a)]];
+    for(let i=0;i<=180;i++){
+      const q=m.qPD*i/180;
+      profitPts.push([X(q),Y(m.a-m.b*q)]);
+    }
+    profitPts.push([X(m.qPD),Y(m.c)]);
+    profitPts.push([X(0),Y(m.c)]);
+    poly(svg,profitPts,"fill-pd");
+
+    if(els.showUniform.checked){
+      poly(svg,[[X(0),Y(m.pM)],[X(m.qM),Y(m.pM)],[X(m.qM),Y(m.c)],[X(0),Y(m.c)]],"fill-uniform");
+      poly(svg,[[X(m.qM),Y(m.pM)],[X(m.qPD),Y(m.c)],[X(m.qM),Y(m.c)]],"fill-dwl");
+    }
+
+    if(els.slices.checked){
+      const n=34;
+      for(let i=0;i<n;i++){
+        const q=m.qPD*(i+0.5)/n;
+        const top=m.a-m.b*q;
+        line(svg,X(q),Y(m.c),X(q),Y(top),"slice-line");
+      }
+    }
+
+    path(svg,dPts,"curve-demand");
+    if(els.showUniform.checked) path(svg,mrPts,"curve-mr");
+    line(svg,X(0),Y(m.c),X(m.qMax),Y(m.c),"curve-mc");
+
+    text(svg,X(m.qMax*0.78),Y(Math.max(0,m.a-m.b*m.qMax*0.78))-12,"willingness to pay D(q)","label");
+    text(svg,X(m.qMax*0.92),Y(m.c)-12,"MC","label");
+    if(els.showUniform.checked) text(svg,X(m.qMax*0.42),Y(Math.max(0,m.a-2*m.b*m.qMax*0.42))+18,"MR only matters under one-price monopoly","muted-label");
+
+    if(els.showUniform.checked){
+      line(svg,X(m.qM),Y(0),X(m.qM),Y(m.pM),"helper");
+      line(svg,X(0),Y(m.pM),X(m.qM),Y(m.pM),"helper");
+      circle(svg,X(m.qM),Y(m.pM),6.1,"point-accent");
+      text(svg,X(m.qM),Y(0)+28,"qᴹ","label");
+      text(svg,X(0)-14,Y(m.pM)+4,"pᴹ","label","end");
+    }
+
+    line(svg,X(m.qPD),Y(0),X(m.qPD),Y(m.c),"helper");
+    circle(svg,X(m.qPD),Y(m.c),5.5,"point");
+    text(svg,X(m.qPD),Y(0)+28,"qᴾᴰ = qᴱ","muted-label");
+    text(svg,X(m.qPD)+10,Y(m.c)-12,"last unit priced at MC","muted-label","start");
+
+    line(svg,X(m.q),Y(0),X(m.q),Y(m.p),"helper-focus");
+    line(svg,X(0),Y(m.p),X(m.q),Y(m.p),"helper-focus");
+    circle(svg,X(m.q),Y(m.p),6.1,"point-focus");
+    text(svg,X(m.q),Y(0)+28,"q","label");
+    text(svg,X(m.q)+10,Y(m.p)-12,"price of this marginal unit","label","start");
+
+    text(svg,X(m.qPD*0.48),Y((m.a+m.c)/2),"monopolist captures every slice","label");
+
+    const overlay=s("rect",{x:margin.left,y:margin.top,width:iw,height:ih,class:"cursor-zone"});
+    svg.appendChild(overlay);
+    const setQ=(ev)=>{
+      if(els.snapPD.checked) return;
+      const pt=svg.createSVGPoint(); pt.x=ev.clientX; pt.y=ev.clientY;
+      const loc=pt.matrixTransform(svg.getScreenCTM().inverse());
+      const q=clamp((loc.x-margin.left)/iw*m.qMax,0,m.qPD);
+      els.qFocus.value=q.toFixed(2); update();
+    };
+    overlay.addEventListener("pointerdown", setQ);
+    overlay.addEventListener("pointermove", ev=>{ if(ev.buttons===1) setQ(ev); });
+  }
+
+  function drawSlices(m){
+    const svg=els.slicesSvg; svg.innerHTML="";
+    const W=760,H=360, margin={left:68,right:26,top:22,bottom:58};
+    const yMax=m.a*1.06;
+    const {X,Y,ih}=axes(svg,W,H,margin,m.qPD,0,yMax,"price");
+    const n=12;
+    const dx=m.qPD/n;
+    for(let i=0;i<n;i++){
+      const left=i*dx, center=(i+0.5)*dx;
+      const top=m.a-m.b*center;
+      const x=X(left)+2;
+      const w=Math.max(2,X(left+dx)-X(left)-4);
+      rect(svg,x,Y(top),w,Y(m.c)-Y(top),"slice-rect",4);
+      circle(svg,X(center),Y(top),3.5,"point-focus");
+      if(i===0) text(svg,X(center),Y(top)-10,"high WTP","muted-label");
+      if(i===n-1) text(svg,X(center),Y(top)-10,"last unit ≈ MC","muted-label");
+    }
+    line(svg,X(0),Y(m.c),X(m.qPD),Y(m.c),"curve-mc");
+    const dPts=[];
+    for(let i=0;i<=160;i++){ const q=m.qPD*i/160; dPts.push([X(q),Y(m.a-m.b*q)]); }
+    path(svg,dPts,"curve-demand");
+    line(svg,X(m.q),margin.top,X(m.q),margin.top+ih,"helper-focus");
+    text(svg,X(m.q),margin.top+ih+26,"q","label");
+    text(svg,X(m.qPD*0.52),Y(m.c)+24,"cost base: MC","muted-label");
+    text(svg,X(m.qPD*0.52),Y(m.a*0.84),"each rectangle is one personalized price","label");
+  }
+
+  function drawProfit(m){
+    const svg=els.profitSvg; svg.innerHTML="";
+    const W=760,H=360, margin={left:68,right:24,top:22,bottom:58};
+    const xMax=m.qPD*1.06;
+    const yMax=Math.max(m.piPD,m.piM,m.piPDAtQ,m.piUAtQ,1)*1.14;
+    const {X,Y,ih}=axes(svg,W,H,margin,xMax,0,yMax,"profit");
+    const uPts=[], pdPts=[];
+    for(let i=0;i<=260;i++){
+      const q=xMax*i/260;
+      const p=Math.max(0,m.a-m.b*q);
+      const piU=Math.max(0,(p-m.c)*q);
+      const piPD=Math.max(0,(m.a-m.c)*q - 0.5*m.b*q*q);
+      uPts.push([X(q),Y(piU)]);
+      pdPts.push([X(q),Y(piPD)]);
+    }
+    path(svg,uPts,"curve-profitu");
+    path(svg,pdPts,"curve-profitpd");
+    line(svg,X(m.q),margin.top,X(m.q),margin.top+ih,"helper-focus");
+    line(svg,X(m.qM),margin.top,X(m.qM),margin.top+ih,"helper");
+    line(svg,X(m.qPD),margin.top,X(m.qPD),margin.top+ih,"helper");
+    circle(svg,X(m.q),Y(m.piUAtQ),5.8,"point-focus");
+    circle(svg,X(m.q),Y(m.piPDAtQ),5.8,"point-focus");
+    circle(svg,X(m.qM),Y(m.piM),5.6,"point-accent");
+    circle(svg,X(m.qPD),Y(m.piPD),5.6,"point");
+    text(svg,X(m.q)+8,Y(m.piUAtQ)-10,"πᵁ(q)","muted-label","start");
+    text(svg,X(m.q)+8,Y(m.piPDAtQ)+18,"πᴾᴰ(q)","muted-label","start");
+    text(svg,X(m.qPD)+8,Y(m.piPD)-10,"max at qᴾᴰ","label","start");
+    text(svg,X(xMax*0.58),Y(m.piPD*0.72)-10,"perfect discrimination profit","label");
+    text(svg,X(xMax*0.36),Y(m.piM*0.86)+18,"uniform monopoly profit","muted-label");
+  }
+
+  function drawBars(m){
+    const svg=els.barsSvg; svg.innerHTML="";
+    const W=760,H=340, margin={left:78,right:28,top:24,bottom:62};
+    const iw=W-margin.left-margin.right, ih=H-margin.top-margin.bottom;
+    const maxVal=Math.max(m.tsM,m.tsPD,1)*1.12;
+    const Y=v=>margin.top+ih-(v/maxVal)*ih;
+    for(let i=0;i<=4;i++){
+      const v=maxVal*i/4;
+      line(svg,margin.left,Y(v),margin.left+iw,Y(v),"gridline");
+      text(svg,margin.left-10,Y(v)+4,fmt(v,0),"muted-label","end");
+    }
+    line(svg,margin.left,margin.top+ih,margin.left+iw,margin.top+ih,"axis");
+    line(svg,margin.left,margin.top,margin.left,margin.top+ih,"axis");
+    text(svg,margin.left-42,margin.top+8,"surplus","label");
+
+    const groups=[
+      {name:"Uniform monopoly", cs:m.csM, ps:m.psM},
+      {name:"Perfect discrimination", cs:m.csPD, ps:m.psPD}
+    ];
+    const barW=120, gap=170;
+    groups.forEach((g,i)=>{
+      const x=margin.left+95+i*(barW+gap);
+      const yPs=Y(g.ps), hPs=margin.top+ih-yPs;
+      rect(svg,x,yPs,barW,hPs,"bar-ps");
+      if(g.cs>0){
+        const yCs=Y(g.ps+g.cs), hCs=yPs-yCs;
+        rect(svg,x,yCs,barW,hCs,"bar-cs");
+      }
+      text(svg,x+barW/2,margin.top+ih+28,g.name,"bar-label");
+      text(svg,x+barW/2,yPs-8,"PS","muted-label");
+      if(g.cs>0) text(svg,x+barW/2,Y(g.ps+g.cs)+14,"CS","muted-label");
+      else text(svg,x+barW/2,margin.top+ih-8,"CS = 0","muted-label");
+    });
+  }
+
+  function updateText(m){
+    els.aVal.textContent=fmt(m.a,0);
+    els.bVal.textContent=fmt(m.b,1);
+    els.cVal.textContent=fmt(m.c,0);
+    els.qFocusVal.textContent=fmt(m.q);
+    els.qMetric.textContent=fmt(m.q);
+    els.pMetric.textContent=fmt(m.p);
+    els.qMMetric.textContent=fmt(m.qM);
+    els.qPDMetric.textContent=fmt(m.qPD);
+    els.piMMetric.textContent=fmt(m.piM);
+    els.piPDMetric.textContent=fmt(m.piPD);
+    els.csPDMetric.textContent="0.00";
+    els.dwlMetric.textContent=fmt(m.dwlM);
+    els.statusPill.textContent = els.snapPD.checked ? "Snapped to efficient output" : "Perfect-discrimination view";
+
+    const nearPD=Math.abs(m.q-m.qPD)<0.08;
+    const sentence = nearPD
+      ? `At this point the last unit is priced at marginal cost: <span class="math-inline">p(q^{PD}) = MC = ${fmt(m.c)}</span>. Earlier units still pay more, because they have higher willingness to pay.`
+      : `At the chosen quantity, the marginal unit pays <span class="math-inline">p(q) = ${fmt(m.p)}</span>. Every earlier unit pays its own higher willingness-to-pay price.`;
+    els.interpretation.innerHTML =
+      `Perfect discrimination is the vertical-slice picture: each slice between demand and marginal cost is extracted as producer surplus. ${sentence} Profit under perfect discrimination at this q is <span class="math-inline">π^{PD}(q) = ${fmt(m.piPDAtQ)}</span>, while uniform-pricing profit at the same q is <span class="math-inline">π^U(q) = ${fmt(m.piUAtQ)}</span>.`;
+  }
+
+  function update(){
+    clampParams();
+    let m=model();
+    syncSlider(m);
+    m=model();
+    updateText(m);
+    drawMain(m);
+    drawSlices(m);
+    drawProfit(m);
+    drawBars(m);
+  }
+
+  ["a","b","c","qFocus","snapPD","slices","showUniform"].forEach(id=>{
+    els[id].addEventListener("input", update);
+    els[id].addEventListener("change", update);
+  });
+
+  els.themeBtn.addEventListener("click", ()=>{
+    const dark=document.body.getAttribute("data-theme")==="dark";
+    document.body.setAttribute("data-theme", dark ? "light" : "dark");
+    els.themeBtn.textContent = dark ? "Dark mode" : "Light mode";
+    update();
+  });
+
+  update();
+})();
+</script>
+</body>
+</html>
