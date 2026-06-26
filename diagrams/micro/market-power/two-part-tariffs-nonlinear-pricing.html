@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive undergraduate microeconomics diagram for two-part tariffs and nonlinear pricing.">
+<title>Two-Part Tariffs and Nonlinear Pricing | Microeconomics Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+:root{
+  --bg:#f7f3eb; --surface:#fffaf4; --surface2:#f3ece2; --surface3:#ece4d8;
+  --text:#20262b; --muted:#68726f; --border:rgba(32,38,43,.11); --grid:rgba(32,38,43,.08);
+  --accent:#2d8b81; --accent2:#7ac4b9; --accent3:#a7ddd6; --accentSoft:rgba(45,139,129,.12); --accentSoft2:rgba(122,196,185,.16);
+  --orange:#c98262; --orange2:#e0ae98; --orangeSoft:rgba(201,130,98,.16);
+  --ok:#4b8b59; --okSoft:rgba(75,139,89,.16); --danger:#be7f6d;
+  --shadow:0 18px 44px rgba(28,24,20,.08); --radius:22px;
+}
+[data-theme="dark"]{
+  --bg:#0f1418; --surface:#171d22; --surface2:#20282e; --surface3:#263038;
+  --text:#edf3ef; --muted:#aab3b1; --border:rgba(237,243,239,.10); --grid:rgba(237,243,239,.08);
+  --accent:#66c7b8; --accent2:#9fe1d8; --accent3:#b7ece5; --accentSoft:rgba(102,199,184,.12); --accentSoft2:rgba(159,225,216,.14);
+  --orange:#d99b81; --orange2:#efc5b4; --orangeSoft:rgba(217,155,129,.17);
+  --ok:#76c28a; --okSoft:rgba(118,194,138,.18); --danger:#d18f7f;
+  --shadow:0 18px 44px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+body{margin:0; background:radial-gradient(circle at top left,var(--accentSoft),transparent 34rem), var(--bg); color:var(--text); font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height:1.45}
+.app{width:min(1500px,calc(100% - 24px)); margin:0 auto; padding:26px 0 34px}
+header{display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:18px}
+.eyebrow{display:inline-flex; align-items:center; gap:8px; padding:7px 11px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--muted); font-size:13px; box-shadow:var(--shadow)}
+.dot{width:7px; height:7px; border-radius:50%; background:var(--accent)}
+h1{margin:14px 0 6px; font-size:clamp(34px,5vw,60px); line-height:.95; letter-spacing:-.055em; font-weight:760}
+.subtitle{margin:0; max-width:980px; color:var(--muted); font-size:clamp(16px,2vw,20px)}
+.theme-btn{border:1px solid var(--border); background:var(--surface); color:var(--text); border-radius:999px; padding:10px 14px; font:inherit; cursor:pointer; box-shadow:var(--shadow)}
+.layout{display:grid; grid-template-columns:330px minmax(0,1fr); gap:18px; align-items:start}
+.card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow)}
+.controls{padding:18px; position:sticky; top:16px}
+.card-title{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:12px}
+h2{margin:0; font-size:17px; letter-spacing:-.025em} h3{margin:0; font-size:16px; letter-spacing:-.02em}
+.small{color:var(--muted); font-size:13px}.section-label{margin:14px 0 6px; color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.09em}
+.control{padding:12px 0; border-top:1px solid var(--border)} .control:first-of-type{border-top:0}
+.label-row{display:flex; justify-content:space-between; gap:12px; margin-bottom:8px; font-size:14px}.value{color:var(--accent); font-variant-numeric:tabular-nums}
+input[type=range]{width:100%; accent-color:var(--accent)}
+.toggle-row{display:flex; justify-content:space-between; align-items:center; gap:14px; padding:14px 0 4px; border-top:1px solid var(--border)}
+.switch{position:relative; width:48px; height:28px; display:inline-block}.switch input{opacity:0; width:0; height:0}
+.slider-switch{position:absolute; inset:0; cursor:pointer; border-radius:999px; background:var(--surface2); border:1px solid var(--border)}
+.slider-switch::before{content:''; position:absolute; width:20px; height:20px; left:4px; top:3px; border-radius:50%; background:var(--accent); transition:.2s ease}
+.switch input:checked + .slider-switch::before{transform:translateX(20px)}
+.pill{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px; border:1px solid var(--border); color:var(--muted); background:var(--surface2); font-size:13px; margin-top:14px}
+.main{display:grid; gap:18px}
+.formula-row{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px}
+.formula{padding:15px; min-height:116px; display:flex; flex-direction:column; justify-content:space-between}.formula .name{color:var(--muted); font-size:13px; margin-bottom:8px}
+.math,.math-inline{font-family:'STIX Two Text','Cambria Math','Times New Roman',Georgia,serif; letter-spacing:-.01em}.math{font-size:22px}.math-inline{font-size:16px; white-space:nowrap}
+.mathline{display:flex; align-items:center; gap:.34em; flex-wrap:wrap; min-height:34px}.soft-eq{color:var(--muted); font-size:14px}.formula-chip{display:inline-flex; align-items:center; justify-content:center; padding:8px 11px; border-radius:14px; background:var(--surface2); border:1px solid var(--border)}
+.diagram-card{padding:18px}.diagram-head{display:flex; justify-content:space-between; align-items:end; gap:16px; margin-bottom:10px}.diagram-head p{margin:4px 0 0; color:var(--muted); font-size:14px}
+.metrics{display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:10px; margin-top:14px}.metric{padding:13px; border-radius:17px; border:1px solid var(--border); background:var(--surface2)}.metric .k{color:var(--muted); font-size:12px; margin-bottom:3px}.metric .v{font-size:20px; font-weight:740; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+.three-col{display:grid; grid-template-columns:1.18fr .92fr .92fr; gap:18px}.two-col{display:grid; grid-template-columns:1fr 1fr; gap:18px}.mini-card,.panel{padding:18px}.mini-head{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:8px}.mini-sub{color:var(--muted); font-size:13px}
+.panel p{margin:0; color:var(--muted)}.notice-list{display:grid; gap:11px; margin-top:12px}.notice{padding:12px 13px; border-radius:16px; border:1px solid var(--border); background:var(--surface2); color:var(--muted); font-size:14px}.notice strong{color:var(--text)}
+.summary{display:grid; gap:11px; margin-top:12px}.summary-line{display:flex; gap:10px; align-items:flex-start; color:var(--muted); font-size:14px}.summary-line span:first-child{color:var(--accent); min-width:24px; font-weight:760}
+.legend{display:flex; flex-wrap:wrap; gap:10px 14px; margin-top:12px; color:var(--muted); font-size:13px}.legend-item{display:inline-flex; align-items:center; gap:7px}
+.swatch{width:22px; height:3px; border-radius:999px; background:var(--accent)}.swatch.h{background:var(--orange)}.swatch.mc{background:var(--danger)}.swatch.cs,.swatch.csh,.swatch.fee{width:15px; height:12px; border:1px solid var(--border)}.swatch.cs{background:var(--accentSoft2)}.swatch.csh{background:var(--orangeSoft)}.swatch.fee{background:var(--okSoft)}
+svg{display:block; width:100%; height:auto; overflow:hidden}.axis{stroke:var(--text); stroke-width:1.2}.grid{stroke:var(--grid); stroke-width:1}
+.curve-l{fill:none; stroke:var(--accent); stroke-width:3}.curve-h{fill:none; stroke:var(--orange); stroke-width:3}.curve-mr{fill:none; stroke:var(--muted); stroke-width:2.1; stroke-dasharray:6 6}.curve-mc{fill:none; stroke:var(--danger); stroke-width:2.7}
+.helper{stroke:var(--muted); stroke-width:1.2; stroke-dasharray:5 6}.helper-l{stroke:var(--accent2); stroke-width:1.5; stroke-dasharray:4 5}.helper-h{stroke:var(--orange); stroke-width:1.5; stroke-dasharray:4 5}
+.point{fill:var(--surface); stroke:var(--text); stroke-width:2}.point-l{fill:var(--accent); stroke:var(--surface); stroke-width:2.2}.point-h{fill:var(--orange); stroke:var(--surface); stroke-width:2.2}
+.label{fill:var(--text); font-size:13px}.muted-label{fill:var(--muted); font-size:12px}.fill-l{fill:var(--accentSoft2)}.fill-h{fill:var(--orangeSoft)}.fill-fee{fill:var(--okSoft)}.region-a{fill:var(--accentSoft); opacity:.55}.region-b{fill:var(--orangeSoft); opacity:.35}.region-c{fill:var(--surface3); opacity:.45}
+.bar-l{fill:var(--accent)}.bar-h{fill:var(--orange)}.bar-profit{fill:var(--ok)}.bar-muted{fill:var(--muted); opacity:.55}.bar-label{fill:var(--text); font-size:12px}
+.plan-basic{fill:var(--accentSoft2); stroke:var(--accent); stroke-width:1.2}.plan-prem{fill:var(--orangeSoft); stroke:var(--orange); stroke-width:1.2}.plan-chosen{stroke-width:2.6}
+@media (max-width:1200px){.layout{grid-template-columns:1fr}.controls{position:relative; top:auto}.formula-row,.three-col,.two-col{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:700px){.app{width:min(100% - 14px,1500px); padding-top:16px}header{flex-direction:column}.theme-btn{width:100%}.formula-row{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body data-theme="light">
+<div class="app">
+  <header>
+    <div>
+      <div class="eyebrow"><span class="dot"></span> Microeconomics · Pricing</div>
+      <h1>Two-part tariffs and nonlinear pricing</h1>
+      <p class="subtitle">Entry fees, usage prices, consumer types, screening menus, and surplus extraction. The app links a common two-part tariff to a simple nonlinear menu.</p>
+    </div>
+    <button class="theme-btn" id="themeBtn">Dark mode</button>
+  </header>
+
+  <div class="layout">
+    <aside class="card controls">
+      <div class="card-title"><h2>Controls</h2><span class="small">tariffs and menu</span></div>
+
+      <div class="section-label">Consumer types</div>
+      <div class="control"><div class="label-row"><label for="aL">Low-type intercept a<sub>L</sub></label><span class="value" id="aLVal"></span></div><input id="aL" type="range" min="20" max="160" step="1" value="80"></div>
+      <div class="control"><div class="label-row"><label for="bL">Low-type slope b<sub>L</sub></label><span class="value" id="bLVal"></span></div><input id="bL" type="range" min="0.5" max="5" step="0.1" value="2.2"></div>
+      <div class="control"><div class="label-row"><label for="aH">High-type intercept a<sub>H</sub></label><span class="value" id="aHVal"></span></div><input id="aH" type="range" min="30" max="180" step="1" value="120"></div>
+      <div class="control"><div class="label-row"><label for="bH">High-type slope b<sub>H</sub></label><span class="value" id="bHVal"></span></div><input id="bH" type="range" min="0.4" max="4.5" step="0.1" value="1.3"></div>
+      <div class="control"><div class="label-row"><label for="mc">Marginal cost c</label><span class="value" id="mcVal"></span></div><input id="mc" type="range" min="0" max="120" step="1" value="20"></div>
+
+      <div class="section-label">Common two-part tariff</div>
+      <div class="control"><div class="label-row"><label for="pUse">Usage price p</label><span class="value" id="pUseVal"></span></div><input id="pUse" type="range" min="0" max="120" step="1" value="30"></div>
+      <div class="control"><div class="label-row"><label for="fee">Entry fee F</label><span class="value" id="feeVal"></span></div><input id="fee" type="range" min="0" max="160" step="1" value="18"></div>
+
+      <div class="section-label">Nonlinear menu</div>
+      <div class="control"><div class="label-row"><label for="pB">Basic usage price p<sub>B</sub></label><span class="value" id="pBVal"></span></div><input id="pB" type="range" min="0" max="120" step="1" value="38"></div>
+      <div class="control"><div class="label-row"><label for="fB">Basic fee F<sub>B</sub></label><span class="value" id="fBVal"></span></div><input id="fB" type="range" min="0" max="140" step="1" value="10"></div>
+      <div class="control"><div class="label-row"><label for="pP">Premium usage price p<sub>P</sub></label><span class="value" id="pPVal"></span></div><input id="pP" type="range" min="0" max="120" step="1" value="22"></div>
+      <div class="control"><div class="label-row"><label for="fP">Premium fee F<sub>P</sub></label><span class="value" id="fPVal"></span></div><input id="fP" type="range" min="0" max="180" step="1" value="42"></div>
+
+      <div class="toggle-row"><div><div style="font-size:14px;">Show fee extraction</div><div class="small">fee inside surplus meter</div></div><label class="switch"><input id="showFee" type="checkbox" checked><span class="slider-switch"></span></label></div>
+      <div class="toggle-row"><div><div style="font-size:14px;">Show menu plans</div><div class="small">basic vs premium</div></div><label class="switch"><input id="showMenu" type="checkbox" checked><span class="slider-switch"></span></label></div>
+
+      <div class="pill" id="statusPill">Consumers can always opt out</div>
+    </aside>
+
+    <main class="main">
+      <section class="formula-row">
+        <div class="card formula"><div><div class="name">Demand and quantity</div><div class="math mathline">q<sub>i</sub>(p)=max{0,(a<sub>i</sub>−p)/b<sub>i</sub>}</div></div><div class="soft-eq">usage price determines quantity for each type</div></div>
+        <div class="card formula"><div><div class="name">Consumer surplus</div><div class="math mathline">CS<sub>i</sub>(p)=½(a<sub>i</sub>−p)q<sub>i</sub></div></div><div class="soft-eq">entry is attractive only if this covers the fee</div></div>
+        <div class="card formula"><div><div class="name">Two-part tariff</div><div class="math mathline">T(q)=F+pq</div></div><div class="soft-eq">enter iff <span class="math-inline">CS<sub>i</sub>(p) ≥ F</span></div></div>
+        <div class="card formula"><div><div class="name">Nonlinear menu</div><div class="math mathline">U<sub>ij</sub>=CS<sub>i</sub>(p<sub>j</sub>)−F<sub>j</sub></div></div><div class="formula-chip math">j ∈ {basic,premium}</div></div>
+      </section>
+
+      <section class="card diagram-card">
+        <div class="diagram-head"><div><h2>Main diagram: surplus and fee extraction</h2><p>For each type, the usage price creates a quantity and a consumer-surplus triangle. The entry fee extracts part or all of that surplus.</p></div><span class="small">left: low type · right: high type</span></div>
+        <svg id="mainSvg" viewBox="0 0 1180 590"></svg>
+        <div class="legend">
+          <span class="legend-item"><span class="swatch"></span> Low-type demand</span>
+          <span class="legend-item"><span class="swatch h"></span> High-type demand</span>
+          <span class="legend-item"><span class="swatch" style="background:var(--muted)"></span> Marginal revenue</span>
+          <span class="legend-item"><span class="swatch mc"></span> Marginal cost</span>
+          <span class="legend-item"><span class="swatch cs"></span> Consumer surplus</span>
+          <span class="legend-item"><span class="swatch fee"></span> Extracted fee</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="k">q<sub>L</sub></div><div class="v" id="qLMetric"></div></div>
+          <div class="metric"><div class="k">CS<sub>L</sub></div><div class="v" id="csLMetric"></div></div>
+          <div class="metric"><div class="k">Entry L?</div><div class="v" id="enterLMetric"></div></div>
+          <div class="metric"><div class="k">π<sub>L</sub></div><div class="v" id="piLMetric"></div></div>
+          <div class="metric"><div class="k">q<sub>H</sub></div><div class="v" id="qHMetric"></div></div>
+          <div class="metric"><div class="k">CS<sub>H</sub></div><div class="v" id="csHMetric"></div></div>
+          <div class="metric"><div class="k">Entry H?</div><div class="v" id="enterHMetric"></div></div>
+          <div class="metric"><div class="k">π total</div><div class="v" id="piTotalMetric"></div></div>
+        </div>
+      </section>
+
+      <section class="three-col">
+        <section class="card mini-card"><div class="mini-head"><h3>Entry-fee screening</h3><span class="mini-sub">entry thresholds and total profit</span></div><svg id="feeSvg" viewBox="0 0 760 360"></svg></section>
+        <section class="card mini-card"><div class="mini-head"><h3>Menu choice</h3><span class="mini-sub">basic versus premium</span></div><svg id="menuSvg" viewBox="0 0 760 360"></svg></section>
+        <section class="card mini-card"><div class="mini-head"><h3>Profit comparison</h3><span class="mini-sub">common tariff versus menu</span></div><svg id="profitSvg" viewBox="0 0 760 360"></svg></section>
+      </section>
+
+      <section class="two-col">
+        <section class="card panel">
+          <h2>Interpretation</h2>
+          <p id="interpretation"></p>
+          <div class="notice-list">
+            <div class="notice"><strong>Entry fees.</strong> A two-part tariff separates the per-unit decision from the participation decision: <span class="math-inline">p</span> controls quantity, while <span class="math-inline">F</span> controls entry.</div>
+            <div class="notice"><strong>Surplus extraction.</strong> If <span class="math-inline">F = CS<sub>i</sub>(p)</span>, the firm extracts all surplus from type i while leaving that type indifferent to entering.</div>
+            <div class="notice"><strong>Screening.</strong> A nonlinear menu uses different pairs <span class="math-inline">(F<sub>j</sub>,p<sub>j</sub>)</span> so different types self-select into different plans.</div>
+          </div>
+        </section>
+        <section class="card panel">
+          <h2>Exam-style summary</h2>
+          <div class="summary">
+            <div class="summary-line"><span>1</span><div>Compute quantity from the usage price: <span class="math-inline">q<sub>i</sub>(p)</span>.</div></div>
+            <div class="summary-line"><span>2</span><div>Compute consumer surplus: <span class="math-inline">CS<sub>i</sub>(p)</span>.</div></div>
+            <div class="summary-line"><span>3</span><div>Participation under a common tariff requires <span class="math-inline">CS<sub>i</sub>(p) ≥ F</span>.</div></div>
+            <div class="summary-line"><span>4</span><div>Profit per entrant is <span class="math-inline">F + (p-c)q<sub>i</sub></span>.</div></div>
+            <div class="summary-line"><span>5</span><div>With a menu, each type picks the plan that maximizes <span class="math-inline">max{0,U<sub>iB</sub>,U<sub>iP</sub>}</span>.</div></div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const els={
+    aL:$("aL"), bL:$("bL"), aH:$("aH"), bH:$("bH"), mc:$("mc"), pUse:$("pUse"), fee:$("fee"), pB:$("pB"), fB:$("fB"), pP:$("pP"), fP:$("fP"), showFee:$("showFee"), showMenu:$("showMenu"), themeBtn:$("themeBtn"),
+    aLVal:$("aLVal"), bLVal:$("bLVal"), aHVal:$("aHVal"), bHVal:$("bHVal"), mcVal:$("mcVal"), pUseVal:$("pUseVal"), feeVal:$("feeVal"), pBVal:$("pBVal"), fBVal:$("fBVal"), pPVal:$("pPVal"), fPVal:$("fPVal"),
+    mainSvg:$("mainSvg"), feeSvg:$("feeSvg"), menuSvg:$("menuSvg"), profitSvg:$("profitSvg"), statusPill:$("statusPill"), interpretation:$("interpretation"),
+    qLMetric:$("qLMetric"), csLMetric:$("csLMetric"), enterLMetric:$("enterLMetric"), piLMetric:$("piLMetric"), qHMetric:$("qHMetric"), csHMetric:$("csHMetric"), enterHMetric:$("enterHMetric"), piTotalMetric:$("piTotalMetric")
+  };
+
+  function fmt(x,d=2){ if(!Number.isFinite(x)) return '—'; if(Math.abs(x)>=100) return x.toFixed(1); return x.toFixed(d); }
+  function clamp(x,lo,hi){ return Math.max(lo,Math.min(hi,x)); }
+  function S(tag,a={}){ const e=document.createElementNS('http://www.w3.org/2000/svg',tag); for(const[k,v] of Object.entries(a)) e.setAttribute(k,v); return e; }
+  function line(svg,x1,y1,x2,y2,cls){ svg.appendChild(S('line',{x1,y1,x2,y2,class:cls})); }
+  function text(svg,x,y,str,cls='label',anchor='middle'){ const t=S('text',{x,y,class:cls,'text-anchor':anchor}); t.textContent=str; svg.appendChild(t); }
+  function path(svg,pts,cls){ const d=pts.map((p,i)=>(i?'L':'M')+' '+p[0]+' '+p[1]).join(' '); svg.appendChild(S('path',{d,class:cls})); }
+  function poly(svg,pts,cls){ const d=pts.map((p,i)=>(i?'L':'M')+' '+p[0]+' '+p[1]).join(' ')+' Z'; svg.appendChild(S('path',{d,class:cls})); }
+  function circle(svg,cx,cy,r,cls){ svg.appendChild(S('circle',{cx,cy,r,class:cls})); }
+  function rect(svg,x,y,w,h,cls,rx=8){ svg.appendChild(S('rect',{x,y,width:w,height:h,class:cls,rx})); }
+
+  function seg(a,b,p,c,F){
+    const q=Math.max(0,(a-p)/b);
+    const cs=q>0 ? 0.5*(a-p)*q : 0;
+    const enter = q>0 && cs>=F;
+    const profit = enter ? F + (p-c)*q : 0;
+    return {a,b,p,c,F,q,cs,enter,profit};
+  }
+  function utility(a,b,p,F){ const q=Math.max(0,(a-p)/b); const cs=q>0 ? 0.5*(a-p)*q : 0; return q>0 ? cs-F : -Infinity; }
+  function planForType(a,b,c,pB,fB,pP,fP){
+    const uB=utility(a,b,pB,fB), uP=utility(a,b,pP,fP), u0=0;
+    let choice='out', u=0, p=0, F=0, q=0, cs=0, profit=0;
+    if(uB>=uP && uB>=u0){ choice='basic'; u=uB; p=pB; F=fB; q=Math.max(0,(a-pB)/b); cs=0.5*(a-pB)*q; profit=F + (p-c)*q; }
+    else if(uP>=uB && uP>=u0){ choice='premium'; u=uP; p=pP; F=fP; q=Math.max(0,(a-pP)/b); cs=0.5*(a-pP)*q; profit=F + (p-c)*q; }
+    return {choice,u,p,F,q,cs,profit,uB,uP};
+  }
+
+  function model(){
+    const aL=+els.aL.value, bL=+els.bL.value, aH=+els.aH.value, bH=+els.bH.value, c=+els.mc.value;
+    const p=+els.pUse.value, F=+els.fee.value, pB=+els.pB.value, fB=+els.fB.value, pP=+els.pP.value, fP=+els.fP.value;
+    const L=seg(aL,bL,p,c,F), H=seg(aH,bH,p,c,F);
+    const LP=planForType(aL,bL,c,pB,fB,pP,fP), HP=planForType(aH,bH,c,pB,fB,pP,fP);
+    const menuProfit=LP.profit + HP.profit;
+    return {aL,bL,aH,bH,c,p,F,pB,fB,pP,fP,L,H,LP,HP,totalProfit:L.profit+H.profit, menuProfit};
+  }
+
+  function axes(svg,W,H,m,xMax,yMax,yLabel='p',xTicks=5,yTicks=4,xLabel='q'){
+    const iw=W-m.l-m.r, ih=H-m.t-m.b; const X=x=>m.l + (x/xMax)*iw; const Y=y=>m.t + ih - (y/yMax)*ih;
+    for(let i=0;i<=xTicks;i++){ const x=xMax*i/xTicks; line(svg,X(x),m.t,X(x),m.t+ih,'grid'); text(svg,X(x),m.t+ih+22,fmt(x,1),'muted-label'); }
+    for(let i=0;i<=yTicks;i++){ const y=yMax*i/yTicks; line(svg,m.l,Y(y),m.l+iw,Y(y),'grid'); text(svg,m.l-10,Y(y)+4,fmt(y,0),'muted-label','end'); }
+    line(svg,m.l,m.t+ih,m.l+iw,m.t+ih,'axis'); line(svg,m.l,m.t,m.l,m.t+ih,'axis'); text(svg,m.l+iw,m.t+ih+40,xLabel,'label'); text(svg,m.l-32,m.t+8,yLabel,'label');
+    return {X,Y,iw,ih};
+  }
+
+  function drawTypePanel(svg,box,segm,clsCurve,clsFill,clsPoint,title,showFee){
+    const x0=box.x, y0=box.y, W=box.w, H=box.h;
+    const m={l:x0+54,r:56,t:y0+42,b:52};
+    const qInt=segm.a/segm.b; const qMax=qInt*1.05; const yMax=Math.max(segm.a*1.08, segm.c*1.2, segm.p*1.2, 10);
+    const {X,Y,iw,ih}=axes(svg,x0+W,y0+H,m,qMax,yMax,'p',5,4,'q');
+    text(svg,x0+16,y0+24,title,'label','start');
+    const dPts=[], mrPts=[];
+    for(let i=0;i<=220;i++){
+      const q=qMax*i/220;
+      dPts.push([X(q),Y(Math.max(0,segm.a-segm.b*q))]);
+      mrPts.push([X(q),Y(Math.max(0,segm.a-2*segm.b*q))]);
+    }
+    if(segm.q>0){ poly(svg,[[X(0),Y(segm.p)],[X(segm.q),Y(segm.p)],[X(segm.q),Y(segm.a-segm.b*segm.q)],[X(0),Y(segm.a)]],clsFill); }
+    path(svg,dPts,clsCurve); path(svg,mrPts,'curve-mr'); line(svg,X(0),Y(segm.c),X(qMax),Y(segm.c),'curve-mc');
+    line(svg,X(segm.q),Y(0),X(segm.q),Y(segm.p),'helper'); line(svg,X(0),Y(segm.p),X(segm.q),Y(segm.p),'helper');
+    circle(svg,X(segm.q),Y(segm.p),6,clsPoint); text(svg,X(segm.q),Y(0)+28,'q*','label'); text(svg,X(0)-12,Y(segm.p)+4,'p','label','end');
+    text(svg,X(qMax*0.76),Y(Math.max(0,segm.a-segm.b*qMax*0.76))-10,'D(q)','label');
+    text(svg,X(qMax*0.46),Y(Math.max(0,segm.a-2*segm.b*qMax*0.46))+18,'MR(q)','muted-label');
+    text(svg,X(qMax*0.94),Y(segm.c)-12,'MC','label');
+
+    const bx=x0+W-34, by=y0+68, bw=18, bh=H-116; rect(svg,bx,by,bw,bh,'bar-muted',6);
+    const csScale = Math.max(segm.cs, segm.F, 1)*1.06;
+    const hCS = bh * (segm.cs/csScale); const hFee = bh * (Math.min(segm.F,segm.cs)/csScale); const yCS = by+bh-hCS; const yFee = by+bh-hFee;
+    rect(svg,bx,yCS,bw,hCS, title.startsWith('Low') ? 'fill-l' : 'fill-h',6);
+    if(showFee && segm.enter){ rect(svg,bx,yFee,bw,hFee,'fill-fee',6); }
+    text(svg,bx+bw/2,by-10,'CS','muted-label'); text(svg,bx-3,by+bh+18,'0','muted-label','end');
+    if(showFee && segm.enter){ text(svg,bx+bw/2,yFee-8,'F','muted-label'); }
+    text(svg,x0+W-68,y0+24, segm.enter ? 'enters' : 'stays out', 'muted-label');
+  }
+
+  function drawMain(m){
+    const svg=els.mainSvg; svg.innerHTML='';
+    drawTypePanel(svg,{x:18,y:18,w:552,h:520},m.L,'curve-l','fill-l','point-l','Low type',els.showFee.checked);
+    drawTypePanel(svg,{x:610,y:18,w:552,h:520},m.H,'curve-h','fill-h','point-h','High type',els.showFee.checked);
+  }
+
+  function drawFeeScreen(m){
+    const svg=els.feeSvg; svg.innerHTML='';
+    const W=760,H=360, mr={l:68,r:26,t:28,b:62};
+    const Fcut1=Math.min(m.L.cs,m.H.cs), Fcut2=Math.max(m.L.cs,m.H.cs);
+    const baseLow=(m.p-m.c)*m.L.q, baseHigh=(m.p-m.c)*m.H.q;
+    const Fmax=Math.max(Fcut2*1.08, m.F*1.18, 1);
+    const profitAt=(F)=> (F<=m.L.cs ? F+baseLow : 0) + (F<=m.H.cs ? F+baseHigh : 0);
+    const yMax=Math.max(profitAt(0), profitAt(Fcut1), profitAt(Math.min(Fcut2,Fmax)), m.totalProfit, 1)*1.12;
+    const {X,Y,iw,ih}=axes(svg,W,H,mr,Fmax,yMax,'profit',5,4,'F');
+
+    // Region shading
+    rect(svg, X(0), mr.t, Math.max(0,X(Fcut1)-X(0)), ih, 'region-a', 0);
+    rect(svg, X(Fcut1), mr.t, Math.max(0,X(Fcut2)-X(Fcut1)), ih, 'region-b', 0);
+    rect(svg, X(Fcut2), mr.t, Math.max(0,X(Fmax)-X(Fcut2)), ih, 'region-c', 0);
+
+    // redraw grid/axes on top lightly by calling axes visuals already made; now curves
+    const pts=[];
+    for(let i=0;i<=320;i++){
+      const F=Fmax*i/320;
+      pts.push([X(F),Y(Math.max(0,profitAt(F)))]);
+    }
+    path(svg,pts,'curve-l');
+
+    line(svg,X(Fcut1),mr.t,X(Fcut1),mr.t+ih,'helper-l');
+    line(svg,X(Fcut2),mr.t,X(Fcut2),mr.t+ih,'helper-h');
+    line(svg,X(m.F),mr.t,X(m.F),mr.t+ih,'helper');
+    circle(svg,X(m.F),Y(m.totalProfit),6,'point-l');
+
+    text(svg,X(Fcut1),mr.t+ih+22,'min(CS_L, CS_H)','muted-label');
+    text(svg,X(Fcut2),mr.t+ih+22,'max(CS_L, CS_H)','muted-label');
+    text(svg,X(m.F),mr.t+ih+40,'current F','label');
+
+    text(svg,(X(0)+X(Fcut1))/2,mr.t+20,'both enter','muted-label');
+    text(svg,(X(Fcut1)+X(Fcut2))/2,mr.t+20,'only high-surplus type enters','muted-label');
+    text(svg,(X(Fcut2)+X(Fmax))/2,mr.t+20,'nobody enters','muted-label');
+
+    text(svg,X(Fmax*0.58),Y(profitAt(Fmax*0.58))-10,'π(F)','label','start');
+  }
+
+  function drawMenu(m){
+    const svg=els.menuSvg; svg.innerHTML='';
+    const W=760,H=360, left=80, top=60, colW=120, gap=80, base=290;
+    function bar(x, val, cls, labelTxt, chosen){
+      const h=Math.min(190, Math.abs(val)*7.8); const y=val>=0 ? base-h : base; rect(svg,x,y,colW,h,cls,8); if(chosen) svg.lastChild.classList.add('plan-chosen');
+      text(svg,x+colW/2, val>=0 ? y-8 : y+h+16, fmt(val), 'muted-label'); text(svg,x+colW/2, base+32, labelTxt, 'bar-label');
+    }
+    line(svg,60,base,700,base,'axis'); text(svg,46,base+4,'0','muted-label','end');
+    text(svg,105,34,'Low type', 'label'); text(svg,445,34,'High type','label');
+    if(els.showMenu.checked){
+      bar(left, m.LP.uB, 'plan-basic', 'Basic', m.LP.choice==='basic'); bar(left+colW+26, m.LP.uP, 'plan-prem', 'Premium', m.LP.choice==='premium');
+      bar(left+2*(colW+gap), m.HP.uB, 'plan-basic', 'Basic', m.HP.choice==='basic'); bar(left+2*(colW+gap)+colW+26, m.HP.uP, 'plan-prem', 'Premium', m.HP.choice==='premium');
+      text(svg,170,330, 'choice: '+m.LP.choice, 'muted-label'); text(svg,510,330, 'choice: '+m.HP.choice, 'muted-label');
+    }
+  }
+
+  function drawProfit(m){
+    const svg=els.profitSvg; svg.innerHTML='';
+    const W=760,H=360, mr={l:70,r:28,t:24,b:60}; const iw=W-mr.l-mr.r, ih=H-mr.t-mr.b; const maxV=Math.max(m.totalProfit,m.menuProfit,m.L.profit,m.H.profit,1)*1.15; const Y=v=>mr.t+ih-(v/maxV)*ih;
+    for(let i=0;i<=4;i++){ const v=maxV*i/4; line(svg,mr.l,Y(v),mr.l+iw,Y(v),'grid'); text(svg,mr.l-10,Y(v)+4,fmt(v,0),'muted-label','end'); }
+    line(svg,mr.l,mr.t+ih,mr.l+iw,mr.t+ih,'axis'); line(svg,mr.l,mr.t,mr.l,mr.t+ih,'axis'); text(svg,mr.l-40,mr.t+8,'profit','label');
+    const xs=[mr.l+60,mr.l+220,mr.l+380,mr.l+540], vals=[m.L.profit,m.H.profit,m.totalProfit,m.menuProfit], cls=['bar-l','bar-h','bar-profit','bar-muted'], labs=['π_L','π_H','common','menu'];
+    xs.forEach((x,i)=>{ const y=Y(vals[i]); rect(svg,x,y,80,mr.t+ih-y,cls[i],8); text(svg,x+40,y-8,fmt(vals[i]),'muted-label'); text(svg,x+40,mr.t+ih+28,labs[i],'bar-label'); });
+  }
+
+  function updateText(m){
+    els.aLVal.textContent=fmt(m.aL,0); els.bLVal.textContent=fmt(m.bL,1); els.aHVal.textContent=fmt(m.aH,0); els.bHVal.textContent=fmt(m.bH,1); els.mcVal.textContent=fmt(m.c,0); els.pUseVal.textContent=fmt(m.p,0); els.feeVal.textContent=fmt(m.F,0); els.pBVal.textContent=fmt(m.pB,0); els.fBVal.textContent=fmt(m.fB,0); els.pPVal.textContent=fmt(m.pP,0); els.fPVal.textContent=fmt(m.fP,0);
+    els.qLMetric.textContent=fmt(m.L.q); els.csLMetric.textContent=fmt(m.L.cs); els.enterLMetric.textContent=m.L.enter?'Yes':'No'; els.piLMetric.textContent=fmt(m.L.profit); els.qHMetric.textContent=fmt(m.H.q); els.csHMetric.textContent=fmt(m.H.cs); els.enterHMetric.textContent=m.H.enter?'Yes':'No'; els.piTotalMetric.textContent=fmt(m.totalProfit);
+    els.statusPill.textContent='Common tariff profit '+fmt(m.totalProfit)+' · menu profit '+fmt(m.menuProfit);
+    const lowChoice = m.LP.choice==='out' ? 'opts out' : 'chooses '+m.LP.choice; const highChoice = m.HP.choice==='out' ? 'opts out' : 'chooses '+m.HP.choice;
+    els.interpretation.innerHTML = `Under the common two-part tariff, the low type buys <span class="math-inline">q_L=${fmt(m.L.q)}</span> and the high type buys <span class="math-inline">q_H=${fmt(m.H.q)}</span>. The fee <span class="math-inline">F=${fmt(m.F)}</span> keeps the low type ${m.L.enter?'in':'out'} and the high type ${m.H.enter?'in':'out'}. In the menu, the low type ${lowChoice} while the high type ${highChoice}. The common tariff yields total profit <span class="math-inline">${fmt(m.totalProfit)}</span>, whereas the menu yields <span class="math-inline">${fmt(m.menuProfit)}</span>.`;
+  }
+
+  function update(){ const m=model(); updateText(m); drawMain(m); drawFeeScreen(m); drawMenu(m); drawProfit(m); }
+  ['aL','bL','aH','bH','mc','pUse','fee','pB','fB','pP','fP','showFee','showMenu'].forEach(id=>{ els[id].addEventListener('input',update); els[id].addEventListener('change',update); });
+  els.themeBtn.addEventListener('click',()=>{ const dark=document.body.getAttribute('data-theme')==='dark'; document.body.setAttribute('data-theme',dark?'light':'dark'); els.themeBtn.textContent=dark?'Dark mode':'Light mode'; update(); });
+  update();
+})();
+</script>
+</body>
+</html>

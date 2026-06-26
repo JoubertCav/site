@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive undergraduate microeconomics diagram for Stackelberg competition.">
+<title>Stackelberg Competition | Microeconomics Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --bg:#f7f3eb; --surface:#fffaf4; --surface2:#f3ece2; --surface3:#ece4d8;
+  --text:#20262b; --muted:#68726f; --border:rgba(32,38,43,.11); --grid:rgba(32,38,43,.08);
+  --accent:#2d8b81; --accent2:#7ac4b9; --orange:#c98262; --purple:#8a77c8; --danger:#be7f6d;
+  --ok:#4b8b59; --okSoft:rgba(75,139,89,.16); --accentSoft:rgba(45,139,129,.12); --accentSoft2:rgba(122,196,185,.16);
+  --orangeSoft:rgba(201,130,98,.16); --purpleSoft:rgba(138,119,200,.16); --dangerSoft:rgba(190,127,109,.18);
+  --shadow:0 18px 44px rgba(28,24,20,.08); --radius:22px;
+}
+[data-theme="dark"]{
+  --bg:#0f1418; --surface:#171d22; --surface2:#20282e; --surface3:#263038;
+  --text:#edf3ef; --muted:#aab3b1; --border:rgba(237,243,239,.10); --grid:rgba(237,243,239,.08);
+  --accent:#66c7b8; --accent2:#9fe1d8; --orange:#d99b81; --purple:#b0a0e8; --danger:#d18f7f;
+  --ok:#76c28a; --okSoft:rgba(118,194,138,.18); --accentSoft:rgba(102,199,184,.12); --accentSoft2:rgba(159,225,216,.14);
+  --orangeSoft:rgba(217,155,129,.17); --purpleSoft:rgba(176,160,232,.18); --dangerSoft:rgba(209,143,127,.18);
+  --shadow:0 18px 44px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+body{margin:0; background:radial-gradient(circle at top left,var(--accentSoft),transparent 34rem),var(--bg); color:var(--text); font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,"Segoe UI",sans-serif; line-height:1.45}
+.app{width:min(1560px,calc(100% - 24px)); margin:0 auto; padding:26px 0 34px}
+header{display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:18px}
+.eyebrow{display:inline-flex; align-items:center; gap:8px; padding:7px 11px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--muted); font-size:13px; box-shadow:var(--shadow)}
+.dot{width:7px; height:7px; border-radius:50%; background:var(--accent)}
+h1{margin:14px 0 6px; font-size:clamp(34px,5vw,60px); line-height:.95; letter-spacing:-.055em; font-weight:760}
+.subtitle{margin:0; max-width:1030px; color:var(--muted); font-size:clamp(16px,2vw,20px)}
+.theme-btn{border:1px solid var(--border); background:var(--surface); color:var(--text); border-radius:999px; padding:10px 14px; font:inherit; cursor:pointer; box-shadow:var(--shadow)}
+.layout{display:grid; grid-template-columns:320px minmax(0,1fr); gap:18px; align-items:start}
+.card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow)}
+.controls{padding:18px; position:sticky; top:16px}
+.card-title{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:12px}
+h2{margin:0; font-size:17px; letter-spacing:-.025em} h3{margin:0; font-size:16px; letter-spacing:-.02em}
+.small{color:var(--muted); font-size:13px}.section-label{margin:14px 0 6px; color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.09em}
+.control{padding:12px 0; border-top:1px solid var(--border)} .control:first-of-type{border-top:0}
+.label-row{display:flex; justify-content:space-between; gap:12px; margin-bottom:8px; font-size:14px}.value{color:var(--accent); font-variant-numeric:tabular-nums}
+input[type=range]{width:100%; accent-color:var(--accent)}
+.toggle-row{display:flex; justify-content:space-between; align-items:center; gap:14px; padding:14px 0 4px; border-top:1px solid var(--border)}
+.switch{position:relative; width:48px; height:28px; display:inline-block}.switch input{opacity:0; width:0; height:0}
+.slider-switch{position:absolute; inset:0; cursor:pointer; border-radius:999px; background:var(--surface2); border:1px solid var(--border)}
+.slider-switch::before{content:''; position:absolute; width:20px; height:20px; left:4px; top:3px; border-radius:50%; background:var(--accent); transition:.2s ease}.switch input:checked + .slider-switch::before{transform:translateX(20px)}
+.pill{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px; border:1px solid var(--border); color:var(--muted); background:var(--surface2); font-size:13px; margin-top:14px}
+.main{display:grid; gap:18px}
+.formula-row{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px}
+.formula{padding:14px; min-height:112px; display:flex; flex-direction:column; justify-content:space-between}
+.formula .name{color:var(--muted); font-size:12px; margin-bottom:6px}
+.mathline{display:flex; align-items:center; gap:.28em; flex-wrap:wrap; min-height:28px}.soft-eq{color:var(--muted); font-size:14px}
+.formula-chip{display:inline-flex; align-items:center; justify-content:center; padding:7px 10px; border-radius:14px; background:var(--surface2); border:1px solid var(--border)}
+.katex{font-size:.88em}.formula .katex{line-height:1.12}.formula-chip .katex{line-height:1.08}
+.diagram-card{padding:18px}.diagram-head{display:flex; justify-content:space-between; align-items:end; gap:16px; margin-bottom:10px}.diagram-head p{margin:4px 0 0; color:var(--muted); font-size:14px}
+.metrics{display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:10px; margin-top:14px}.metric{padding:13px; border-radius:17px; border:1px solid var(--border); background:var(--surface2)}.metric .k{color:var(--muted); font-size:12px; margin-bottom:3px}.metric .v{font-size:20px; font-weight:740; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+.main-pair{display:grid; grid-template-columns:minmax(0,1.45fr) minmax(420px,.95fr); gap:18px; align-items:start}
+.secondary-row{display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:stretch}.panel{padding:18px}.mini-card{padding:18px}.mini-head{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:8px}.mini-sub{color:var(--muted); font-size:13px}
+.two-col{display:grid; grid-template-columns:1fr 1fr; gap:18px}.panel p{margin:0; color:var(--muted)}.notice-list{display:grid; gap:11px; margin-top:12px}.notice{padding:12px 13px; border-radius:16px; border:1px solid var(--border); background:var(--surface2); color:var(--muted); font-size:14px}.notice strong{color:var(--text)}
+.summary{display:grid; gap:11px; margin-top:12px}.summary-line{display:flex; gap:10px; align-items:flex-start; color:var(--muted); font-size:14px}.summary-line span:first-child{color:var(--accent); min-width:24px; font-weight:760}
+.legend{display:flex; flex-wrap:wrap; gap:10px 14px; margin-top:12px; color:var(--muted); font-size:13px}.legend-item{display:inline-flex; align-items:center; gap:7px}
+.swatch{width:22px; height:3px; border-radius:999px; background:var(--accent)}.swatch.o{background:var(--orange)}.swatch.p{background:var(--purple)}.swatch.d{background:var(--danger)}.swatch.fill{width:15px; height:12px; background:var(--accentSoft2); border:1px solid var(--border)}.swatch.mr{background:var(--muted)}
+svg{display:block; width:100%; height:auto; overflow:hidden}.axis{stroke:var(--text); stroke-width:1.2}.grid{stroke:var(--grid); stroke-width:1}
+.curve-demand{fill:none; stroke:var(--accent); stroke-width:3}.curve-mr{fill:none; stroke:var(--muted); stroke-width:2.1; stroke-dasharray:6 6}.curve-br1{fill:none; stroke:var(--accent); stroke-width:3}.curve-br2{fill:none; stroke:var(--orange); stroke-width:3}.curve-profit{fill:none; stroke:var(--accent); stroke-width:3}.curve-q2{fill:none; stroke:var(--orange); stroke-width:2.5; stroke-dasharray:6 5}.curve-cost{fill:none; stroke:var(--purple); stroke-width:2.7}.curve-monopoly{fill:none; stroke:var(--danger); stroke-width:2.4; stroke-dasharray:7 5}.curve-stack{fill:none; stroke:var(--accent); stroke-width:3}.curve-cournot{fill:none; stroke:var(--orange); stroke-width:3}.curve-comp{fill:none; stroke:var(--purple); stroke-width:2.4; stroke-dasharray:5 5}.curve-muted{fill:none; stroke:var(--muted); stroke-width:2.2; stroke-dasharray:6 6}
+.helper{stroke:var(--muted); stroke-width:1.2; stroke-dasharray:5 6}.helper-a{stroke:var(--accent2); stroke-width:1.5; stroke-dasharray:4 5}.helper-b{stroke:var(--orange); stroke-width:1.5; stroke-dasharray:4 5}.helper-p{stroke:var(--purple); stroke-width:1.5; stroke-dasharray:4 5}.helper-d{stroke:var(--danger); stroke-width:1.5; stroke-dasharray:5 5}.point{fill:var(--surface); stroke:var(--text); stroke-width:2}.point-a{fill:var(--accent); stroke:var(--surface); stroke-width:2.2}.point-b{fill:var(--orange); stroke:var(--surface); stroke-width:2.2}.point-c{fill:var(--purple); stroke:var(--surface); stroke-width:2.2}.point-d{fill:var(--danger); stroke:var(--surface); stroke-width:2.2}
+.label{fill:var(--text); font-size:13px}.muted-label{fill:var(--muted); font-size:12px}.fill-cs{fill:var(--accentSoft2)}.fill-pi1{fill:rgba(45,139,129,.22)}.fill-pi2{fill:rgba(201,130,98,.20)}.fill-dwl{fill:var(--dangerSoft)}.fill-adv{fill:var(--purpleSoft)}
+.bar-a{fill:var(--accent)}.bar-b{fill:var(--orange)}.bar-c{fill:var(--purple)}.bar-d{fill:var(--muted); opacity:.55}.bar-e{fill:var(--danger); opacity:.86}.bar-label{fill:var(--text); font-size:12px}
+@media (max-width:1100px){.main-pair{grid-template-columns:1fr}}
+@media (max-width:1200px){.layout{grid-template-columns:1fr}.controls{position:relative; top:auto}.formula-row,.secondary-row,.two-col{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:700px){.app{width:min(100% - 14px,1560px); padding-top:16px}header{flex-direction:column}.theme-btn{width:100%}.formula-row{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body data-theme="light">
+<div class="app">
+<header>
+  <div>
+    <div class="eyebrow"><span class="dot"></span> Microeconomics · Sequential oligopoly</div>
+    <h1>Stackelberg with monopoly benchmark</h1>
+    <p class="subtitle">One leader commits to output, then follower firms choose quantities. The app keeps the benchmark fixed: monopoly is the reference point, and entry by followers shows how Stackelberg moves price, output, profit, Lerner index, and welfare away from monopoly.</p>
+  </div>
+  <button class="theme-btn" id="themeBtn">Dark mode</button>
+</header>
+
+<div class="layout">
+  <aside class="card controls">
+    <div class="card-title"><h2>Controls</h2><span class="small">leader + followers</span></div>
+
+    <div class="section-label">Demand</div>
+    <div class="control"><div class="label-row"><label for="a">Demand intercept a</label><span class="value" id="aVal"></span></div><input id="a" type="range" min="40" max="220" step="1" value="120"></div>
+    <div class="control"><div class="label-row"><label for="b">Demand slope b</label><span class="value" id="bVal"></span></div><input id="b" type="range" min="0.4" max="5" step="0.1" value="1.4"></div>
+
+    <div class="section-label">Technology</div>
+    <div class="control"><div class="label-row"><label for="c">Common marginal cost c</label><span class="value" id="cVal"></span></div><input id="c" type="range" min="0" max="140" step="1" value="24"></div>
+
+    <div class="section-label">Market structure</div>
+    <div class="control"><div class="label-row"><label for="N">Total firms N</label><span class="value" id="NVal"></span></div><input id="N" type="range" min="1" max="30" step="1" value="2"></div>
+    <div class="control"><div class="label-row"><label for="qL">Trial leader output qL</label><span class="value" id="qLVal"></span></div><input id="qL" type="range" min="0" max="80" step="0.1" value="34"></div>
+
+    <div class="toggle-row"><div><div style="font-size:14px;">Snap to Stackelberg optimum</div><div class="small">set qL equal to the leader optimum</div></div><label class="switch"><input id="snap" type="checkbox" checked><span class="slider-switch"></span></label></div>
+    <div class="toggle-row"><div><div style="font-size:14px;">Show Cournot and efficient benchmarks</div><div class="small">compare sequential and simultaneous output</div></div><label class="switch"><input id="bench" type="checkbox" checked><span class="slider-switch"></span></label></div>
+
+    <div class="pill" id="statusPill">Monopoly is the benchmark</div>
+  </aside>
+
+  <main class="main">
+    <section class="formula-row">
+      <div class="card formula"><div><div class="name">Inverse demand</div><div class="mathline">\(P(Q)=a-bQ\)</div></div><div class="soft-eq">all firms sell into one market</div></div>
+      <div class="card formula"><div><div class="name">Monopoly benchmark</div><div class="mathline">\(Q^M=\frac{a-c}{2b},\quad P^M=\frac{a+c}{2}\)</div></div><div class="soft-eq">the reference point throughout the app</div></div>
+      <div class="card formula"><div><div class="name">Follower subgame</div><div class="mathline">\(q_F(q_L)=\frac{a-c-bq_L}{b(m+1)}\)</div></div><div class="soft-eq">where \(m=N-1\) followers move second</div></div>
+      <div class="card formula"><div><div class="name">Leader commitment</div><div class="mathline">\(q_L^S=Q^M,\quad Q^S=Q^M\frac{2m+1}{m+1}\)</div></div><div class="soft-eq">monopoly output becomes the leader’s commitment</div></div>
+    </section>
+
+    <section class="main-pair">
+      <section class="card diagram-card">
+        <div class="diagram-head">
+          <div>
+            <h2>Main diagram: market outcome relative to monopoly</h2>
+            <p>The same monopoly output appears as the leader’s commitment. Follower entry expands total output beyond monopoly, lowers price, and transfers surplus from firms to consumers.</p>
+          </div>
+          <span class="small">Q horizontal · price vertical</span>
+        </div>
+        <svg id="marketSvg" viewBox="0 0 1120 620"></svg>
+        <div class="legend">
+          <span class="legend-item"><span class="swatch"></span> Demand</span>
+          <span class="legend-item"><span class="swatch d"></span> Monopoly benchmark</span>
+          <span class="legend-item"><span class="swatch p"></span> Efficient benchmark</span>
+          <span class="legend-item"><span class="swatch fill"></span> Consumer surplus</span>
+          <span class="legend-item"><span class="swatch fill" style="background:rgba(45,139,129,.22)"></span> Leader profit</span>
+          <span class="legend-item"><span class="swatch fill" style="background:rgba(201,130,98,.20)"></span> Follower profit</span>
+          <span class="legend-item"><span class="swatch fill" style="background:rgba(209,143,127,.18)"></span> Deadweight loss</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="k">N</div><div class="v" id="mN"></div></div>
+          <div class="metric"><div class="k">qL</div><div class="v" id="mqL"></div></div>
+          <div class="metric"><div class="k">ΣqF</div><div class="v" id="mqFtot"></div></div>
+          <div class="metric"><div class="k">Q/QM</div><div class="v" id="mQratio"></div></div>
+          <div class="metric"><div class="k">P/PM</div><div class="v" id="mPratio"></div></div>
+          <div class="metric"><div class="k">Π/ΠM</div><div class="v" id="mPiratio"></div></div>
+          <div class="metric"><div class="k">L/LM</div><div class="v" id="mLratio"></div></div>
+          <div class="metric"><div class="k">W/WM</div><div class="v" id="mWratio"></div></div>
+        </div>
+      </section>
+
+      <section class="card diagram-card" style="height:100%; display:flex; flex-direction:column;">
+        <div class="diagram-head">
+          <div>
+            <h2>Sequential structure</h2>
+            <p>The leader chooses a point on the aggregate follower-response curve. The monopoly quantity is a vertical anchor: it is exactly the optimal leader commitment.</p>
+          </div>
+          <span class="small">qL horizontal · total follower output vertical</span>
+        </div>
+        <svg id="reactSvg" viewBox="0 0 980 620"></svg>
+        <div class="legend">
+          <span class="legend-item"><span class="swatch o"></span> Aggregate follower response</span>
+          <span class="legend-item"><span class="swatch d"></span> Monopoly quantity</span>
+          <span class="legend-item"><span class="swatch p"></span> Stackelberg and Cournot points</span>
+        </div>
+      </section>
+    </section>
+
+    <section class="secondary-row">
+      <section class="card mini-card">
+        <div class="mini-head"><h3>Leader optimization</h3><span class="mini-sub">profit induced by follower response</span></div>
+        <svg id="profitSvg" viewBox="0 0 760 360"></svg>
+      </section>
+      <section class="card mini-card">
+        <div class="mini-head"><h3>Monopoly-normalized comparison</h3><span class="mini-sub">monopoly = 1 reference line</span></div>
+        <svg id="barsSvg" viewBox="0 0 760 360"></svg>
+      </section>
+    </section>
+
+    <section class="secondary-row">
+      <section class="card mini-card">
+        <div class="mini-head"><h3>Entry path</h3><span class="mini-sub">how Stackelberg changes as followers enter</span></div>
+        <svg id="entrySvg" viewBox="0 0 760 360"></svg>
+      </section>
+      <section class="card mini-card">
+        <div class="mini-head"><h3>Distribution of profits</h3><span class="mini-sub">leader versus all followers</span></div>
+        <svg id="profitSplitSvg" viewBox="0 0 760 360"></svg>
+      </section>
+    </section>
+
+    <section class="two-col">
+      <section class="card panel">
+        <h2>Interpretation</h2>
+        <p id="interpretation"></p>
+        <div class="notice-list">
+          <div class="notice"><strong>Monopoly as anchor.</strong> The leader’s optimal commitment equals the monopoly output. The difference is that followers enter afterward and expand total market quantity.</div>
+          <div class="notice"><strong>Follower entry.</strong> More followers push total output upward, price and Lerner index downward, and consumer surplus upward.</div>
+          <div class="notice"><strong>Sequential advantage.</strong> With one follower, the leader produces twice as much as the follower. With many followers, the leader still commits to monopoly output, but its monopoly-normalized profit falls because price is disciplined by follower entry.</div>
+        </div>
+      </section>
+      <section class="card panel">
+        <h2>Exam-style summary</h2>
+        <div class="summary">
+          <div class="summary-line"><span>1</span><div>Let \(m=N-1\). After \(q_L\), followers play a symmetric Cournot subgame.</div></div>
+          <div class="summary-line"><span>2</span><div>Follower output is \(q_F(q_L)=(a-c-bq_L)/[b(m+1)]\), truncated at zero.</div></div>
+          <div class="summary-line"><span>3</span><div>Substitute follower behavior into leader profit and maximize over \(q_L\).</div></div>
+          <div class="summary-line"><span>4</span><div>The leader chooses \(q_L^S=(a-c)/(2b)=Q^M\).</div></div>
+          <div class="summary-line"><span>5</span><div>Then \(Q^S=Q^M(2m+1)/(m+1)\), so total output lies above monopoly and approaches the efficient output as follower entry grows.</div></div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+</div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const els={
+    a:$("a"), b:$("b"), c:$("c"), N:$("N"), qL:$("qL"), snap:$("snap"), bench:$("bench"), themeBtn:$("themeBtn"),
+    aVal:$("aVal"), bVal:$("bVal"), cVal:$("cVal"), NVal:$("NVal"), qLVal:$("qLVal"), statusPill:$("statusPill"),
+    marketSvg:$("marketSvg"), reactSvg:$("reactSvg"), profitSvg:$("profitSvg"), barsSvg:$("barsSvg"), entrySvg:$("entrySvg"), profitSplitSvg:$("profitSplitSvg"), interpretation:$("interpretation"),
+    mN:$("mN"), mqL:$("mqL"), mqFtot:$("mqFtot"), mQratio:$("mQratio"), mPratio:$("mPratio"), mPiratio:$("mPiratio"), mLratio:$("mLratio"), mWratio:$("mWratio")
+  };
+
+  function fmt(x,d=2){ if(!Number.isFinite(x)) return '—'; if(Math.abs(x)>=100) return x.toFixed(1); return x.toFixed(d); }
+  function clamp(x,lo,hi){ return Math.max(lo,Math.min(hi,x)); }
+  function S(tag,a={}){ const e=document.createElementNS('http://www.w3.org/2000/svg',tag); for(const[k,v] of Object.entries(a)) e.setAttribute(k,v); return e; }
+  function line(svg,x1,y1,x2,y2,cls){ svg.appendChild(S('line',{x1,y1,x2,y2,class:cls})); }
+  function text(svg,x,y,str,cls='label',anchor='middle'){ const t=S('text',{x,y,class:cls,'text-anchor':anchor}); t.textContent=str; svg.appendChild(t); }
+  function path(svg,pts,cls){ if(!pts.length) return; const d=pts.map((p,i)=>(i?'L':'M')+' '+p[0]+' '+p[1]).join(' '); svg.appendChild(S('path',{d,class:cls})); }
+  function poly(svg,pts,cls){ if(!pts.length) return; const d=pts.map((p,i)=>(i?'L':'M')+' '+p[0]+' '+p[1]).join(' ')+' Z'; svg.appendChild(S('path',{d,class:cls})); }
+  function circle(svg,cx,cy,r,cls){ svg.appendChild(S('circle',{cx,cy,r,class:cls})); }
+  function rect(svg,x,y,w,h,cls,rx=8){ svg.appendChild(S('rect',{x,y,width:w,height:h,class:cls,rx})); }
+
+  function axes(svg,W,H,m,xMax,yMax,yLabel='y',xTicks=5,yTicks=4,xLabel='x'){
+    xMax=Math.max(1e-9,xMax); yMax=Math.max(1e-9,yMax);
+    const iw=W-m.l-m.r, ih=H-m.t-m.b, X=x=>m.l+(x/xMax)*iw, Y=y=>m.t+ih-(y/yMax)*ih;
+    for(let i=0;i<=xTicks;i++){ const x=xMax*i/xTicks; line(svg,X(x),m.t,X(x),m.t+ih,'grid'); text(svg,X(x),m.t+ih+22,fmt(x,1),'muted-label'); }
+    for(let i=0;i<=yTicks;i++){ const y=yMax*i/yTicks; line(svg,m.l,Y(y),m.l+iw,Y(y),'grid'); text(svg,m.l-10,Y(y)+4,fmt(y,0),'muted-label','end'); }
+    line(svg,m.l,m.t+ih,m.l+iw,m.t+ih,'axis'); line(svg,m.l,m.t,m.l,m.t+ih,'axis'); text(svg,m.l+iw,m.t+ih+40,xLabel,'label'); text(svg,m.l-26,m.t+8,yLabel,'label');
+    return {X,Y,iw,ih};
+  }
+
+  function primitives(a,b,c){
+    const A=Math.max(0,a-c);
+    const Qe=A/b;
+    const QM=A/(2*b);
+    const PM=(a+c)/2;
+    const PiM=A*A/(4*b);
+    const CSM=0.5*(a-PM)*QM;
+    const WM=CSM+PiM;
+    const LM=PM>0?(PM-c)/PM:0;
+    const We=A*A/(2*b);
+    return {A,Qe,QM,PM,PiM,CSM,WM,LM,We};
+  }
+
+  function followerTotals(qL,m,base){
+    if(m<=0) return {qEach:0,qTot:0};
+    const qEach=Math.max(0,(base.A-base.b*qL)/(base.b*(m+1)));
+    return {qEach,qTot:m*qEach};
+  }
+
+  function outcomeFromLeader(qL,N,base){
+    const m=N-1;
+    const f=followerTotals(qL,m,base);
+    const Q=qL+f.qTot;
+    const P=Math.max(0,base.a-base.b*Q);
+    const margin=P-base.c;
+    const piL=margin*qL;
+    const piFEach=margin*f.qEach;
+    const piFTot=m*piFEach;
+    const piTotal=piL+piFTot;
+    const CS=0.5*Math.max(0,base.a-P)*Q;
+    const W=CS+piTotal;
+    const L=P>0?margin/P:0;
+    const DWL=0.5*base.b*Math.max(0,base.Qe-Q)*Math.max(0,base.Qe-Q);
+    return {N,m,qL,qFEach:f.qEach,qFTot:f.qTot,Q,P,margin,piL,piFEach,piFTot,piTotal,CS,W,L,DWL};
+  }
+
+  function stackelberg(N,base){ return outcomeFromLeader(base.QM,N,base); }
+  function cournot(N,base){
+    const qEach=base.A/(base.b*(N+1));
+    const Q=N*qEach;
+    const P=Math.max(0,base.a-base.b*Q);
+    const margin=P-base.c;
+    const piEach=margin*qEach;
+    const piTotal=N*piEach;
+    const CS=0.5*Math.max(0,base.a-P)*Q;
+    const W=CS+piTotal;
+    const L=P>0?margin/P:0;
+    const leaderQ=qEach, followerTot=(N-1)*qEach;
+    return {N,m:N-1,qL:leaderQ,qFEach:qEach,qFTot:followerTot,Q,P,margin,piL:piEach,piFEach:piEach,piFTot:(N-1)*piEach,piTotal,CS,W,L,DWL:0.5*base.b*Math.max(0,base.Qe-Q)*Math.max(0,base.Qe-Q)};
+  }
+
+  function model(){
+    let a=+els.a.value, b=+els.b.value, c=+els.c.value;
+    if(c>=a-1){ c=a-1; els.c.value=c; }
+    const N=+els.N.value;
+    const p=primitives(a,b,c);
+    const base={a,b,c,...p};
+    const S=stackelberg(N,base), C=cournot(N,base), M=stackelberg(1,base);
+    const qMaxSlider=Math.max(1,p.Qe*1.05,S.Q,C.Q,p.QM)*1.02;
+    els.qL.max=qMaxSlider.toFixed(1);
+    let qL=+els.qL.value;
+    if(els.snap.checked){ qL=p.QM; els.qL.value=qL.toFixed(1); }
+    qL=clamp(+els.qL.value,0,qMaxSlider);
+    const focus=outcomeFromLeader(qL,N,base);
+    return {a,b,c,N,base,S,C,M,focus,qMaxSlider};
+  }
+
+  function drawMarket(m){
+    const svg=els.marketSvg; svg.innerHTML='';
+    const vb=svg.viewBox.baseVal, W=vb.width||1120, H=vb.height||620, mar={l:78,r:34,t:32,b:68};
+    const qMax=Math.max(m.base.Qe,m.focus.Q,m.S.Q,m.C.Q,m.base.QM,1)*1.14, yMax=Math.max(m.a,m.focus.P,m.base.PM,m.c,10)*1.10;
+    const {X,Y}=axes(svg,W,H,mar,qMax,yMax,'price / value',5,4,'Q');
+
+    const demand=[];
+    for(let i=0;i<=320;i++){ const Q=qMax*i/320; demand.push([X(Q),Y(Math.max(0,m.a-m.b*Q))]); }
+
+    if(m.focus.Q>0){
+      const cs=[[X(0),Y(m.a)]];
+      for(let i=0;i<=160;i++){ const Q=m.focus.Q*i/160; cs.push([X(Q),Y(Math.max(0,m.a-m.b*Q))]); }
+      cs.push([X(m.focus.Q),Y(m.focus.P)],[X(0),Y(m.focus.P)]); poly(svg,cs,'fill-cs');
+    }
+    if(m.focus.qL>0 && m.focus.P>m.c){ poly(svg,[[X(0),Y(m.focus.P)],[X(m.focus.qL),Y(m.focus.P)],[X(m.focus.qL),Y(m.c)],[X(0),Y(m.c)]],'fill-pi1'); }
+    if(m.focus.qFTot>0 && m.focus.P>m.c){ poly(svg,[[X(m.focus.qL),Y(m.focus.P)],[X(m.focus.Q),Y(m.focus.P)],[X(m.focus.Q),Y(m.c)],[X(m.focus.qL),Y(m.c)]],'fill-pi2'); }
+    if(m.base.Qe>m.focus.Q){ poly(svg,[[X(m.focus.Q),Y(m.focus.P)],[X(m.base.Qe),Y(m.c)],[X(m.focus.Q),Y(m.c)]],'fill-dwl'); }
+
+    path(svg,demand,'curve-demand');
+    line(svg,X(0),Y(m.c),X(qMax),Y(m.c),'curve-cost');
+    line(svg,X(m.base.QM),Y(0),X(m.base.QM),Y(m.base.PM),'curve-monopoly');
+    line(svg,X(0),Y(m.base.PM),X(m.base.QM),Y(m.base.PM),'helper-d');
+    if(els.bench.checked){
+      line(svg,X(m.C.Q),Y(0),X(m.C.Q),Y(m.C.P),'helper-b');
+      line(svg,X(m.base.Qe),Y(0),X(m.base.Qe),Y(m.c),'helper-p');
+    }
+    line(svg,X(0),Y(m.focus.P),X(m.focus.Q),Y(m.focus.P),'helper');
+    line(svg,X(m.focus.qL),Y(0),X(m.focus.qL),Y(m.focus.P),'helper-a');
+    line(svg,X(m.focus.Q),Y(0),X(m.focus.Q),Y(m.focus.P),'helper');
+
+    circle(svg,X(m.focus.qL),Y(m.focus.P),6,'point-a');
+    circle(svg,X(m.focus.Q),Y(m.focus.P),7,'point-c');
+    circle(svg,X(m.base.QM),Y(m.base.PM),6,'point-d');
+    if(els.bench.checked){ circle(svg,X(m.C.Q),Y(m.C.P),5.5,'point-b'); circle(svg,X(m.base.Qe),Y(m.c),5.5,'point-c'); }
+
+    text(svg,X(m.focus.qL),Y(0)+28,'qL','label');
+    text(svg,X(m.focus.Q),Y(0)+28,'QS','label');
+    text(svg,X(m.base.QM),Y(0)+49,'QM','muted-label');
+    if(els.bench.checked){ text(svg,X(m.C.Q),Y(0)+49,'QC','muted-label'); text(svg,X(m.base.Qe),Y(0)+49,'Qe','muted-label'); }
+    text(svg,X(0)-12,Y(m.focus.P)+4,'P','label','end'); text(svg,X(0)-12,Y(m.c)+4,'c','muted-label','end'); text(svg,X(0)-12,Y(m.base.PM)+4,'PM','muted-label','end');
+
+    if(m.focus.Q>0) text(svg,X(m.focus.Q*.42),Y((m.a+m.focus.P)/2),'CS','label');
+    if(m.focus.qL>0 && m.focus.P>m.c) text(svg,X(m.focus.qL/2),Y((m.focus.P+m.c)/2)+4,'πL','label');
+    if(m.focus.qFTot>0 && m.focus.P>m.c) text(svg,X(m.focus.qL+m.focus.qFTot/2),Y((m.focus.P+m.c)/2)+4,'ΣπF','label');
+    if(m.base.Qe>m.focus.Q) text(svg,(X(m.focus.Q)+X(m.base.Qe))/2,Y((m.focus.P+m.c)/2)+4,'DWL','label');
+    text(svg,X(qMax*.80),Y(Math.max(0,m.a-m.b*qMax*.80))-10,'Demand','label');
+    text(svg,X(m.base.QM)+8,Y(m.base.PM)-12,'monopoly benchmark','muted-label','start');
+    text(svg,X(m.focus.qL/2),Y(0)+70,'leader output','muted-label');
+    if(m.focus.qFTot>0) text(svg,X(m.focus.qL+m.focus.qFTot/2),Y(0)+70,'followers','muted-label');
+  }
+
+  function drawReaction(m){
+    const svg=els.reactSvg; svg.innerHTML='';
+    const vb=svg.viewBox.baseVal, W=vb.width||980, H=vb.height||620, mar={l:78,r:28,t:28,b:64};
+    const qMax=Math.max(m.base.Qe,m.S.qL,m.S.qFTot,m.C.qL,m.C.qFTot,m.focus.qL,m.focus.qFTot,1)*1.08;
+    const {X,Y}=axes(svg,W,H,mar,qMax,qMax,'ΣqF',5,5,'qL');
+    const response=[];
+    for(let i=0;i<=260;i++){ const qL=qMax*i/260; const o=outcomeFromLeader(qL,m.N,m.base); response.push([X(qL),Y(o.qFTot)]); }
+    path(svg,response,'curve-br2');
+    line(svg,X(m.base.QM),Y(0),X(m.base.QM),Y(qMax),'curve-monopoly');
+    line(svg,X(m.focus.qL),Y(0),X(m.focus.qL),Y(m.focus.qFTot),'helper-a');
+    line(svg,X(0),Y(m.focus.qFTot),X(m.focus.qL),Y(m.focus.qFTot),'helper-b');
+    circle(svg,X(m.focus.qL),Y(m.focus.qFTot),7,'point-c'); text(svg,X(m.focus.qL)+10,Y(m.focus.qFTot)-12,'current Stackelberg path','label','start');
+    circle(svg,X(m.S.qL),Y(m.S.qFTot),6,'point-a'); text(svg,X(m.S.qL)+10,Y(m.S.qFTot)+18,'Stackelberg optimum','muted-label','start');
+    circle(svg,X(m.base.QM),Y(0),5.8,'point-d'); text(svg,X(m.base.QM)+9,Y(0)+24,'monopoly output','muted-label','start');
+    if(els.bench.checked){ circle(svg,X(m.C.qL),Y(m.C.qFTot),6,'point-b'); text(svg,X(m.C.qL)+10,Y(m.C.qFTot)-14,'Cournot with N firms','muted-label','start'); }
+    text(svg,X(qMax*.62),Y(Math.max(0,m.S.qFTot*.70)),'aggregate follower response','label');
+    text(svg,X(m.focus.qL),Y(0)+28,'qL','label'); text(svg,X(0)-12,Y(m.focus.qFTot)+4,'ΣqF','label','end');
+  }
+
+  function drawProfit(m){
+    const svg=els.profitSvg; svg.innerHTML='';
+    const vb=svg.viewBox.baseVal, W=vb.width||760, H=vb.height||360, mar={l:70,r:26,t:24,b:56};
+    const qMax=Math.max(m.base.Qe,m.qMaxSlider,1), pts=[], qFpts=[];
+    let yMax=1, qFmax=1;
+    for(let i=0;i<=280;i++){ const q=qMax*i/280; const o=outcomeFromLeader(q,m.N,m.base); yMax=Math.max(yMax,o.piL); qFmax=Math.max(qFmax,o.qFTot); pts.push([q,Math.max(0,o.piL)]); qFpts.push([q,o.qFTot]); }
+    const {X,Y}=axes(svg,W,H,mar,qMax,yMax*1.12,'leader profit',5,4,'qL');
+    path(svg,pts.map(p=>[X(p[0]),Y(p[1])]),'curve-profit');
+    const Y2=v=>mar.t+(H-mar.t-mar.b)-(v/(qFmax*1.12))*(H-mar.t-mar.b);
+    path(svg,qFpts.map(p=>[X(p[0]),Y2(p[1])]),'curve-q2');
+    line(svg,X(m.base.QM),mar.t,X(m.base.QM),H-mar.b,'curve-monopoly');
+    line(svg,X(m.focus.qL),mar.t,X(m.focus.qL),H-mar.b,'helper-a');
+    circle(svg,X(m.focus.qL),Y(Math.max(0,m.focus.piL)),6,'point-a');
+    circle(svg,X(m.S.qL),Y(Math.max(0,m.S.piL)),6,'point-d');
+    if(els.bench.checked){ line(svg,X(m.C.qL),mar.t,X(m.C.qL),H-mar.b,'helper-b'); text(svg,X(m.C.qL),H-mar.b+24,'Cournot q','muted-label'); }
+    text(svg,X(m.S.qL)+8,Y(Math.max(0,m.S.piL))-10,'max at QM','muted-label','start');
+    text(svg,X(qMax*.67),Y(yMax*.82),'leader profit','label');
+    text(svg,X(qMax*.63),Y2(qFmax*.62),'follower output response','muted-label');
+    text(svg,X(m.base.QM),H-mar.b+24,'QM','muted-label');
+  }
+
+  function drawBars(m){
+    const svg=els.barsSvg; svg.innerHTML='';
+    const vb=svg.viewBox.baseVal, W=vb.width||760, H=vb.height||360, mar={l:62,r:24,t:24,b:62};
+    const mono=m.base;
+    const vals=[
+      {lab:'Q', st:m.S.Q/mono.QM, co:m.C.Q/mono.QM},
+      {lab:'P', st:m.S.P/mono.PM, co:m.C.P/mono.PM},
+      {lab:'Π', st:m.S.piTotal/mono.PiM, co:m.C.piTotal/mono.PiM},
+      {lab:'πL', st:m.S.piL/mono.PiM, co:m.C.piL/mono.PiM},
+      {lab:'W', st:m.S.W/mono.WM, co:m.C.W/mono.WM},
+      {lab:'L', st:(mono.LM?m.S.L/mono.LM:0), co:(mono.LM?m.C.L/mono.LM:0)}
+    ];
+    const yMax=Math.max(1.15,...vals.flatMap(v=>[v.st,v.co]))*1.08, iw=W-mar.l-mar.r, ih=H-mar.t-mar.b, Y=v=>mar.t+ih-(v/yMax)*ih;
+    for(let i=0;i<=4;i++){ const y=yMax*i/4; line(svg,mar.l,Y(y),mar.l+iw,Y(y),'grid'); text(svg,mar.l-10,Y(y)+4,fmt(y,1),'muted-label','end'); }
+    line(svg,mar.l,H-mar.b,mar.l+iw,H-mar.b,'axis'); line(svg,mar.l,mar.t,mar.l,H-mar.b,'axis'); line(svg,mar.l,Y(1),mar.l+iw,Y(1),'curve-monopoly'); text(svg,mar.l+8,Y(1)-8,'monopoly = 1','muted-label','start');
+    const slot=iw/vals.length, w=slot*.28;
+    vals.forEach((g,i)=>{ const cx=mar.l+slot*i+slot/2; rect(svg,cx-w-8,Y(Math.max(0,g.st)),w,H-mar.b-Y(Math.max(0,g.st)),'bar-a',8); rect(svg,cx+8,Y(Math.max(0,g.co)),w,H-mar.b-Y(Math.max(0,g.co)),'bar-b',8); text(svg,cx,H-mar.b+26,g.lab,'bar-label'); text(svg,cx-w/2-8,Y(Math.max(0,g.st))-8,fmt(g.st,2),'muted-label'); text(svg,cx+w/2+8,Y(Math.max(0,g.co))-8,fmt(g.co,2),'muted-label'); });
+    text(svg,mar.l+62,mar.t+18,'Stackelberg','muted-label','start'); text(svg,mar.l+188,mar.t+18,'Cournot','muted-label','start');
+  }
+
+  function drawEntry(m){
+    const svg=els.entrySvg; svg.innerHTML='';
+    const vb=svg.viewBox.baseVal, W=vb.width||760, H=vb.height||360, mar={l:62,r:24,t:24,b:56};
+    const Nmax=30;
+    let yMax=2.05;
+    const {X,Y}=axes(svg,W,H,mar,Nmax,Math.max(yMax,1.1),'ratio to monopoly',6,4,'N');
+    line(svg,X(1),Y(1),X(Nmax),Y(1),'curve-monopoly');
+    const qS=[], qC=[], pS=[], lS=[];
+    for(let N=1;N<=Nmax;N++){
+      const s=stackelberg(N,m.base), c=cournot(N,m.base);
+      qS.push([X(N),Y(s.Q/m.base.QM)]);
+      qC.push([X(N),Y(c.Q/m.base.QM)]);
+      pS.push([X(N),Y(s.P/m.base.PM)]);
+      lS.push([X(N),Y(m.base.LM?s.L/m.base.LM:0)]);
+    }
+    path(qS.length?svg:null,qS,'curve-stack'); path(svg,qC,'curve-cournot'); path(svg,pS,'curve-comp'); path(svg,lS,'curve-muted');
+    const s=m.S, c=m.C;
+    circle(svg,X(m.N),Y(s.Q/m.base.QM),6,'point-a'); circle(svg,X(m.N),Y(c.Q/m.base.QM),6,'point-b'); circle(svg,X(m.N),Y(s.P/m.base.PM),5.5,'point-c'); circle(svg,X(m.N),Y(m.base.LM?s.L/m.base.LM:0),5.5,'point');
+    text(svg,X(Nmax*.66),Y(1.92),'QS/QM','label'); text(svg,X(Nmax*.67),Y(1.72),'QC/QM','muted-label'); text(svg,X(Nmax*.62),Y(.72),'PS/PM','muted-label'); text(svg,X(Nmax*.58),Y(.34),'LS/LM','muted-label');
+    text(svg,X(m.N),H-mar.b+24,'current N','muted-label');
+  }
+
+  function drawProfitSplit(m){
+    const svg=els.profitSplitSvg; svg.innerHTML='';
+    const vb=svg.viewBox.baseVal, W=vb.width||760, H=vb.height||360, mar={l:62,r:28,t:24,b:62};
+    const vals=[
+      {lab:'πL/ΠM', val:m.S.piL/m.base.PiM, cls:'bar-a'},
+      {lab:'ΣπF/ΠM', val:m.S.piFTot/m.base.PiM, cls:'bar-b'},
+      {lab:'ΠS/ΠM', val:m.S.piTotal/m.base.PiM, cls:'bar-c'},
+      {lab:'CS/CSM', val:m.S.CS/m.base.CSM, cls:'bar-d'},
+      {lab:'DWL/DWLM', val:m.S.DWL/(m.M.DWL||1), cls:'bar-e'}
+    ];
+    const yMax=Math.max(1,...vals.map(v=>v.val))*1.18, iw=W-mar.l-mar.r, ih=H-mar.t-mar.b, Y=v=>mar.t+ih-(v/yMax)*ih;
+    for(let i=0;i<=4;i++){ const y=yMax*i/4; line(svg,mar.l,Y(y),mar.l+iw,Y(y),'grid'); text(svg,mar.l-10,Y(y)+4,fmt(y,1),'muted-label','end'); }
+    line(svg,mar.l,H-mar.b,mar.l+iw,H-mar.b,'axis'); line(svg,mar.l,mar.t,mar.l,H-mar.b,'axis'); line(svg,mar.l,Y(1),mar.l+iw,Y(1),'curve-monopoly');
+    const slot=iw/vals.length, w=slot*.52;
+    vals.forEach((g,i)=>{ const x=mar.l+slot*i+slot*.24, y=Y(Math.max(0,g.val)); rect(svg,x,y,w,H-mar.b-y,g.cls,8); text(svg,x+w/2,y-8,fmt(g.val,2),'muted-label'); text(svg,x+w/2,H-mar.b+26,g.lab,'bar-label'); });
+    text(svg,mar.l+10,Y(1)-8,'monopoly reference','muted-label','start');
+  }
+
+  function updateText(m){
+    els.aVal.textContent=fmt(m.a,0); els.bVal.textContent=fmt(m.b,1); els.cVal.textContent=fmt(m.c,0); els.NVal.textContent=String(m.N)+' = 1 leader + '+String(m.N-1)+' follower'+(m.N-1===1?'':'s'); els.qLVal.textContent=fmt(m.focus.qL);
+    els.mN.textContent=String(m.N); els.mqL.textContent=fmt(m.focus.qL); els.mqFtot.textContent=fmt(m.focus.qFTot);
+    els.mQratio.textContent=fmt(m.focus.Q/m.base.QM); els.mPratio.textContent=fmt(m.focus.P/m.base.PM); els.mPiratio.textContent=fmt(m.focus.piTotal/m.base.PiM); els.mLratio.textContent=fmt(m.base.LM?m.focus.L/m.base.LM:0); els.mWratio.textContent=fmt(m.focus.W/m.base.WM);
+    if(m.N===1) els.statusPill.textContent='N = 1: Stackelberg collapses to monopoly';
+    else if(els.snap.checked) els.statusPill.textContent='leader commitment equals monopoly quantity';
+    else if(m.focus.qL<m.base.QM) els.statusPill.textContent='leader is choosing below the monopoly benchmark';
+    else if(m.focus.qL>m.base.QM) els.statusPill.textContent='leader is choosing above the monopoly benchmark';
+    else els.statusPill.textContent='leader is exactly at the monopoly benchmark';
+    const mFollowers=m.N-1;
+    els.interpretation.innerHTML = `There are ${m.N} firm${m.N===1?'':'s'}: one leader and ${mFollowers} follower${mFollowers===1?'':'s'}. The monopoly benchmark is QM = ${fmt(m.base.QM)} and PM = ${fmt(m.base.PM)}. At the Stackelberg optimum, the leader chooses qL = QM = ${fmt(m.S.qL)}. Followers then add ΣqF = ${fmt(m.S.qFTot)}, so total output becomes QS = ${fmt(m.S.Q)}, or ${fmt(m.S.Q/m.base.QM)} times monopoly output. Price falls to PS = ${fmt(m.S.P)}, equal to ${fmt(m.S.P/m.base.PM)} of the monopoly price. Total profit is ${fmt(m.S.piTotal/m.base.PiM)} of monopoly profit, while welfare is ${fmt(m.S.W/m.base.WM)} of monopoly welfare.`;
+  }
+
+  function renderAllMath(){ if(!window.renderMathInElement) return; renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],throwOnError:false}); }
+  function update(){ const m=model(); updateText(m); drawMarket(m); drawReaction(m); drawProfit(m); drawBars(m); drawEntry(m); drawProfitSplit(m); }
+  ['a','b','c','N','qL','snap','bench'].forEach(id=>{ els[id].addEventListener('input',update); els[id].addEventListener('change',update); });
+  els.themeBtn.addEventListener('click',()=>{ const dark=document.body.getAttribute('data-theme')==='dark'; document.body.setAttribute('data-theme',dark?'light':'dark'); els.themeBtn.textContent=dark?'Dark mode':'Light mode'; update(); });
+  update();
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',renderAllMath); } else { window.addEventListener('load',renderAllMath); setTimeout(renderAllMath,250); }
+})();
+</script>
+</body>
+</html>

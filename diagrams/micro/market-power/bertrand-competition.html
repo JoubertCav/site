@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive undergraduate microeconomics diagram for Bertrand competition.">
+<title>Bertrand Competition | Microeconomics Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --bg:#f7f3eb;
+  --surface:#fffaf4;
+  --surface2:#f3ece2;
+  --surface3:#ebe1d3;
+  --text:#20262b;
+  --muted:#68726f;
+  --border:rgba(32,38,43,.11);
+  --grid:rgba(32,38,43,.08);
+  --accent:#2d8b81;
+  --accent2:#7ac4b9;
+  --orange:#c98262;
+  --purple:#8a77c8;
+  --danger:#be7f6d;
+  --ok:#4b8b59;
+  --accentSoft:rgba(45,139,129,.12);
+  --accentSoft2:rgba(122,196,185,.17);
+  --orangeSoft:rgba(201,130,98,.18);
+  --purpleSoft:rgba(138,119,200,.16);
+  --dangerSoft:rgba(190,127,109,.18);
+  --okSoft:rgba(75,139,89,.16);
+  --shadow:0 18px 44px rgba(28,24,20,.08);
+  --radius:22px;
+}
+[data-theme="dark"]{
+  --bg:#0f1418;
+  --surface:#171d22;
+  --surface2:#20282e;
+  --surface3:#263038;
+  --text:#edf3ef;
+  --muted:#aab3b1;
+  --border:rgba(237,243,239,.10);
+  --grid:rgba(237,243,239,.08);
+  --accent:#66c7b8;
+  --accent2:#9fe1d8;
+  --orange:#d99b81;
+  --purple:#b0a0e8;
+  --danger:#d18f7f;
+  --ok:#76c28a;
+  --accentSoft:rgba(102,199,184,.12);
+  --accentSoft2:rgba(159,225,216,.15);
+  --orangeSoft:rgba(217,155,129,.18);
+  --purpleSoft:rgba(176,160,232,.18);
+  --dangerSoft:rgba(209,143,127,.18);
+  --okSoft:rgba(118,194,138,.18);
+  --shadow:0 18px 44px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at top left, var(--accentSoft), transparent 34rem),
+    radial-gradient(circle at 80% 10%, var(--purpleSoft), transparent 28rem),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height:1.45;
+}
+.app{width:min(1540px, calc(100% - 24px)); margin:0 auto; padding:26px 0 34px}
+header{display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:18px}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:7px 11px; border-radius:999px;
+  border:1px solid var(--border); background:var(--surface);
+  color:var(--muted); font-size:13px; box-shadow:var(--shadow)
+}
+.dot{width:7px; height:7px; border-radius:50%; background:var(--accent)}
+h1{margin:14px 0 6px; font-size:clamp(34px,5vw,60px); line-height:.95; letter-spacing:-.055em; font-weight:760}
+.subtitle{margin:0; max-width:980px; color:var(--muted); font-size:clamp(16px,2vw,20px)}
+.theme-btn{border:1px solid var(--border); background:var(--surface); color:var(--text); border-radius:999px; padding:10px 14px; font:inherit; cursor:pointer; box-shadow:var(--shadow)}
+.layout{display:grid; grid-template-columns:326px minmax(0,1fr); gap:18px; align-items:start}
+.card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow)}
+.controls{padding:18px; position:sticky; top:16px}
+.card-title{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:12px}
+h2{margin:0; font-size:17px; letter-spacing:-.025em}
+h3{margin:0; font-size:16px; letter-spacing:-.02em}
+.small{color:var(--muted); font-size:13px}
+.section-label{margin:14px 0 6px; color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.09em}
+.control{padding:12px 0; border-top:1px solid var(--border)}
+.control:first-of-type{border-top:0}
+.label-row{display:flex; justify-content:space-between; gap:12px; margin-bottom:8px; font-size:14px}
+.value{color:var(--accent); font-variant-numeric:tabular-nums}
+input[type="range"]{width:100%; accent-color:var(--accent)}
+.toggle-row{display:flex; justify-content:space-between; align-items:center; gap:14px; padding:14px 0 4px; border-top:1px solid var(--border)}
+.switch{position:relative; width:48px; height:28px; display:inline-block}
+.switch input{opacity:0; width:0; height:0}
+.slider-switch{position:absolute; inset:0; cursor:pointer; border-radius:999px; background:var(--surface2); border:1px solid var(--border)}
+.slider-switch::before{content:""; position:absolute; width:20px; height:20px; left:4px; top:3px; border-radius:50%; background:var(--accent); transition:.2s ease}
+.switch input:checked + .slider-switch::before{transform:translateX(20px)}
+.pill{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px; border:1px solid var(--border); color:var(--muted); background:var(--surface2); font-size:13px; margin-top:14px}
+.main{display:grid; gap:18px}
+.formula-row{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px}
+.formula{padding:14px; min-height:112px; display:flex; flex-direction:column; justify-content:space-between}
+.formula .name{color:var(--muted); font-size:12px; margin-bottom:6px}
+.mathline{display:flex; align-items:center; gap:.28em; flex-wrap:wrap; min-height:30px}
+.soft-eq{color:var(--muted); font-size:14px}
+.formula-chip{display:inline-flex; align-items:center; justify-content:center; padding:7px 10px; border-radius:14px; background:var(--surface2); border:1px solid var(--border)}
+.katex{font-size:.90em}.formula .katex{line-height:1.12}.formula-chip .katex{line-height:1.08}
+.diagram-card{padding:18px}
+.diagram-head{display:flex; justify-content:space-between; align-items:end; gap:16px; margin-bottom:10px}
+.diagram-head p{margin:4px 0 0; color:var(--muted); font-size:14px}
+.metrics{display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:10px; margin-top:14px}
+.metric{padding:13px; border-radius:17px; border:1px solid var(--border); background:var(--surface2)}
+.metric .k{color:var(--muted); font-size:12px; margin-bottom:3px}
+.metric .v{font-size:20px; font-weight:740; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+.main-pair{display:grid; grid-template-columns:minmax(0,1.48fr) minmax(420px,.95fr); gap:18px; align-items:start}
+.secondary-row{display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:stretch}
+.two-col{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+.panel,.mini-card{padding:18px}
+.panel p{margin:0; color:var(--muted)}
+.mini-head{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:8px}
+.mini-sub{color:var(--muted); font-size:13px}
+.notice-list{display:grid; gap:11px; margin-top:12px}
+.notice{padding:12px 13px; border-radius:16px; border:1px solid var(--border); background:var(--surface2); color:var(--muted); font-size:14px}
+.notice strong{color:var(--text)}
+.summary{display:grid; gap:11px; margin-top:12px}
+.summary-line{display:flex; gap:10px; align-items:flex-start; color:var(--muted); font-size:14px}
+.summary-line span:first-child{color:var(--accent); min-width:24px; font-weight:760}
+.legend{display:flex; flex-wrap:wrap; gap:10px 14px; margin-top:12px; color:var(--muted); font-size:13px}
+.legend-item{display:inline-flex; align-items:center; gap:7px}
+.swatch{width:22px; height:3px; border-radius:999px; background:var(--accent)}
+.swatch.o{background:var(--orange)}
+.swatch.p{background:var(--purple)}
+.swatch.d{background:var(--danger)}
+.swatch.g{background:var(--ok)}
+.swatch.m{background:var(--muted)}
+.swatch.fill{width:15px; height:12px; background:var(--accentSoft2); border:1px solid var(--border)}
+svg{display:block; width:100%; height:auto; overflow:hidden}
+.axis{stroke:var(--text); stroke-width:1.2}
+.grid{stroke:var(--grid); stroke-width:1}
+.curve-demand{fill:none; stroke:var(--accent); stroke-width:3}
+.curve-monopoly{fill:none; stroke:var(--orange); stroke-width:2.6; stroke-dasharray:7 6}
+.curve-current{fill:none; stroke:var(--purple); stroke-width:2.8}
+.curve-competitive{fill:none; stroke:var(--danger); stroke-width:2.6; stroke-dasharray:5 5}
+.curve-muted{fill:none; stroke:var(--muted); stroke-width:2.1; stroke-dasharray:6 6}
+.curve-profit{fill:none; stroke:var(--accent); stroke-width:3}
+.curve-p{fill:none; stroke:var(--purple); stroke-width:3}
+.curve-q{fill:none; stroke:var(--accent); stroke-width:3}
+.curve-pi{fill:none; stroke:var(--orange); stroke-width:3}
+.curve-l{fill:none; stroke:var(--danger); stroke-width:2.6}
+.helper{stroke:var(--muted); stroke-width:1.2; stroke-dasharray:5 6}
+.helper-a{stroke:var(--accent2); stroke-width:1.5; stroke-dasharray:4 5}
+.helper-b{stroke:var(--orange); stroke-width:1.5; stroke-dasharray:4 5}
+.helper-c{stroke:var(--purple); stroke-width:1.5; stroke-dasharray:4 5}
+.point{fill:var(--surface); stroke:var(--text); stroke-width:2}
+.point-a{fill:var(--accent); stroke:var(--surface); stroke-width:2.2}
+.point-b{fill:var(--orange); stroke:var(--surface); stroke-width:2.2}
+.point-c{fill:var(--purple); stroke:var(--surface); stroke-width:2.2}
+.point-d{fill:var(--danger); stroke:var(--surface); stroke-width:2.2}
+.label{fill:var(--text); font-size:13px}
+.muted-label{fill:var(--muted); font-size:12px}
+.fill-cs{fill:var(--accentSoft2)}
+.fill-profit{fill:rgba(201,130,98,.20)}
+.fill-gain{fill:rgba(138,119,200,.16)}
+.fill-dwl{fill:var(--dangerSoft)}
+.fill-zone-a{fill:rgba(45,139,129,.11)}
+.fill-zone-b{fill:rgba(201,130,98,.13)}
+.bar-a{fill:var(--accent)}
+.bar-b{fill:var(--orange)}
+.bar-c{fill:var(--purple)}
+.bar-d{fill:var(--danger)}
+.bar-e{fill:var(--muted); opacity:.58}
+.bar-label{fill:var(--text); font-size:12px}
+@media (max-width:1100px){.main-pair{grid-template-columns:1fr}}
+@media (max-width:1200px){
+  .layout{grid-template-columns:1fr}
+  .controls{position:relative; top:auto}
+  .formula-row,.secondary-row,.two-col{grid-template-columns:1fr}
+  .metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:700px){
+  .app{width:min(100% - 14px,1540px); padding-top:16px}
+  header{flex-direction:column}
+  .theme-btn{width:100%}
+  .formula-row{grid-template-columns:1fr}
+  .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+</style>
+</head>
+<body data-theme="light">
+<div class="app">
+<header>
+  <div>
+    <div class="eyebrow"><span class="dot"></span> Microeconomics · Oligopoly</div>
+    <h1>Bertrand competition</h1>
+    <p class="subtitle">Price competition benchmarked against monopoly. Control the number of firms and the strength of price-stealing to see how prices, markups, profits, consumer surplus, and welfare move away from the monopoly outcome.</p>
+  </div>
+  <button class="theme-btn" id="themeBtn">Dark mode</button>
+</header>
+
+<div class="layout">
+  <aside class="card controls">
+    <div class="card-title"><h2>Controls</h2><span class="small">monopoly benchmark</span></div>
+
+    <div class="section-label">Market demand</div>
+    <div class="control"><div class="label-row"><label for="A">Demand level A</label><span class="value" id="AVal"></span></div><input id="A" type="range" min="40" max="260" step="1" value="150"></div>
+    <div class="control"><div class="label-row"><label for="B">Demand slope B</label><span class="value" id="BVal"></span></div><input id="B" type="range" min="0.4" max="4.5" step="0.1" value="1.5"></div>
+    <div class="control"><div class="label-row"><label for="c">Marginal cost c</label><span class="value" id="cVal"></span></div><input id="c" type="range" min="0" max="110" step="1" value="30"></div>
+
+    <div class="section-label">Bertrand pressure</div>
+    <div class="control"><div class="label-row"><label for="N">Number of firms N</label><span class="value" id="NVal"></span></div><input id="N" type="range" min="1" max="25" step="1" value="2"></div>
+    <div class="control"><div class="label-row"><label for="tau">Price-stealing intensity τ</label><span class="value" id="tauVal"></span></div><input id="tau" type="range" min="0" max="24" step="0.25" value="7"></div>
+    <div class="control"><div class="label-row"><label for="Nmax">Comparison horizon</label><span class="value" id="NmaxVal"></span></div><input id="Nmax" type="range" min="3" max="40" step="1" value="25"></div>
+
+    <div class="toggle-row"><div><div style="font-size:14px;">Show welfare areas</div><div class="small">CS, profit, and monopoly loss</div></div><label class="switch"><input id="showAreas" type="checkbox" checked><span class="slider-switch"></span></label></div>
+    <div class="toggle-row"><div><div style="font-size:14px;">Show pure homogeneous theorem</div><div class="small">N ≥ 2 implies p = c</div></div><label class="switch"><input id="showPure" type="checkbox" checked><span class="slider-switch"></span></label></div>
+
+    <div class="pill" id="statusPill">Monopoly is the reference point</div>
+  </aside>
+
+  <main class="main">
+    <section class="formula-row">
+      <div class="card formula">
+        <div><div class="name">Market demand</div><div class="mathline"><span data-tex="Q(p)=A-Bp"></span></div></div>
+        <div class="soft-eq">equivalently <span data-tex="P(Q)=\frac{A-Q}{B}"></span></div>
+      </div>
+      <div class="card formula">
+        <div><div class="name">Monopoly benchmark</div><div class="mathline"><span data-tex="p^M=\frac{A+Bc}{2B}"></span></div></div>
+        <div class="formula-chip"><span data-tex="Q^M=\frac{A-Bc}{2}"></span></div>
+      </div>
+      <div class="card formula">
+        <div><div class="name">N-firm Bertrand pressure</div><div class="mathline"><span data-tex="p^N=c+\omega_N(p^M-c)"></span></div></div>
+        <div class="formula-chip"><span data-tex="\omega_N=\frac{2B}{2B+\tau(N-1)}"></span></div>
+      </div>
+      <div class="card formula">
+        <div><div class="name">Pure homogeneous theorem</div><div class="mathline"><span data-tex="N\ge2\Rightarrow p=c"></span></div></div>
+        <div class="soft-eq">perfect substitutes erase the monopoly markup</div>
+      </div>
+    </section>
+
+    <section class="main-pair">
+      <section class="card diagram-card">
+        <div class="diagram-head">
+          <div>
+            <h2>Main diagram: market outcome vs monopoly</h2>
+            <p>The orange marker is the monopoly benchmark. The purple marker is the current Bertrand outcome. The red marker is the marginal-cost limit.</p>
+          </div>
+          <span class="small">Q horizontal · price vertical</span>
+        </div>
+        <svg id="marketSvg" viewBox="0 0 1120 620"></svg>
+        <div class="legend">
+          <span class="legend-item"><span class="swatch"></span> Demand</span>
+          <span class="legend-item"><span class="swatch o"></span> Monopoly benchmark</span>
+          <span class="legend-item"><span class="swatch p"></span> Current N-firm Bertrand</span>
+          <span class="legend-item"><span class="swatch d"></span> Marginal-cost limit</span>
+          <span class="legend-item"><span class="swatch fill"></span> Consumer surplus</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="k">N</div><div class="v" id="mN"></div></div>
+          <div class="metric"><div class="k">pᴺ / pᴹ</div><div class="v" id="mpRatio"></div></div>
+          <div class="metric"><div class="k">Qᴺ / Qᴹ</div><div class="v" id="mQRatio"></div></div>
+          <div class="metric"><div class="k">πᴺ / πᴹ</div><div class="v" id="mpiRatio"></div></div>
+          <div class="metric"><div class="k">pᴺ</div><div class="v" id="mpN"></div></div>
+          <div class="metric"><div class="k">Qᴺ</div><div class="v" id="mQN"></div></div>
+          <div class="metric"><div class="k">Lᴺ</div><div class="v" id="mLN"></div></div>
+          <div class="metric"><div class="k">CSᴺ / CSᴹ</div><div class="v" id="mCSRatio"></div></div>
+        </div>
+      </section>
+
+      <section class="card diagram-card" style="height:100%; display:flex; flex-direction:column;">
+        <div class="diagram-head">
+          <div>
+            <h2>Entry path: normalized to monopoly</h2>
+            <p>Everything is scaled by the monopoly outcome. Price, profit, and markup fall as price competition intensifies; output and consumer surplus rise.</p>
+          </div>
+          <span class="small">N horizontal · monopoly = 1</span>
+        </div>
+        <svg id="pathSvg" viewBox="0 0 980 620"></svg>
+        <div class="legend">
+          <span class="legend-item"><span class="swatch p"></span> Price / monopoly price</span>
+          <span class="legend-item"><span class="swatch"></span> Output / monopoly output</span>
+          <span class="legend-item"><span class="swatch o"></span> Profit / monopoly profit</span>
+          <span class="legend-item"><span class="swatch d"></span> Lerner / monopoly Lerner</span>
+        </div>
+      </section>
+    </section>
+
+    <section class="secondary-row">
+      <section class="card mini-card">
+        <div class="mini-head"><h3>Representative firm’s price problem</h3><span class="mini-sub">rivals fixed at the current symmetric price</span></div>
+        <svg id="profitSvg" viewBox="0 0 760 360"></svg>
+      </section>
+      <section class="card mini-card">
+        <div class="mini-head"><h3>Undercutting geometry</h3><span class="mini-sub">monopoly is not stable with identical goods</span></div>
+        <svg id="undercutSvg" viewBox="0 0 760 360"></svg>
+      </section>
+    </section>
+
+    <section class="secondary-row">
+      <section class="card mini-card">
+        <div class="mini-head"><h3>Benchmark dashboard</h3><span class="mini-sub">all ratios use monopoly as 1</span></div>
+        <svg id="barsSvg" viewBox="0 0 760 360"></svg>
+      </section>
+      <section class="card mini-card">
+        <div class="mini-head"><h3>Welfare transfer from monopoly</h3><span class="mini-sub">consumer surplus, profit, total welfare</span></div>
+        <svg id="welfareSvg" viewBox="0 0 760 360"></svg>
+      </section>
+    </section>
+
+    <section class="two-col">
+      <section class="card panel">
+        <h2>Interpretation</h2>
+        <p id="interpretation"></p>
+        <div class="notice-list">
+          <div class="notice"><strong>Benchmark first.</strong> Monopoly is the reference case: high price, restricted quantity, large profit, and lower consumer surplus.</div>
+          <div class="notice"><strong>Bertrand logic.</strong> Price competition attacks the monopoly markup. More firms and stronger price-stealing move the outcome toward marginal cost.</div>
+          <div class="notice"><strong>Pure homogeneous case.</strong> With identical goods and equal marginal costs, one rival is enough: if <span data-tex="N\ge2"></span>, the equilibrium price is <span data-tex="p=c"></span>.</div>
+        </div>
+      </section>
+      <section class="card panel">
+        <h2>Exam-style summary</h2>
+        <div class="summary">
+          <div class="summary-line"><span>1</span><div>Start from monopoly: maximize <span data-tex="(p-c)(A-Bp)"></span>, obtaining <span data-tex="p^M=(A+Bc)/(2B)"></span>.</div></div>
+          <div class="summary-line"><span>2</span><div>Use monopoly as the benchmark for price, output, profit, welfare, and markup.</div></div>
+          <div class="summary-line"><span>3</span><div>In homogeneous Bertrand, if two firms charge above cost, either can undercut slightly and capture the market.</div></div>
+          <div class="summary-line"><span>4</span><div>Thus, with equal costs and <span data-tex="N\ge2"></span>, the pure Bertrand equilibrium is <span data-tex="p=c"></span>.</div></div>
+          <div class="summary-line"><span>5</span><div>With product differentiation or switching frictions, price competition is softened: prices can remain above marginal cost, but below the monopoly price.</div></div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const els = {
+    A:$("A"), B:$("B"), c:$("c"), N:$("N"), tau:$("tau"), Nmax:$("Nmax"),
+    showAreas:$("showAreas"), showPure:$("showPure"), themeBtn:$("themeBtn"),
+    AVal:$("AVal"), BVal:$("BVal"), cVal:$("cVal"), NVal:$("NVal"), tauVal:$("tauVal"), NmaxVal:$("NmaxVal"),
+    statusPill:$("statusPill"),
+    marketSvg:$("marketSvg"), pathSvg:$("pathSvg"), profitSvg:$("profitSvg"), undercutSvg:$("undercutSvg"), barsSvg:$("barsSvg"), welfareSvg:$("welfareSvg"),
+    mN:$("mN"), mpRatio:$("mpRatio"), mQRatio:$("mQRatio"), mpiRatio:$("mpiRatio"), mpN:$("mpN"), mQN:$("mQN"), mLN:$("mLN"), mCSRatio:$("mCSRatio"),
+    interpretation:$("interpretation")
+  };
+
+  function fmt(x,d=2){
+    if(!Number.isFinite(x)) return "—";
+    if(Math.abs(x) >= 100) return x.toFixed(1);
+    if(Math.abs(x) >= 10) return x.toFixed(2);
+    return x.toFixed(d);
+  }
+  function pct(x){ return Number.isFinite(x) ? (100*x).toFixed(1)+"%" : "—"; }
+  function clamp(x,lo,hi){ return Math.max(lo, Math.min(hi, x)); }
+  function S(tag,a={}){ const e=document.createElementNS("http://www.w3.org/2000/svg",tag); for(const [k,v] of Object.entries(a)) e.setAttribute(k,v); return e; }
+  function line(svg,x1,y1,x2,y2,cls){ svg.appendChild(S("line",{x1,y1,x2,y2,class:cls})); }
+  function text(svg,x,y,str,cls="label",anchor="middle"){ const t=S("text",{x,y,class:cls,"text-anchor":anchor}); t.textContent=str; svg.appendChild(t); }
+  function path(svg,pts,cls){ if(!pts.length) return; const d=pts.map((p,i)=>(i?"L":"M")+" "+p[0]+" "+p[1]).join(" "); svg.appendChild(S("path",{d,class:cls})); }
+  function poly(svg,pts,cls){ if(!pts.length) return; const d=pts.map((p,i)=>(i?"L":"M")+" "+p[0]+" "+p[1]).join(" ")+" Z"; svg.appendChild(S("path",{d,class:cls})); }
+  function circle(svg,cx,cy,r,cls){ svg.appendChild(S("circle",{cx,cy,r,class:cls})); }
+  function rect(svg,x,y,w,h,cls,rx=8){ svg.appendChild(S("rect",{x,y,width:w,height:h,class:cls,rx})); }
+
+  function safeModel(A,B,c,N,tau){
+    const choke = A/B;
+    const cSafe = Math.min(c, choke - 1e-6);
+    const pM = (A + B*cSafe)/(2*B);
+    const QM = Math.max(0,A - B*pM);
+    const piM = Math.max(0,(pM-cSafe)*QM);
+    const CSM = 0.5*(choke-pM)*QM;
+    const WM = CSM + piM;
+    const LM = pM>0 ? (pM-cSafe)/pM : 0;
+
+    const omega = 2*B/(2*B + tau*Math.max(0,N-1));
+    const pN = cSafe + omega*(pM-cSafe);
+    const QN = Math.max(0,A - B*pN);
+    const piN = Math.max(0,(pN-cSafe)*QN);
+    const CSN = 0.5*(choke-pN)*QN;
+    const WN = CSN + piN;
+    const LN = pN>0 ? (pN-cSafe)/pN : 0;
+    const qFirm = N>0 ? QN/N : 0;
+    const piFirm = N>0 ? piN/N : 0;
+
+    const pPure = N<=1 ? pM : cSafe;
+    const QPure = Math.max(0,A-B*pPure);
+    const piPure = N<=1 ? piM : 0;
+
+    const pC = cSafe;
+    const QC = Math.max(0,A - B*cSafe);
+    const CSC = 0.5*(choke-pC)*QC;
+    const WC = CSC;
+
+    return {A,B,c:cSafe,N,tau,choke,pM,QM,piM,CSM,WM,LM,omega,pN,QN,piN,CSN,WN,LN,qFirm,piFirm,pPure,QPure,piPure,pC,QC,CSC,WC};
+  }
+
+  function model(){
+    const A=+els.A.value, B=+els.B.value;
+    let c=+els.c.value;
+    const choke=A/B;
+    if(c >= choke-2){
+      c = Math.max(0,choke-2);
+      els.c.value = Math.floor(c);
+    }
+    const N=+els.N.value, tau=+els.tau.value, Nmax=+els.Nmax.value;
+    const m=safeModel(A,B,c,N,tau);
+    m.Nmax=Nmax;
+    return m;
+  }
+
+  function axes(svg,W,H,m,xMax,yMax,yLabel="y",xTicks=5,yTicks=4,xLabel="x"){
+    const iw=W-m.l-m.r, ih=H-m.t-m.b;
+    const X=x=>m.l+(x/xMax)*iw;
+    const Y=y=>m.t+ih-(y/yMax)*ih;
+    for(let i=0;i<=xTicks;i++){
+      const x=xMax*i/xTicks;
+      line(svg,X(x),m.t,X(x),m.t+ih,"grid");
+      text(svg,X(x),m.t+ih+22,fmt(x,1),"muted-label");
+    }
+    for(let i=0;i<=yTicks;i++){
+      const y=yMax*i/yTicks;
+      line(svg,m.l,Y(y),m.l+iw,Y(y),"grid");
+      text(svg,m.l-10,Y(y)+4,fmt(y,0),"muted-label","end");
+    }
+    line(svg,m.l,m.t+ih,m.l+iw,m.t+ih,"axis");
+    line(svg,m.l,m.t,m.l,m.t+ih,"axis");
+    text(svg,m.l+iw,m.t+ih+40,xLabel,"label");
+    text(svg,m.l-26,m.t+8,yLabel,"label");
+    return {X,Y,iw,ih};
+  }
+
+  function drawMarket(m){
+    const svg=els.marketSvg; svg.innerHTML="";
+    const vb=svg.viewBox.baseVal, W=vb.width||1120, H=vb.height||620;
+    const mar={l:78,r:34,t:32,b:68};
+    const qMax=Math.max(m.QC,m.QN,m.QM,1)*1.12;
+    const yMax=Math.max(m.choke,m.pM,m.pN,m.c,1)*1.08;
+    const {X,Y}=axes(svg,W,H,mar,qMax,yMax,"price",5,4,"Q");
+
+    const demand=[];
+    for(let i=0;i<=280;i++){
+      const Q=qMax*i/280;
+      const P=Math.max(0,(m.A-Q)/m.B);
+      demand.push([X(Q),Y(P)]);
+    }
+
+    if(els.showAreas.checked){
+      const csPts=[[X(0),Y(m.choke)]];
+      for(let i=0;i<=160;i++){
+        const Q=m.QN*i/160;
+        csPts.push([X(Q),Y(Math.max(0,(m.A-Q)/m.B))]);
+      }
+      csPts.push([X(m.QN),Y(m.pN)],[X(0),Y(m.pN)]);
+      poly(svg,csPts,"fill-cs");
+
+      if(m.piN>0){
+        poly(svg,[[X(0),Y(m.pN)],[X(m.QN),Y(m.pN)],[X(m.QN),Y(m.c)],[X(0),Y(m.c)]],"fill-profit");
+      }
+
+      if(m.QN>m.QM){
+        const gainPts=[];
+        for(let i=0;i<=120;i++){
+          const Q=m.QM+(m.QN-m.QM)*i/120;
+          gainPts.push([X(Q),Y(Math.max(0,(m.A-Q)/m.B))]);
+        }
+        gainPts.push([X(m.QN),Y(m.pN)],[X(m.QM),Y(m.pM)]);
+        poly(svg,gainPts,"fill-gain");
+      }
+
+      if(m.QC>m.QN){
+        poly(svg,[[X(m.QN),Y(m.pN)],[X(m.QC),Y(m.c)],[X(m.QN),Y(m.c)]],"fill-dwl");
+      }
+    }
+
+    path(svg,demand,"curve-demand");
+    line(svg,X(0),Y(m.c),X(qMax),Y(m.c),"curve-competitive");
+    line(svg,X(0),Y(m.pM),X(m.QM),Y(m.pM),"curve-monopoly");
+    line(svg,X(m.QM),Y(0),X(m.QM),Y(m.pM),"helper-b");
+    line(svg,X(0),Y(m.pN),X(m.QN),Y(m.pN),"curve-current");
+    line(svg,X(m.QN),Y(0),X(m.QN),Y(m.pN),"helper-c");
+    line(svg,X(m.QC),Y(0),X(m.QC),Y(m.c),"helper");
+    if(els.showPure.checked && m.N>=2){
+      line(svg,X(0),Y(m.pPure),X(m.QPure),Y(m.pPure),"curve-competitive");
+      circle(svg,X(m.QPure),Y(m.pPure),6,"point-d");
+      text(svg,X(m.QPure)+10,Y(m.pPure)-10,"pure homogeneous Bertrand","muted-label","start");
+    }
+
+    circle(svg,X(m.QM),Y(m.pM),7,"point-b");
+    circle(svg,X(m.QN),Y(m.pN),8,"point-c");
+    circle(svg,X(m.QC),Y(m.c),6,"point-d");
+
+    text(svg,X(m.QM),Y(0)+28,"Qᴹ","label");
+    text(svg,X(m.QN),Y(0)+48,"Qᴺ","label");
+    text(svg,X(m.QC),Y(0)+28,"Qᶜ","muted-label");
+    text(svg,X(0)-12,Y(m.pM)+4,"pᴹ","label","end");
+    text(svg,X(0)-12,Y(m.pN)+4,"pᴺ","label","end");
+    text(svg,X(0)-12,Y(m.c)+4,"c","muted-label","end");
+
+    if(els.showAreas.checked){
+      text(svg,X(m.QN*.38),Y((m.choke+m.pN)/2),"CSᴺ","label");
+      if(m.piN>0) text(svg,X(m.QN*.50),Y((m.pN+m.c)/2)+4,"πᴺ","label");
+      if(m.QC>m.QN) text(svg,(X(m.QN)+X(m.QC))/2,Y((m.pN+m.c)/2)+4,"remaining DWL","label");
+    }
+
+    text(svg,X(qMax*.75),Y(Math.max(0,(m.A-qMax*.75)/m.B))-10,"Demand","label");
+    text(svg,X(m.QM)+10,Y(m.pM)-12,"monopoly benchmark","muted-label","start");
+    text(svg,X(m.QN)+10,Y(m.pN)+18,"current N-firm Bertrand","label","start");
+    text(svg,X(qMax*.78),Y(m.c)-10,"marginal cost","muted-label");
+  }
+
+  function drawPath(m){
+    const svg=els.pathSvg; svg.innerHTML="";
+    const vb=svg.viewBox.baseVal, W=vb.width||980, H=vb.height||620;
+    const mar={l:78,r:34,t:34,b:66};
+    const Nmax=Math.max(m.Nmax,m.N,3);
+    let maxY=2.15;
+    const pricePts=[], outPts=[], profitPts=[], lernerPts=[], purePts=[];
+    for(let n=1;n<=Nmax;n++){
+      const x=n;
+      const mn=safeModel(m.A,m.B,m.c,n,m.tau);
+      const pr=mn.pN/m.pM;
+      const qr=m.QM>0?mn.QN/m.QM:0;
+      const pir=m.piM>0?mn.piN/m.piM:0;
+      const lr=m.LM>0?mn.LN/m.LM:0;
+      maxY=Math.max(maxY,qr,pr,pir,lr);
+      pricePts.push([x,pr]); outPts.push([x,qr]); profitPts.push([x,pir]); lernerPts.push([x,lr]);
+      purePts.push([x,(n<=1?m.pM:m.c)/m.pM]);
+    }
+    maxY*=1.06;
+    const {X,Y}=axes(svg,W,H,mar,Nmax,maxY,"ratio",Math.min(6,Nmax-1),5,"N");
+    line(svg,X(1),Y(1),X(Nmax),Y(1),"helper");
+    text(svg,X(Nmax*.72),Y(1)-8,"monopoly = 1","muted-label");
+
+    path(svg,pricePts.map(p=>[X(p[0]),Y(p[1])]),"curve-p");
+    path(svg,outPts.map(p=>[X(p[0]),Y(p[1])]),"curve-q");
+    path(svg,profitPts.map(p=>[X(p[0]),Y(p[1])]),"curve-pi");
+    path(svg,lernerPts.map(p=>[X(p[0]),Y(p[1])]),"curve-l");
+    if(els.showPure.checked){
+      path(svg,purePts.map(p=>[X(p[0]),Y(p[1])]),"curve-muted");
+      text(svg,X(Math.min(4,Nmax)),Y(m.c/m.pM)+16,"pure homogeneous price ratio","muted-label","start");
+    }
+
+    const curr=safeModel(m.A,m.B,m.c,m.N,m.tau);
+    const pts=[
+      [curr.pN/m.pM,"point-c","p/pᴹ"],
+      [curr.QN/m.QM,"point-a","Q/Qᴹ"],
+      [curr.piN/m.piM,"point-b","π/πᴹ"],
+      [curr.LN/m.LM,"point-d","L/Lᴹ"]
+    ];
+    pts.forEach((item,idx)=>{
+      const [v,cls,label]=item;
+      circle(svg,X(m.N),Y(v),6,cls);
+      if(idx===0) text(svg,X(m.N)+10,Y(v)-10,"current N","label","start");
+    });
+  }
+
+  function residualQi(p,pr,m){
+    const steal = m.tau*Math.max(0,m.N-1);
+    return Math.max(0,(m.A-m.B*p)/m.N + (steal/m.N)*(pr-p));
+  }
+
+  function drawProfit(m){
+    const svg=els.profitSvg; svg.innerHTML="";
+    const vb=svg.viewBox.baseVal, W=vb.width||760, H=vb.height||360;
+    const mar={l:70,r:26,t:24,b:56};
+    const pMax=Math.max(m.choke,m.pM,m.pN,m.c,1)*1.05;
+    const pr=m.pN;
+    const pts=[];
+    let yMax=1;
+    for(let i=0;i<=300;i++){
+      const p=pMax*i/300;
+      const pi=Math.max(0,(p-m.c)*residualQi(p,pr,m));
+      pts.push([p,pi]);
+      yMax=Math.max(yMax,pi);
+    }
+    const {X,Y}=axes(svg,W,H,mar,pMax,yMax*1.12,"firm profit",5,4,"own price");
+    path(svg,pts.map(p=>[X(p[0]),Y(p[1])]),"curve-profit");
+
+    line(svg,X(m.c),mar.t,X(m.c),H-mar.b,"curve-competitive");
+    line(svg,X(m.pM),mar.t,X(m.pM),H-mar.b,"helper-b");
+    line(svg,X(m.pN),mar.t,X(m.pN),H-mar.b,"helper-c");
+    circle(svg,X(m.pN),Y(m.piFirm),7,"point-c");
+
+    const piAtM=Math.max(0,(m.pM-m.c)*residualQi(m.pM,pr,m));
+    circle(svg,X(m.pM),Y(piAtM),6,"point-b");
+
+    text(svg,X(m.pN)+8,Y(m.piFirm)-10,"best response pᴺ","label","start");
+    text(svg,X(m.pM)+8,Y(piAtM)+18,"monopoly price","muted-label","start");
+    text(svg,X(m.c)+8,Y(yMax*.95),"c","muted-label","start");
+  }
+
+  function drawUndercut(m){
+    const svg=els.undercutSvg; svg.innerHTML="";
+    const vb=svg.viewBox.baseVal, W=vb.width||760, H=vb.height||360;
+    const mar={l:68,r:22,t:24,b:54};
+    const pMax=Math.max(m.choke,m.pM,m.pN,m.c,1)*1.05;
+    const {X,Y}=axes(svg,W,H,mar,pMax,pMax,"rival price",5,4,"own price");
+
+    poly(svg,[[X(0),Y(0)],[X(pMax),Y(pMax)],[X(0),Y(pMax)]],"fill-zone-a");
+    poly(svg,[[X(0),Y(0)],[X(pMax),Y(0)],[X(pMax),Y(pMax)]],"fill-zone-b");
+
+    line(svg,X(0),Y(0),X(pMax),Y(pMax),"curve-muted");
+    line(svg,X(m.c),Y(0),X(m.c),Y(pMax),"curve-competitive");
+    line(svg,X(0),Y(m.c),X(pMax),Y(m.c),"curve-competitive");
+
+    circle(svg,X(m.pM),Y(m.pM),7,"point-b");
+    circle(svg,X(m.pN),Y(m.pN),7,"point-c");
+    circle(svg,X(m.c),Y(m.c),6,"point-d");
+
+    if(els.showPure.checked && m.N>=2){
+      const eps=(m.pM-m.c)*0.16;
+      const under=Math.max(m.c,m.pM-eps);
+      line(svg,X(m.pM),Y(m.pM),X(under),Y(m.pM),"helper-b");
+      circle(svg,X(under),Y(m.pM),5,"point-a");
+      text(svg,X(under),Y(m.pM)-10,"undercut pᴹ by ε","muted-label");
+    }
+
+    text(svg,X(pMax*.24),Y(pMax*.72),"own price < rival price","label");
+    text(svg,X(pMax*.73),Y(pMax*.25),"own price > rival price","label");
+    text(svg,X(pMax*.62),Y(pMax*.62)-10,"tie line","muted-label");
+    text(svg,X(m.pM)+8,Y(m.pM)-12,"monopoly price pair","muted-label","start");
+    text(svg,X(m.pN)+8,Y(m.pN)+18,"current pᴺ","label","start");
+    text(svg,X(m.c)+8,Y(m.c)-10,"MC point","muted-label","start");
+  }
+
+  function drawBars(m){
+    const svg=els.barsSvg; svg.innerHTML="";
+    const vb=svg.viewBox.baseVal, W=vb.width||760, H=vb.height||360;
+    const mar={l:66,r:24,t:24,b:72};
+    const vals=[
+      m.pN/m.pM,
+      m.QN/m.QM,
+      m.piN/m.piM,
+      m.CSN/m.CSM,
+      m.WN/m.WM,
+      m.LN/m.LM
+    ].map(v=>Number.isFinite(v)?v:0);
+    const labels=["pᴺ/pᴹ","Qᴺ/Qᴹ","πᴺ/πᴹ","CSᴺ/CSᴹ","Wᴺ/Wᴹ","Lᴺ/Lᴹ"];
+    const cls=["bar-c","bar-a","bar-b","bar-c","bar-a","bar-d"];
+    const yMax=Math.max(2.05,...vals)*1.08;
+    const iw=W-mar.l-mar.r, ih=H-mar.t-mar.b, Y=v=>mar.t+ih-(v/yMax)*ih;
+    for(let i=0;i<=4;i++){ const y=yMax*i/4; line(svg,mar.l,Y(y),mar.l+iw,Y(y),"grid"); text(svg,mar.l-10,Y(y)+4,fmt(y,1),"muted-label","end"); }
+    line(svg,mar.l,H-mar.b,mar.l+iw,H-mar.b,"axis"); line(svg,mar.l,mar.t,mar.l,H-mar.b,"axis");
+    line(svg,mar.l,Y(1),mar.l+iw,Y(1),"helper");
+    text(svg,mar.l+iw-6,Y(1)-8,"monopoly = 1","muted-label","end");
+    const slot=iw/vals.length, w=slot*.56;
+    vals.forEach((v,i)=>{ const x=mar.l+slot*i+slot*.22, y=Y(v); rect(svg,x,y,w,H-mar.b-y,cls[i],8); text(svg,x+w/2,y-8,fmt(v,2),"muted-label"); text(svg,x+w/2,H-mar.b+28,labels[i],"bar-label"); });
+  }
+
+  function drawWelfare(m){
+    const svg=els.welfareSvg; svg.innerHTML="";
+    const vb=svg.viewBox.baseVal, W=vb.width||760, H=vb.height||360;
+    const mar={l:66,r:24,t:24,b:70};
+    const vals=[m.CSM,m.piM,m.WM,m.CSN,m.piN,m.WN];
+    const labs=["CSᴹ","πᴹ","Wᴹ","CSᴺ","πᴺ","Wᴺ"];
+    const cls=["bar-e","bar-b","bar-a","bar-c","bar-b","bar-a"];
+    const yMax=Math.max(1,...vals)*1.16;
+    const iw=W-mar.l-mar.r, ih=H-mar.t-mar.b, Y=v=>mar.t+ih-(v/yMax)*ih;
+    for(let i=0;i<=4;i++){ const y=yMax*i/4; line(svg,mar.l,Y(y),mar.l+iw,Y(y),"grid"); text(svg,mar.l-10,Y(y)+4,fmt(y,0),"muted-label","end"); }
+    line(svg,mar.l,H-mar.b,mar.l+iw,H-mar.b,"axis"); line(svg,mar.l,mar.t,mar.l,H-mar.b,"axis");
+
+    const slot=iw/vals.length, w=slot*.56;
+    vals.forEach((v,i)=>{ const x=mar.l+slot*i+slot*.22, y=Y(v); rect(svg,x,y,w,H-mar.b-y,cls[i],8); text(svg,x+w/2,y-8,fmt(v,1),"muted-label"); text(svg,x+w/2,H-mar.b+28,labs[i],"bar-label"); });
+    text(svg,mar.l+slot*1.5,H-mar.b+55,"monopoly benchmark","muted-label");
+    text(svg,mar.l+slot*4.5,H-mar.b+55,"current Bertrand","muted-label");
+  }
+
+  function updateText(m){
+    els.AVal.textContent=fmt(m.A,0);
+    els.BVal.textContent=fmt(m.B,1);
+    els.cVal.textContent=fmt(m.c,0);
+    els.NVal.textContent=String(m.N);
+    els.tauVal.textContent=fmt(m.tau,2);
+    els.NmaxVal.textContent=String(m.Nmax);
+
+    els.mN.textContent=String(m.N);
+    els.mpRatio.textContent=fmt(m.pN/m.pM,2);
+    els.mQRatio.textContent=fmt(m.QN/m.QM,2);
+    els.mpiRatio.textContent=fmt(m.piN/m.piM,2);
+    els.mpN.textContent=fmt(m.pN,2);
+    els.mQN.textContent=fmt(m.QN,2);
+    els.mLN.textContent=fmt(m.LN,3);
+    els.mCSRatio.textContent=fmt(m.CSN/m.CSM,2);
+
+    const closeness = m.tau < 2 ? "weak price-stealing" : m.tau < 9 ? "moderate price-stealing" : "strong price-stealing";
+    const pure = m.N>=2 ? " In the pure homogeneous-good theorem, the same N would imply price exactly equal to marginal cost." : " With N = 1, the Bertrand outcome is simply monopoly.";
+    els.statusPill.textContent = `${closeness} · N = ${m.N}`;
+
+    const markupLoss = 1 - (m.LN/m.LM);
+    const piLoss = 1 - (m.piN/m.piM);
+    els.interpretation.textContent =
+      `Monopoly charges pM = ${fmt(m.pM)} and sells QM = ${fmt(m.QM)}. With N = ${m.N} and price-stealing intensity τ = ${fmt(m.tau,2)}, the current Bertrand outcome is pN = ${fmt(m.pN)} and QN = ${fmt(m.QN)}. Relative to monopoly, price is ${fmt(m.pN/m.pM,2)}, output is ${fmt(m.QN/m.QM,2)}, total profit is ${fmt(m.piN/m.piM,2)}, and the Lerner index is ${fmt(m.LN/m.LM,2)}. Price competition has eliminated about ${pct(Math.max(0,markupLoss))} of the monopoly markup and ${pct(Math.max(0,piLoss))} of monopoly profit.` + pure;
+  }
+
+  function renderTex(){
+    if(!window.katex) return;
+    document.querySelectorAll("[data-tex]").forEach(el=>{
+      const tex=el.getAttribute("data-tex");
+      if(el.dataset.rendered === tex) return;
+      try{
+        katex.render(tex, el, {throwOnError:false, displayMode:false});
+        el.dataset.rendered=tex;
+      }catch(e){
+        el.textContent=tex;
+      }
+    });
+  }
+
+  function update(){
+    const m=model();
+    updateText(m);
+    drawMarket(m);
+    drawPath(m);
+    drawProfit(m);
+    drawUndercut(m);
+    drawBars(m);
+    drawWelfare(m);
+    renderTex();
+  }
+
+  ["A","B","c","N","tau","Nmax","showAreas","showPure"].forEach(id=>{
+    els[id].addEventListener("input",update);
+    els[id].addEventListener("change",update);
+  });
+  els.themeBtn.addEventListener("click",()=>{
+    const dark=document.body.getAttribute("data-theme")==="dark";
+    document.body.setAttribute("data-theme",dark?"light":"dark");
+    els.themeBtn.textContent=dark?"Dark mode":"Light mode";
+    update();
+  });
+
+  update();
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",()=>{ renderTex(); update(); });
+  }else{
+    window.addEventListener("load",()=>{ renderTex(); update(); });
+    setTimeout(()=>{ renderTex(); update(); },250);
+  }
+})();
+</script>
+</body>
+</html>

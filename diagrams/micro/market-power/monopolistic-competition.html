@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive undergraduate microeconomics diagram for monopolistic competition.">
+<title>Monopolistic Competition | Microeconomics Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+:root{
+  --bg:#f7f3eb; --surface:#fffaf4; --surface2:#f3ece2; --surface3:#ece4d8;
+  --text:#20262b; --muted:#68726f; --border:rgba(32,38,43,.11); --grid:rgba(32,38,43,.08);
+  --accent:#2d8b81; --accent2:#7ac4b9; --accent3:#a7ddd6; --accentSoft:rgba(45,139,129,.12); --accentSoft2:rgba(122,196,185,.16);
+  --orange:#c98262; --orangeSoft:rgba(201,130,98,.16); --purple:#8a77c8; --purpleSoft:rgba(138,119,200,.16);
+  --danger:#be7f6d; --ok:#4b8b59; --okSoft:rgba(75,139,89,.16);
+  --shadow:0 18px 44px rgba(28,24,20,.08); --radius:22px;
+}
+[data-theme="dark"]{
+  --bg:#0f1418; --surface:#171d22; --surface2:#20282e; --surface3:#263038;
+  --text:#edf3ef; --muted:#aab3b1; --border:rgba(237,243,239,.10); --grid:rgba(237,243,239,.08);
+  --accent:#66c7b8; --accent2:#9fe1d8; --accent3:#b7ece5; --accentSoft:rgba(102,199,184,.12); --accentSoft2:rgba(159,225,216,.14);
+  --orange:#d99b81; --orangeSoft:rgba(217,155,129,.17); --purple:#b0a0e8; --purpleSoft:rgba(176,160,232,.18);
+  --danger:#d18f7f; --ok:#76c28a; --okSoft:rgba(118,194,138,.18);
+  --shadow:0 18px 44px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+body{margin:0; background:radial-gradient(circle at top left,var(--accentSoft),transparent 34rem),var(--bg); color:var(--text); font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height:1.45}
+.app{width:min(1520px, calc(100% - 24px)); margin:0 auto; padding:26px 0 34px}
+header{display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:18px}
+.eyebrow{display:inline-flex; align-items:center; gap:8px; padding:7px 11px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--muted); font-size:13px; box-shadow:var(--shadow)}
+.dot{width:7px; height:7px; border-radius:50%; background:var(--accent)}
+h1{margin:14px 0 6px; font-size:clamp(34px,5vw,60px); line-height:.95; letter-spacing:-.055em; font-weight:760}
+.subtitle{margin:0; max-width:980px; color:var(--muted); font-size:clamp(16px,2vw,20px)}
+.theme-btn{border:1px solid var(--border); background:var(--surface); color:var(--text); border-radius:999px; padding:10px 14px; font:inherit; cursor:pointer; box-shadow:var(--shadow)}
+.layout{display:grid; grid-template-columns:326px minmax(0,1fr); gap:18px; align-items:start}
+.card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow)}
+.controls{padding:18px; position:sticky; top:16px}
+.card-title{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:12px}
+h2{margin:0; font-size:17px; letter-spacing:-.025em} h3{margin:0; font-size:16px; letter-spacing:-.02em}
+.small{color:var(--muted); font-size:13px}.section-label{margin:14px 0 6px; color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.09em}
+.control{padding:12px 0; border-top:1px solid var(--border)} .control:first-of-type{border-top:0}
+.label-row{display:flex; justify-content:space-between; gap:12px; margin-bottom:8px; font-size:14px}.value{color:var(--accent); font-variant-numeric:tabular-nums}
+input[type=range]{width:100%; accent-color:var(--accent)}
+.toggle-row{display:flex; justify-content:space-between; align-items:center; gap:14px; padding:14px 0 4px; border-top:1px solid var(--border)}
+.switch{position:relative; width:48px; height:28px; display:inline-block}.switch input{opacity:0; width:0; height:0}
+.slider-switch{position:absolute; inset:0; cursor:pointer; border-radius:999px; background:var(--surface2); border:1px solid var(--border)}
+.slider-switch::before{content:''; position:absolute; width:20px; height:20px; left:4px; top:3px; border-radius:50%; background:var(--accent); transition:.2s ease}.switch input:checked + .slider-switch::before{transform:translateX(20px)}
+.pill{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px; border:1px solid var(--border); color:var(--muted); background:var(--surface2); font-size:13px; margin-top:14px}
+.main{display:grid; gap:18px}
+.formula-row{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px}.formula{padding:15px; min-height:116px; display:flex; flex-direction:column; justify-content:space-between}.formula .name{color:var(--muted); font-size:13px; margin-bottom:8px}
+.math,.math-inline{font-family:'STIX Two Text','Cambria Math','Times New Roman',Georgia,serif; letter-spacing:-.01em}.math{font-size:22px}.math-inline{font-size:16px; white-space:nowrap}.mathline{display:flex; align-items:center; gap:.34em; flex-wrap:wrap; min-height:34px}.soft-eq{color:var(--muted); font-size:14px}.formula-chip{display:inline-flex; align-items:center; justify-content:center; padding:8px 11px; border-radius:14px; background:var(--surface2); border:1px solid var(--border)}
+.diagram-card{padding:18px}.diagram-head{display:flex; justify-content:space-between; align-items:end; gap:16px; margin-bottom:10px}.diagram-head p{margin:4px 0 0; color:var(--muted); font-size:14px}
+.metrics{display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:10px; margin-top:14px}.metric{padding:13px; border-radius:17px; border:1px solid var(--border); background:var(--surface2)}.metric .k{color:var(--muted); font-size:12px; margin-bottom:3px}.metric .v{font-size:20px; font-weight:740; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+.three-col{display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px}.two-col{display:grid; grid-template-columns:1fr 1fr; gap:18px}.mini-card,.panel{padding:18px}.mini-head{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:8px}.mini-sub{color:var(--muted); font-size:13px}
+.panel p{margin:0; color:var(--muted)}.notice-list{display:grid; gap:11px; margin-top:12px}.notice{padding:12px 13px; border-radius:16px; border:1px solid var(--border); background:var(--surface2); color:var(--muted); font-size:14px}.notice strong{color:var(--text)}
+.summary{display:grid; gap:11px; margin-top:12px}.summary-line{display:flex; gap:10px; align-items:flex-start; color:var(--muted); font-size:14px}.summary-line span:first-child{color:var(--accent); min-width:24px; font-weight:760}
+.legend{display:flex; flex-wrap:wrap; gap:10px 14px; margin-top:12px; color:var(--muted); font-size:13px}.legend-item{display:inline-flex; align-items:center; gap:7px}
+.swatch{width:22px; height:3px; border-radius:999px; background:var(--accent)}.swatch.d2{background:var(--accent2)}.swatch.mr{background:var(--muted)}.swatch.ac{background:var(--orange)}.swatch.mc{background:var(--danger)}.swatch.fit{width:15px; height:12px; background:var(--okSoft); border:1px solid var(--border)}.swatch.loss{width:15px; height:12px; background:var(--orangeSoft); border:1px solid var(--border)}
+svg{display:block; width:100%; height:auto; overflow:hidden}.axis{stroke:var(--text); stroke-width:1.2}.grid{stroke:var(--grid); stroke-width:1}
+.curve-demand{fill:none; stroke:var(--accent); stroke-width:3}.curve-demand-lr{fill:none; stroke:var(--accent2); stroke-width:2.4; stroke-dasharray:7 5}.curve-mr{fill:none; stroke:var(--muted); stroke-width:2.1; stroke-dasharray:6 6}.curve-ac{fill:none; stroke:var(--orange); stroke-width:2.9}.curve-mc{fill:none; stroke:var(--danger); stroke-width:2.7}.curve-profit{fill:none; stroke:var(--accent); stroke-width:3}.curve-entry{fill:none; stroke:var(--purple); stroke-width:3}
+.helper{stroke:var(--muted); stroke-width:1.2; stroke-dasharray:5 6}.helper-a{stroke:var(--accent2); stroke-width:1.5; stroke-dasharray:4 5}.helper-b{stroke:var(--orange); stroke-width:1.5; stroke-dasharray:4 5}
+.point{fill:var(--surface); stroke:var(--text); stroke-width:2}.point-a{fill:var(--accent); stroke:var(--surface); stroke-width:2.2}.point-b{fill:var(--accent2); stroke:var(--surface); stroke-width:2.2}.point-o{fill:var(--orange); stroke:var(--surface); stroke-width:2.2}
+.label{fill:var(--text); font-size:13px}.muted-label{fill:var(--muted); font-size:12px}.fill-profit{fill:var(--okSoft)}.fill-loss{fill:var(--orangeSoft)}.fill-gap{fill:var(--purpleSoft)}.bar-a{fill:var(--accent)}.bar-b{fill:var(--orange)}.bar-c{fill:var(--purple)}.bar-label{fill:var(--text); font-size:12px}
+@media (max-width:1200px){.layout{grid-template-columns:1fr}.controls{position:relative; top:auto}.formula-row,.three-col,.two-col{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:700px){.app{width:min(100% - 14px,1520px); padding-top:16px}header{flex-direction:column}.theme-btn{width:100%}.formula-row{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body data-theme="light">
+<div class="app">
+<header>
+  <div>
+    <div class="eyebrow"><span class="dot"></span> Microeconomics · Market Structure</div>
+    <h1>Monopolistic competition</h1>
+    <p class="subtitle">Differentiated products, free entry, zero-profit tangency, and excess capacity. The app shows how entry shifts each firm’s residual demand inward until profit disappears.</p>
+  </div>
+  <button class="theme-btn" id="themeBtn">Dark mode</button>
+</header>
+
+<div class="layout">
+  <aside class="card controls">
+    <div class="card-title"><h2>Controls</h2><span class="small">firm and market</span></div>
+
+    <div class="section-label">Residual demand</div>
+    <div class="control"><div class="label-row"><label for="A">Base intercept A</label><span class="value" id="AVal"></span></div><input id="A" type="range" min="40" max="220" step="1" value="120"></div>
+    <div class="control"><div class="label-row"><label for="b">Demand slope b</label><span class="value" id="bVal"></span></div><input id="b" type="range" min="0.4" max="4.5" step="0.1" value="1.6"></div>
+    <div class="control"><div class="label-row"><label for="g">Entry effect g</label><span class="value" id="gVal"></span></div><input id="g" type="range" min="0.2" max="8" step="0.1" value="2.0"></div>
+    <div class="control"><div class="label-row"><label for="N">Number of firms N</label><span class="value" id="NVal"></span></div><input id="N" type="range" min="0" max="40" step="0.1" value="8"></div>
+
+    <div class="section-label">Technology</div>
+    <div class="control"><div class="label-row"><label for="c">Marginal-cost base c</label><span class="value" id="cVal"></span></div><input id="c" type="range" min="0" max="120" step="1" value="20"></div>
+    <div class="control"><div class="label-row"><label for="d">Cost curvature d</label><span class="value" id="dVal"></span></div><input id="d" type="range" min="0.1" max="3.0" step="0.1" value="0.8"></div>
+    <div class="control"><div class="label-row"><label for="F">Fixed cost F</label><span class="value" id="FVal"></span></div><input id="F" type="range" min="1" max="120" step="1" value="18"></div>
+
+    <div class="toggle-row"><div><div style="font-size:14px;">Snap to free-entry N*</div><div class="small">show long-run benchmark</div></div><label class="switch"><input id="snap" type="checkbox"><span class="slider-switch"></span></label></div>
+    <div class="toggle-row"><div><div style="font-size:14px;">Show profit/loss area</div><div class="small">current short-run outcome</div></div><label class="switch"><input id="areas" type="checkbox" checked><span class="slider-switch"></span></label></div>
+
+    <div class="pill" id="statusPill">Entry shifts residual demand inward</div>
+  </aside>
+
+  <main class="main">
+    <section class="formula-row">
+      <div class="card formula"><div><div class="name">Residual demand</div><div class="math mathline">p<sub>N</sub>(q)=A−gN−bq</div></div><div class="soft-eq">more firms → weaker residual demand for each firm</div></div>
+      <div class="card formula"><div><div class="name">Short-run choice</div><div class="math mathline">MR<sub>N</sub>(q)=MC(q)</div></div><div class="soft-eq">choose q where marginal revenue equals marginal cost</div></div>
+      <div class="card formula"><div><div class="name">Long-run free entry</div><div class="math mathline">π=0 and D tangent to AC</div></div><div class="soft-eq">entry continues until profit disappears</div></div>
+      <div class="card formula"><div><div class="name">Excess capacity</div><div class="math mathline">q<sub>minAC</sub>−q<sub>LR</sub> &gt; 0</div></div><div class="formula-chip math">p<sub>LR</sub> &gt; MC</div></div>
+    </section>
+
+    <section class="card diagram-card">
+      <div class="diagram-head">
+        <div>
+          <h2>Main diagram: short run versus long run</h2>
+          <p>The current residual demand D<sub>N</sub> determines the short-run outcome. Free entry shifts it left to the long-run demand that is tangent to average cost.</p>
+        </div>
+        <span class="small">q horizontal · price / cost vertical</span>
+      </div>
+      <svg id="mainSvg" viewBox="0 0 1120 620"></svg>
+      <div class="legend">
+        <span class="legend-item"><span class="swatch"></span> Current demand D<sub>N</sub></span>
+        <span class="legend-item"><span class="swatch d2"></span> Long-run demand D<sub>LR</sub></span>
+        <span class="legend-item"><span class="swatch mr"></span> Marginal revenue</span>
+        <span class="legend-item"><span class="swatch ac"></span> Average cost</span>
+        <span class="legend-item"><span class="swatch mc"></span> Marginal cost</span>
+        <span class="legend-item"><span class="swatch fit"></span> Profit / loss gap</span>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="k">N</div><div class="v" id="mN"></div></div>
+        <div class="metric"><div class="k">N*</div><div class="v" id="mNstar"></div></div>
+        <div class="metric"><div class="k">q<sub>SR</sub></div><div class="v" id="mqsr"></div></div>
+        <div class="metric"><div class="k">p<sub>SR</sub></div><div class="v" id="mpsr"></div></div>
+        <div class="metric"><div class="k">π<sub>SR</sub></div><div class="v" id="mpisr"></div></div>
+        <div class="metric"><div class="k">q<sub>LR</sub></div><div class="v" id="mqlr"></div></div>
+        <div class="metric"><div class="k">p<sub>LR</sub></div><div class="v" id="mplr"></div></div>
+        <div class="metric"><div class="k">Excess cap.</div><div class="v" id="mcap"></div></div>
+      </div>
+    </section>
+
+    <section class="three-col">
+      <section class="card mini-card"><div class="mini-head"><h3>Entry shifts demand</h3><span class="mini-sub">a(N)=A−gN</span></div><svg id="entrySvg" viewBox="0 0 760 360"></svg></section>
+      <section class="card mini-card"><div class="mini-head"><h3>Profit and free entry</h3><span class="mini-sub">π(N) crosses zero at N*</span></div><svg id="profitSvg" viewBox="0 0 760 360"></svg></section>
+      <section class="card mini-card"><div class="mini-head"><h3>Excess capacity</h3><span class="mini-sub">q<sub>LR</sub> below q<sub>minAC</sub></span></div><svg id="capSvg" viewBox="0 0 760 360"></svg></section>
+    </section>
+
+    <section class="two-col">
+      <section class="card panel">
+        <h2>Interpretation</h2>
+        <p id="interpretation"></p>
+        <div class="notice-list">
+          <div class="notice"><strong>Differentiated products.</strong> Each firm faces a downward-sloping residual demand because products are not perfect substitutes.</div>
+          <div class="notice"><strong>Free entry.</strong> Positive short-run profit attracts entry, which lowers each incumbent’s demand intercept from <span class="math-inline">a(N)=A-gN</span> until profit becomes zero.</div>
+          <div class="notice"><strong>Excess capacity.</strong> In long-run equilibrium the firm operates to the left of minimum average cost, so it could produce more at a lower average cost if it had a larger residual market.</div>
+        </div>
+      </section>
+      <section class="card panel">
+        <h2>Exam-style summary</h2>
+        <div class="summary">
+          <div class="summary-line"><span>1</span><div>Write residual demand <span class="math-inline">p_N(q)=A-gN-bq</span>.</div></div>
+          <div class="summary-line"><span>2</span><div>Compute the short-run choice from <span class="math-inline">MR_N=MC</span>.</div></div>
+          <div class="summary-line"><span>3</span><div>If <span class="math-inline">π&gt;0</span>, entry reduces demand for each firm; if <span class="math-inline">π&lt;0</span>, exit raises it.</div></div>
+          <div class="summary-line"><span>4</span><div>Long-run equilibrium satisfies <span class="math-inline">π=0</span>, so demand is tangent to average cost at the chosen quantity.</div></div>
+          <div class="summary-line"><span>5</span><div>Because <span class="math-inline">q_{LR}&lt;q_{minAC}</span>, monopolistic competition exhibits excess capacity.</div></div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+</div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const els={
+    A:$("A"), b:$("b"), g:$("g"), N:$("N"), c:$("c"), d:$("d"), F:$("F"), snap:$("snap"), areas:$("areas"), themeBtn:$("themeBtn"),
+    AVal:$("AVal"), bVal:$("bVal"), gVal:$("gVal"), NVal:$("NVal"), cVal:$("cVal"), dVal:$("dVal"), FVal:$("FVal"), statusPill:$("statusPill"),
+    mainSvg:$("mainSvg"), entrySvg:$("entrySvg"), profitSvg:$("profitSvg"), capSvg:$("capSvg"), interpretation:$("interpretation"),
+    mN:$("mN"), mNstar:$("mNstar"), mqsr:$("mqsr"), mpsr:$("mpsr"), mpisr:$("mpisr"), mqlr:$("mqlr"), mplr:$("mplr"), mcap:$("mcap")
+  };
+
+  function fmt(x,d=2){ if(!Number.isFinite(x)) return '—'; if(Math.abs(x)>=100) return x.toFixed(1); return x.toFixed(d); }
+  function S(tag,a={}){ const e=document.createElementNS('http://www.w3.org/2000/svg',tag); for(const[k,v] of Object.entries(a)) e.setAttribute(k,v); return e; }
+  function line(svg,x1,y1,x2,y2,cls){ svg.appendChild(S('line',{x1,y1,x2,y2,class:cls})); }
+  function text(svg,x,y,str,cls='label',anchor='middle'){ const t=S('text',{x,y,class:cls,'text-anchor':anchor}); t.textContent=str; svg.appendChild(t); }
+  function path(svg,pts,cls){ const d=pts.map((p,i)=>(i?'L':'M')+' '+p[0]+' '+p[1]).join(' '); svg.appendChild(S('path',{d,class:cls})); }
+  function poly(svg,pts,cls){ const d=pts.map((p,i)=>(i?'L':'M')+' '+p[0]+' '+p[1]).join(' ')+' Z'; svg.appendChild(S('path',{d,class:cls})); }
+  function circle(svg,cx,cy,r,cls){ svg.appendChild(S('circle',{cx,cy,r,class:cls})); }
+  function rect(svg,x,y,w,h,cls,rx=8){ svg.appendChild(S('rect',{x,y,width:w,height:h,class:cls,rx})); }
+  function clamp(x,lo,hi){ return Math.max(lo,Math.min(hi,x)); }
+
+  function model(){
+    const A=+els.A.value, b=+els.b.value, g=+els.g.value, c=+els.c.value, d=+els.d.value, F=+els.F.value;
+    const aLR = c + 2*Math.sqrt(F*(b+d));
+    const Nstar = Math.max(0,(A-aLR)/g);
+    let N = +els.N.value;
+    if(els.snap.checked){ N=Math.min(parseFloat(els.N.max||'40'),Nstar); els.N.value=N.toFixed(2); }
+    const aN = A - g*N;
+    const active = aN>c;
+    const qSR = active ? Math.max(0,(aN-c)/(2*(b+d))) : 0;
+    const pSR = active ? aN - b*qSR : 0;
+    const acSR = qSR>0 ? F/qSR + c + d*qSR : Infinity;
+    const mcSR = qSR>0 ? c + 2*d*qSR : c;
+    const piSR = ((aN-c)*(aN-c) - 4*F*(b+d))/(4*(b+d));
+    const qLR = Math.sqrt(F/(b+d));
+    const pLR = aLR - b*qLR;
+    const qMinAC = Math.sqrt(F/d);
+    const pMinAC = c + 2*Math.sqrt(F*d);
+    const cap = Math.max(0,qMinAC - qLR);
+    const qIntCur = Math.max(0,aN/b);
+    const qIntLR = aLR/b;
+    return {A,b,g,N,c,d,F,aN,aLR,Nstar,active,qSR,pSR,acSR,mcSR,piSR,qLR,pLR,qMinAC,pMinAC,cap,qIntCur,qIntLR};
+  }
+
+  function axes(svg,W,H,m,xMax,yMax,yLabel='p',xTicks=5,yTicks=4,xLabel='q'){
+    const iw=W-m.l-m.r, ih=H-m.t-m.b; const X=x=>m.l + (x/xMax)*iw; const Y=y=>m.t + ih - (y/yMax)*ih;
+    for(let i=0;i<=xTicks;i++){ const x=xMax*i/xTicks; line(svg,X(x),m.t,X(x),m.t+ih,'grid'); text(svg,X(x),m.t+ih+22,fmt(x,1),'muted-label'); }
+    for(let i=0;i<=yTicks;i++){ const y=yMax*i/yTicks; line(svg,m.l,Y(y),m.l+iw,Y(y),'grid'); text(svg,m.l-10,Y(y)+4,fmt(y,0),'muted-label','end'); }
+    line(svg,m.l,m.t+ih,m.l+iw,m.t+ih,'axis'); line(svg,m.l,m.t,m.l,m.t+ih,'axis'); text(svg,m.l+iw,m.t+ih+40,xLabel,'label'); text(svg,m.l-34,m.t+8,yLabel,'label');
+    return {X,Y,iw,ih};
+  }
+
+  function drawMain(m){
+    const svg=els.mainSvg; svg.innerHTML='';
+    const W=1120,H=620, mr={l:76,r:26,t:26,b:64};
+    const qMax=Math.max(m.qIntCur,m.qIntLR,m.qMinAC,m.qLR,1)*1.22;
+    const yAt=function(q){ return m.F/q + m.c + m.d*q; };
+    const yMax=Math.max(m.A,m.aLR,m.pMinAC,m.acSR,m.pSR,m.pLR,10)*1.15;
+    const {X,Y,iw,ih}=axes(svg,W,H,mr,qMax,yMax,'price / cost',5,4,'q');
+
+    const acPts=[], mcPts=[], dCurPts=[], mrPts=[], dLRPts=[];
+    const qStart=qMax/300;
+    for(let i=1;i<=300;i++){
+      const q=qStart + (qMax-qStart)*(i-1)/299;
+      acPts.push([X(q),Y(m.F/q + m.c + m.d*q)]);
+      mcPts.push([X(q),Y(m.c + 2*m.d*q)]);
+      dCurPts.push([X(q),Y(Math.max(0,m.aN - m.b*q))]);
+      mrPts.push([X(q),Y(Math.max(0,m.aN - 2*m.b*q))]);
+      dLRPts.push([X(q),Y(Math.max(0,m.aLR - m.b*q))]);
+    }
+    path(svg,acPts,'curve-ac'); path(svg,mcPts,'curve-mc');
+    if(m.active){ path(svg,dCurPts,'curve-demand'); path(svg,mrPts,'curve-mr'); }
+    path(svg,dLRPts,'curve-demand-lr');
+
+    if(m.active && els.areas.checked && Number.isFinite(m.acSR)){
+      const fillCls = m.piSR >= 0 ? 'fill-profit' : 'fill-loss';
+      poly(svg,[[X(m.qSR),Y(m.pSR)],[X(m.qSR),Y(m.acSR)],[X(0.0001),Y(m.acSR)],[X(0.0001),Y(m.pSR)]], fillCls);
+    }
+
+    // current SR point
+    if(m.active){
+      line(svg,X(m.qSR),Y(0),X(m.qSR),Y(m.pSR),'helper');
+      line(svg,X(0),Y(m.pSR),X(m.qSR),Y(m.pSR),'helper');
+      circle(svg,X(m.qSR),Y(m.pSR),6,'point-a');
+      text(svg,X(m.qSR),Y(0)+28,'q_SR','label'); text(svg,X(0)-14,Y(m.pSR)+4,'p_SR','label','end');
+      circle(svg,X(m.qSR),Y(m.acSR),5.5,'point-o'); text(svg,X(m.qSR)+10,Y(m.acSR)+16,'AC(q_SR)','muted-label','start');
+    }
+
+    // long-run tangency
+    line(svg,X(m.qLR),Y(0),X(m.qLR),Y(m.pLR),'helper-a');
+    line(svg,X(0),Y(m.pLR),X(m.qLR),Y(m.pLR),'helper-a');
+    circle(svg,X(m.qLR),Y(m.pLR),6,'point-b');
+    text(svg,X(m.qLR),Y(0)+28,'q_LR','label'); text(svg,X(0)-14,Y(m.pLR)+4,'p_LR','label','end');
+    text(svg,X(m.qLR)+10,Y(m.pLR)-12,'D_LR tangent to AC','muted-label','start');
+
+    // min AC and excess capacity
+    line(svg,X(m.qMinAC),Y(0),X(m.qMinAC),Y(m.pMinAC),'helper-b');
+    circle(svg,X(m.qMinAC),Y(m.pMinAC),5.8,'point-o');
+    text(svg,X(m.qMinAC),Y(0)+28,'q_minAC','muted-label');
+    if(m.qMinAC > m.qLR){
+      rect(svg,X(m.qLR),Y(0)-16,Math.max(0,X(m.qMinAC)-X(m.qLR)),10,'fill-gap',4);
+    }
+
+    // axis-label style excess capacity marker
+    if(m.qMinAC > m.qLR){
+      line(svg,X(m.qLR),Y(0)-10,X(m.qMinAC),Y(0)-10,'helper-b');
+      text(svg,(X(m.qLR)+X(m.qMinAC))/2,Y(0)-16,'excess capacity','muted-label');
+    }
+
+    // labels
+    text(svg,X(qMax*0.78),Y(Math.max(0,m.aN - m.b*qMax*0.78))-10,'D_N','label');
+    text(svg,X(qMax*0.74),Y(Math.max(0,m.aLR - m.b*qMax*0.74))+16,'D_LR','muted-label');
+    text(svg,X(qMax*0.48),Y(Math.max(0,m.aN - 2*m.b*qMax*0.48))+18,'MR_N','muted-label');
+    text(svg,X(qMax*0.92),Y(m.c + 2*m.d*qMax*0.92)-10,'MC','label');
+    text(svg,X(qMax*0.86),Y(m.F/(qMax*0.86) + m.c + m.d*qMax*0.86)-10,'AC','label');
+  }
+
+  function drawEntry(m){
+    const svg=els.entrySvg; svg.innerHTML='';
+    const W=760,H=360, mr={l:68,r:24,t:24,b:56};
+    const Nmax=Math.max(m.Nstar*1.25,m.N*1.15,5); const yMax=Math.max(m.A,m.aLR,10)*1.12;
+    const {X,Y,iw,ih}=axes(svg,W,H,mr,Nmax,yMax,'intercept a',5,4,'N');
+    path(svg,[[X(0),Y(m.A)],[X(Nmax),Y(Math.max(0,m.A-m.g*Nmax))]],'curve-entry');
+    line(svg,X(0),Y(m.aLR),X(Nmax),Y(m.aLR),'curve-demand-lr');
+    line(svg,X(m.Nstar),mr.t,X(m.Nstar),mr.t+ih,'helper-a'); line(svg,X(m.N),mr.t,X(m.N),mr.t+ih,'helper');
+    circle(svg,X(m.N),Y(m.aN),6,'point-a'); circle(svg,X(m.Nstar),Y(m.aLR),6,'point-b');
+    text(svg,X(m.N),Y(m.aN)-10,'a(N)','label'); text(svg,X(m.Nstar),mr.t+ih+24,'N*','muted-label'); text(svg,X(Nmax*0.70),Y(m.aLR)-10,'zero-profit intercept a*','muted-label');
+  }
+
+  function drawProfit(m){
+    const svg=els.profitSvg; svg.innerHTML='';
+    const W=760,H=360, mr={l:68,r:24,t:24,b:56};
+    const Nmax=Math.max(m.Nstar*1.25,m.N*1.15,5);
+    let yMax=1, yMin=0;
+    const pts=[];
+    for(let i=0;i<=300;i++){
+      const N=Nmax*i/300, a=m.A - m.g*N, pi=((a-m.c)*(a-m.c) - 4*m.F*(m.b+m.d))/(4*(m.b+m.d));
+      pts.push([N,pi]); yMax=Math.max(yMax,pi); yMin=Math.min(yMin,pi);
+    }
+    const pad = (yMax-yMin)*0.12 + 1; yMax += pad; yMin -= pad;
+    const iw=W-mr.l-mr.r, ih=H-mr.t-mr.b; const X=x=>mr.l+(x/Nmax)*iw; const Y=y=>mr.t+ih-((y-yMin)/(yMax-yMin))*ih;
+    for(let i=0;i<=5;i++){ const x=Nmax*i/5; line(svg,X(x),mr.t,X(x),mr.t+ih,'grid'); text(svg,X(x),mr.t+ih+22,fmt(x,1),'muted-label'); }
+    for(let i=0;i<=4;i++){ const y=yMin + (yMax-yMin)*i/4; line(svg,mr.l,Y(y),mr.l+iw,Y(y),'grid'); text(svg,mr.l-10,Y(y)+4,fmt(y,0),'muted-label','end'); }
+    line(svg,mr.l,mr.t+ih,mr.l+iw,mr.t+ih,'axis'); line(svg,mr.l,mr.t,mr.l,mr.t+ih,'axis'); text(svg,mr.l+iw,mr.t+ih+40,'N','label'); text(svg,mr.l-26,mr.t+8,'π','label');
+    path(svg,pts.map(p=>[X(p[0]),Y(p[1])]),'curve-profit'); line(svg,mr.l,Y(0),mr.l+iw,Y(0),'helper'); line(svg,X(m.Nstar),mr.t,X(m.Nstar),mr.t+ih,'helper-a'); line(svg,X(m.N),mr.t,X(m.N),mr.t+ih,'helper');
+    circle(svg,X(m.N),Y(m.piSR),6,'point-a'); text(svg,X(m.N)+8,Y(m.piSR)-10,'current π','muted-label','start'); text(svg,X(m.Nstar),mr.t+ih+24,'N*','muted-label');
+  }
+
+  function drawCap(m){
+    const svg=els.capSvg; svg.innerHTML='';
+    const W=760,H=360, mr={l:68,r:24,t:24,b:56};
+    const qMax=Math.max(m.qMinAC,m.qLR,1)*1.28; const yMax=Math.max(m.pMinAC,m.pLR,10)*1.16;
+    const {X,Y,iw,ih}=axes(svg,W,H,mr,qMax,yMax,'average cost',5,4,'q');
+    const pts=[]; for(let i=1;i<=260;i++){ const q=qMax*i/260; pts.push([X(q),Y(m.F/q + m.c + m.d*q)]); }
+    path(svg,pts,'curve-ac');
+    line(svg,X(m.qLR),mr.t,X(m.qLR),mr.t+ih,'helper-a'); line(svg,X(m.qMinAC),mr.t,X(m.qMinAC),mr.t+ih,'helper-b');
+    circle(svg,X(m.qLR),Y(m.pLR),6,'point-b'); circle(svg,X(m.qMinAC),Y(m.pMinAC),6,'point-o');
+    line(svg,X(m.qLR),Y(m.pLR),X(m.qMinAC),Y(m.pMinAC),'helper');
+    text(svg,X(m.qLR),mr.t+ih+24,'q_LR','muted-label'); text(svg,X(m.qMinAC),mr.t+ih+24,'q_minAC','muted-label');
+    if(m.qMinAC>m.qLR){ rect(svg,X(m.qLR),Y(0)-16,Math.max(0,X(m.qMinAC)-X(m.qLR)),10,'fill-gap',4); text(svg,(X(m.qLR)+X(m.qMinAC))/2,Y(0)-20,'unused scale','muted-label'); }
+    text(svg,X(qMax*0.82),Y(m.F/(qMax*0.82)+m.c+m.d*qMax*0.82)-10,'AC(q)','label');
+  }
+
+  function updateText(m){
+    els.AVal.textContent=fmt(m.A,0); els.bVal.textContent=fmt(m.b,1); els.gVal.textContent=fmt(m.g,1); els.NVal.textContent=fmt(m.N,2); els.cVal.textContent=fmt(m.c,0); els.dVal.textContent=fmt(m.d,1); els.FVal.textContent=fmt(m.F,0);
+    els.mN.textContent=fmt(m.N,2); els.mNstar.textContent=fmt(m.Nstar,2); els.mqsr.textContent=fmt(m.qSR); els.mpsr.textContent=fmt(m.pSR); els.mpisr.textContent=fmt(m.piSR); els.mqlr.textContent=fmt(m.qLR); els.mplr.textContent=fmt(m.pLR); els.mcap.textContent=fmt(m.cap);
+    const regime = m.piSR>0 ? 'profit is positive, so entry should occur' : (m.piSR<0 ? 'profit is negative, so exit should occur' : 'profit is zero, so the market is in long-run equilibrium');
+    els.statusPill.textContent = regime;
+    els.interpretation.innerHTML = `With <span class="math-inline">N=${fmt(m.N,2)}</span>, the firm faces residual demand intercept <span class="math-inline">a(N)=${fmt(m.aN)}</span>. The short-run choice is <span class="math-inline">q_{SR}=${fmt(m.qSR)}</span> at price <span class="math-inline">p_{SR}=${fmt(m.pSR)}</span>, generating profit <span class="math-inline">π=${fmt(m.piSR)}</span>. Free entry drives the market toward <span class="math-inline">N^*=${fmt(m.Nstar,2)}</span>, where the residual demand becomes tangent to average cost at <span class="math-inline">q_{LR}=${fmt(m.qLR)}</span>. Because <span class="math-inline">q_{LR}&lt;q_{minAC}=${fmt(m.qMinAC)}</span>, the long-run equilibrium displays excess capacity.`;
+  }
+
+  function update(){ const m=model(); updateText(m); drawMain(m); drawEntry(m); drawProfit(m); drawCap(m); }
+  ['A','b','g','N','c','d','F','snap','areas'].forEach(id=>{ els[id].addEventListener('input',update); els[id].addEventListener('change',update); });
+  els.themeBtn.addEventListener('click',()=>{ const dark=document.body.getAttribute('data-theme')==='dark'; document.body.setAttribute('data-theme',dark?'light':'dark'); els.themeBtn.textContent=dark?'Dark mode':'Light mode'; update(); });
+  update();
+})();
+</script>
+</body>
+</html>
