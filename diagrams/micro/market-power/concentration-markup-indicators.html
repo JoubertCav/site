@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive microeconomics diagram for concentration and markup indicators: HHI, Lerner index, markups, full-cost pricing, and the limits of concentration measures.">
+<title>Concentration and Markup Indicators | Market Power Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<style>
+  :root{
+    --bg:#f7f5ef;
+    --panel:#fffdf8;
+    --panel2:#fbf8ef;
+    --ink:#1f2528;
+    --muted:#677175;
+    --line:#e5ded0;
+    --soft:#ede5d7;
+    --accent:#257c78;
+    --accent2:#6aa6a1;
+    --accent3:#b88954;
+    --danger:#b86b5e;
+    --ok:#4f8b64;
+    --shadow: 0 20px 45px rgba(35, 31, 24, .09);
+    --radius: 22px;
+    --canvas:#fffefa;
+  }
+  [data-theme="dark"]{
+    --bg:#111615;
+    --panel:#18201f;
+    --panel2:#141b1a;
+    --ink:#eef3ef;
+    --muted:#a7b4af;
+    --line:#2b3937;
+    --soft:#202b29;
+    --accent:#65c6bd;
+    --accent2:#88aaa6;
+    --accent3:#d6ad73;
+    --danger:#df8b7f;
+    --ok:#8bc49b;
+    --shadow: 0 20px 50px rgba(0,0,0,.34);
+    --canvas:#151c1b;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:
+      radial-gradient(circle at 8% 8%, rgba(37,124,120,.10), transparent 32rem),
+      radial-gradient(circle at 82% 4%, rgba(184,137,84,.12), transparent 32rem),
+      var(--bg);
+    color:var(--ink);
+    line-height:1.45;
+  }
+  .wrap{max-width:1420px;margin:0 auto;padding:28px 22px 42px}
+  header{
+    display:grid;
+    grid-template-columns: 1.4fr .6fr;
+    gap:18px;
+    align-items:stretch;
+    margin-bottom:18px;
+  }
+  .hero,.mini-card,.card,.control-card{
+    background:linear-gradient(180deg, color-mix(in srgb, var(--panel) 96%, white 4%), var(--panel));
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  .hero{padding:26px 28px;position:relative;overflow:hidden}
+  .hero::after{
+    content:"";
+    position:absolute;right:-80px;top:-95px;width:270px;height:270px;border-radius:50%;
+    background:radial-gradient(circle, rgba(37,124,120,.16), transparent 66%);
+    pointer-events:none;
+  }
+  .eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:750;margin-bottom:8px}
+  h1{font-size:clamp(2rem,4vw,4.2rem);line-height:.95;margin:0 0 12px;letter-spacing:-.055em}
+  .subtitle{max-width:860px;color:var(--muted);font-size:1.04rem;margin:0}
+  .top-side{display:grid;gap:14px}
+  .mode-toggle{
+    border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;
+    padding:11px 14px;font-weight:750;cursor:pointer;box-shadow:var(--shadow);align-self:start;justify-self:end;
+  }
+  .formula-strip{
+    display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;align-items:center;
+  }
+  .pill{
+    border:1px solid var(--line);background:var(--panel2);border-radius:999px;
+    padding:8px 11px;font-size:.92rem;color:var(--ink);
+  }
+  .mini-card{padding:18px}
+  .mini-card h3{margin:0 0 6px;font-size:.95rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+  .big-number{font-size:2.1rem;font-weight:850;letter-spacing:-.05em;color:var(--accent)}
+  .mini-note{font-size:.88rem;color:var(--muted)}
+  .layout{display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start}
+  .controls{display:grid;gap:14px;position:sticky;top:14px}
+  .control-card{padding:18px}
+  .control-card h2,.card h2{font-size:1.05rem;margin:0 0 12px;letter-spacing:-.02em}
+  .control{padding:12px 0;border-top:1px solid var(--line)}
+  .control:first-of-type{border-top:0;padding-top:0}
+  label{display:flex;justify-content:space-between;gap:10px;font-size:.92rem;font-weight:750;color:var(--ink);margin-bottom:9px}
+  .value{color:var(--accent);font-variant-numeric:tabular-nums;font-weight:850}
+  input[type="range"]{width:100%;accent-color:var(--accent)}
+  .hint{font-size:.78rem;color:var(--muted);margin-top:6px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .grid.three{grid-template-columns:1.1fr .9fr .9fr}
+  .card{padding:20px;min-width:0;overflow:hidden}
+  .card-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:10px}
+  .card-head p{margin:0;color:var(--muted);font-size:.9rem;max-width:680px}
+  canvas{width:100%;height:330px;display:block;background:var(--canvas);border:1px solid var(--line);border-radius:18px}
+  .tall canvas{height:390px}
+  .compact canvas{height:270px}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .metric{background:var(--panel2);border:1px solid var(--line);border-radius:18px;padding:13px}
+  .metric .name{font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:850}
+  .metric .num{font-size:1.45rem;font-weight:850;letter-spacing:-.04em;margin-top:5px;color:var(--ink)}
+  .metric .desc{font-size:.78rem;color:var(--muted);margin-top:4px}
+  .explain{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+  .note-box{border:1px solid var(--line);border-radius:18px;padding:15px;background:var(--panel2)}
+  .note-box h3{font-size:.95rem;margin:0 0 7px;color:var(--ink)}
+  .note-box p{margin:0;color:var(--muted);font-size:.9rem}
+  .equation-card{display:grid;gap:12px}
+  .eq{padding:14px;border:1px solid var(--line);border-radius:18px;background:var(--panel2)}
+  .eq .label{font-size:.76rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:850;margin-bottom:8px}
+  .eq .math{font-size:1.02rem;overflow-x:auto;white-space:nowrap;padding-bottom:2px}
+  .diagnostic{display:grid;gap:10px}
+  .diag-row{display:grid;grid-template-columns:35px 1fr auto;gap:10px;align-items:center;background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:11px}
+  .badge{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb, var(--accent) 16%, transparent);color:var(--accent);font-weight:900}
+  .diag-title{font-weight:800;font-size:.93rem}
+  .diag-sub{font-size:.82rem;color:var(--muted)}
+  .status{font-size:.78rem;font-weight:850;border-radius:999px;padding:6px 9px;border:1px solid var(--line);white-space:nowrap}
+  .status.ok{color:var(--ok);background:color-mix(in srgb, var(--ok) 12%, transparent)}
+  .status.warn{color:var(--accent3);background:color-mix(in srgb, var(--accent3) 14%, transparent)}
+  .status.bad{color:var(--danger);background:color-mix(in srgb, var(--danger) 13%, transparent)}
+  .footer-note{margin-top:18px;color:var(--muted);font-size:.86rem;text-align:center}
+  @media(max-width:1080px){
+    header,.layout,.grid,.grid.three{grid-template-columns:1fr}
+    .controls{position:relative;top:auto}
+    .metrics{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:680px){
+    .wrap{padding:16px 12px 28px}
+    .hero{padding:20px}
+    .metrics,.explain{grid-template-columns:1fr}
+    canvas{height:280px}.tall canvas{height:320px}
+  }
+</style>
+</head>
+<body data-theme="light">
+<div class="wrap">
+  <header>
+    <section class="hero">
+      <div class="eyebrow">Microeconomics · market power indicators</div>
+      <h1>Concentration and markup indicators</h1>
+      <p class="subtitle">Use the sliders to see why concentration is not the same thing as market power. HHI summarizes market structure; the Lerner index measures the price–cost wedge; the bridge between them needs conduct, elasticity, and cost assumptions.</p>
+      <div class="formula-strip">
+        <span class="pill tex">\(HHI=\sum_i s_i^2\)</span>
+        <span class="pill tex">\(L=\frac{p-MC}{p}\)</span>
+        <span class="pill tex">\(\bar L\approx \kappa\frac{HHI}{|\varepsilon|}\)</span>
+        <span class="pill tex">\(p_{FC}=(1+m)(AVC+F/q)\)</span>
+      </div>
+    </section>
+    <section class="top-side">
+      <button class="mode-toggle" id="themeBtn">Toggle dark mode</button>
+      <div class="mini-card">
+        <h3>Core intuition</h3>
+        <div class="big-number" id="headline">—</div>
+        <div class="mini-note" id="headlineNote">Move the controls to compare structure, conduct, demand, and cost accounting.</div>
+      </div>
+    </section>
+  </header>
+
+  <main class="layout">
+    <aside class="controls">
+      <section class="control-card">
+        <h2>Market structure</h2>
+        <div class="control">
+          <label>Number of firms <span class="value" id="nVal"></span></label>
+          <input id="n" type="range" min="2" max="12" step="1" value="5">
+          <div class="hint">More firms usually lowers HHI, but asymmetry matters.</div>
+        </div>
+        <div class="control">
+          <label>Largest firm share <span class="value" id="leaderVal"></span></label>
+          <input id="leader" type="range" min="15" max="85" step="1" value="38">
+          <div class="hint">The largest firm is the first bar in the market-share chart.</div>
+        </div>
+        <div class="control">
+          <label>Asymmetry among rivals <span class="value" id="skewVal"></span></label>
+          <input id="skew" type="range" min="0" max="100" step="1" value="45">
+          <div class="hint">Higher values concentrate the remaining share among a few followers.</div>
+        </div>
+      </section>
+
+      <section class="control-card">
+        <h2>Conduct and demand</h2>
+        <div class="control">
+          <label>Demand elasticity \(|\varepsilon|\) <span class="value" id="elasVal"></span></label>
+          <input id="elas" type="range" min="1.1" max="8" step="0.1" value="3.0">
+          <div class="hint">Lower elasticity makes a given HHI imply a larger possible markup.</div>
+        </div>
+        <div class="control">
+          <label>Conduct intensity \(\kappa\) <span class="value" id="conductVal"></span></label>
+          <input id="conduct" type="range" min="0" max="220" step="5" value="100">
+          <div class="hint">0 = competitive conduct, 1 = Cournot benchmark, above 1 = more coordinated pricing.</div>
+        </div>
+        <div class="control">
+          <label>Marginal cost <span class="value" id="mcVal"></span></label>
+          <input id="mc" type="range" min="10" max="120" step="1" value="45">
+          <div class="hint">Lerner is a wedge over marginal cost, not average cost.</div>
+        </div>
+      </section>
+
+      <section class="control-card">
+        <h2>Full-cost pricing</h2>
+        <div class="control">
+          <label>Allocated overhead per unit <span class="value" id="overVal"></span></label>
+          <input id="overhead" type="range" min="0" max="70" step="1" value="18">
+          <div class="hint">This turns marginal-cost pricing into average-cost accounting.</div>
+        </div>
+        <div class="control">
+          <label>Full-cost markup \(m\) <span class="value" id="fullMarkupVal"></span></label>
+          <input id="fullMarkup" type="range" min="0" max="80" step="1" value="25">
+          <div class="hint">A markup over average cost is not automatically a Lerner markup.</div>
+        </div>
+      </section>
+    </aside>
+
+    <section class="content">
+      <section class="metrics" aria-label="main metrics">
+        <div class="metric"><div class="name">HHI</div><div class="num" id="hhiMetric">—</div><div class="desc">0–10,000 scale</div></div>
+        <div class="metric"><div class="name">Effective firms</div><div class="num" id="effMetric">—</div><div class="desc tex">\(N_e=1/HHI\)</div></div>
+        <div class="metric"><div class="name">Lerner</div><div class="num" id="lernerMetric">—</div><div class="desc">price share above MC</div></div>
+        <div class="metric"><div class="name">Price</div><div class="num" id="priceMetric">—</div><div class="desc">from the Lerner wedge</div></div>
+      </section>
+
+      <section class="grid">
+        <div class="card tall">
+          <div class="card-head">
+            <div>
+              <h2>1. Market shares and HHI</h2>
+              <p>HHI rises when market share is concentrated. The same number of firms can produce very different concentration if shares are asymmetric.</p>
+            </div>
+          </div>
+          <canvas id="sharesCanvas"></canvas>
+        </div>
+        <div class="card tall">
+          <div class="card-head">
+            <div>
+              <h2>2. The HHI–Lerner bridge</h2>
+              <p>The textbook relation is useful but conditional: with homogeneous goods and Cournot conduct, average Lerner is approximately HHI divided by demand elasticity.</p>
+            </div>
+          </div>
+          <canvas id="bridgeCanvas"></canvas>
+        </div>
+      </section>
+
+      <section class="grid three" style="margin-top:18px">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2>3. Price wedge and welfare geometry</h2>
+              <p>The Lerner index is a marginal-cost wedge. Higher concentration increases this wedge only through the conduct–elasticity channel.</p>
+            </div>
+          </div>
+          <canvas id="welfareCanvas"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2>4. Full-cost pricing is different</h2>
+              <p>Accounting markups use average cost. Lerner uses marginal cost. They can move together, but they do not measure the same object.</p>
+            </div>
+          </div>
+          <canvas id="costCanvas"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2>5. What the indicators say</h2>
+              <p>Use these diagnostics as a map: structure, pricing power, and accounting rules are related but conceptually separate.</p>
+            </div>
+          </div>
+          <div class="diagnostic" id="diagnostic"></div>
+        </div>
+      </section>
+
+      <section class="grid" style="margin-top:18px">
+        <div class="card equation-card">
+          <h2>Model equations</h2>
+          <div class="eq"><div class="label">Concentration</div><div class="math tex">\(HHI=\sum_{i=1}^{N}s_i^2,\quad s_i\in[0,1],\quad \sum_i s_i=1\)</div></div>
+          <div class="eq"><div class="label">Effective number of firms</div><div class="math tex">\(N_e=\frac{1}{HHI}\)</div></div>
+          <div class="eq"><div class="label">Lerner index</div><div class="math tex">\(L=\frac{p-MC}{p}\quad\Longleftrightarrow\quad p=\frac{MC}{1-L}\)</div></div>
+          <div class="eq"><div class="label">Cournot-style bridge</div><div class="math tex">\(\bar L\approx \kappa\,\frac{HHI}{|\varepsilon|}\)</div></div>
+          <div class="eq"><div class="label">Full-cost pricing</div><div class="math tex">\(p_{FC}=(1+m)(AVC+F/q)\)</div></div>
+        </div>
+        <div class="card">
+          <h2>Limits of concentration measures</h2>
+          <div class="explain" style="grid-template-columns:1fr">
+            <div class="note-box"><h3>HHI is structure, not conduct.</h3><p>A concentrated market can have low markups if demand is elastic, entry is easy, imports discipline prices, or firms compete aggressively.</p></div>
+            <div class="note-box"><h3>Lerner needs marginal cost.</h3><p>Estimating marginal cost is hard. Accounting cost, average cost, and allocated overhead are not the same object as marginal cost.</p></div>
+            <div class="note-box"><h3>Full-cost pricing can mislead.</h3><p>A price above average cost may reflect overhead recovery, capacity planning, or accounting conventions rather than monopoly power.</p></div>
+            <div class="note-box"><h3>Market definition matters.</h3><p>HHI changes with the market boundary: geography, product differentiation, imports, platforms, buyer power, and potential entrants all affect interpretation.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer-note">A good empirical reading is: HHI gives a first structural signal; Lerner/markup measures pricing power; full-cost rules explain accounting behavior; none is sufficient alone.</div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const inputs = ['n','leader','skew','elas','conduct','mc','overhead','fullMarkup'].map($);
+  const canvases = ['sharesCanvas','bridgeCanvas','welfareCanvas','costCanvas'].map($);
+
+  function css(name){ return getComputedStyle(document.body).getPropertyValue(name).trim(); }
+  function fmt(x,d=1){ return Number(x).toFixed(d); }
+  function money(x){ return '$' + Number(x).toFixed(1); }
+  function pct(x,d=1){ return (100*x).toFixed(d) + '%'; }
+
+  function setupCanvas(canvas){
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.max(1, Math.floor(rect.width*dpr));
+    canvas.height = Math.max(1, Math.floor(rect.height*dpr));
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    return {ctx,w:rect.width,h:rect.height};
+  }
+
+  function roundedRect(ctx,x,y,w,h,r){
+    const rr = Math.min(r,w/2,h/2);
+    ctx.beginPath();
+    ctx.moveTo(x+rr,y);
+    ctx.arcTo(x+w,y,x+w,y+h,rr);
+    ctx.arcTo(x+w,y+h,x,y+h,rr);
+    ctx.arcTo(x,y+h,x,y,rr);
+    ctx.arcTo(x,y,x+w,y,rr);
+    ctx.closePath();
+  }
+
+  function drawText(ctx,text,x,y,opt={}){
+    ctx.save();
+    ctx.fillStyle = opt.color || css('--ink');
+    ctx.font = `${opt.weight||600} ${opt.size||12}px Inter, system-ui, sans-serif`;
+    ctx.textAlign = opt.align || 'left';
+    ctx.textBaseline = opt.baseline || 'alphabetic';
+    ctx.fillText(text,x,y);
+    ctx.restore();
+  }
+
+  function line(ctx,x1,y1,x2,y2,color=css('--line'),width=1,dash=[]){
+    ctx.save(); ctx.strokeStyle=color; ctx.lineWidth=width; ctx.setLineDash(dash);
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); ctx.restore();
+  }
+
+  function getState(){
+    let n = +$('n').value;
+    let leader = +$('leader').value/100;
+    const minLeader = Math.max(0.15, 1/n);
+    leader = Math.max(minLeader, Math.min(.85, leader));
+    const skew = +$('skew').value/100;
+    const rest = 1 - leader;
+    let shares = [leader];
+    if(n>1){
+      let weights=[];
+      const lambda = skew*3.2;
+      for(let i=0;i<n-1;i++) weights.push(Math.exp(-lambda*i));
+      const sum = weights.reduce((a,b)=>a+b,0);
+      weights.forEach(w=>shares.push(rest*w/sum));
+    }
+    shares = shares.sort((a,b)=>b-a);
+    const hhi = shares.reduce((a,s)=>a+s*s,0);
+    const hhi10k = hhi*10000;
+    const eff = 1/hhi;
+    const c4 = shares.slice(0,4).reduce((a,s)=>a+s,0);
+    const elas = +$('elas').value;
+    const conduct = +$('conduct').value/100;
+    const mc = +$('mc').value;
+    const overhead = +$('overhead').value;
+    const fullMarkup = +$('fullMarkup').value/100;
+    let Lraw = conduct*hhi/elas;
+    const L = Math.max(0, Math.min(0.85, Lraw));
+    const p = mc/(1-L);
+    const marginOverMC = (p-mc)/mc;
+    const pCournot = mc/(1-Math.min(.85,hhi/elas));
+    const avgCost = mc + overhead;
+    const pFull = (1+fullMarkup)*avgCost;
+    const impliedLFull = Math.max(0, (pFull-mc)/pFull);
+    const hhiClass = hhi10k < 1500 ? 'low' : hhi10k < 2500 ? 'moderate' : 'high';
+    return {n,leader,skew,shares,hhi,hhi10k,eff,c4,elas,conduct,mc,overhead,fullMarkup,L,Lraw,p,marginOverMC,pCournot,avgCost,pFull,impliedLFull,hhiClass};
+  }
+
+  function axes(ctx,plot,xLab,yLab){
+    line(ctx, plot.x, plot.y+plot.h, plot.x+plot.w, plot.y+plot.h, css('--line'), 1.2);
+    line(ctx, plot.x, plot.y, plot.x, plot.y+plot.h, css('--line'), 1.2);
+    drawText(ctx,xLab,plot.x+plot.w,plot.y+plot.h+30,{align:'right',color:css('--muted'),size:11});
+    drawText(ctx,yLab,plot.x-4,plot.y-8,{align:'left',color:css('--muted'),size:11});
+  }
+
+  function drawShares(s){
+    const {ctx,w,h} = setupCanvas($('sharesCanvas'));
+    ctx.clearRect(0,0,w,h);
+    const accent=css('--accent'), accent2=css('--accent2'), muted=css('--muted'), lineC=css('--line');
+    const plot={x:52,y:32,w:w-86,h:h-92};
+    for(let k=0;k<=4;k++){
+      const y=plot.y+plot.h*k/4;
+      line(ctx,plot.x,y,plot.x+plot.w,y,lineC,.8,[4,5]);
+      drawText(ctx,(100-k*25)+'%',plot.x-12,y+4,{align:'right',color:muted,size:10,weight:600});
+    }
+    axes(ctx,plot,'firms ordered by share','market share');
+    const n=s.shares.length;
+    const gap=Math.min(14, plot.w/(n*4));
+    const bw=(plot.w-gap*(n-1))/n;
+    s.shares.forEach((sh,i)=>{
+      const x=plot.x+i*(bw+gap);
+      const bh=plot.h*sh;
+      const y=plot.y+plot.h-bh;
+      const grad=ctx.createLinearGradient(0,y,0,y+bh);
+      grad.addColorStop(0, i===0?accent:accent2);
+      grad.addColorStop(1, 'rgba(128,128,128,.12)');
+      roundedRect(ctx,x,y,bw,bh,10); ctx.fillStyle=grad; ctx.fill();
+      drawText(ctx,(sh*100).toFixed(i===0?0:1)+'%',x+bw/2,y-7,{align:'center',color:i===0?accent:muted,size:10,weight:800});
+      drawText(ctx,'F'+(i+1),x+bw/2,plot.y+plot.h+18,{align:'center',color:muted,size:10});
+    });
+    const boxW=178, boxH=74, bx=w-boxW-18, by=18;
+    roundedRect(ctx,bx,by,boxW,boxH,16); ctx.fillStyle=css('--panel2'); ctx.fill(); ctx.strokeStyle=lineC; ctx.stroke();
+    drawText(ctx,'HHI = '+Math.round(s.hhi10k),bx+14,by+25,{size:18,weight:850,color:accent});
+    drawText(ctx,'C4 = '+(s.c4*100).toFixed(1)+'%',bx+14,by+47,{size:12,color:muted});
+    drawText(ctx,'Effective firms = '+s.eff.toFixed(2),bx+14,by+64,{size:12,color:muted});
+  }
+
+  function drawBridge(s){
+    const {ctx,w,h}=setupCanvas($('bridgeCanvas'));
+    ctx.clearRect(0,0,w,h);
+    const plot={x:56,y:30,w:w-92,h:h-88};
+    const maxHHI=1, maxL=.85;
+    axes(ctx,plot,'HHI as fraction','Lerner index');
+    for(let k=0;k<=5;k++){
+      const x=plot.x+plot.w*k/5;
+      line(ctx,x,plot.y,x,plot.y+plot.h,css('--line'),.7,[4,6]);
+      drawText(ctx,(k/5).toFixed(1),x,plot.y+plot.h+18,{align:'center',color:css('--muted'),size:10});
+    }
+    for(let k=0;k<=4;k++){
+      const y=plot.y+plot.h-k*plot.h/4;
+      line(ctx,plot.x,y,plot.x+plot.w,y,css('--line'),.7,[4,6]);
+      drawText(ctx,(k*25)+'%',plot.x-10,y+4,{align:'right',color:css('--muted'),size:10});
+    }
+    function X(hhi){return plot.x+plot.w*hhi/maxHHI}
+    function Y(L){return plot.y+plot.h-plot.h*L/maxL}
+    const kappas=[0.5,1,1.5,2];
+    kappas.forEach((kappa,idx)=>{
+      ctx.save();
+      ctx.strokeStyle = idx===1 ? css('--accent') : idx===3 ? css('--danger') : css('--accent2');
+      ctx.lineWidth = idx===1 ? 2.6 : 1.4;
+      ctx.globalAlpha = idx===1 ? 1 : .72;
+      ctx.beginPath();
+      for(let j=0;j<=120;j++){
+        const xh=j/120;
+        const L=Math.min(maxL,kappa*xh/s.elas);
+        const x=X(xh), y=Y(L);
+        if(j===0)ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.stroke(); ctx.restore();
+      const lx=.78;
+      drawText(ctx,'κ='+kappa.toFixed(1),X(lx)+5,Y(Math.min(maxL,kappa*lx/s.elas))-4,{color:idx===1?css('--accent'):css('--muted'),size:11,weight:800});
+    });
+    const cx=X(s.hhi), cy=Y(s.L);
+    ctx.save(); ctx.fillStyle=css('--accent3'); ctx.beginPath(); ctx.arc(cx,cy,7,0,Math.PI*2); ctx.fill(); ctx.strokeStyle=css('--canvas'); ctx.lineWidth=3; ctx.stroke(); ctx.restore();
+    line(ctx,cx,cy,cx,plot.y+plot.h,css('--accent3'),1,[3,4]);
+    line(ctx,cx,cy,plot.x,cy,css('--accent3'),1,[3,4]);
+    drawText(ctx,'current market',cx+12,cy-12,{color:css('--accent3'),size:12,weight:850});
+    drawText(ctx,'L = '+pct(s.L,1),cx+12,cy+6,{color:css('--muted'),size:11});
+    const caption='Bridge: L ≈ κ × HHI / |ε|  ·  ε = '+s.elas.toFixed(1);
+    drawText(ctx,caption,plot.x,18,{color:css('--muted'),size:12,weight:700});
+  }
+
+  function drawWelfare(s){
+    const {ctx,w,h}=setupCanvas($('welfareCanvas'));
+    ctx.clearRect(0,0,w,h);
+    const plot={x:50,y:28,w:w-78,h:h-82};
+    axes(ctx,plot,'quantity','price');
+    const Q=100;
+    const P=s.p;
+    const b=P/(s.elas*Q);
+    const a=P+b*Q;
+    const Qc=(a-s.mc)/b;
+    const maxQ=Math.max(Qc*1.12,130);
+    const maxP=Math.max(a*1.08,P*1.2);
+    const X=q=>plot.x+plot.w*q/maxQ;
+    const Y=p=>plot.y+plot.h-plot.h*p/maxP;
+    // demand
+    ctx.save(); ctx.strokeStyle=css('--accent'); ctx.lineWidth=2.6; ctx.beginPath(); ctx.moveTo(X(0),Y(a)); ctx.lineTo(X(Math.min(maxQ,a/b)),Y(0)); ctx.stroke(); ctx.restore();
+    // MC
+    line(ctx,X(0),Y(s.mc),X(maxQ),Y(s.mc),css('--accent2'),2.1);
+    // price
+    line(ctx,X(0),Y(P),X(Q),Y(P),css('--accent3'),2.1);
+    line(ctx,X(Q),Y(0),X(Q),Y(P),css('--accent3'),1.3,[4,4]);
+    line(ctx,X(Qc),Y(0),X(Qc),Y(s.mc),css('--accent2'),1.1,[4,4]);
+    // DWL triangle
+    ctx.save(); ctx.fillStyle='rgba(184,107,94,.18)'; ctx.beginPath(); ctx.moveTo(X(Q),Y(P)); ctx.lineTo(X(Qc),Y(s.mc)); ctx.lineTo(X(Q),Y(s.mc)); ctx.closePath(); ctx.fill(); ctx.restore();
+    // markup rectangle
+    ctx.save(); ctx.fillStyle='rgba(37,124,120,.12)'; ctx.fillRect(X(0),Y(P),X(Q)-X(0),Y(s.mc)-Y(P)); ctx.restore();
+    drawText(ctx,'D',X(maxQ*.82),Y(Math.max(0,a-b*maxQ*.82))-8,{color:css('--accent'),weight:850});
+    drawText(ctx,'MC',X(maxQ*.78),Y(s.mc)-8,{color:css('--accent2'),weight:850});
+    drawText(ctx,'p',X(0)+5,Y(P)-6,{color:css('--accent3'),weight:850});
+    drawText(ctx,'p−MC',X(Q*.45),Y((P+s.mc)/2)+4,{align:'center',color:css('--accent'),weight:850});
+    drawText(ctx,'DWL',X((Q+Qc)/2),Y((P+s.mc)/2)-4,{align:'center',color:css('--danger'),weight:850});
+    drawText(ctx,'Q',X(Q),plot.y+plot.h+18,{align:'center',color:css('--accent3'),size:10});
+    drawText(ctx,'Qᶜ',X(Qc),plot.y+plot.h+18,{align:'center',color:css('--accent2'),size:10});
+    const dwl=.5*(P-s.mc)*(Qc-Q);
+    drawText(ctx,'Approx. DWL = '+money(Math.max(0,dwl)),plot.x+10,plot.y+20,{color:css('--muted'),size:12,weight:750});
+  }
+
+  function drawCost(s){
+    const {ctx,w,h}=setupCanvas($('costCanvas'));
+    ctx.clearRect(0,0,w,h);
+    const plot={x:48,y:28,w:w-78,h:h-86};
+    const vals=[s.mc,s.avgCost,s.p,s.pFull];
+    const labels=['MC','AVC+F/q','Lerner p','full-cost p'];
+    const maxV=Math.max(...vals)*1.22;
+    axes(ctx,plot,'price/cost object','dollars');
+    for(let k=0;k<=4;k++){
+      const y=plot.y+plot.h-k*plot.h/4;
+      line(ctx,plot.x,y,plot.x+plot.w,y,css('--line'),.7,[4,6]);
+      drawText(ctx,money(maxV*k/4),plot.x-8,y+4,{align:'right',color:css('--muted'),size:10});
+    }
+    const gap=13,bw=(plot.w-gap*3)/4;
+    vals.forEach((v,i)=>{
+      const x=plot.x+i*(bw+gap);
+      const bh=plot.h*v/maxV;
+      const y=plot.y+plot.h-bh;
+      const color=i<2?css('--accent2'):i===2?css('--accent'):css('--accent3');
+      const grad=ctx.createLinearGradient(0,y,0,y+bh);
+      grad.addColorStop(0,color); grad.addColorStop(1,'rgba(128,128,128,.10)');
+      roundedRect(ctx,x,y,bw,bh,10); ctx.fillStyle=grad; ctx.fill();
+      drawText(ctx,money(v),x+bw/2,y-7,{align:'center',color:color,size:11,weight:850});
+      const words=labels[i].split(' ');
+      words.forEach((word,j)=>drawText(ctx,word,x+bw/2,plot.y+plot.h+18+j*13,{align:'center',color:css('--muted'),size:10}));
+    });
+    const y1=plot.y+plot.h-plot.h*s.mc/maxV;
+    const y2=plot.y+plot.h-plot.h*s.avgCost/maxV;
+    if(s.overhead>0){
+      drawText(ctx,'overhead allocation',plot.x+plot.w*.34,(y1+y2)/2,{align:'center',color:css('--muted'),size:10,weight:700});
+    }
+    drawText(ctx,'Implied full-cost Lerner = '+pct(s.impliedLFull,1),plot.x+10,plot.y+20,{color:css('--muted'),size:12,weight:750});
+  }
+
+  function diagnosticStatus(s){
+    const rows=[];
+    rows.push({num:'1',title:'Concentration signal',sub: s.hhiClass==='low'?'Unconcentrated by common screening language.':'Moderate/high concentration: structure deserves attention.',status:s.hhiClass==='low'?'low':s.hhiClass==='moderate'?'medium':'high',cls:s.hhiClass==='high'?'bad':s.hhiClass==='moderate'?'warn':'ok'});
+    rows.push({num:'2',title:'Pricing-power signal',sub:`Lerner wedge is ${pct(s.L,1)}; markup over MC is ${(100*s.marginOverMC).toFixed(1)}%.`,status:s.L<.1?'weak':s.L<.25?'moderate':'strong',cls:s.L<.1?'ok':s.L<.25?'warn':'bad'});
+    rows.push({num:'3',title:'Elasticity discipline',sub:s.elas>4?'Elastic demand strongly limits feasible markups.':s.elas<2?'Inelastic demand magnifies a given concentration level.':'Elasticity gives partial discipline.',status:'ε = '+s.elas.toFixed(1),cls:s.elas<2?'bad':s.elas>4?'ok':'warn'});
+    rows.push({num:'4',title:'Conduct assumption',sub:s.conduct<.75?'Firms behave more competitively than Cournot in this scenario.':s.conduct>1.25?'Conduct is more coordinated than Cournot; HHI alone understates danger.':'Near the Cournot benchmark.',status:'κ = '+s.conduct.toFixed(2),cls:s.conduct>.125 && s.conduct<.75?'ok':s.conduct>1.25?'bad':'warn'});
+    rows.push({num:'5',title:'Accounting markup caveat',sub:`Full-cost price is ${money(s.pFull)}; it embeds overhead and a markup over average cost.`,status:pct(s.impliedLFull,0),cls:s.impliedLFull>.35?'warn':'ok'});
+    return rows;
+  }
+
+  function updateText(s){
+    $('nVal').textContent=s.n;
+    $('leaderVal').textContent=(s.leader*100).toFixed(0)+'%';
+    $('skewVal').textContent=(s.skew*100).toFixed(0)+'%';
+    $('elasVal').textContent=s.elas.toFixed(1);
+    $('conductVal').textContent=s.conduct.toFixed(2);
+    $('mcVal').textContent=money(s.mc);
+    $('overVal').textContent=money(s.overhead);
+    $('fullMarkupVal').textContent=(s.fullMarkup*100).toFixed(0)+'%';
+    $('hhiMetric').textContent=Math.round(s.hhi10k);
+    $('effMetric').textContent=s.eff.toFixed(2);
+    $('lernerMetric').textContent=pct(s.L,1);
+    $('priceMetric').textContent=money(s.p);
+    const msg = s.L<.1 ? 'Concentration is not creating much pricing power here.' : s.L<.25 ? 'Structure creates a meaningful price–cost wedge.' : 'Market power is large under these assumptions.';
+    $('headline').textContent=msg;
+    $('headlineNote').textContent=`HHI ${Math.round(s.hhi10k)}, elasticity ${s.elas.toFixed(1)}, conduct κ=${s.conduct.toFixed(2)} → Lerner ${pct(s.L,1)}.`;
+    const diag = diagnosticStatus(s).map(r=>`
+      <div class="diag-row">
+        <div class="badge">${r.num}</div>
+        <div><div class="diag-title">${r.title}</div><div class="diag-sub">${r.sub}</div></div>
+        <div class="status ${r.cls}">${r.status}</div>
+      </div>`).join('');
+    $('diagnostic').innerHTML=diag;
+  }
+
+  function renderMath(){
+    if(window.renderMathInElement){
+      renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],throwOnError:false});
+    }
+  }
+
+  function update(){
+    const s=getState();
+    updateText(s);
+    drawShares(s); drawBridge(s); drawWelfare(s); drawCost(s);
+    renderMath();
+  }
+
+  inputs.forEach(inp=>inp.addEventListener('input',update));
+  window.addEventListener('resize',()=>requestAnimationFrame(update));
+  $('themeBtn').addEventListener('click',()=>{
+    document.body.dataset.theme = document.body.dataset.theme==='dark'?'light':'dark';
+    update();
+  });
+  window.addEventListener('load',update);
+  setTimeout(update,120);
+})();
+</script>
+</body>
+</html>

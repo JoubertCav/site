@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive microeconomics diagram for entry barriers and limit pricing: sunk costs, entry deterrence, excess capacity, and strategic barriers to entry.">
+  <title>Entry Barriers and Limit Pricing | Market Power Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"></script>
+  <style>
+    :root {
+      --bg: #f8f6ef;
+      --surface: rgba(255, 252, 245, 0.86);
+      --surface-2: #fffdf8;
+      --text: #23211c;
+      --muted: #706b60;
+      --line: rgba(48, 45, 38, 0.13);
+      --soft-line: rgba(48, 45, 38, 0.08);
+      --accent: #247a7a;
+      --accent-2: #8b6fcb;
+      --accent-3: #c47b53;
+      --good: #23735a;
+      --bad: #b35656;
+      --warn: #a57924;
+      --shadow: 0 18px 60px rgba(31, 28, 22, 0.10);
+      --chart-bg: #fffdf8;
+      --grid: rgba(35, 33, 28, 0.08);
+      --axis: rgba(35, 33, 28, 0.55);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    [data-theme="dark"] {
+      --bg: #121412;
+      --surface: rgba(25, 29, 27, 0.88);
+      --surface-2: #181d1b;
+      --text: #ebe6da;
+      --muted: #ada79a;
+      --line: rgba(235, 230, 218, 0.13);
+      --soft-line: rgba(235, 230, 218, 0.08);
+      --accent: #58c6bb;
+      --accent-2: #b29cf2;
+      --accent-3: #f0a66e;
+      --good: #63caa6;
+      --bad: #ec8989;
+      --warn: #e4b85d;
+      --shadow: 0 18px 70px rgba(0, 0, 0, 0.34);
+      --chart-bg: #141816;
+      --grid: rgba(235, 230, 218, 0.09);
+      --axis: rgba(235, 230, 218, 0.58);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at top left, rgba(36, 122, 122, 0.18), transparent 32rem),
+        radial-gradient(circle at 84% 16%, rgba(139, 111, 203, 0.12), transparent 28rem),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+      min-height: 100vh;
+    }
+    button, input { font: inherit; }
+    .wrap { max-width: 1440px; margin: 0 auto; padding: 28px; }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 22px;
+      align-items: stretch;
+      margin-bottom: 20px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+    .hero-main { padding: 30px; position: relative; overflow: hidden; }
+    .hero-main::after {
+      content: "";
+      position: absolute;
+      inset: auto -10% -44% 40%;
+      height: 260px;
+      border-radius: 100%;
+      background: linear-gradient(90deg, rgba(36,122,122,.10), rgba(139,111,203,.10));
+      filter: blur(12px);
+      pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 11px;
+      background: rgba(255,255,255,0.04);
+    }
+    h1 {
+      font-family: var(--serif);
+      letter-spacing: -0.045em;
+      font-size: clamp(40px, 5.4vw, 78px);
+      line-height: 0.92;
+      margin: 22px 0 18px;
+      max-width: 900px;
+    }
+    .lead {
+      font-size: clamp(16px, 1.5vw, 20px);
+      color: var(--muted);
+      max-width: 760px;
+      margin: 0;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; position: relative; z-index: 1; }
+    .pill-btn {
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: 180ms ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .pill-btn:hover { transform: translateY(-1px); border-color: color-mix(in oklab, var(--accent), var(--line) 55%); }
+    .pill-btn.primary { background: var(--accent); color: #fffdf7; border-color: transparent; }
+    [data-theme="dark"] .pill-btn.primary { color: #07100f; }
+    .hero-side { padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+    .status-card {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+      background: var(--surface-2);
+    }
+    .status-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+    .status-label { color: var(--muted); font-size: 13px; }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-weight: 750;
+      font-size: 13px;
+      border: 1px solid var(--line);
+    }
+    .status-badge.good { color: var(--good); background: color-mix(in oklab, var(--good), transparent 88%); }
+    .status-badge.bad { color: var(--bad); background: color-mix(in oklab, var(--bad), transparent 88%); }
+    .big-number {
+      font-family: var(--serif);
+      font-size: clamp(31px, 3.2vw, 48px);
+      letter-spacing: -0.05em;
+      line-height: 1;
+    }
+    .subtle { color: var(--muted); font-size: 14px; margin-top: 8px; }
+    .grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    .panel { padding: 20px; }
+    .sticky { position: sticky; top: 16px; }
+    .panel-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+    h2, h3 { margin: 0; letter-spacing: -0.02em; }
+    h2 { font-family: var(--serif); font-size: 28px; }
+    h3 { font-size: 16px; }
+    .small { color: var(--muted); font-size: 13px; }
+    .controls { display: grid; gap: 15px; }
+    .control {
+      border: 1px solid var(--soft-line);
+      border-radius: 18px;
+      padding: 13px;
+      background: color-mix(in oklab, var(--surface-2), transparent 10%);
+    }
+    .control-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+    .control label { color: var(--text); font-weight: 700; font-size: 13px; }
+    .val { font-family: var(--mono); color: var(--accent); font-size: 13px; }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    .toggle-row { display: flex; gap: 9px; flex-wrap: wrap; }
+    .chip {
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: transparent;
+      border-radius: 999px;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: 160ms ease;
+    }
+    .chip.active { background: color-mix(in oklab, var(--accent), transparent 86%); color: var(--accent); border-color: color-mix(in oklab, var(--accent), var(--line) 45%); }
+    .main { display: grid; gap: 20px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .kpi {
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      border-radius: 22px;
+      padding: 16px;
+      min-height: 118px;
+    }
+    .kpi .name { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .kpi .num { font-family: var(--serif); font-size: 34px; letter-spacing: -0.045em; margin-top: 8px; line-height: 1; }
+    .kpi .hint { color: var(--muted); font-size: 13px; margin-top: 10px; }
+    .chart-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 20px; }
+    .chart-card { padding: 18px; overflow: hidden; }
+    .chart-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+    .chart-title { font-weight: 800; letter-spacing: -0.02em; }
+    .chart-note { color: var(--muted); font-size: 13px; max-width: 440px; }
+    svg.chart { width: 100%; height: 390px; display: block; border-radius: 20px; background: var(--chart-bg); border: 1px solid var(--soft-line); }
+    .wide svg.chart { height: 430px; }
+    .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .legend span { display: inline-flex; align-items: center; gap: 7px; color: var(--muted); font-size: 12px; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); display: inline-block; }
+    .dot.purple { background: var(--accent-2); }
+    .dot.orange { background: var(--accent-3); }
+    .dot.good { background: var(--good); }
+    .dot.bad { background: var(--bad); }
+    .model-card { padding: 22px; }
+    .model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: stretch; }
+    .equation-box {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--surface-2);
+      padding: 18px;
+    }
+    .eq-title { font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 9px; }
+    .eq-title::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+    .equation { font-size: 17px; overflow-x: auto; padding: 3px 0; }
+    .eq-text { color: var(--muted); margin-top: 9px; font-size: 14px; }
+    .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .node {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 15px;
+      background: var(--surface-2);
+      position: relative;
+      min-height: 120px;
+    }
+    .node:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -12px;
+      top: 46%;
+      color: var(--muted);
+      font-weight: 900;
+      z-index: 2;
+    }
+    .node .step { font-family: var(--mono); color: var(--accent); font-size: 12px; }
+    .node .label { font-weight: 800; margin-top: 8px; }
+    .node .desc { color: var(--muted); font-size: 13px; margin-top: 6px; }
+    .insight-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .insight {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--surface-2);
+      padding: 18px;
+    }
+    .insight strong { display: block; margin-bottom: 7px; }
+    .insight p { margin: 0; color: var(--muted); font-size: 14px; }
+    .scenario-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .scenario {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--surface-2);
+      padding: 16px;
+    }
+    .scenario h3 { margin-bottom: 8px; }
+    .scenario p { margin: 0; color: var(--muted); font-size: 14px; }
+    .footer { text-align: center; color: var(--muted); font-size: 13px; margin: 24px 0 8px; }
+    .hidden { display: none !important; }
+
+    .axis-label { fill: var(--muted); font-size: 12px; }
+    .tick-label { fill: var(--muted); font-size: 11px; }
+    .grid-line { stroke: var(--grid); stroke-width: 1; }
+    .axis { stroke: var(--axis); stroke-width: 1.2; }
+    .demand { stroke: var(--accent); stroke-width: 3; fill: none; stroke-linecap: round; }
+    .residual { stroke: var(--accent-2); stroke-width: 3; fill: none; stroke-dasharray: 8 7; stroke-linecap: round; }
+    .mc { stroke: var(--accent-3); stroke-width: 2.4; fill: none; stroke-linecap: round; }
+    .barrier { stroke: var(--bad); stroke-width: 2.5; fill: none; stroke-dasharray: 4 4; }
+    .mono { stroke: var(--good); stroke-width: 2.5; fill: none; stroke-dasharray: 8 4; }
+    .current { stroke: var(--text); stroke-width: 2.2; fill: none; }
+    .area-good { fill: color-mix(in oklab, var(--good), transparent 82%); }
+    .area-bad { fill: color-mix(in oklab, var(--bad), transparent 84%); }
+    .area-accent { fill: color-mix(in oklab, var(--accent), transparent 86%); }
+    .annotation { fill: var(--text); font-size: 12px; font-weight: 750; }
+    .annotation-muted { fill: var(--muted); font-size: 11px; }
+
+    @media (max-width: 1120px) {
+      .hero, .grid, .chart-grid, .model-grid, .scenario-row { grid-template-columns: 1fr; }
+      .sticky { position: relative; top: auto; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .flow { grid-template-columns: 1fr 1fr; }
+      .node::after { display: none; }
+    }
+    @media (max-width: 700px) {
+      .wrap { padding: 16px; }
+      .hero-main { padding: 22px; }
+      .kpi-grid, .flow, .insight-grid { grid-template-columns: 1fr; }
+      svg.chart { height: 330px; }
+      h1 { font-size: 42px; }
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <div class="wrap">
+    <header class="hero">
+      <section class="hero-main card">
+        <span class="eyebrow">Microeconomics · Industrial organization</span>
+        <h1>Entry barriers and limit pricing</h1>
+        <p class="lead">
+          A visual model of how sunk entry costs, residual demand, excess capacity, and limit prices interact. Move the sliders and watch the entrant's profit, incumbent's payoff, and deterrence threshold update together.
+        </p>
+        <div class="hero-actions">
+          <button class="pill-btn primary" id="resetBtn">Reset model</button>
+          <button class="pill-btn" id="themeBtn">Toggle dark mode</button>
+          <a href="#model" class="pill-btn">Model equations</a>
+          <a href="#intuition" class="pill-btn">Economic intuition</a>
+        </div>
+      </section>
+      <aside class="hero-side card">
+        <div class="status-card">
+          <div class="status-top">
+            <div>
+              <div class="status-label">Current strategic outcome</div>
+              <div class="big-number" id="outcomeText">—</div>
+            </div>
+            <span class="status-badge" id="statusBadge">—</span>
+          </div>
+          <div class="subtle" id="outcomeExplanation">—</div>
+        </div>
+        <div class="status-card">
+          <div class="status-top">
+            <div>
+              <div class="status-label">Minimum deterrence capacity</div>
+              <div class="big-number"><span id="kdHero">—</span></div>
+            </div>
+            <span class="status-badge" id="excessBadge">—</span>
+          </div>
+          <div class="subtle" id="limitPriceHero">—</div>
+        </div>
+      </aside>
+    </header>
+
+    <div class="grid">
+      <aside class="card panel sticky">
+        <div class="panel-title">
+          <div>
+            <h2>Controls</h2>
+            <div class="small">Linear demand and strategic commitment.</div>
+          </div>
+        </div>
+        <div class="controls">
+          <div class="control">
+            <div class="control-head"><label for="a">Demand intercept \(a\)</label><span class="val" id="aVal"></span></div>
+            <input type="range" id="a" min="60" max="160" step="1" value="120" />
+          </div>
+          <div class="control">
+            <div class="control-head"><label for="b">Demand slope \(b\)</label><span class="val" id="bVal"></span></div>
+            <input type="range" id="b" min="0.4" max="3" step="0.05" value="1.2" />
+          </div>
+          <div class="control">
+            <div class="control-head"><label for="cI">Incumbent marginal cost \(c_I\)</label><span class="val" id="cIVal"></span></div>
+            <input type="range" id="cI" min="5" max="70" step="1" value="24" />
+          </div>
+          <div class="control">
+            <div class="control-head"><label for="cE">Entrant marginal cost \(c_E\)</label><span class="val" id="cEVal"></span></div>
+            <input type="range" id="cE" min="5" max="80" step="1" value="32" />
+          </div>
+          <div class="control">
+            <div class="control-head"><label for="F">Entrant sunk entry cost \(F_E\)</label><span class="val" id="FVal"></span></div>
+            <input type="range" id="F" min="0" max="1400" step="10" value="420" />
+          </div>
+          <div class="control">
+            <div class="control-head"><label for="s">Incumbent capacity cost \(s\)</label><span class="val" id="sVal"></span></div>
+            <input type="range" id="s" min="0" max="10" step="0.1" value="2.2" />
+          </div>
+          <div class="control">
+            <div class="control-head"><label for="K">Committed capacity / output \(K\)</label><span class="val" id="KVal"></span></div>
+            <input type="range" id="K" min="0" max="100" step="0.5" value="48" />
+          </div>
+          <div class="control">
+            <div class="control-head"><label>Presets</label><span class="val">comparative statics</span></div>
+            <div class="toggle-row">
+              <button class="chip" data-preset="weak">Weak barriers</button>
+              <button class="chip" data-preset="sunk">High sunk cost</button>
+              <button class="chip" data-preset="efficient">Efficient entrant</button>
+              <button class="chip" data-preset="capacity">Excess capacity</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <section class="kpi-grid">
+          <div class="kpi">
+            <div class="name">Limit price</div>
+            <div class="num" id="limitPriceKpi">—</div>
+            <div class="hint">Price implied by incumbent commitment, \(p(K)=a-bK\).</div>
+          </div>
+          <div class="kpi">
+            <div class="name">Entrant net profit</div>
+            <div class="num" id="entrantKpi">—</div>
+            <div class="hint" id="entrantHint">—</div>
+          </div>
+          <div class="kpi">
+            <div class="name">Incumbent payoff</div>
+            <div class="num" id="incumbentKpi">—</div>
+            <div class="hint">Net of capacity cost. Compare with monopoly and accommodation.</div>
+          </div>
+          <div class="kpi">
+            <div class="name">Excess capacity</div>
+            <div class="num" id="excessKpi">—</div>
+            <div class="hint">Capacity above monopoly quantity, \(\max\{K-q^M,0\}\).</div>
+          </div>
+        </section>
+
+        <section class="chart-grid">
+          <div class="chart-card card wide">
+            <div class="chart-head">
+              <div>
+                <div class="chart-title">Market geometry: demand, residual demand, and limit price</div>
+                <div class="chart-note">The incumbent's committed capacity shifts the entrant onto residual demand. More capacity lowers the residual profit available to the entrant.</div>
+              </div>
+            </div>
+            <svg id="marketSvg" class="chart" role="img" aria-label="Market graph"></svg>
+            <div class="legend">
+              <span><i class="dot"></i> market demand</span>
+              <span><i class="dot purple"></i> entrant residual demand</span>
+              <span><i class="dot orange"></i> marginal costs</span>
+              <span><i class="dot bad"></i> deterrence threshold</span>
+              <span><i class="dot good"></i> monopoly benchmark</span>
+            </div>
+          </div>
+
+          <div class="chart-card card">
+            <div class="chart-head">
+              <div>
+                <div class="chart-title">Entrant's entry condition</div>
+                <div class="chart-note">Entry happens only when variable profit exceeds the sunk cost of entry.</div>
+              </div>
+            </div>
+            <svg id="entrantSvg" class="chart" role="img" aria-label="Entrant profit graph"></svg>
+            <div class="legend">
+              <span><i class="dot purple"></i> variable profit</span>
+              <span><i class="dot bad"></i> sunk cost</span>
+              <span><i class="dot"></i> current \(K\)</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="chart-card card wide">
+          <div class="chart-head">
+            <div>
+              <div class="chart-title">Incumbent payoff: deterrence may be costly</div>
+              <div class="chart-note">Limit pricing is attractive only if the profit from deterring entry exceeds the profit from accommodating entry and the cost of maintaining capacity.</div>
+            </div>
+          </div>
+          <svg id="payoffSvg" class="chart" role="img" aria-label="Incumbent payoff graph"></svg>
+          <div class="legend">
+            <span><i class="dot good"></i> no entry payoff</span>
+            <span><i class="dot bad"></i> entry payoff</span>
+            <span><i class="dot orange"></i> monopoly payoff</span>
+            <span><i class="dot"></i> current \(K\)</span>
+          </div>
+        </section>
+
+        <section class="model-card card" id="model">
+          <div class="panel-title">
+            <div>
+              <h2>The model</h2>
+              <div class="small">A compact residual-demand entry game.</div>
+            </div>
+          </div>
+          <div class="model-grid">
+            <div class="equation-box">
+              <div class="eq-title">Market demand</div>
+              <div class="equation">\(P(Q)=a-bQ\)</div>
+              <div class="eq-text">A larger total quantity reduces price. The incumbent chooses committed capacity/output \(K\).</div>
+            </div>
+            <div class="equation-box">
+              <div class="eq-title">Entrant residual demand</div>
+              <div class="equation">\(P_E(q_E;K)=a-b(K+q_E)\)</div>
+              <div class="eq-text">After the incumbent's commitment, the entrant can sell only into the residual market.</div>
+            </div>
+            <div class="equation-box">
+              <div class="eq-title">Entrant's best response</div>
+              <div class="equation">\(q_E^*(K)=\max\left\{\dfrac{a-c_E-bK}{2b},0\right\}\)</div>
+              <div class="eq-text">The entrant enters only if this opportunity is large enough to cover the sunk cost.</div>
+            </div>
+            <div class="equation-box">
+              <div class="eq-title">Entry-deterrence threshold</div>
+              <div class="equation">\(K^D=\max\left\{\dfrac{a-c_E-2\sqrt{bF_E}}{b},0\right\}\)</div>
+              <div class="eq-text">Capacity at least \(K^D\) makes entrant variable profit no larger than \(F_E\).</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="model-card card" id="intuition">
+          <div class="panel-title">
+            <div>
+              <h2>Strategic logic</h2>
+              <div class="small">What makes a barrier credible?</div>
+            </div>
+          </div>
+          <div class="flow">
+            <div class="node">
+              <div class="step">1</div>
+              <div class="label">Incumbent commits</div>
+              <div class="desc">Capacity is installed before entry and is costly to reverse.</div>
+            </div>
+            <div class="node">
+              <div class="step">2</div>
+              <div class="label">Entrant observes</div>
+              <div class="desc">The entrant computes residual demand after the incumbent's committed capacity.</div>
+            </div>
+            <div class="node">
+              <div class="step">3</div>
+              <div class="label">Entry test</div>
+              <div class="desc">Enter when variable profit exceeds the sunk entry cost.</div>
+            </div>
+            <div class="node">
+              <div class="step">4</div>
+              <div class="label">Price adjusts</div>
+              <div class="desc">Limit pricing is credible when the low price is backed by a sunk commitment.</div>
+            </div>
+          </div>
+
+          <div style="height:14px"></div>
+          <div class="insight-grid">
+            <div class="insight">
+              <strong>Sunk costs create hysteresis.</strong>
+              <p>Once entry requires an irreversible cost, the entrant needs strictly positive operating profit before entry is worthwhile.</p>
+            </div>
+            <div class="insight">
+              <strong>Excess capacity changes beliefs.</strong>
+              <p>A promise to fight entry is cheap talk unless capacity makes aggressive post-entry output feasible and credible.</p>
+            </div>
+            <div class="insight">
+              <strong>Limit pricing is not free.</strong>
+              <p>The incumbent sacrifices current price or pays capacity cost. Deterrence is rational only when this sacrifice is smaller than the loss from entry.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="scenario-row">
+          <div class="scenario card">
+            <h3>Structural barrier</h3>
+            <p id="structuralText">—</p>
+          </div>
+          <div class="scenario card">
+            <h3>Strategic barrier</h3>
+            <p id="strategicText">—</p>
+          </div>
+        </section>
+
+        <div class="footer">Interactive teaching app · linear demand · residual-demand entry deterrence · KaTeX formulas</div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const els = {};
+    const ids = ['a','b','cI','cE','F','s','K','aVal','bVal','cIVal','cEVal','FVal','sVal','KVal','outcomeText','statusBadge','outcomeExplanation','kdHero','excessBadge','limitPriceHero','limitPriceKpi','entrantKpi','entrantHint','incumbentKpi','excessKpi','marketSvg','entrantSvg','payoffSvg','resetBtn','themeBtn','structuralText','strategicText'];
+    ids.forEach(id => els[id] = document.getElementById(id));
+
+    const defaults = { a:120, b:1.2, cI:24, cE:32, F:420, s:2.2, K:48 };
+    const presets = {
+      weak: { a:120, b:1.2, cI:24, cE:30, F:80, s:1.2, K:38 },
+      sunk: { a:120, b:1.2, cI:24, cE:32, F:1050, s:2.2, K:34 },
+      efficient: { a:120, b:1.2, cI:30, cE:18, F:260, s:2.0, K:52 },
+      capacity: { a:120, b:1.2, cI:24, cE:32, F:420, s:2.2, K:62 }
+    };
+
+    function n(x, d=1){ return Number(x).toFixed(d); }
+    function money(x){
+      if (!isFinite(x)) return '—';
+      const sign = x < 0 ? '−' : '';
+      return sign + Math.abs(x).toFixed(Math.abs(x) >= 100 ? 0 : 1);
+    }
+    function clamp(x, lo, hi){ return Math.max(lo, Math.min(hi, x)); }
+    function params(){
+      return {
+        a: +els.a.value,
+        b: +els.b.value,
+        cI: +els.cI.value,
+        cE: +els.cE.value,
+        F: +els.F.value,
+        s: +els.s.value,
+        K: +els.K.value
+      };
+    }
+    function setParams(p){
+      Object.keys(p).forEach(k => { if (els[k]) els[k].value = p[k]; });
+      update();
+    }
+
+    function compute(p){
+      const {a,b,cI,cE,F,s,K} = p;
+      const qM = Math.max((a - cI - s) / (2*b), 0);
+      const pM = Math.max(a - b*qM, 0);
+      const piM = (pM - cI) * qM - s*qM;
+      const root = Math.sqrt(Math.max(b*F, 0));
+      const KDraw = (a - cE - 2*root) / b;
+      const KD = Math.max(KDraw, 0);
+      const pD = a - b*KD;
+      const qE = Math.max((a - cE - b*K) / (2*b), 0);
+      const varPiE = Math.max(Math.pow(a - cE - b*K, 2) / (4*b), 0);
+      const netPiE = varPiE - F;
+      const enters = qE > 0.0001 && netPiE > 0.0001;
+      const Q = K + (enters ? qE : 0);
+      const price = Math.max(a - b*Q, 0);
+      const limitP = Math.max(a - b*K, 0);
+      const piI_noEntry = (limitP - cI) * K - s*K;
+      const piI_entry = (price - cI) * K - s*K;
+      const piI = enters ? piI_entry : piI_noEntry;
+      const excess = Math.max(K - qM, 0);
+      const requiredExtra = Math.max(KD - qM, 0);
+      return { qM, pM, piM, KD, pD, qE, varPiE, netPiE, enters, Q, price, limitP, piI_noEntry, piI_entry, piI, excess, requiredExtra };
+    }
+
+    function svgEl(name, attrs={}){
+      const e = document.createElementNS('http://www.w3.org/2000/svg', name);
+      Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k,v));
+      return e;
+    }
+    function clear(svg){ while(svg.firstChild) svg.removeChild(svg.firstChild); }
+    function linePath(points){
+      return points.map((p,i) => `${i?'L':'M'}${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' ');
+    }
+    function areaPath(points, baseY){
+      if (!points.length) return '';
+      return `M${points[0][0].toFixed(2)},${baseY.toFixed(2)} L` + points.map(p => `${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' L') + ` L${points[points.length-1][0].toFixed(2)},${baseY.toFixed(2)} Z`;
+    }
+    function chart(svg, xMax, yMax, labels={x:'quantity', y:'price'}){
+      clear(svg);
+      const W = svg.clientWidth || 800, H = svg.clientHeight || 390;
+      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      const m = {l:58, r:24, t:24, b:48};
+      const iw = W-m.l-m.r, ih = H-m.t-m.b;
+      const x = v => m.l + (v/xMax)*iw;
+      const y = v => m.t + ih - (v/yMax)*ih;
+      for(let i=0;i<=5;i++){
+        const xv = xMax*i/5, yv = yMax*i/5;
+        svg.appendChild(svgEl('line',{x1:x(xv),y1:m.t,x2:x(xv),y2:m.t+ih,class:'grid-line'}));
+        svg.appendChild(svgEl('line',{x1:m.l,y1:y(yv),x2:m.l+iw,y2:y(yv),class:'grid-line'}));
+        const tx = svgEl('text',{x:x(xv),y:H-24,'text-anchor':'middle',class:'tick-label'}); tx.textContent = Math.round(xv); svg.appendChild(tx);
+        const ty = svgEl('text',{x:42,y:y(yv)+4,'text-anchor':'end',class:'tick-label'}); ty.textContent = Math.round(yv); svg.appendChild(ty);
+      }
+      svg.appendChild(svgEl('line',{x1:m.l,y1:m.t+ih,x2:m.l+iw,y2:m.t+ih,class:'axis'}));
+      svg.appendChild(svgEl('line',{x1:m.l,y1:m.t,x2:m.l,y2:m.t+ih,class:'axis'}));
+      const xl = svgEl('text',{x:m.l+iw/2,y:H-6,'text-anchor':'middle',class:'axis-label'}); xl.textContent = labels.x; svg.appendChild(xl);
+      const yl = svgEl('text',{x:15,y:m.t+ih/2,transform:`rotate(-90 15 ${m.t+ih/2})`,'text-anchor':'middle',class:'axis-label'}); yl.textContent = labels.y; svg.appendChild(yl);
+      return {W,H,m,iw,ih,x,y,svg,xMax,yMax};
+    }
+    function addText(svg, txt, x, y, cls='annotation', anchor='middle'){
+      const t = svgEl('text',{x,y,'text-anchor':anchor,class:cls});
+      t.textContent = txt; svg.appendChild(t); return t;
+    }
+    function addCircle(svg, cx, cy, r, fill){
+      const c = svgEl('circle',{cx,cy,r,fill,stroke:'var(--chart-bg)','stroke-width':2}); svg.appendChild(c); return c;
+    }
+
+    function drawMarket(p, c){
+      const svg = els.marketSvg;
+      const qIntercept = Math.max(p.a/p.b, 1);
+      const xMax = Math.max(qIntercept*1.02, c.KD*1.25, p.K*1.25, c.qM*1.25, 70);
+      const yMax = Math.max(p.a*1.08, p.cE*1.3, p.cI*1.3, 80);
+      const g = chart(svg, xMax, yMax, {x:'quantity Q', y:'price P'});
+      const ptsDemand = [];
+      for(let i=0;i<=180;i++){
+        const q = xMax*i/180;
+        ptsDemand.push([g.x(q), g.y(Math.max(p.a - p.b*q, 0))]);
+      }
+      svg.appendChild(svgEl('path',{d:linePath(ptsDemand),class:'demand'}));
+
+      const residualPts = [];
+      for(let i=0;i<=160;i++){
+        const qe = Math.max(0, (xMax-p.K)*i/160);
+        const P = Math.max(p.a - p.b*(p.K + qe), 0);
+        residualPts.push([g.x(p.K+qe), g.y(P)]);
+      }
+      svg.appendChild(svgEl('path',{d:linePath(residualPts),class:'residual'}));
+
+      svg.appendChild(svgEl('line',{x1:g.x(0),y1:g.y(p.cI),x2:g.x(xMax),y2:g.y(p.cI),class:'mc'}));
+      svg.appendChild(svgEl('line',{x1:g.x(0),y1:g.y(p.cE),x2:g.x(xMax),y2:g.y(p.cE),class:'mc',opacity:0.68}));
+      addText(svg,'c_I',g.x(xMax)-8,g.y(p.cI)-8,'annotation-muted','end');
+      addText(svg,'c_E',g.x(xMax)-8,g.y(p.cE)-8,'annotation-muted','end');
+
+      if(c.KD > 0 && c.KD < xMax){
+        svg.appendChild(svgEl('line',{x1:g.x(c.KD),y1:g.y(0),x2:g.x(c.KD),y2:g.y(yMax),class:'barrier'}));
+        addText(svg,'Kᴰ',g.x(c.KD)+6,g.y(yMax*0.94),'annotation','start');
+      }
+      if(c.qM > 0 && c.qM < xMax){
+        svg.appendChild(svgEl('line',{x1:g.x(c.qM),y1:g.y(0),x2:g.x(c.qM),y2:g.y(yMax),class:'mono'}));
+        addText(svg,'qᴹ',g.x(c.qM)+6,g.y(yMax*0.86),'annotation','start');
+      }
+      const Kx = g.x(p.K), Py = g.y(c.limitP);
+      svg.appendChild(svgEl('line',{x1:Kx,y1:g.y(0),x2:Kx,y2:Py,class:'current'}));
+      svg.appendChild(svgEl('line',{x1:g.x(0),y1:Py,x2:Kx,y2:Py,class:'current',opacity:0.55}));
+      addCircle(svg,Kx,Py,5,'var(--text)');
+      addText(svg,`p(K)=${money(c.limitP)}`,Kx+10,Py-12,'annotation','start');
+      addText(svg,`K=${n(p.K,1)}`,Kx+8,g.y(0)-10,'annotation','start');
+
+      if(c.enters && c.qE > 0){
+        const Ex = g.x(p.K + c.qE), Ey = g.y(c.price);
+        svg.appendChild(svgEl('line',{x1:Ex,y1:g.y(0),x2:Ex,y2:Ey,class:'residual',opacity:0.45}));
+        svg.appendChild(svgEl('line',{x1:g.x(0),y1:Ey,x2:Ex,y2:Ey,class:'residual',opacity:0.35}));
+        addCircle(svg,Ex,Ey,5,'var(--accent-2)');
+        addText(svg,`entry q_E=${n(c.qE,1)}`,Ex+8,Ey+18,'annotation','start');
+      }
+    }
+
+    function drawEntrant(p, c){
+      const svg = els.entrantSvg;
+      const qIntercept = Math.max((p.a - p.cE)/p.b, 1);
+      const xMax = Math.max(qIntercept*1.15, p.K*1.25, c.KD*1.2, 60);
+      let maxPi = p.F;
+      for(let i=0;i<=150;i++){
+        const K = xMax*i/150;
+        const v = Math.max(Math.pow(p.a - p.cE - p.b*K, 2)/(4*p.b),0);
+        maxPi = Math.max(maxPi, v);
+      }
+      const yMax = Math.max(maxPi*1.18, 100);
+      const g = chart(svg, xMax, yMax, {x:'incumbent capacity K', y:'entrant profit'});
+
+      const entryArea = [], deterArea=[];
+      for(let i=0;i<=180;i++){
+        const K = xMax*i/180;
+        const v = Math.max(Math.pow(p.a - p.cE - p.b*K, 2)/(4*p.b),0);
+        if(v > p.F) entryArea.push([g.x(K), g.y(v)]);
+        else deterArea.push([g.x(K), g.y(v)]);
+      }
+      const allPts = [];
+      for(let i=0;i<=180;i++){
+        const K = xMax*i/180;
+        const v = Math.max(Math.pow(p.a - p.cE - p.b*K, 2)/(4*p.b),0);
+        allPts.push([g.x(K), g.y(v)]);
+      }
+      const baseY = g.y(0);
+      const above = allPts.filter((pt, idx) => {
+        const K = xMax*idx/180;
+        const v = Math.max(Math.pow(p.a - p.cE - p.b*K, 2)/(4*p.b),0);
+        return v >= p.F;
+      });
+      // segmented shading
+      let segment=[];
+      for(let i=0;i<=180;i++){
+        const K = xMax*i/180;
+        const v = Math.max(Math.pow(p.a - p.cE - p.b*K, 2)/(4*p.b),0);
+        const pt=[g.x(K), g.y(v)];
+        if(v>=p.F){ segment.push(pt); }
+        else { if(segment.length>1){ svg.appendChild(svgEl('path',{d:areaPath(segment, g.y(p.F)),class:'area-bad'})); } segment=[]; }
+      }
+      if(segment.length>1) svg.appendChild(svgEl('path',{d:areaPath(segment, g.y(p.F)),class:'area-bad'}));
+      svg.appendChild(svgEl('path',{d:linePath(allPts),class:'residual'}));
+      svg.appendChild(svgEl('line',{x1:g.x(0),y1:g.y(p.F),x2:g.x(xMax),y2:g.y(p.F),class:'barrier'}));
+      addText(svg,'F_E',g.x(xMax)-8,g.y(p.F)-8,'annotation','end');
+      if(c.KD > 0 && c.KD < xMax){
+        svg.appendChild(svgEl('line',{x1:g.x(c.KD),y1:g.y(0),x2:g.x(c.KD),y2:g.y(yMax),class:'barrier',opacity:0.8}));
+        addText(svg,'entry just deterred',g.x(c.KD)+8,g.y(yMax*0.88),'annotation','start');
+      }
+      const currentV = c.varPiE;
+      svg.appendChild(svgEl('line',{x1:g.x(p.K),y1:g.y(0),x2:g.x(p.K),y2:g.y(yMax),class:'current'}));
+      addCircle(svg,g.x(p.K),g.y(Math.min(currentV,yMax)),5,c.enters?'var(--bad)':'var(--good)');
+      addText(svg,c.enters?'entry profitable':'entry deterred',g.x(p.K)+8,g.y(Math.min(currentV,yMax))-10,'annotation','start');
+    }
+
+    function drawPayoff(p, c){
+      const svg = els.payoffSvg;
+      const qIntercept = Math.max(p.a/p.b, 1);
+      const xMax = Math.max(qIntercept*1.02, p.K*1.25, c.KD*1.25, c.qM*1.2, 70);
+      let minY = 0, maxY = c.piM;
+      const data = [];
+      for(let i=0;i<=220;i++){
+        const K = xMax*i/220;
+        const qE = Math.max((p.a - p.cE - p.b*K)/(2*p.b), 0);
+        const varPiE = Math.max(Math.pow(p.a - p.cE - p.b*K, 2)/(4*p.b),0);
+        const enters = qE > 0.0001 && (varPiE - p.F) > 0.0001;
+        const priceNo = Math.max(p.a - p.b*K, 0);
+        const priceEnt = Math.max(p.a - p.b*(K+qE), 0);
+        const piNo = (priceNo - p.cI)*K - p.s*K;
+        const piEnt = (priceEnt - p.cI)*K - p.s*K;
+        const pi = enters ? piEnt : piNo;
+        data.push({K, pi, enters, piNo, piEnt});
+        minY = Math.min(minY, pi, piNo, piEnt);
+        maxY = Math.max(maxY, pi, piNo, piEnt);
+      }
+      const pad = Math.max((maxY-minY)*0.15, 50);
+      minY -= pad; maxY += pad;
+      const g = chart(svg, xMax, maxY-minY, {x:'incumbent capacity K', y:'incumbent payoff'});
+      const y = val => g.y(val - minY);
+      // relabel y ticks because chart function starts at 0
+      const labels = svg.querySelectorAll('.tick-label');
+      labels.forEach((t, idx) => {
+        if(idx % 2 === 1) {}
+      });
+      // overwrite left tick labels robustly
+      [...svg.querySelectorAll('text.tick-label')].forEach(t => {
+        if(+t.getAttribute('x') === 42){
+          const ypix = +t.getAttribute('y') - 4;
+          const share = (g.m.t+g.ih - ypix)/g.ih;
+          t.textContent = Math.round(minY + share*(maxY-minY));
+        }
+      });
+
+      let seg=[]; let state=null;
+      function flush(){
+        if(seg.length>1){ svg.appendChild(svgEl('path',{d:linePath(seg),class:state?'barrier':'mono'})); }
+        seg=[];
+      }
+      data.forEach(d => {
+        const pt=[g.x(d.K), y(d.pi)];
+        if(state===null) state=d.enters;
+        if(d.enters!==state){ flush(); state=d.enters; }
+        seg.push(pt);
+      });
+      flush();
+      svg.appendChild(svgEl('line',{x1:g.x(0),y1:y(c.piM),x2:g.x(xMax),y2:y(c.piM),class:'mc',opacity:0.8}));
+      addText(svg,'monopoly payoff',g.x(xMax)-10,y(c.piM)-8,'annotation-muted','end');
+      if(c.KD > 0 && c.KD < xMax){
+        svg.appendChild(svgEl('line',{x1:g.x(c.KD),y1:g.y(0),x2:g.x(c.KD),y2:g.y(maxY-minY),class:'barrier',opacity:0.6}));
+      }
+      svg.appendChild(svgEl('line',{x1:g.x(p.K),y1:g.y(0),x2:g.x(p.K),y2:g.y(maxY-minY),class:'current'}));
+      addCircle(svg,g.x(p.K),y(c.piI),5,'var(--text)');
+      addText(svg,`π_I=${money(c.piI)}`,g.x(p.K)+8,y(c.piI)-10,'annotation','start');
+    }
+
+    function updateText(p, c){
+      els.aVal.textContent = n(p.a,0);
+      els.bVal.textContent = n(p.b,2);
+      els.cIVal.textContent = n(p.cI,0);
+      els.cEVal.textContent = n(p.cE,0);
+      els.FVal.textContent = n(p.F,0);
+      els.sVal.textContent = n(p.s,1);
+      els.KVal.textContent = n(p.K,1);
+      const maxK = Math.max(100, Math.ceil(p.a/p.b*1.05));
+      els.K.max = maxK;
+
+      els.outcomeText.textContent = c.enters ? 'Entry' : 'Deterrence';
+      els.statusBadge.textContent = c.enters ? 'entrant enters' : 'entry blocked';
+      els.statusBadge.className = 'status-badge ' + (c.enters ? 'bad' : 'good');
+      els.outcomeExplanation.textContent = c.enters
+        ? `The entrant earns net profit ${money(c.netPiE)}, so the sunk cost is covered and entry is rational.`
+        : `The entrant earns net profit ${money(c.netPiE)}, so the sunk entry cost is not covered.`;
+
+      els.kdHero.textContent = n(c.KD,1);
+      els.excessBadge.textContent = c.requiredExtra > 0 ? `+${n(c.requiredExtra,1)} above qᴹ` : 'no excess needed';
+      els.excessBadge.className = 'status-badge ' + (c.requiredExtra > 0 ? 'bad' : 'good');
+      els.limitPriceHero.textContent = `The just-deterring limit price is pᴰ = ${money(c.pD)}. Current p(K) = ${money(c.limitP)}.`;
+
+      els.limitPriceKpi.textContent = money(c.limitP);
+      els.entrantKpi.textContent = money(c.netPiE);
+      els.entrantHint.textContent = `Variable profit ${money(c.varPiE)} minus sunk cost ${money(p.F)}.`;
+      els.incumbentKpi.textContent = money(c.piI);
+      els.excessKpi.textContent = n(c.excess,1);
+
+      const structural = p.F > 850
+        ? 'High sunk entry costs are doing much of the work. Even without very aggressive capacity, the entrant needs a large operating profit to justify entry.'
+        : p.F < 160
+          ? 'Structural barriers are weak here. Because the sunk cost is small, the entrant can enter even with modest residual demand.'
+          : 'The sunk cost matters, but it does not automatically block entry. The incumbent still needs price or capacity discipline.';
+      els.structuralText.textContent = structural;
+      const strategic = p.K >= c.KD && c.KD > c.qM
+        ? 'The incumbent is using excess capacity as a strategic barrier. The key question is whether the deterrence payoff compensates for lower price and capacity cost.'
+        : p.K >= c.KD
+          ? 'The chosen capacity deters entry without requiring much excess capacity. Limit pricing is relatively cheap in this configuration.'
+          : 'The incumbent has not committed enough capacity to make residual demand unattractive. A mere low-price threat would not be credible here.';
+      els.strategicText.textContent = strategic;
+    }
+
+    let renderTimer = null;
+    function renderMath(){
+      clearTimeout(renderTimer);
+      renderTimer = setTimeout(() => {
+        if(window.renderMathInElement){
+          renderMathInElement(document.body, {
+            delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+            ],
+            throwOnError: false
+          });
+        }
+      }, 30);
+    }
+
+    function update(){
+      const p = params();
+      const c = compute(p);
+      updateText(p,c);
+      drawMarket(p,c);
+      drawEntrant(p,c);
+      drawPayoff(p,c);
+    }
+
+    ['a','b','cI','cE','F','s','K'].forEach(id => els[id].addEventListener('input', update));
+    els.resetBtn.addEventListener('click', () => setParams(defaults));
+    els.themeBtn.addEventListener('click', () => {
+      const body = document.body;
+      body.dataset.theme = body.dataset.theme === 'dark' ? 'light' : 'dark';
+      update();
+    });
+    document.querySelectorAll('[data-preset]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-preset]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        setParams(presets[btn.dataset.preset]);
+      });
+    });
+    window.addEventListener('resize', () => update());
+    window.addEventListener('load', () => { update(); renderMath(); });
+    update();
+  </script>
+</body>
+</html>
