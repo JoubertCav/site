@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive microeconomics diagram for Walrasian equilibrium: common budget line, supporting prices, market clearing, and competitive allocations.">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <title>Walrasian Equilibrium | GE and Welfare Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <style>
+    :root {
+      --bg: #f7f1e6;
+      --bg-soft: #f1eadc;
+      --card: rgba(255, 253, 247, 0.92);
+      --card-solid: #fffdf7;
+      --panel: #fbf7ef;
+      --text: #17201d;
+      --muted: #6c766f;
+      --faint: rgba(23, 32, 29, 0.08);
+      --border: rgba(23, 32, 29, 0.13);
+      --grid: rgba(23, 32, 29, 0.075);
+      --shadow: 0 22px 55px rgba(63, 51, 31, 0.11);
+      --accent: #25877d;
+      --accent-2: #b57937;
+      --accent-3: #b85c50;
+      --good: #3b9a73;
+      --warn: #b57937;
+      --bad: #b85c50;
+      --radius: 22px;
+      --sidebar: 326px;
+    }
+
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #080d12;
+      --bg-soft: #0c141b;
+      --card: rgba(15, 23, 30, 0.86);
+      --card-solid: #111a22;
+      --panel: #0d151d;
+      --text: #eef6f3;
+      --muted: #9cafaa;
+      --faint: rgba(206, 227, 221, 0.075);
+      --border: rgba(173, 202, 195, 0.145);
+      --grid: rgba(182, 211, 204, 0.055);
+      --shadow: 0 26px 78px rgba(0, 0, 0, 0.48);
+      --accent: #7dd7c8;
+      --accent-2: #d5b06d;
+      --accent-3: #e5867c;
+      --good: #83dcaf;
+      --warn: #d5b06d;
+      --bad: #e5867c;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 32rem),
+        radial-gradient(circle at 100% 12%, color-mix(in srgb, var(--accent-2) 13%, transparent), transparent 32rem),
+        linear-gradient(140deg, var(--bg), var(--bg-soft));
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+
+    button, input, select { font: inherit; }
+
+    .shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: var(--sidebar) minmax(0, 1fr);
+      gap: 18px;
+      padding: 18px;
+    }
+
+    aside, .hero, .box-card, .readout-card, .info-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      border-radius: var(--radius);
+    }
+
+    aside {
+      padding: 18px;
+      max-height: calc(100vh - 36px);
+      overflow: auto;
+      position: sticky;
+      top: 18px;
+    }
+
+    .main {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: auto minmax(560px, 1fr) auto;
+      gap: 18px;
+    }
+
+    .hero {
+      padding: 20px 22px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.74rem;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 680;
+      letter-spacing: -0.045em;
+      line-height: 1.03;
+      font-size: clamp(2rem, 4.2vw, 3.55rem);
+    }
+
+    h2 {
+      font-size: 0.98rem;
+      letter-spacing: -0.015em;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      margin: 20px 0 10px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      max-width: 880px;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+
+    .theme-toggle {
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--panel) 88%, transparent);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .small-note {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .math-card {
+      background: color-mix(in srgb, var(--panel) 88%, transparent);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 13px 14px;
+      overflow-x: auto;
+    }
+
+    .math-card .katex { font-size: 1.02rem; }
+
+    .control {
+      padding: 11px 0;
+      border-bottom: 1px solid var(--faint);
+    }
+
+    .control:last-child { border-bottom: none; }
+
+    .control label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      margin-bottom: 7px;
+    }
+
+    .control strong {
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+      font-weight: 760;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    .button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--panel) 90%, transparent);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 11px 12px;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease, border 0.15s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+    }
+
+    .btn.primary {
+      background: color-mix(in srgb, var(--accent) 18%, var(--panel));
+      border-color: color-mix(in srgb, var(--accent) 52%, var(--border));
+    }
+
+    .stage {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .box-card {
+      padding: 16px;
+      min-height: 560px;
+      display: grid;
+    }
+
+    .svg-wrap {
+      min-height: 530px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
+      background:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+        color-mix(in srgb, var(--panel) 84%, transparent);
+      background-size: 32px 32px;
+    }
+
+    svg { width: 100%; height: 100%; display: block; }
+
+    [data-theme="dark"] body {
+      background:
+        radial-gradient(circle at 18% 0%, rgba(125, 215, 200, 0.105), transparent 34rem),
+        radial-gradient(circle at 100% 8%, rgba(213, 176, 109, 0.075), transparent 34rem),
+        linear-gradient(145deg, #080d12 0%, #0a1117 42%, #0c141b 100%);
+    }
+
+    [data-theme="dark"] aside,
+    [data-theme="dark"] .hero,
+    [data-theme="dark"] .box-card,
+    [data-theme="dark"] .readout-card,
+    [data-theme="dark"] .info-card {
+      background: linear-gradient(180deg, rgba(17, 26, 34, 0.90), rgba(13, 20, 27, 0.86));
+      border-color: rgba(173, 202, 195, 0.14);
+      box-shadow: 0 26px 78px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.035);
+    }
+
+    [data-theme="dark"] .hero {
+      background:
+        radial-gradient(circle at 14% 0%, rgba(125, 215, 200, 0.105), transparent 28rem),
+        linear-gradient(180deg, rgba(18, 28, 36, 0.94), rgba(13, 20, 27, 0.88));
+    }
+
+    [data-theme="dark"] .svg-wrap {
+      background:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+        radial-gradient(circle at 48% 42%, rgba(125, 215, 200, 0.045), transparent 34rem),
+        #0b1218;
+      border-color: rgba(173, 202, 195, 0.14);
+    }
+
+    [data-theme="dark"] .math-card,
+    [data-theme="dark"] .btn,
+    [data-theme="dark"] .theme-toggle,
+    [data-theme="dark"] .pill {
+      background: rgba(11, 18, 24, 0.66);
+      border-color: rgba(173, 202, 195, 0.13);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.035);
+    }
+
+    [data-theme="dark"] .btn.primary {
+      background: linear-gradient(180deg, rgba(125, 215, 200, 0.18), rgba(125, 215, 200, 0.085));
+      border-color: rgba(125, 215, 200, 0.35);
+    }
+
+    [data-theme="dark"] .theme-toggle:hover,
+    [data-theme="dark"] .btn:hover {
+      background: rgba(125, 215, 200, 0.10);
+      border-color: rgba(125, 215, 200, 0.32);
+    }
+
+    [data-theme="dark"] input[type="range"] {
+      accent-color: #7dd7c8;
+    }
+
+    [data-theme="dark"] .budget {
+      stroke: rgba(238, 246, 243, 0.88);
+      opacity: 0.82;
+    }
+
+    [data-theme="dark"] .boxStroke {
+      stroke: rgba(238, 246, 243, 0.82);
+    }
+
+    [data-theme="dark"] .curveA { stroke: #7dd7c8; }
+    [data-theme="dark"] .curveB { stroke: #d5b06d; }
+    [data-theme="dark"] .contract { stroke: #e5867c; opacity: 0.72; }
+    [data-theme="dark"] .thinLine { stroke: rgba(173, 202, 195, 0.105); }
+    [data-theme="dark"] .axisText,
+    [data-theme="dark"] .tinyText { fill: #9cafaa; }
+    [data-theme="dark"] .titleText { fill: #eef6f3; }
+
+    .legend {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      pointer-events: none;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      background: color-mix(in srgb, var(--card-solid) 84%, transparent);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: 0.79rem;
+      backdrop-filter: blur(12px);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .dot.gold { background: var(--accent-2); }
+    .dot.red { background: var(--accent-3); }
+    .dot.dark { background: var(--text); }
+
+    .readout {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .readout-card, .info-card {
+      box-shadow: none;
+      padding: 16px;
+    }
+
+    .metric {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 14px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--faint);
+      font-size: 0.9rem;
+    }
+
+    .metric:last-child { border-bottom: none; }
+    .metric span:first-child { color: var(--muted); }
+    .metric span:last-child { text-align: right; font-weight: 750; font-variant-numeric: tabular-nums; }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 7px 10px;
+      margin-top: 10px;
+      font-size: 0.83rem;
+      color: var(--muted);
+    }
+
+    .status::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--bad);
+    }
+
+    .status.clear::before { background: var(--good); }
+    .status.near::before { background: var(--warn); }
+
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1.08fr 1fr 1fr;
+      gap: 18px;
+    }
+
+    ul { margin: 0; padding-left: 18px; color: var(--muted); }
+    li { margin: 7px 0; }
+
+    .axisText { fill: var(--muted); font-size: 13px; }
+    .titleText { fill: var(--text); font-size: 14px; font-weight: 750; }
+    .tinyText { fill: var(--muted); font-size: 12px; }
+    .curveA { fill: none; stroke: var(--accent); stroke-width: 2.25; }
+    .curveB { fill: none; stroke: var(--accent-2); stroke-width: 2.25; }
+    .budget { fill: none; stroke: var(--text); stroke-width: 2.2; stroke-dasharray: 7 7; opacity: 0.9; }
+    .contract { fill: none; stroke: var(--accent-3); stroke-width: 2.5; opacity: 0.78; }
+    .thinLine { stroke: var(--border); stroke-width: 1; }
+    .boxStroke { stroke: var(--text); stroke-width: 2; fill: none; }
+    .demandA { fill: var(--accent); stroke: var(--card-solid); stroke-width: 3; }
+    .demandB { fill: var(--accent-2); stroke: var(--card-solid); stroke-width: 3; }
+    .endowment { fill: var(--accent-3); stroke: var(--card-solid); stroke-width: 3; cursor: grab; }
+    .eqPoint { fill: var(--text); stroke: var(--card-solid); stroke-width: 3; }
+    .arrowLine { stroke: var(--accent-3); stroke-width: 2.2; stroke-dasharray: 4 5; fill: none; }
+    .budgetShade { fill: color-mix(in srgb, var(--accent) 10%, transparent); opacity: 0.35; }
+
+    @media (max-width: 1180px) {
+      .shell { grid-template-columns: 1fr; }
+      aside { position: static; max-height: none; }
+      .stage { grid-template-columns: 1fr; }
+      .bottom-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      .shell { padding: 10px; gap: 12px; }
+      .main { gap: 12px; }
+      .hero { flex-direction: column; }
+      .button-row { grid-template-columns: 1fr; }
+      .svg-wrap { min-height: 430px; }
+      aside, .hero, .box-card, .readout-card, .info-card { border-radius: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell" id="app" data-theme="light">
+    <aside>
+      <div class="eyebrow">Pure exchange</div>
+      <h2>Walrasian controls</h2>
+      <p class="small-note">Change endowments, CES preferences, and prices. The box shows whether individual optimal demands fit together.</p>
+
+      <h3>Aggregate resources</h3>
+      <div class="control"><label><span>Total good 1 \(\bar x_1\)</span><strong id="XbarVal"></strong></label><input id="Xbar" type="range" min="5" max="20" step="0.5" value="10"></div>
+      <div class="control"><label><span>Total good 2 \(\bar x_2\)</span><strong id="YbarVal"></strong></label><input id="Ybar" type="range" min="5" max="20" step="0.5" value="10"></div>
+
+      <h3>Initial endowment</h3>
+      <div class="control"><label><span>A owns good 1 \(\omega^A_1\)</span><strong id="wXVal"></strong></label><input id="wX" type="range" min="0.2" max="9.8" step="0.1" value="3.4"></div>
+      <div class="control"><label><span>A owns good 2 \(\omega^A_2\)</span><strong id="wYVal"></strong></label><input id="wY" type="range" min="0.2" max="9.8" step="0.1" value="6.8"></div>
+
+      <h3>Agent A preferences</h3>
+      <div class="control"><label><span>Share \(\alpha_A\)</span><strong id="aAVal"></strong></label><input id="aA" type="range" min="0.08" max="0.92" step="0.01" value="0.58"></div>
+      <div class="control"><label><span>Curvature \(\rho_A\)</span><strong id="rAVal"></strong></label><input id="rA" type="range" min="-2.5" max="0.85" step="0.01" value="-0.25"></div>
+
+      <h3>Agent B preferences</h3>
+      <div class="control"><label><span>Share \(\alpha_B\)</span><strong id="aBVal"></strong></label><input id="aB" type="range" min="0.08" max="0.92" step="0.01" value="0.36"></div>
+      <div class="control"><label><span>Curvature \(\rho_B\)</span><strong id="rBVal"></strong></label><input id="rB" type="range" min="-2.5" max="0.85" step="0.01" value="-0.25"></div>
+
+      <h3>Price system</h3>
+      <div class="control"><label><span>Relative price \(p_1/p_2\)</span><strong id="pVal"></strong></label><input id="p" type="range" min="0.15" max="8" step="0.01" value="1"></div>
+      <div class="button-row">
+        <button class="btn primary" id="eqBtn">Set supporting price</button>
+        <button class="btn" id="resetBtn">Reset</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="hero">
+        <div>
+          <div class="eyebrow">Common budget line · supporting prices · market clearing</div>
+          <h1>Walrasian equilibrium</h1>
+          <p class="subtitle">A price ratio supports a competitive allocation when both consumers maximize utility on their own budget sets and their chosen bundles are mutually feasible.</p>
+        </div>
+        <button class="theme-toggle" id="themeBtn">Dark mode</button>
+      </header>
+
+      <section class="stage">
+        <div class="box-card">
+          <div class="svg-wrap">
+            <svg id="svg" viewBox="0 0 900 640" preserveAspectRatio="xMidYMid meet"></svg>
+            <div class="legend">
+              <span class="pill"><span class="dot red"></span>Endowment \(\omega\)</span>
+              <span class="pill"><span class="dot"></span>A demand \(x^A(p)\)</span>
+              <span class="pill"><span class="dot gold"></span>B demand as A-coordinates</span>
+              <span class="pill"><span class="dot dark"></span>Walrasian allocation</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="readout">
+          <section class="readout-card">
+            <h2>Market clearing</h2>
+            <div class="metric"><span>Supporting price \(p^*_1/p^*_2\)</span><span id="pStarRead"></span></div>
+            <div class="metric"><span>Current price \(p_1/p_2\)</span><span id="pRead"></span></div>
+            <div class="metric"><span>Excess demand \(z_1(p)\)</span><span id="z1Read"></span></div>
+            <div class="metric"><span>Excess demand \(z_2(p)\)</span><span id="z2Read"></span></div>
+            <div class="metric"><span>Gap in the box</span><span id="gapRead"></span></div>
+            <div class="status" id="statusRead">not clearing</div>
+          </section>
+
+          <section class="readout-card">
+            <h2>Optimal demands</h2>
+            <div class="metric"><span>\(x^A(p)\)</span><span id="dARead"></span></div>
+            <div class="metric"><span>\(x^B(p)\)</span><span id="dBRead"></span></div>
+            <div class="metric"><span>\(MRS_A(x^A)\)</span><span id="mrsARead"></span></div>
+            <div class="metric"><span>\(MRS_B(x^B)\)</span><span id="mrsBRead"></span></div>
+          </section>
+
+          <section class="readout-card">
+            <h2>Core equation</h2>
+            <div class="math-card" id="eqFormula"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="bottom-grid">
+        <div class="info-card">
+          <h2>Symbolic structure</h2>
+          <div class="math-card" id="utilityFormula"></div>
+        </div>
+        <div class="info-card">
+          <h2>What to notice</h2>
+          <ul>
+            <li>The same line through \(\omega\) is the budget line for both agents.</li>
+            <li>At arbitrary prices, A's demand and B's demand usually identify two different points in the box.</li>
+            <li>At \(p^*\), the two demand points coincide: individual optimization becomes collective feasibility.</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h2>Exam-style summary</h2>
+          <div class="math-card" id="summaryFormula"></div>
+          <p class="small-note" style="margin-top:10px;">A Walrasian equilibrium is a price vector and feasible allocation such that every consumer maximizes utility subject to wealth generated by the endowment.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+
+    const state = {
+      dark: false,
+      Xbar: 10,
+      Ybar: 10,
+      wX: 3.4,
+      wY: 6.8,
+      aA: 0.58,
+      rA: -0.25,
+      aB: 0.36,
+      rB: -0.25,
+      p: 1
+    };
+
+    const ids = ["Xbar", "Ybar", "wX", "wY", "aA", "rA", "aB", "rB", "p"];
+
+    ids.forEach(id => $(id).addEventListener("input", e => {
+      state[id] = parseFloat(e.target.value);
+      sanitize();
+      render();
+    }));
+
+    $("themeBtn").addEventListener("click", () => {
+      state.dark = !state.dark;
+      const theme = state.dark ? "dark" : "light";
+      document.documentElement.dataset.theme = theme;
+      document.body.dataset.theme = theme;
+      $("app").dataset.theme = theme;
+      $("themeBtn").textContent = state.dark ? "Light mode" : "Dark mode";
+      render();
+    });
+
+    $("eqBtn").addEventListener("click", () => {
+      state.p = equilibriumPrice();
+      syncInputs();
+      render();
+    });
+
+    $("resetBtn").addEventListener("click", () => {
+      Object.assign(state, {Xbar:10,Ybar:10,wX:3.4,wY:6.8,aA:0.58,rA:-0.25,aB:0.36,rB:-0.25,p:1});
+      syncInputs();
+      render();
+    });
+
+    function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+    function clamp(x, lo, hi) { return Math.max(lo, Math.min(hi, x)); }
+    function fmt(x, d=2) { return Number.isFinite(x) ? x.toFixed(d) : "—"; }
+
+    function math(id, latex, display = true) {
+      const el = typeof id === "string" ? $(id) : id;
+      if (window.katex) katex.render(latex, el, { displayMode: display, throwOnError: false, strict: false });
+      else el.textContent = latex;
+    }
+
+    function renderInlineMath(root = document.body) {
+      if (!window.katex) return;
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      const nodes = [];
+      while (walker.nextNode()) {
+        if (walker.currentNode.nodeValue.includes("\\(")) nodes.push(walker.currentNode);
+      }
+      nodes.forEach(node => {
+        const frag = document.createDocumentFragment();
+        const parts = node.nodeValue.split(/(\\\([\s\S]*?\\\))/g);
+        parts.forEach(part => {
+          const m = part.match(/^\\\(([\s\S]*?)\\\)$/);
+          if (m) {
+            const span = document.createElement("span");
+            katex.render(m[1], span, {throwOnError:false, strict:false});
+            frag.appendChild(span);
+          } else frag.appendChild(document.createTextNode(part));
+        });
+        node.parentNode.replaceChild(frag, node);
+      });
+    }
+
+    function sanitize() {
+      const eps = 0.05;
+      state.Xbar = clamp(state.Xbar, 5, 20);
+      state.Ybar = clamp(state.Ybar, 5, 20);
+      state.wX = clamp(state.wX, eps, state.Xbar - eps);
+      state.wY = clamp(state.wY, eps, state.Ybar - eps);
+      $("wX").max = (state.Xbar - 0.2).toFixed(1);
+      $("wY").max = (state.Ybar - 0.2).toFixed(1);
+    }
+
+    function syncInputs() {
+      sanitize();
+      ids.forEach(id => $(id).value = state[id]);
+    }
+
+    function utility(x1, x2, a, rho) {
+      x1 = Math.max(x1, 1e-9);
+      x2 = Math.max(x2, 1e-9);
+      if (Math.abs(rho) < 0.025) return Math.pow(x1, a) * Math.pow(x2, 1 - a);
+      const inner = a * Math.pow(x1, rho) + (1 - a) * Math.pow(x2, rho);
+      return Math.pow(Math.max(inner, 1e-12), 1 / rho);
+    }
+
+    function mrs(x1, x2, a, rho) {
+      x1 = Math.max(x1, 1e-9);
+      x2 = Math.max(x2, 1e-9);
+      return (a / (1 - a)) * Math.pow(x1 / x2, rho - 1);
+    }
+
+    function demand(p, wealth, a, rho) {
+      p = Math.max(p, 1e-9);
+      const base = p * (1 - a) / a;
+      const ratio = Math.pow(Math.max(base, 1e-12), 1 / (rho - 1));
+      const x2 = wealth / (1 + p * ratio);
+      const x1 = ratio * x2;
+      return { x1, x2 };
+    }
+
+    function demandsAt(p) {
+      const mA = p * state.wX + state.wY;
+      const mB = p * (state.Xbar - state.wX) + (state.Ybar - state.wY);
+      const A = demand(p, mA, state.aA, state.rA);
+      const B = demand(p, mB, state.aB, state.rB);
+      return {A, B, z1: A.x1 + B.x1 - state.Xbar, z2: A.x2 + B.x2 - state.Ybar};
+    }
+
+    function equilibriumPrice() {
+      let lo = 0.015, hi = 80;
+      let fLo = demandsAt(lo).z1, fHi = demandsAt(hi).z1;
+      if (fLo * fHi > 0) {
+        let bestP = 1, bestVal = Infinity;
+        for (let i = 0; i < 500; i++) {
+          const p = Math.exp(Math.log(lo) + (i / 499) * (Math.log(hi) - Math.log(lo)));
+          const val = Math.abs(demandsAt(p).z1);
+          if (val < bestVal) { bestVal = val; bestP = p; }
+        }
+        return clamp(bestP, 0.15, 8);
+      }
+      for (let k = 0; k < 90; k++) {
+        const mid = Math.sqrt(lo * hi);
+        const fMid = demandsAt(mid).z1;
+        if (Math.abs(fMid) < 1e-8) return clamp(mid, 0.15, 8);
+        if (fLo * fMid <= 0) { hi = mid; fHi = fMid; }
+        else { lo = mid; fLo = fMid; }
+      }
+      return clamp(Math.sqrt(lo * hi), 0.15, 8);
+    }
+
+    function curveFromUtility(u, a, rho, who, sx, sy) {
+      const pts = [];
+      const n = 640;
+      for (let i = 1; i < n; i++) {
+        let x = (i / n) * state.Xbar;
+        let y;
+        if (Math.abs(rho) < 0.025) {
+          y = Math.pow(u / Math.pow(Math.max(x, 1e-9), a), 1 / (1 - a));
+        } else {
+          const val = (Math.pow(u, rho) - a * Math.pow(Math.max(x, 1e-9), rho)) / (1 - a);
+          if (val <= 0) continue;
+          y = Math.pow(val, 1 / rho);
+        }
+        let ax = x, ay = y;
+        if (who === "B") { ax = state.Xbar - x; ay = state.Ybar - y; }
+        if (Number.isFinite(ax) && Number.isFinite(ay) && ax >= 0 && ax <= state.Xbar && ay >= 0 && ay <= state.Ybar) pts.push([sx(ax), sy(ay)]);
+      }
+      return pts;
+    }
+
+    function contractPoint(x) {
+      let lo = 1e-4, hi = state.Ybar - 1e-4;
+      function gap(y) {
+        return Math.log(mrs(x, y, state.aA, state.rA)) - Math.log(mrs(state.Xbar - x, state.Ybar - y, state.aB, state.rB));
+      }
+      let fLo = gap(lo), fHi = gap(hi);
+      if (!Number.isFinite(fLo) || !Number.isFinite(fHi) || fLo * fHi > 0) return null;
+      for (let k = 0; k < 50; k++) {
+        const mid = 0.5 * (lo + hi);
+        const fMid = gap(mid);
+        if (Math.abs(fMid) < 1e-6) return mid;
+        if (fLo * fMid <= 0) { hi = mid; fHi = fMid; }
+        else { lo = mid; fLo = fMid; }
+      }
+      return 0.5 * (lo + hi);
+    }
+
+    function budgetSegment(p, sx, sy) {
+      const wealth = p * state.wX + state.wY;
+      const candidates = [];
+      const y0 = wealth;
+      const yX = wealth - p * state.Xbar;
+      const x0 = wealth / p;
+      const xY = (wealth - state.Ybar) / p;
+      if (y0 >= 0 && y0 <= state.Ybar) candidates.push([sx(0), sy(y0)]);
+      if (yX >= 0 && yX <= state.Ybar) candidates.push([sx(state.Xbar), sy(yX)]);
+      if (x0 >= 0 && x0 <= state.Xbar) candidates.push([sx(x0), sy(0)]);
+      if (xY >= 0 && xY <= state.Xbar) candidates.push([sx(xY), sy(state.Ybar)]);
+      const unique = [];
+      candidates.forEach(c => {
+        if (!unique.some(u => Math.hypot(u[0]-c[0], u[1]-c[1]) < 2)) unique.push(c);
+      });
+      return unique.slice(0,2);
+    }
+
+    function render() {
+      sanitize();
+      const eqP = equilibriumPrice();
+      const D = demandsAt(state.p);
+      const eqD = demandsAt(eqP);
+      const bx = state.Xbar - D.B.x1;
+      const by = state.Ybar - D.B.x2;
+      const gap = Math.hypot(D.A.x1 - bx, D.A.x2 - by);
+
+      $("XbarVal").textContent = fmt(state.Xbar, 1);
+      $("YbarVal").textContent = fmt(state.Ybar, 1);
+      $("wXVal").textContent = fmt(state.wX, 2);
+      $("wYVal").textContent = fmt(state.wY, 2);
+      $("aAVal").textContent = fmt(state.aA, 2);
+      $("rAVal").textContent = fmt(state.rA, 2);
+      $("aBVal").textContent = fmt(state.aB, 2);
+      $("rBVal").textContent = fmt(state.rB, 2);
+      $("pVal").textContent = fmt(state.p, 2);
+
+      $("pStarRead").textContent = fmt(eqP, 3);
+      $("pRead").textContent = fmt(state.p, 3);
+      $("z1Read").textContent = fmt(D.z1, 3);
+      $("z2Read").textContent = fmt(D.z2, 3);
+      $("gapRead").textContent = fmt(gap, 3);
+      $("dARead").textContent = `(${fmt(D.A.x1,2)}, ${fmt(D.A.x2,2)})`;
+      $("dBRead").textContent = `(${fmt(D.B.x1,2)}, ${fmt(D.B.x2,2)})`;
+      $("mrsARead").textContent = fmt(mrs(D.A.x1, D.A.x2, state.aA, state.rA), 3);
+      $("mrsBRead").textContent = fmt(mrs(D.B.x1, D.B.x2, state.aB, state.rB), 3);
+
+      const status = $("statusRead");
+      status.className = "status";
+      if (gap < 0.04) { status.classList.add("clear"); status.textContent = "market clearing"; }
+      else if (gap < 0.35) { status.classList.add("near"); status.textContent = "near clearing"; }
+      else { status.textContent = "not clearing"; }
+
+      math("utilityFormula", String.raw`u_i(x_1,x_2)=\left[\alpha_i x_1^{\rho_i}+(1-\alpha_i)x_2^{\rho_i}\right]^{1/\rho_i},\qquad \rho_i<1`, true);
+      math("eqFormula", String.raw`x^i(p)\in\arg\max_{x\ge 0}u_i(x)\quad \text{s.t.}\quad p\cdot x\le p\cdot\omega^i`, true);
+      math("summaryFormula", String.raw`\bigl(p^*,x^{A*},x^{B*}\bigr):\quad x^{i*}=x^i(p^*,p^*\!\cdot\omega^i),\qquad x^{A*}+x^{B*}=\bar\omega`, true);
+
+      renderSvg(eqP, D, eqD, gap);
+    }
+
+    function renderSvg(eqP, D, eqD, gap) {
+      const svg = $("svg");
+      svg.innerHTML = "";
+      const W = 900, H = 640;
+      const margin = {left: 94, right: 94, top: 72, bottom: 82};
+      const bw = W - margin.left - margin.right;
+      const bh = H - margin.top - margin.bottom;
+      const sx = x => margin.left + (x / state.Xbar) * bw;
+      const sy = y => margin.top + bh - (y / state.Ybar) * bh;
+      const invX = px => clamp((px - margin.left) / bw * state.Xbar, 0.05, state.Xbar - 0.05);
+      const invY = py => clamp((margin.top + bh - py) / bh * state.Ybar, 0.05, state.Ybar - 0.05);
+
+      const contractPts = [];
+      for (let i = 1; i < 360; i++) {
+        const x = i / 360 * state.Xbar;
+        const y = contractPoint(x);
+        if (y !== null && y > 0 && y < state.Ybar) contractPts.push([sx(x), sy(y)]);
+      }
+      path(svg, contractPts, "contract");
+
+      rect(svg, margin.left, margin.top, bw, bh, "none", "boxStroke");
+      for (let i = 1; i < state.Xbar; i++) line(svg, sx(i), margin.top, sx(i), margin.top + bh, "thinLine");
+      for (let j = 1; j < state.Ybar; j++) line(svg, margin.left, sy(j), margin.left + bw, sy(j), "thinLine");
+
+      const bSeg = budgetSegment(state.p, sx, sy);
+      if (bSeg.length === 2) {
+        const el = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        el.setAttribute("d", `M${bSeg[0][0]},${bSeg[0][1]} L${bSeg[1][0]},${bSeg[1][1]}`);
+        el.setAttribute("class", "budget");
+        svg.appendChild(el);
+        text(svg, (bSeg[0][0]+bSeg[1][0])/2 + 8, (bSeg[0][1]+bSeg[1][1])/2 - 10, "common budget line", "tinyText");
+      }
+
+      const uA = utility(D.A.x1, D.A.x2, state.aA, state.rA);
+      const uB = utility(D.B.x1, D.B.x2, state.aB, state.rB);
+      path(svg, curveFromUtility(uA, state.aA, state.rA, "A", sx, sy), "curveA");
+      path(svg, curveFromUtility(uB, state.aB, state.rB, "B", sx, sy), "curveB");
+
+      const bAsA = {x: state.Xbar - D.B.x1, y: state.Ybar - D.B.x2};
+      const eqAsA = {x: eqD.A.x1, y: eqD.A.x2};
+
+      if (gap > 0.03) {
+        arrow(svg, sx(bAsA.x), sy(bAsA.y), sx(D.A.x1), sy(D.A.x2));
+        text(svg, (sx(bAsA.x)+sx(D.A.x1))/2 + 8, (sy(bAsA.y)+sy(D.A.x2))/2 - 8, "excess-demand gap", "tinyText");
+      }
+
+      circle(svg, sx(state.wX), sy(state.wY), 8, "endowment").addEventListener("pointerdown", e => {
+        svg.setPointerCapture(e.pointerId);
+        const move = ev => {
+          const pt = svg.createSVGPoint();
+          pt.x = ev.clientX; pt.y = ev.clientY;
+          const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+          state.wX = invX(p.x); state.wY = invY(p.y);
+          syncInputs(); render();
+        };
+        const up = ev => {
+          svg.releasePointerCapture(e.pointerId);
+          svg.removeEventListener("pointermove", move);
+          svg.removeEventListener("pointerup", up);
+        };
+        svg.addEventListener("pointermove", move);
+        svg.addEventListener("pointerup", up);
+      });
+      text(svg, sx(state.wX)+12, sy(state.wY)+23, "ω", "titleText");
+
+      circle(svg, sx(D.A.x1), sy(D.A.x2), 8, "demandA");
+      text(svg, sx(D.A.x1)+12, sy(D.A.x2)-12, "xᴬ(p)", "titleText");
+      circle(svg, sx(bAsA.x), sy(bAsA.y), 8, "demandB");
+      text(svg, sx(bAsA.x)+12, sy(bAsA.y)+24, "e−xᴮ(p)", "titleText");
+      circle(svg, sx(eqAsA.x), sy(eqAsA.y), 8.8, "eqPoint");
+      text(svg, sx(eqAsA.x)+13, sy(eqAsA.y)-16, "x*", "titleText");
+
+      text(svg, margin.left-16, margin.top+bh+30, "Oᴬ", "titleText", "end");
+      text(svg, margin.left+bw+14, margin.top-16, "Oᴮ", "titleText", "start");
+      text(svg, margin.left+bw/2, margin.top+bh+48, "good 1 for A  →", "axisText", "middle");
+      text(svg, margin.left-48, margin.top+bh/2, "good 2 for A", "axisText", "middle", -90);
+      text(svg, margin.left+bw/2, margin.top-34, "←  good 1 for B", "axisText", "middle");
+      text(svg, margin.left+bw+50, margin.top+bh/2, "good 2 for B", "axisText", "middle", 90);
+
+      function arrow(svg, x1, y1, x2, y2) {
+        const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+        defs.innerHTML = `<marker id="arrowHead" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--accent-3)"></path></marker>`;
+        svg.appendChild(defs);
+        const el = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        el.setAttribute("x1", x1); el.setAttribute("y1", y1); el.setAttribute("x2", x2); el.setAttribute("y2", y2);
+        el.setAttribute("class", "arrowLine");
+        el.setAttribute("marker-end", "url(#arrowHead)");
+        svg.appendChild(el);
+      }
+    }
+
+    function rect(svg, x, y, w, h, fill, cls) {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      el.setAttribute("x", x); el.setAttribute("y", y); el.setAttribute("width", w); el.setAttribute("height", h); el.setAttribute("fill", fill); el.setAttribute("class", cls);
+      svg.appendChild(el); return el;
+    }
+    function line(svg, x1, y1, x2, y2, cls) {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      el.setAttribute("x1", x1); el.setAttribute("y1", y1); el.setAttribute("x2", x2); el.setAttribute("y2", y2); el.setAttribute("class", cls);
+      svg.appendChild(el); return el;
+    }
+    function circle(svg, cx, cy, r, cls) {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      el.setAttribute("cx", cx); el.setAttribute("cy", cy); el.setAttribute("r", r); el.setAttribute("class", cls);
+      svg.appendChild(el); return el;
+    }
+    function path(svg, pts, cls) {
+      if (!pts || pts.length < 2) return null;
+      const el = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      el.setAttribute("d", pts.map((p,i)=>`${i?"L":"M"}${p[0]},${p[1]}`).join(" "));
+      el.setAttribute("class", cls);
+      svg.appendChild(el); return el;
+    }
+    function text(svg, x, y, content, cls, anchor="start", rot=0) {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      el.setAttribute("x", x); el.setAttribute("y", y); el.setAttribute("class", cls); el.setAttribute("text-anchor", anchor);
+      if (rot) el.setAttribute("transform", `rotate(${rot} ${x} ${y})`);
+      el.textContent = content; svg.appendChild(el); return el;
+    }
+
+    document.documentElement.dataset.theme = state.dark ? "dark" : "light";
+    document.body.dataset.theme = state.dark ? "dark" : "light";
+    renderInlineMath(document.body);
+    syncInputs();
+    render();
+  </script>
+</body>
+</html>

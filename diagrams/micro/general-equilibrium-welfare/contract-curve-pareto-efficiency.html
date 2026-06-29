@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive microeconomics diagram for the contract curve and Pareto efficiency: MRS equality, efficient allocations, core allocations, and initial endowments.">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <title>Contract Curve and Pareto Efficiency | GE and Welfare Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e7;
+      --bg-2: #eee7d8;
+      --panel: rgba(255, 253, 247, 0.92);
+      --panel-solid: #fffdf7;
+      --soft: #f1eadc;
+      --text: #18201e;
+      --muted: #68736e;
+      --faint: rgba(24, 32, 30, 0.08);
+      --border: rgba(24, 32, 30, 0.13);
+      --grid: rgba(24, 32, 30, 0.075);
+      --accent: #2f8f83;
+      --accent-soft: rgba(47, 143, 131, 0.16);
+      --gold: #b3873d;
+      --gold-soft: rgba(179, 135, 61, 0.16);
+      --rose: #b85d54;
+      --rose-soft: rgba(184, 93, 84, 0.14);
+      --blue: #587caa;
+      --core: #1b2421;
+      --shadow: 0 20px 60px rgba(68, 54, 35, 0.13);
+      --shadow-soft: 0 12px 30px rgba(68, 54, 35, 0.08);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 13px;
+    }
+
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #080d11;
+      --bg-2: #0d1419;
+      --panel: rgba(17, 25, 30, 0.90);
+      --panel-solid: #111a20;
+      --soft: #0f181e;
+      --text: #edf6f2;
+      --muted: #9fb0aa;
+      --faint: rgba(220, 239, 232, 0.055);
+      --border: rgba(215, 236, 229, 0.118);
+      --grid: rgba(215, 236, 229, 0.045);
+      --accent: #74d3c4;
+      --accent-soft: rgba(116, 211, 196, 0.13);
+      --gold: #d9b86f;
+      --gold-soft: rgba(217, 184, 111, 0.115);
+      --rose: #df8a82;
+      --rose-soft: rgba(223, 138, 130, 0.115);
+      --blue: #91b7df;
+      --core: #dcebe5;
+      --shadow: 0 28px 76px rgba(0, 0, 0, 0.42);
+      --shadow-soft: 0 14px 34px rgba(0, 0, 0, 0.30);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 12% 8%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 34rem),
+        radial-gradient(circle at 88% 8%, color-mix(in srgb, var(--gold) 10%, transparent), transparent 30rem),
+        radial-gradient(circle at 76% 82%, color-mix(in srgb, var(--rose) 5%, transparent), transparent 34rem),
+        linear-gradient(145deg, var(--bg), var(--bg-2));
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+      transition: background .24s ease, color .24s ease;
+    }
+
+    [data-theme="dark"] body {
+      background:
+        radial-gradient(circle at 14% 4%, rgba(116, 211, 196, 0.105), transparent 32rem),
+        radial-gradient(circle at 86% 9%, rgba(217, 184, 111, 0.070), transparent 28rem),
+        radial-gradient(circle at 50% 112%, rgba(145, 183, 223, 0.060), transparent 38rem),
+        linear-gradient(145deg, #070c10 0%, #0b1116 50%, #0d151a 100%);
+    }
+
+    button, input { font: inherit; }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 16px;
+      padding: 16px;
+      max-width: 1680px;
+      margin: 0 auto;
+    }
+
+    aside, .hero, .stage, .card, .strip {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+    }
+
+    aside {
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      max-height: calc(100vh - 36px);
+      overflow: auto;
+    }
+
+    main {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: auto minmax(620px, 1fr) auto;
+      gap: 16px;
+    }
+
+    .hero {
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 0.75rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      letter-spacing: -0.045em;
+      line-height: 1.03;
+      font-size: clamp(2rem, 3.35vw, 3.75rem);
+      max-width: 980px;
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      color: var(--muted);
+      max-width: 850px;
+      font-size: 1rem;
+    }
+
+    .theme {
+      flex: 0 0 auto;
+      border: 1px solid var(--border);
+      background: var(--soft);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .theme:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
+
+    .stage {
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      display: grid;
+      grid-template-columns: minmax(640px, 1fr) 320px;
+      gap: 15px;
+      min-height: 0;
+    }
+
+    .plot-wrap {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      min-height: 620px;
+      background:
+        radial-gradient(circle at 26% 20%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 26rem),
+        radial-gradient(circle at 76% 78%, color-mix(in srgb, var(--gold) 7%, transparent), transparent 24rem),
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+        color-mix(in srgb, var(--soft) 72%, transparent);
+      background-size: auto, auto, 34px 34px, 34px 34px, auto;
+    }
+
+    svg { width: 100%; height: 100%; display: block; min-height: 620px; }
+
+    .plot-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      max-width: calc(100% - 28px);
+      pointer-events: none;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: .78rem;
+      color: var(--muted);
+      background: color-mix(in srgb, var(--panel-solid) 80%, transparent);
+      backdrop-filter: blur(12px);
+    }
+
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+    .dot.gold { background: var(--gold); }
+    .dot.rose { background: var(--rose); }
+    .dot.text { background: var(--text); }
+
+    h2 { font-size: .98rem; letter-spacing: -.015em; margin-bottom: 10px; }
+    h3 { font-size: .76rem; color: var(--muted); text-transform: uppercase; letter-spacing: .12em; margin: 18px 0 10px; }
+
+    .note { color: var(--muted); font-size: .92rem; }
+
+    .control { margin: 11px 0; }
+
+    .control label {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: .86rem;
+      margin-bottom: 7px;
+    }
+
+    .control strong { color: var(--text); font-variant-numeric: tabular-nums; font-weight: 800; }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .agent-tag {
+      font-size: .75rem;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 3px 8px;
+    }
+
+    .side {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+      min-width: 0;
+    }
+
+    .card, .strip {
+      border-radius: var(--radius-md);
+      padding: 14px;
+      box-shadow: var(--shadow-soft);
+      min-width: 0;
+    }
+
+    .math-card {
+      background: color-mix(in srgb, var(--soft) 70%, transparent);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 12px;
+      overflow-x: auto;
+      min-height: 48px;
+    }
+
+    .math-card .katex-display { margin: .12em 0; }
+    .katex { color: var(--text); }
+    .katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; }
+    [data-theme="dark"] .math-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015)), var(--soft);
+      border-color: rgba(202, 229, 219, 0.13);
+    }
+    [data-theme="dark"] .plot-wrap {
+      background:
+        radial-gradient(circle at 22% 18%, rgba(116, 211, 196, 0.070), transparent 25rem),
+        radial-gradient(circle at 78% 82%, rgba(217, 184, 111, 0.052), transparent 25rem),
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+        linear-gradient(180deg, #101920 0%, #0d151a 100%);
+      background-size: auto, auto, 34px 34px, 34px 34px, auto;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.018), 0 18px 55px rgba(0,0,0,0.24);
+    }
+
+    [data-theme="dark"] aside,
+    [data-theme="dark"] .hero,
+    [data-theme="dark"] .stage,
+    [data-theme="dark"] .card,
+    [data-theme="dark"] .strip {
+      background: linear-gradient(180deg, rgba(255,255,255,0.026), rgba(255,255,255,0.010)), var(--panel);
+      border-color: var(--border);
+    }
+
+    [data-theme="dark"] .pill,
+    [data-theme="dark"] .check,
+    [data-theme="dark"] .theme,
+    [data-theme="dark"] .btn,
+    [data-theme="dark"] .agent-tag {
+      background: rgba(15, 24, 30, 0.78);
+      border-color: rgba(215, 236, 229, 0.105);
+    }
+
+    [data-theme="dark"] .btn.primary {
+      background: linear-gradient(180deg, rgba(116, 211, 196, 0.16), rgba(116, 211, 196, 0.09)), var(--soft);
+      border-color: rgba(116, 211, 196, 0.28);
+    }
+
+    [data-theme="dark"] input[type="range"] {
+      accent-color: var(--accent);
+    }
+
+    .metric {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      padding: 8px 0;
+      font-size: .89rem;
+    }
+    .metric:last-child { border-bottom: 0; }
+    .metric span:first-child { color: var(--muted); }
+    .metric span:last-child { font-weight: 800; font-variant-numeric: tabular-nums; text-align: right; }
+
+    .button-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: var(--soft);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 10px 11px;
+      cursor: pointer;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .btn:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--accent) 44%, var(--border)); }
+    .btn.primary { background: color-mix(in srgb, var(--accent) 18%, var(--soft)); }
+
+    .switches { display: grid; gap: 8px; margin-top: 10px; }
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--muted);
+      font-size: .88rem;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 8px 9px;
+      background: color-mix(in srgb, var(--soft) 62%, transparent);
+    }
+
+    .bottom {
+      display: grid;
+      grid-template-columns: 1.08fr 1.08fr .92fr;
+      gap: 18px;
+    }
+
+    ul { margin: 0; padding-left: 18px; color: var(--muted); }
+    li { margin: 7px 0; }
+
+    .svg-label { fill: var(--muted); font-size: 13px; user-select: none; }
+    .svg-title { fill: var(--text); font-weight: 800; font-size: 14px; user-select: none; }
+    .box-border { stroke: var(--text); stroke-width: 2.2; fill: none; }
+    .grid-line { stroke: var(--grid); stroke-width: 1; }
+    .curve-a { stroke: var(--accent); stroke-width: 2.35; fill: none; }
+    .curve-b { stroke: var(--gold); stroke-width: 2.35; fill: none; }
+    .contract { stroke: var(--rose); stroke-width: 3; fill: none; }
+    .core { stroke: var(--core); stroke-width: 6.5; fill: none; stroke-linecap: round; opacity: .72; }
+    .support { stroke: var(--blue); stroke-width: 2; stroke-dasharray: 7 6; fill: none; }
+    .tangent-a { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 5; }
+    .tangent-b { stroke: var(--gold); stroke-width: 1.5; stroke-dasharray: 3 5; }
+    .point { stroke: var(--panel-solid); stroke-width: 3; cursor: grab; }
+    .point:active { cursor: grabbing; }
+
+    @media (max-width: 1140px) {
+      .app { grid-template-columns: 1fr; }
+      aside { max-height: none; }
+      .stage { grid-template-columns: 1fr; }
+      .bottom { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      .app { padding: 10px; gap: 10px; }
+      .hero { flex-direction: column; padding: 18px; }
+      .stage { padding: 10px; }
+      .plot-wrap, svg { min-height: 430px; }
+      .button-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app" data-theme="light">
+    <aside>
+      <div class="eyebrow">Edgeworth geometry</div>
+      <h2>Contract curve and Pareto efficiency</h2>
+      <p class="note">A focused laboratory for one object: the efficient set inside the Edgeworth box.</p>
+
+      <h3>Resources</h3>
+      <div class="control">
+        <label>Total good 1 <span><strong id="XbarVal"></strong> = \(\bar x_1\)</span></label>
+        <input id="Xbar" type="range" min="4" max="20" step="1" value="10" />
+      </div>
+      <div class="control">
+        <label>Total good 2 <span><strong id="YbarVal"></strong> = \(\bar x_2\)</span></label>
+        <input id="Ybar" type="range" min="4" max="20" step="1" value="10" />
+      </div>
+
+      <div class="section-title"><h3>Agent A preferences</h3><span class="agent-tag">origin lower-left</span></div>
+      <div class="control">
+        <label>Share <span><strong id="alphaAVal"></strong> = \(\alpha_A\)</span></label>
+        <input id="alphaA" type="range" min="0.08" max="0.92" step="0.01" value="0.50" />
+      </div>
+      <div class="control">
+        <label>CES curvature <span><strong id="rhoAVal"></strong> = \(\rho_A\)</span></label>
+        <input id="rhoA" type="range" min="-2.5" max="0.85" step="0.01" value="0.00" />
+      </div>
+
+      <div class="section-title"><h3>Agent B preferences</h3><span class="agent-tag">origin upper-right</span></div>
+      <div class="control">
+        <label>Share <span><strong id="alphaBVal"></strong> = \(\alpha_B\)</span></label>
+        <input id="alphaB" type="range" min="0.08" max="0.92" step="0.01" value="0.55" />
+      </div>
+      <div class="control">
+        <label>CES curvature <span><strong id="rhoBVal"></strong> = \(\rho_B\)</span></label>
+        <input id="rhoB" type="range" min="-2.5" max="0.85" step="0.01" value="0.00" />
+      </div>
+
+      <h3>Initial endowment \(\omega^A\)</h3>
+      <div class="control">
+        <label>A's good 1 <span><strong id="wXVal"></strong> = \(\omega_1^A\)</span></label>
+        <input id="wX" type="range" min="0.2" max="9.8" step="0.1" value="3.8" />
+      </div>
+      <div class="control">
+        <label>A's good 2 <span><strong id="wYVal"></strong> = \(\omega_2^A\)</span></label>
+        <input id="wY" type="range" min="0.2" max="9.8" step="0.1" value="6.2" />
+      </div>
+
+      <h3>Planner weight</h3>
+      <div class="control">
+        <label>Pareto weight <span><strong id="lambdaVal"></strong> = \(\lambda\)</span></label>
+        <input id="lambda" type="range" min="0.05" max="0.95" step="0.01" value="0.50" />
+      </div>
+
+      <h3>Current allocation \(x^A\)</h3>
+      <div class="control">
+        <label>A's good 1 <span><strong id="xAVal"></strong> = \(x_1^A\)</span></label>
+        <input id="xA" type="range" min="0.2" max="9.8" step="0.1" value="5.2" />
+      </div>
+      <div class="control">
+        <label>A's good 2 <span><strong id="yAVal"></strong> = \(x_2^A\)</span></label>
+        <input id="yA" type="range" min="0.2" max="9.8" step="0.1" value="4.5" />
+      </div>
+
+      <div class="button-grid">
+        <button class="btn primary" id="toPlanner">Move to \(x(\lambda)\)</button>
+        <button class="btn" id="toEndowment">Move to \(\omega\)</button>
+      </div>
+      <div class="button-grid">
+        <button class="btn" id="toCoreMid">Move to core</button>
+        <button class="btn" id="reset">Reset</button>
+      </div>
+
+      <div class="switches">
+        <label class="check"><input id="showLens" type="checkbox" checked /> show mutual-gains lens</label>
+        <label class="check"><input id="showEndowmentCurves" type="checkbox" checked /> show endowment indifference curves</label>
+        <label class="check"><input id="showSupport" type="checkbox" checked /> show supporting price line</label>
+      </div>
+    </aside>
+
+    <main>
+      <header class="hero">
+        <div>
+          <div class="eyebrow">Pure exchange · CES utilities</div>
+          <h1>Contract curve, core, and Pareto efficiency</h1>
+          <p class="subtitle">See efficiency as tangency. The contract curve is determined by preferences and resources; the initial endowment carves out the individually rational segment: the core.</p>
+        </div>
+        <button class="theme" id="themeToggle">Dark mode</button>
+      </header>
+
+      <section class="stage">
+        <div class="plot-wrap">
+          <svg id="svg" viewBox="0 0 920 680" preserveAspectRatio="xMidYMid meet" aria-label="Edgeworth box diagram"></svg>
+          <div class="plot-badge">
+            <span class="pill"><span class="dot"></span>A indifference</span>
+            <span class="pill"><span class="dot gold"></span>B indifference</span>
+            <span class="pill"><span class="dot rose"></span>contract curve</span>
+            <span class="pill"><span class="dot text"></span>core</span>
+          </div>
+        </div>
+
+        <div class="side">
+          <div class="card">
+            <h2>Utilities</h2>
+            <div class="math-card" id="utilityMath"></div>
+          </div>
+          <div class="card">
+            <h2>Efficiency condition</h2>
+            <div class="math-card" id="mrsMath"></div>
+          </div>
+          <div class="card">
+            <h2>Current geometry</h2>
+            <div class="metric"><span>\(x^A\)</span><span id="allocA"></span></div>
+            <div class="metric"><span>\(x^B\)</span><span id="allocB"></span></div>
+            <div class="metric"><span>\(MRS_A\)</span><span id="mrsA"></span></div>
+            <div class="metric"><span>\(MRS_B\)</span><span id="mrsB"></span></div>
+            <div class="metric"><span>Efficiency gap</span><span id="effGap"></span></div>
+            <div class="metric"><span>Status</span><span id="status"></span></div>
+          </div>
+          <div class="card">
+            <h2>Initial endowment</h2>
+            <div class="metric"><span>\(U_A(x)-U_A(\omega)\)</span><span id="gainA"></span></div>
+            <div class="metric"><span>\(U_B(x)-U_B(\omega)\)</span><span id="gainB"></span></div>
+            <div class="metric"><span>Core length</span><span id="coreLength"></span></div>
+            <div class="metric"><span>Support price</span><span id="supportPrice"></span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bottom">
+        <div class="strip">
+          <h2>Contract curve</h2>
+          <div class="math-card" id="contractMath"></div>
+          <p class="note" style="margin-top:10px">It is independent of the initial endowment. Changing \(\omega\) moves the lens and the core, not the full set of Pareto-efficient allocations.</p>
+        </div>
+        <div class="strip">
+          <h2>Core allocations</h2>
+          <div class="math-card" id="coreMath"></div>
+          <p class="note" style="margin-top:10px">The core is the part of the contract curve that is individually rational relative to \(\omega\).</p>
+        </div>
+        <div class="strip">
+          <h2>What to notice</h2>
+          <ul>
+            <li>If \(MRS_A \neq MRS_B\), the indifference curves cross and local gains from trade remain.</li>
+            <li>The black segment appears only where efficiency and individual rationality hold together.</li>
+            <li>A Pareto weight \(\lambda\) selects one efficient allocation, but \(\omega\) selects which efficient allocations are voluntary.</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const state = {
+      Xbar: 10, Ybar: 10,
+      alphaA: 0.50, rhoA: 0.00,
+      alphaB: 0.55, rhoB: 0.00,
+      wX: 3.8, wY: 6.2,
+      xA: 5.2, yA: 4.5,
+      lambda: 0.50,
+      dark: false,
+      showLens: true,
+      showEndowmentCurves: true,
+      showSupport: true
+    };
+
+    const controlIds = ["Xbar", "Ybar", "alphaA", "rhoA", "alphaB", "rhoB", "wX", "wY", "xA", "yA", "lambda"];
+    controlIds.forEach(id => {
+      $(id).addEventListener("input", (e) => {
+        state[id] = parseFloat(e.target.value);
+        sanitize();
+        syncInputs(false);
+        render();
+      });
+    });
+
+    ["showLens", "showEndowmentCurves", "showSupport"].forEach(id => {
+      $(id).addEventListener("change", (e) => {
+        state[id] = e.target.checked;
+        render();
+      });
+    });
+
+    document.documentElement.setAttribute("data-theme", "light");
+
+    $("themeToggle").addEventListener("click", () => {
+      state.dark = !state.dark;
+      const theme = state.dark ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", theme);
+      $("app").setAttribute("data-theme", theme);
+      $("themeToggle").textContent = state.dark ? "Light mode" : "Dark mode";
+      render();
+    });
+
+    $("toPlanner").addEventListener("click", () => {
+      const p = plannerPoint();
+      if (p) { state.xA = p.x; state.yA = p.y; syncInputs(); render(); }
+    });
+
+    $("toEndowment").addEventListener("click", () => {
+      state.xA = state.wX; state.yA = state.wY; syncInputs(); render();
+    });
+
+    $("toCoreMid").addEventListener("click", () => {
+      const core = corePoints();
+      if (core.length) {
+        const p = core[Math.floor(core.length / 2)];
+        state.xA = p.x; state.yA = p.y; syncInputs(); render();
+      }
+    });
+
+    $("reset").addEventListener("click", () => {
+      Object.assign(state, {
+        Xbar: 10, Ybar: 10, alphaA: .50, rhoA: 0, alphaB: .55, rhoB: 0,
+        wX: 3.8, wY: 6.2, xA: 5.2, yA: 4.5, lambda: .50,
+        showLens: true, showEndowmentCurves: true, showSupport: true
+      });
+      syncInputs(); render();
+    });
+
+    function sanitize() {
+      const eps = 0.08;
+      state.Xbar = Math.max(4, state.Xbar);
+      state.Ybar = Math.max(4, state.Ybar);
+      state.alphaA = clamp(state.alphaA, .08, .92);
+      state.alphaB = clamp(state.alphaB, .08, .92);
+      state.rhoA = clamp(state.rhoA, -2.5, .85);
+      state.rhoB = clamp(state.rhoB, -2.5, .85);
+      state.wX = clamp(state.wX, eps, state.Xbar - eps);
+      state.wY = clamp(state.wY, eps, state.Ybar - eps);
+      state.xA = clamp(state.xA, eps, state.Xbar - eps);
+      state.yA = clamp(state.yA, eps, state.Ybar - eps);
+      ["wX", "xA"].forEach(id => $(id).max = (state.Xbar - 0.2).toFixed(1));
+      ["wY", "yA"].forEach(id => $(id).max = (state.Ybar - 0.2).toFixed(1));
+    }
+
+    function syncInputs(updateChecks = true) {
+      sanitize();
+      controlIds.forEach(id => $(id).value = state[id]);
+      if (updateChecks) {
+        $("showLens").checked = state.showLens;
+        $("showEndowmentCurves").checked = state.showEndowmentCurves;
+        $("showSupport").checked = state.showSupport;
+      }
+    }
+
+    function clamp(x, lo, hi) { return Math.max(lo, Math.min(hi, x)); }
+    function fmt(x, d = 2) { return Number.isFinite(x) ? Number(x).toFixed(d) : "—"; }
+    function nearZero(rho) { return Math.abs(rho) < 0.035; }
+
+    function ces(x, y, a, rho) {
+      x = Math.max(x, 1e-9); y = Math.max(y, 1e-9);
+      if (nearZero(rho)) return Math.pow(x, a) * Math.pow(y, 1 - a);
+      const inside = a * Math.pow(x, rho) + (1 - a) * Math.pow(y, rho);
+      return Math.pow(Math.max(inside, 1e-12), 1 / rho);
+    }
+
+    function utilA(x, y) { return ces(x, y, state.alphaA, state.rhoA); }
+    function utilBfromA(x, y) { return ces(state.Xbar - x, state.Ybar - y, state.alphaB, state.rhoB); }
+
+    function mrsBundle(x, y, a, rho) {
+      x = Math.max(x, 1e-9); y = Math.max(y, 1e-9);
+      if (nearZero(rho)) return (a / (1 - a)) * (y / x);
+      return (a / (1 - a)) * Math.pow(x / y, rho - 1);
+    }
+
+    function mrsAAt(x, y) { return mrsBundle(x, y, state.alphaA, state.rhoA); }
+    function mrsBAtAcoords(x, y) { return mrsBundle(state.Xbar - x, state.Ybar - y, state.alphaB, state.rhoB); }
+
+    function contractY(x) {
+      const eps = 1e-5;
+      let lo = eps, hi = state.Ybar - eps;
+      let flo = mrsAAt(x, lo) - mrsBAtAcoords(x, lo);
+      let fhi = mrsAAt(x, hi) - mrsBAtAcoords(x, hi);
+      if (!Number.isFinite(flo) || !Number.isFinite(fhi)) return null;
+      if (flo === 0) return lo;
+      if (fhi === 0) return hi;
+      if (flo * fhi > 0) return null;
+      for (let k = 0; k < 44; k++) {
+        const mid = (lo + hi) / 2;
+        const fm = mrsAAt(x, mid) - mrsBAtAcoords(x, mid);
+        if (flo * fm <= 0) { hi = mid; fhi = fm; }
+        else { lo = mid; flo = fm; }
+      }
+      return (lo + hi) / 2;
+    }
+
+    function contractPoints(n = 360) {
+      const pts = [];
+      for (let i = 1; i < n; i++) {
+        const x = (i / n) * state.Xbar;
+        const y = contractY(x);
+        if (y !== null && y > 0 && y < state.Ybar) pts.push({ x, y });
+      }
+      return pts;
+    }
+
+    function corePoints() {
+      const uAw = utilA(state.wX, state.wY);
+      const uBw = utilBfromA(state.wX, state.wY);
+      return contractPoints().filter(p => utilA(p.x, p.y) + 1e-8 >= uAw && utilBfromA(p.x, p.y) + 1e-8 >= uBw);
+    }
+
+    function plannerPoint() {
+      const pts = contractPoints(520);
+      if (!pts.length) return null;
+      let best = pts[0], bestVal = -Infinity;
+      for (const p of pts) {
+        const val = state.lambda * utilA(p.x, p.y) + (1 - state.lambda) * utilBfromA(p.x, p.y);
+        if (val > bestVal) { bestVal = val; best = p; }
+      }
+      return best;
+    }
+
+    function supportSegmentThrough(x, y, slope) {
+      const p = Math.max(slope, 1e-8);
+      const wealth = p * x + y;
+      const candidates = [];
+      const yAt0 = wealth;
+      const yAtX = wealth - p * state.Xbar;
+      const xAt0 = wealth / p;
+      const xAtY = (wealth - state.Ybar) / p;
+      if (yAt0 >= 0 && yAt0 <= state.Ybar) candidates.push({ x: 0, y: yAt0 });
+      if (yAtX >= 0 && yAtX <= state.Ybar) candidates.push({ x: state.Xbar, y: yAtX });
+      if (xAt0 >= 0 && xAt0 <= state.Xbar) candidates.push({ x: xAt0, y: 0 });
+      if (xAtY >= 0 && xAtY <= state.Xbar) candidates.push({ x: xAtY, y: state.Ybar });
+      const uniq = [];
+      for (const c of candidates) if (!uniq.some(q => Math.hypot(q.x - c.x, q.y - c.y) < 1e-5)) uniq.push(c);
+      return uniq.slice(0, 2);
+    }
+
+    function renderKatex(id, tex, displayMode = true) {
+      const el = $(id);
+      if (window.katex) {
+        katex.render(tex, el, { displayMode, throwOnError: false, strict: false });
+      } else {
+        el.textContent = tex.replace(/\\/g, "").replace(/[{}]/g, "");
+      }
+    }
+
+    function renderMath() {
+      renderKatex("utilityMath", String.raw`U_i(x_1,x_2)=\left[\alpha_i x_1^{\rho_i}+(1-\alpha_i)x_2^{\rho_i}\right]^{1/\rho_i},\qquad \lim_{\rho_i\to 0}U_i=x_1^{\alpha_i}x_2^{1-\alpha_i}`);
+      renderKatex("mrsMath", String.raw`MRS_i=\frac{MU_1^i}{MU_2^i}=\frac{\alpha_i}{1-\alpha_i}\left(\frac{x_1^i}{x_2^i}\right)^{\rho_i-1},\qquad x\in PE\iff MRS_A=MRS_B`);
+      renderKatex("contractMath", String.raw`CC=\left\{x^A\in[0,\bar x_1]\times[0,\bar x_2]:MRS_A(x^A)=MRS_B(\bar x-x^A)\right\}`);
+      renderKatex("coreMath", String.raw`Core(\omega)=\left\{x\in CC: U_A(x^A)\ge U_A(\omega^A),\; U_B(\bar x-x^A)\ge U_B(\bar x-\omega^A)\right\}`);
+    }
+
+    function updateReadouts() {
+      $("XbarVal").textContent = fmt(state.Xbar, 0);
+      $("YbarVal").textContent = fmt(state.Ybar, 0);
+      $("alphaAVal").textContent = fmt(state.alphaA);
+      $("alphaBVal").textContent = fmt(state.alphaB);
+      $("rhoAVal").textContent = fmt(state.rhoA);
+      $("rhoBVal").textContent = fmt(state.rhoB);
+      $("wXVal").textContent = fmt(state.wX);
+      $("wYVal").textContent = fmt(state.wY);
+      $("xAVal").textContent = fmt(state.xA);
+      $("yAVal").textContent = fmt(state.yA);
+      $("lambdaVal").textContent = fmt(state.lambda);
+
+      const xB = state.Xbar - state.xA, yB = state.Ybar - state.yA;
+      const mA = mrsAAt(state.xA, state.yA);
+      const mB = mrsBAtAcoords(state.xA, state.yA);
+      const gap = Math.abs(Math.log(mA / mB));
+      const uAw = utilA(state.wX, state.wY), uBw = utilBfromA(state.wX, state.wY);
+      const gainA = utilA(state.xA, state.yA) - uAw;
+      const gainB = utilBfromA(state.xA, state.yA) - uBw;
+      const core = corePoints();
+      const pp = plannerPoint();
+      const price = pp ? mrsAAt(pp.x, pp.y) : NaN;
+
+      $("allocA").textContent = `(${fmt(state.xA)}, ${fmt(state.yA)})`;
+      $("allocB").textContent = `(${fmt(xB)}, ${fmt(yB)})`;
+      $("mrsA").textContent = fmt(mA, 3);
+      $("mrsB").textContent = fmt(mB, 3);
+      $("effGap").textContent = fmt(gap, 3);
+      $("status").textContent = gap < .045 ? "efficient" : "not efficient";
+      $("gainA").textContent = (gainA >= 0 ? "+" : "") + fmt(gainA, 3);
+      $("gainB").textContent = (gainB >= 0 ? "+" : "") + fmt(gainB, 3);
+      $("coreLength").textContent = core.length ? `${core.length} pts` : "empty";
+      $("supportPrice").textContent = pp ? fmt(price, 3) : "—";
+    }
+
+    function cssVar(name) { return getComputedStyle($("app")).getPropertyValue(name).trim(); }
+
+    function renderSvg() {
+      const svg = $("svg");
+      svg.innerHTML = "";
+      const W = 920, H = 680;
+      const M = { l: 92, t: 76, r: 92, b: 78 };
+      const bw = W - M.l - M.r, bh = H - M.t - M.b;
+      const sx = x => M.l + x / state.Xbar * bw;
+      const sy = y => M.t + bh - y / state.Ybar * bh;
+      const invX = px => clamp((px - M.l) / bw * state.Xbar, .08, state.Xbar - .08);
+      const invY = py => clamp((M.t + bh - py) / bh * state.Ybar, .08, state.Ybar - .08);
+
+      const text = cssVar("--text"), muted = cssVar("--muted"), grid = cssVar("--grid"), panel = cssVar("--panel-solid");
+      const accent = cssVar("--accent"), gold = cssVar("--gold"), rose = cssVar("--rose"), blue = cssVar("--blue");
+      const accentSoft = cssVar("--accent-soft"), roseSoft = cssVar("--rose-soft");
+
+      defs(svg, accent, accentSoft, roseSoft);
+      for (let i = 1; i < state.Xbar; i++) line(svg, sx(i), M.t, sx(i), M.t + bh, grid, 1);
+      for (let j = 1; j < state.Ybar; j++) line(svg, M.l, sy(j), M.l + bw, sy(j), grid, 1);
+      rect(svg, M.l, M.t, bw, bh, "none", text, 2.2, "box-border");
+
+      label(svg, M.l - 12, M.t + bh + 28, "Oᴬ", "svg-title", "end");
+      label(svg, M.l + bw + 12, M.t - 16, "Oᴮ", "svg-title", "start");
+      label(svg, M.l + bw / 2, M.t + bh + 48, "good 1 for A  →", "svg-label", "middle");
+      label(svg, M.l - 48, M.t + bh / 2, "good 2 for A", "svg-label", "middle", -90);
+      label(svg, M.l + bw / 2, M.t - 34, "←  good 1 for B", "svg-label", "middle");
+      label(svg, M.l + bw + 50, M.t + bh / 2, "good 2 for B", "svg-label", "middle", 90);
+
+      if (state.showLens) drawLens(svg, sx, sy);
+
+      const contract = contractPoints();
+      drawPath(svg, contract.map(p => [sx(p.x), sy(p.y)]), "contract");
+      if (contract.length) {
+        const p = contract[Math.floor(contract.length * .70)];
+        label(svg, sx(p.x) + 10, sy(p.y) - 10, "contract curve", "svg-title", "start");
+      }
+
+      const core = corePoints();
+      if (core.length) {
+        drawPath(svg, core.map(p => [sx(p.x), sy(p.y)]), "core");
+        const p = core[Math.floor(core.length / 2)];
+        label(svg, sx(p.x) + 10, sy(p.y) + 24, "core", "svg-title", "start");
+      }
+
+      const uAc = utilA(state.xA, state.yA), uBc = utilBfromA(state.xA, state.yA);
+      drawIndiff(svg, sx, sy, uAc, "A", accent, false);
+      drawIndiff(svg, sx, sy, uBc, "B", gold, false);
+
+      if (state.showEndowmentCurves) {
+        drawIndiff(svg, sx, sy, utilA(state.wX, state.wY), "A", accent, true);
+        drawIndiff(svg, sx, sy, utilBfromA(state.wX, state.wY), "B", gold, true);
+      }
+
+      const pp = plannerPoint();
+      if (pp) {
+        const m = mrsAAt(pp.x, pp.y);
+        if (state.showSupport) {
+          const seg = supportSegmentThrough(pp.x, pp.y, m);
+          if (seg.length === 2) line(svg, sx(seg[0].x), sy(seg[0].y), sx(seg[1].x), sy(seg[1].y), blue, 2, "7 6", .95, "support");
+        }
+        circle(svg, sx(pp.x), sy(pp.y), 8.5, blue, panel, 3);
+        label(svg, sx(pp.x) + 11, sy(pp.y) - 11, "x(λ)", "svg-title", "start");
+      }
+
+      drawTangent(svg, sx, sy, state.xA, state.yA, mrsAAt(state.xA, state.yA), accent, false);
+      drawTangent(svg, sx, sy, state.xA, state.yA, mrsBAtAcoords(state.xA, state.yA), gold, true);
+
+      circle(svg, sx(state.wX), sy(state.wY), 8.5, rose, panel, 3);
+      label(svg, sx(state.wX) + 12, sy(state.wY) + 23, "ω", "svg-title", "start");
+
+      const alloc = circle(svg, sx(state.xA), sy(state.yA), 9, text, panel, 3);
+      label(svg, sx(state.xA) + 12, sy(state.yA) - 12, "x", "svg-title", "start");
+      dragPoint(svg, alloc, invX, invY);
+
+      function defs(svg, accent, accentSoft, roseSoft) {
+        const d = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+        d.innerHTML = `
+          <pattern id="lensHatch" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="8" stroke="${accent}" stroke-opacity="0.24" stroke-width="2"/>
+          </pattern>
+          <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>`;
+        svg.appendChild(d);
+      }
+
+      function drawLens(svg, sx, sy) {
+        const uAw = utilA(state.wX, state.wY), uBw = utilBfromA(state.wX, state.wY);
+        const nx = 84, ny = 84;
+        const dx = state.Xbar / nx, dy = state.Ybar / ny;
+        let d = "";
+        for (let i = 0; i < nx; i++) {
+          for (let j = 0; j < ny; j++) {
+            const x = (i + .5) * dx, y = (j + .5) * dy;
+            if (utilA(x, y) >= uAw && utilBfromA(x, y) >= uBw) {
+              const px = sx(i * dx), py = sy((j + 1) * dy);
+              const rw = sx((i + 1) * dx) - sx(i * dx) + .4;
+              const rh = sy(j * dy) - sy((j + 1) * dy) + .4;
+              d += `M${px},${py}h${rw}v${rh}h${-rw}z`;
+            }
+          }
+        }
+        const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        p.setAttribute("d", d);
+        p.setAttribute("fill", "url(#lensHatch)");
+        p.setAttribute("opacity", ".82");
+        svg.appendChild(p);
+      }
+
+      function drawIndiff(svg, sx, sy, u, who, color, dashed) {
+        const pts = [];
+        const N = 420;
+        for (let i = 1; i < N; i++) {
+          const xr = (i / N) * state.Xbar;
+          let x, y;
+          if (who === "A") {
+            const yy = solveLevelY(xr, u, true);
+            if (yy === null) continue;
+            x = xr; y = yy;
+          } else {
+            const xb = (i / N) * state.Xbar;
+            const yb = solveLevelYB(xb, u);
+            if (yb === null) continue;
+            x = state.Xbar - xb; y = state.Ybar - yb;
+          }
+          if (x >= 0 && x <= state.Xbar && y >= 0 && y <= state.Ybar) pts.push([sx(x), sy(y)]);
+        }
+        const p = drawPath(svg, pts, who === "A" ? "curve-a" : "curve-b");
+        if (p) {
+          p.setAttribute("stroke", color);
+          if (dashed) { p.setAttribute("stroke-dasharray", "4 7"); p.setAttribute("opacity", ".68"); }
+        }
+      }
+
+      function solveLevelY(x, u, forA) {
+        let lo = 1e-5, hi = state.Ybar - 1e-5;
+        const f = y => utilA(x, y) - u;
+        if (f(lo) > 0 || f(hi) < 0) return null;
+        for (let k = 0; k < 42; k++) {
+          const mid = (lo + hi) / 2;
+          if (f(mid) >= 0) hi = mid; else lo = mid;
+        }
+        return (lo + hi) / 2;
+      }
+
+      function solveLevelYB(xb, u) {
+        let lo = 1e-5, hi = state.Ybar - 1e-5;
+        const f = yb => ces(xb, yb, state.alphaB, state.rhoB) - u;
+        if (f(lo) > 0 || f(hi) < 0) return null;
+        for (let k = 0; k < 42; k++) {
+          const mid = (lo + hi) / 2;
+          if (f(mid) >= 0) hi = mid; else lo = mid;
+        }
+        return (lo + hi) / 2;
+      }
+
+      function drawTangent(svg, sx, sy, x, y, m, color, reverse) {
+        const L = .95;
+        const dx = L / Math.sqrt(1 + m * m);
+        const dy = m * dx;
+        const y1 = reverse ? y - dy : y + dy;
+        const y2 = reverse ? y + dy : y - dy;
+        line(svg, sx(clamp(x - dx, 0, state.Xbar)), sy(clamp(y1, 0, state.Ybar)), sx(clamp(x + dx, 0, state.Xbar)), sy(clamp(y2, 0, state.Ybar)), color, 1.5, "3 5", .95, reverse ? "tangent-b" : "tangent-a");
+      }
+    }
+
+    function dragPoint(svg, el, invX, invY) {
+      el.addEventListener("pointerdown", (e) => {
+        svg.setPointerCapture(e.pointerId);
+        const move = (ev) => {
+          const pt = svg.createSVGPoint();
+          pt.x = ev.clientX; pt.y = ev.clientY;
+          const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+          state.xA = invX(p.x); state.yA = invY(p.y);
+          syncInputs(false); render();
+        };
+        const up = () => {
+          svg.removeEventListener("pointermove", move);
+          svg.removeEventListener("pointerup", up);
+        };
+        svg.addEventListener("pointermove", move);
+        svg.addEventListener("pointerup", up);
+      });
+    }
+
+    function line(svg, x1, y1, x2, y2, stroke, width = 1, dash = "", opacity = 1, cls = "") {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      el.setAttribute("x1", x1); el.setAttribute("y1", y1); el.setAttribute("x2", x2); el.setAttribute("y2", y2);
+      el.setAttribute("stroke", stroke); el.setAttribute("stroke-width", width); el.setAttribute("opacity", opacity);
+      if (dash) el.setAttribute("stroke-dasharray", dash);
+      if (cls) el.setAttribute("class", cls);
+      svg.appendChild(el); return el;
+    }
+
+    function rect(svg, x, y, w, h, fill, stroke, width = 1, cls = "") {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      el.setAttribute("x", x); el.setAttribute("y", y); el.setAttribute("width", w); el.setAttribute("height", h);
+      el.setAttribute("fill", fill); el.setAttribute("stroke", stroke); el.setAttribute("stroke-width", width);
+      if (cls) el.setAttribute("class", cls);
+      svg.appendChild(el); return el;
+    }
+
+    function circle(svg, cx, cy, r, fill, stroke, width) {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      el.setAttribute("cx", cx); el.setAttribute("cy", cy); el.setAttribute("r", r);
+      el.setAttribute("fill", fill); el.setAttribute("stroke", stroke); el.setAttribute("stroke-width", width);
+      el.setAttribute("class", "point");
+      svg.appendChild(el); return el;
+    }
+
+    function drawPath(svg, pts, cls) {
+      if (!pts || pts.length < 2) return null;
+      const el = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      el.setAttribute("d", pts.map((p, i) => `${i ? "L" : "M"}${p[0]},${p[1]}`).join(""));
+      el.setAttribute("class", cls);
+      svg.appendChild(el); return el;
+    }
+
+    function label(svg, x, y, content, cls, anchor = "start", rotate = 0) {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      el.setAttribute("x", x); el.setAttribute("y", y); el.setAttribute("class", cls); el.setAttribute("text-anchor", anchor);
+      if (rotate) el.setAttribute("transform", `rotate(${rotate} ${x} ${y})`);
+      el.textContent = content; svg.appendChild(el); return el;
+    }
+
+    function renderStaticMath() {
+      if (!window.renderMathInElement) return;
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false,
+        strict: false
+      });
+    }
+
+    function render() {
+      sanitize();
+      updateReadouts();
+      renderMath();
+      renderSvg();
+    }
+
+    window.addEventListener("load", () => {
+      syncInputs();
+      render();
+      renderStaticMath();
+    });
+  </script>
+</body>
+</html>

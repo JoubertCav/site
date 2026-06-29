@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive microeconomics diagram for the Edgeworth box in pure exchange: endowments, feasible allocations, mutual gains from trade, and the geometry of exchange.">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <title>Edgeworth Box for Pure Exchange | GE and Welfare Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <style>
+    :root {
+      --bg: #f5efe4;
+      --bg-soft: #eee4d2;
+      --card: #fffdf7;
+      --card-2: #f8f1e6;
+      --text: #1b201d;
+      --muted: #65716b;
+      --line: rgba(27,32,29,.13);
+      --grid: rgba(27,32,29,.060);
+      --accent: #287e73;
+      --accent-soft: rgba(40,126,115,.105);
+      --accent-line: rgba(40,126,115,.46);
+      --gold: #a7772f;
+      --gold-soft: rgba(167,119,47,.12);
+      --red: #ad5a4f;
+      --red-soft: rgba(173,90,79,.13);
+      --blue: #526da8;
+      --blue-soft: rgba(82,109,168,.12);
+      --shadow: 0 18px 52px rgba(47,39,27,.095);
+      --shadow-soft: 0 8px 24px rgba(47,39,27,.050);
+      --radius: 24px;
+      --radius-sm: 16px;
+      --panel-blur: rgba(255,253,247,.88);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0b1014;
+      --bg-soft: #10171c;
+      --card: #151e24;
+      --card-2: #10171d;
+      --text: #edf5f1;
+      --muted: #9dafaa;
+      --line: rgba(237,245,241,.105);
+      --grid: rgba(237,245,241,.042);
+      --accent: #78d4c5;
+      --accent-soft: rgba(120,212,197,.105);
+      --accent-line: rgba(120,212,197,.42);
+      --gold: #d3ad67;
+      --gold-soft: rgba(211,173,103,.11);
+      --red: #df8b82;
+      --red-soft: rgba(223,139,130,.11);
+      --blue: #9db3f0;
+      --blue-soft: rgba(157,179,240,.11);
+      --shadow: 0 24px 70px rgba(0,0,0,.34);
+      --shadow-soft: 0 12px 28px rgba(0,0,0,.20);
+      --panel-blur: rgba(21,30,36,.82);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 4% 0%, var(--accent-soft), transparent 32rem),
+        radial-gradient(circle at 100% 8%, var(--gold-soft), transparent 28rem),
+        linear-gradient(180deg, var(--bg), var(--bg-soft));
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+
+    button, input, select { font: inherit; }
+    button { color: inherit; }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 16px;
+      padding: 16px;
+    }
+
+    .sidebar, .topbar, .diagram-card, .panel, .card {
+      background: var(--panel-blur);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      backdrop-filter: blur(16px);
+    }
+
+    .sidebar {
+      padding: 16px;
+      max-height: calc(100vh - 32px);
+      overflow: auto;
+      position: sticky;
+      top: 16px;
+    }
+
+    .main {
+      display: grid;
+      grid-template-rows: auto minmax(620px, 1fr) auto;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .topbar {
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .kicker {
+      font-size: .73rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+    h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.72rem, 3vw, 2.65rem);
+      line-height: 1.02;
+      letter-spacing: -.045em;
+      font-weight: 640;
+    }
+    h2 { font-size: 1.02rem; letter-spacing: -.02em; margin-bottom: 10px; }
+    h3 {
+      margin: 16px 0 8px;
+      color: var(--muted);
+      font-size: .76rem;
+      text-transform: uppercase;
+      letter-spacing: .11em;
+    }
+    .subtitle { color: var(--muted); max-width: 950px; font-size: .96rem; margin-top: 7px; }
+    .muted { color: var(--muted); }
+    .focus-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 13px;
+    }
+    .focus-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--card-2);
+      color: var(--muted);
+      font-size: .79rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .theme {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      background: var(--card-2);
+      border-radius: 999px;
+      padding: 9px 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: var(--shadow-soft);
+    }
+    .theme .moon { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
+
+    .tabs { display: grid; gap: 7px; margin: 14px 0 6px; }
+    .tab {
+      border: 1px solid var(--line);
+      background: transparent;
+      border-radius: 16px;
+      padding: 10px 11px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .tab:hover { transform: translateY(-1px); background: var(--card-2); }
+    .tab.active { background: var(--accent-soft); border-color: var(--accent-line); }
+    .tab b { display: block; font-size: .88rem; }
+    .tab span { display: block; color: var(--muted); font-size: .74rem; margin-top: 1px; }
+
+    .control { margin: 10px 0; }
+    .control label { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); font-size: .82rem; margin-bottom: 5px; }
+    .control strong { color: var(--text); font-variant-numeric: tabular-nums; }
+    input[type="range"] { width: 100%; accent-color: var(--accent); }
+
+    .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 9px;
+      background: var(--card-2);
+      color: var(--muted);
+      font-size: .82rem;
+      cursor: pointer;
+      user-select: none;
+    }
+    .check input { accent-color: var(--accent); }
+
+    .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+    .btn {
+      border: 1px solid var(--line);
+      background: var(--card-2);
+      border-radius: 14px;
+      padding: 10px 11px;
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+    }
+    .btn.primary { background: var(--accent-soft); border-color: var(--accent-line); }
+
+    .diagram-card {
+      padding: 14px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 278px;
+      gap: 14px;
+      min-height: 620px;
+    }
+
+    .canvas {
+      position: relative;
+      min-height: 592px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      overflow: hidden;
+      background:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+        var(--card-2);
+      background-size: 32px 32px;
+    }
+    svg { width: 100%; height: 100%; display: block; }
+
+    .legend {
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      max-width: calc(100% - 28px);
+      pointer-events: none;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--line);
+      background: var(--panel-blur);
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: .78rem;
+      color: var(--muted);
+      backdrop-filter: blur(12px);
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+    .dot.gold { background: var(--gold); }
+    .dot.red { background: var(--red); }
+    .dot.blue { background: var(--blue); }
+    .dot.black { background: var(--text); }
+
+    .readout { display: grid; gap: 10px; align-content: start; }
+    .card { box-shadow: var(--shadow-soft); padding: 12px; border-radius: 18px; }
+    .equation {
+      border: 1px solid var(--line);
+      background: var(--card-2);
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      overflow-x: auto;
+      color: var(--text);
+    }
+    .equation + .equation { margin-top: 8px; }
+    .eq-small { font-size: .92rem; }
+
+    .equation.math {
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .equation.math.center { justify-content: center; }
+    .equation .katex { color: var(--text); font-size: 1.05em; }
+    .equation.eq-small .katex { font-size: .98em; }
+    .katex-display { margin: .15em 0; overflow-x: auto; overflow-y: hidden; }
+    [data-theme="dark"] .equation {
+      background: linear-gradient(180deg, rgba(255,255,255,.032), rgba(255,255,255,.012)), var(--card-2);
+      border-color: rgba(238,246,242,.10);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
+    }
+    [data-theme="dark"] .sidebar,
+    [data-theme="dark"] .topbar,
+    [data-theme="dark"] .diagram-card,
+    [data-theme="dark"] .panel,
+    [data-theme="dark"] .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.030), rgba(255,255,255,.010)), var(--panel-blur);
+    }
+    [data-theme="dark"] .canvas {
+      background:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+        radial-gradient(circle at 34% 20%, rgba(120,212,197,.050), transparent 34rem),
+        radial-gradient(circle at 80% 74%, rgba(211,173,103,.035), transparent 26rem),
+        #0f161b;
+    }
+    [data-theme="dark"] .tab.active,
+    [data-theme="dark"] .btn.primary {
+      box-shadow: 0 0 0 1px rgba(120,211,196,.08), 0 10px 26px rgba(0,0,0,.17);
+    }
+    .frac { display: inline-block; vertical-align: middle; text-align: center; line-height: 1.05; }
+    .frac > span { display: block; padding: 0 .12em; }
+    .frac .bottom { border-top: 1px solid currentColor; margin-top: 2px; }
+
+    .metric { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--line); padding: 6px 0; font-size: .84rem; }
+    .metric:last-child { border-bottom: 0; }
+    .metric span:first-child { color: var(--muted); }
+    .metric span:last-child { font-weight: 750; text-align: right; font-variant-numeric: tabular-nums; }
+
+    .bottom { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 16px; }
+    .panel { padding: 15px; }
+    ul { margin: 0; padding-left: 18px; color: var(--muted); }
+    li { margin: 7px 0; }
+    .status-good { color: var(--accent) !important; }
+    .status-warn { color: var(--gold) !important; }
+    .status-bad { color: var(--red) !important; }
+
+    .svg-label { fill: var(--muted); font-size: 13px; user-select: none; }
+    .svg-title { fill: var(--text); font-size: 15px; font-weight: 750; user-select: none; }
+    .svg-small { fill: var(--muted); font-size: 12px; user-select: none; }
+    .box-border { stroke: var(--text); stroke-width: 2; fill: none; }
+    .thin { stroke: var(--line); stroke-width: 1; }
+    .curveA { stroke: var(--accent); stroke-width: 2.4; fill: none; }
+    .curveB { stroke: var(--gold); stroke-width: 2.4; fill: none; }
+    .curveEndowment { stroke-dasharray: 5 7; opacity: .78; }
+    .contract { stroke: var(--red); stroke-width: 3; fill: none; }
+    .core { stroke: var(--text); stroke-width: 6; fill: none; stroke-linecap: round; opacity: .68; }
+    .budget { stroke: var(--text); stroke-width: 2.2; stroke-dasharray: 8 7; }
+    .tangentA { stroke: var(--accent); stroke-width: 1.8; stroke-dasharray: 4 5; }
+    .tangentB { stroke: var(--gold); stroke-width: 1.8; stroke-dasharray: 4 5; }
+    .demand-line { stroke: var(--blue); stroke-width: 1.35; stroke-dasharray: 3 5; opacity: .72; }
+    .lens-cell { fill: var(--accent); opacity: .095; }
+    .point { stroke: var(--card); stroke-width: 3; cursor: grab; }
+    .point:active { cursor: grabbing; }
+
+    @media (max-width: 1180px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { position: static; max-height: none; }
+      .tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .diagram-card { grid-template-columns: 1fr; }
+      .readout { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .bottom { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      .app { padding: 10px; }
+      .topbar { flex-direction: column; }
+      .tabs, .readout, .check-grid, .btn-row { grid-template-columns: 1fr; }
+      .canvas { min-height: 430px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app" data-theme="light">
+    <aside class="sidebar">
+      <div class="kicker">Pure exchange</div>
+      <h2>Edgeworth Box</h2>
+      <p class="muted">One diagram: two agents, two goods, CES preferences, endowment trade, efficiency, core, and Walrasian prices.</p>
+
+      <div class="tabs">
+        <button class="tab active" data-module="feasible"><b>1. Box</b><span>feasible allocations</span></button>
+        <button class="tab" data-module="gains"><b>2. Lens</b><span>mutual gains from ω</span></button>
+        <button class="tab" data-module="efficiency"><b>3. Core</b><span>efficiency and tangency</span></button>
+        <button class="tab" data-module="prices"><b>4. Prices</b><span>budget and clearing</span></button>
+      </div>
+
+      <h3>Aggregate endowment e = (X̄,Ȳ)</h3>
+      <div class="control"><label>Total good 1 <span><strong id="vXbar">10</strong> = X̄</span></label><input id="Xbar" type="range" min="4" max="20" step="1" value="10"></div>
+      <div class="control"><label>Total good 2 <span><strong id="vYbar">10</strong> = Ȳ</span></label><input id="Ybar" type="range" min="4" max="20" step="1" value="10"></div>
+
+      <h3>Initial endowment ωᴬ</h3>
+      <div class="control"><label>A's good 1 <span><strong id="vw1">4.00</strong> = ω₁ᴬ</span></label><input id="w1" type="range" min="0.2" max="9.8" step="0.1" value="4"></div>
+      <div class="control"><label>A's good 2 <span><strong id="vw2">6.00</strong> = ω₂ᴬ</span></label><input id="w2" type="range" min="0.2" max="9.8" step="0.1" value="6"></div>
+
+      <h3>CES preferences</h3>
+      <div class="control"><label>A share parameter <span><strong id="va">0.50</strong> = αᴬ</span></label><input id="alpha" type="range" min="0.10" max="0.90" step="0.01" value="0.50"></div>
+      <div class="control"><label>A substitution curvature <span><strong id="vrhoA">0.00</strong> = ρᴬ</span></label><input id="rhoA" type="range" min="-1.50" max="0.85" step="0.01" value="0.00"></div>
+      <div class="control"><label>B share parameter <span><strong id="vb">0.50</strong> = αᴮ</span></label><input id="beta" type="range" min="0.10" max="0.90" step="0.01" value="0.50"></div>
+      <div class="control"><label>B substitution curvature <span><strong id="vrhoB">0.00</strong> = ρᴮ</span></label><input id="rhoB" type="range" min="-1.50" max="0.85" step="0.01" value="0.00"></div>
+
+      <h3>Displayed allocation xᴬ</h3>
+      <div class="control"><label>A's good 1 <span><strong id="vx1">5.00</strong> = x₁ᴬ</span></label><input id="x1" type="range" min="0.2" max="9.8" step="0.1" value="5"></div>
+      <div class="control"><label>A's good 2 <span><strong id="vx2">5.00</strong> = x₂ᴬ</span></label><input id="x2" type="range" min="0.2" max="9.8" step="0.1" value="5"></div>
+
+      <h3>Price line p₂ = 1</h3>
+      <div class="control"><label>Relative price <span><strong id="vp">1.00</strong> = p₁/p₂</span></label><input id="price" type="range" min="0.05" max="25.00" step="0.01" value="1.00"></div>
+
+      <h3>Geometry</h3>
+      <div class="check-grid">
+        <label class="check"><input id="showLens" type="checkbox" checked> gains lens</label>
+        <label class="check"><input id="showContract" type="checkbox" checked> contract</label>
+        <label class="check"><input id="showCore" type="checkbox" checked> core</label>
+        <label class="check"><input id="showBudget" type="checkbox" checked> budget</label>
+        <label class="check"><input id="showDemands" type="checkbox" checked> optima</label>
+        <label class="check"><input id="showTangents" type="checkbox" checked> tangents</label>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn primary" id="moveWalras">Move x to xᵂ</button>
+        <button class="btn" id="setPriceWalras">Set p = pᵂ</button>
+        <button class="btn" id="moveEndowment">Move x to ω</button>
+        <button class="btn" id="reset">Reset</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="kicker" id="moduleKicker">Pure exchange geometry</div>
+          <h1 id="moduleTitle">Feasible allocations</h1>
+          <p class="subtitle" id="moduleSubtitle"></p>
+          <div class="focus-strip" aria-label="Edgeworth concepts">
+            <span class="focus-chip">feasible set</span>
+            <span class="focus-chip">endowment ω</span>
+            <span class="focus-chip">gains lens</span>
+            <span class="focus-chip">contract curve</span>
+            <span class="focus-chip">Walras point</span>
+          </div>
+        </div>
+        <button class="theme" id="theme"><span class="moon"></span><span id="themeText">Dark mode</span></button>
+      </header>
+
+      <section class="diagram-card">
+        <div class="canvas">
+          <svg id="svg" viewBox="0 0 880 640" preserveAspectRatio="xMidYMid meet" aria-label="Interactive Edgeworth box"></svg>
+          <div class="legend">
+            <span class="pill"><span class="dot"></span>A indifference</span>
+            <span class="pill"><span class="dot gold"></span>B indifference</span>
+            <span class="pill"><span class="dot red"></span>ω and contract curve</span>
+            <span class="pill"><span class="dot blue"></span>individual optima</span>
+            <span class="pill"><span class="dot black"></span>current x</span>
+          </div>
+        </div>
+
+        <div class="readout">
+          <div class="card">
+            <h2>Utilities</h2>
+            <div class="equation math" id="eqUtilA"></div>
+            <div class="equation math" id="eqUtilB"></div>
+            <div class="equation math eq-small" id="eqCesLimit"></div>
+          </div>
+
+          <div class="card">
+            <h2>Optimal demand at p</h2>
+            <div class="equation math eq-small" id="eqDemandA"></div>
+            <div class="equation math eq-small" id="eqDemandB"></div>
+            <div class="equation math eq-small" id="eqWalrasFormula"></div>
+          </div>
+
+          <div class="card">
+            <h2>Current allocation</h2>
+            <div class="metric"><span>xᴬ</span><span id="rXA"></span></div>
+            <div class="metric"><span>xᴮ = e − xᴬ</span><span id="rXB"></span></div>
+            <div class="metric"><span>uᴬ(xᴬ)</span><span id="rUA"></span></div>
+            <div class="metric"><span>uᴮ(xᴮ)</span><span id="rUB"></span></div>
+          </div>
+
+          <div class="card">
+            <h2>Efficiency and prices</h2>
+            <div class="metric"><span>MRSᴬ</span><span id="rMRSA"></span></div>
+            <div class="metric"><span>MRSᴮ</span><span id="rMRSB"></span></div>
+            <div class="metric"><span>σᴬ, σᴮ</span><span id="rSigma"></span></div>
+            <div class="metric"><span>pᵂ</span><span id="rPW"></span></div>
+            <div class="metric"><span>z₁(p), z₂(p)</span><span id="rZ"></span></div>
+            <div class="metric"><span>Status</span><span id="rStatus"></span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bottom">
+        <div class="panel">
+          <h2>Interpretation</h2>
+          <p class="muted" id="interpretation"></p>
+        </div>
+        <div class="panel">
+          <h2>What to notice</h2>
+          <ul id="notice"></ul>
+        </div>
+        <div class="panel">
+          <h2>Exam-style summary</h2>
+          <div class="equation" id="summaryEq"></div>
+          <p class="muted" id="summaryText" style="margin-top:10px;"></p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const state = {
+      module: 'feasible',
+      Xbar: 10, Ybar: 10,
+      w1: 4, w2: 6,
+      alpha: .5, beta: .5,
+      rhoA: 0, rhoB: 0,
+      x1: 5, x2: 5,
+      price: 1,
+      showLens: true,
+      showContract: true,
+      showCore: true,
+      showBudget: true,
+      showDemands: true,
+      showTangents: true,
+      dark: false
+    };
+
+    const modules = {
+      feasible: {
+        kicker: 'Pure exchange geometry',
+        title: 'Feasible allocations',
+        subtitle: 'The Edgeworth box is the feasible set of all divisions of two goods. A reads from the lower-left origin; B reads from the upper-right origin.',
+        interpretation: 'A movement east gives A more good 1 and B less good 1. A movement north gives A more good 2 and B less good 2. The same point is therefore two bundles at once.',
+        notice: ['The rectangle is not a graph of utility; it is the resource constraint.', 'Feasibility means xᴬ + xᴮ = e.', 'A point inside the box exhausts the aggregate endowment.'],
+        eq: String.raw`F=\{x^A\in\mathbb{R}^2_+ : 0\le x_1^A\le \bar X,\;0\le x_2^A\le \bar Y\},\qquad x^B=e-x^A`,
+        summary: 'In pure exchange, the only technological restriction is that aggregate consumption cannot exceed aggregate endowments.'
+      },
+      gains: {
+        kicker: 'Mutual gains from trade',
+        title: 'The lens from endowment ω',
+        subtitle: 'The gains-from-trade lens is the intersection of A’s and B’s weakly preferred sets relative to the initial endowment.',
+        interpretation: 'The shaded lens contains allocations that both agents weakly prefer to the initial endowment. When the lens is large, there are many mutually beneficial trades. When it collapses onto the contract curve, the endowment is already efficient.',
+        notice: ['The endowment ω is the no-trade reference point.', 'Voluntary exchange must stay above both agents’ initial utility levels.', 'The lens is generally bounded by two indifference curves through ω.'],
+        eq: String.raw`G(\omega)=\{x\in F: u^A(x^A)\ge u^A(\omega^A),\;u^B(x^B)\ge u^B(\omega^B)\}`,
+        summary: 'A Pareto improvement from ω makes at least one consumer better off and no consumer worse off.'
+      },
+      efficiency: {
+        kicker: 'Efficiency, contract curve, core',
+        title: 'Tangency and the contract curve',
+        subtitle: 'An interior allocation is Pareto efficient when the two indifference curves are tangent: the agents have equal marginal rates of substitution.',
+        interpretation: 'If MRSᴬ ≠ MRSᴮ, the indifference curves cross. Around the crossing there is a small lens of trades that raises both utilities. Efficiency removes this local lens.',
+        notice: ['The red curve is the contract curve.', 'The thick dark segment is the core: efficient allocations that both agents weakly prefer to ω.', 'For CES preferences with positive goods and ρ < 1, interior tangency is well-defined and the contract curve is computed from MRS equality.'],
+        eq: String.raw`MRS^A(x^A)=MRS^B(x^B),\qquad MRS^I=\frac{\alpha^I}{1-\alpha^I}\left(\frac{x_1^I}{x_2^I}\right)^{\rho^I-1}`,
+        summary: 'At an interior Pareto optimum, no feasible marginal reallocation can improve one agent without hurting the other. For CES preferences, the elasticity of substitution is σ = 1/(1−ρ).'
+      },
+      prices: {
+        kicker: 'Walrasian equilibrium',
+        title: 'Prices, individual optima, and clearing',
+        subtitle: 'At prices p = (p₁,1), each CES consumer maximizes utility on a budget line through their endowment. Equilibrium requires their individual optima to be mutually feasible.',
+        interpretation: 'The blue points are the two individual optimal choices translated into the box. When they coincide, aggregate excess demand is zero. That common point is the Walrasian allocation.',
+        notice: ['The budget line through ω has slope −p₁/p₂.', 'At pᵂ, both consumers optimize and markets clear.', 'Interior equilibrium satisfies MRSᴬ = MRSᴮ = p₁/p₂.'],
+        eq: String.raw`x^{I*}(p)\in\arg\max_{x^I\ge0}u^I(x^I)\quad\text{s.t.}\quad p\cdot x^I\le p\cdot\omega^I,\qquad x^{A*}(p)+x^{B*}(p)=e`,
+        summary: 'Competitive equilibrium decentralizes a Pareto efficient allocation by converting endowments into purchasing power.'
+      }
+    };
+
+    const sliders = ['Xbar','Ybar','w1','w2','alpha','rhoA','beta','rhoB','x1','x2','price'];
+    const checks = ['showLens','showContract','showCore','showBudget','showDemands','showTangents'];
+
+    sliders.forEach(id => $(id).addEventListener('input', e => { state[id] = +e.target.value; sanitize(); sync(); render(); }));
+    checks.forEach(id => $(id).addEventListener('change', e => { state[id] = e.target.checked; render(); }));
+
+    document.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click', () => {
+      state.module = btn.dataset.module;
+      document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (state.module === 'prices') { state.showBudget = true; state.showDemands = true; }
+      if (state.module === 'efficiency') { state.showContract = true; state.showCore = true; }
+      if (state.module === 'gains') { state.showLens = true; }
+      sync(); render();
+    }));
+
+    function applyTheme() {
+      const mode = state.dark ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', mode);
+      document.body.setAttribute('data-theme', mode);
+      $('app').setAttribute('data-theme', mode);
+      $('themeText').textContent = state.dark ? 'Light mode' : 'Dark mode';
+    }
+
+    $('theme').addEventListener('click', () => {
+      state.dark = !state.dark;
+      applyTheme();
+      render();
+    });
+
+    $('moveWalras').addEventListener('click', () => { const w = walras(); state.x1 = w.xA; state.x2 = w.yA; sync(); render(); });
+    $('setPriceWalras').addEventListener('click', () => { state.price = walras().p; sync(); render(); });
+    $('moveEndowment').addEventListener('click', () => { state.x1 = state.w1; state.x2 = state.w2; sync(); render(); });
+    $('reset').addEventListener('click', () => {
+      Object.assign(state, { Xbar:10,Ybar:10,w1:4,w2:6,alpha:.5,beta:.5,rhoA:0,rhoB:0,x1:5,x2:5,price:1,showLens:true,showContract:true,showCore:true,showBudget:true,showDemands:true,showTangents:true });
+      sync(); render();
+    });
+
+    function sanitize() {
+      const eps = .08;
+      state.Xbar = Math.max(4, state.Xbar);
+      state.Ybar = Math.max(4, state.Ybar);
+      for (const id of ['w1','x1']) state[id] = clamp(state[id], eps, state.Xbar - eps);
+      for (const id of ['w2','x2']) state[id] = clamp(state[id], eps, state.Ybar - eps);
+      state.alpha = clamp(state.alpha, .1, .9);
+      state.beta = clamp(state.beta, .1, .9);
+      state.rhoA = clamp(state.rhoA, -1.5, .85);
+      state.rhoB = clamp(state.rhoB, -1.5, .85);
+      state.price = clamp(state.price, .05, 25);
+      $('w1').max = (state.Xbar - .2).toFixed(1);
+      $('x1').max = (state.Xbar - .2).toFixed(1);
+      $('w2').max = (state.Ybar - .2).toFixed(1);
+      $('x2').max = (state.Ybar - .2).toFixed(1);
+    }
+
+    function sync() {
+      sanitize();
+      sliders.forEach(id => $(id).value = state[id]);
+      checks.forEach(id => $(id).checked = state[id]);
+    }
+
+    function fmt(x, d=2) { return Number.isFinite(x) ? Number(x).toFixed(d) : '—'; }
+    function clamp(x, lo, hi) { return Math.max(lo, Math.min(hi, x)); }
+    function ownBFromA(xA,yA) { return { x: state.Xbar - xA, y: state.Ybar - yA }; }
+    function wB() { return { x: state.Xbar - state.w1, y: state.Ybar - state.w2 }; }
+
+    function Uces(x, y, a, rho) {
+      x = Math.max(x, 1e-10); y = Math.max(y, 1e-10);
+      if (Math.abs(rho) < 1e-5) return Math.pow(x, a) * Math.pow(y, 1-a);
+      const s = a*Math.pow(x, rho) + (1-a)*Math.pow(y, rho);
+      return Math.pow(Math.max(s, 1e-14), 1/rho);
+    }
+    function MRSces(x, y, a, rho) {
+      x = Math.max(x, 1e-10); y = Math.max(y, 1e-10);
+      return (a/(1-a)) * Math.pow(x/y, rho-1);
+    }
+    function U(x,y,a,rho=0) { return Uces(x,y,a,rho); }
+    function MRS(x,y,a,rho=0) { return MRSces(x,y,a,rho); }
+    function ratioCES(p, a, rho) {
+      const base = Math.max(p*(1-a)/a, 1e-12);
+      return Math.pow(base, 1/(rho-1));
+    }
+    function demandCES(p, income, a, rho) {
+      p = Math.max(p, 1e-8);
+      const r = ratioCES(p, a, rho);       // r = x_1/x_2 from MRS=p_1/p_2
+      const y = income / (p*r + 1);
+      const x = r*y;
+      return { x, y, m: income, ratio: r };
+    }
+    function demandA(p=state.price) {
+      const m = p*state.w1 + state.w2;
+      return demandCES(p, m, state.alpha, state.rhoA);
+    }
+    function demandB(p=state.price) {
+      const wb = wB();
+      const m = p*wb.x + wb.y;
+      return demandCES(p, m, state.beta, state.rhoB);
+    }
+    function excessDemand(p=state.price) {
+      const a = demandA(p), b = demandB(p);
+      return { z1: a.x + b.x - state.Xbar, z2: a.y + b.y - state.Ybar };
+    }
+    function walras() {
+      let lo = 1e-4, hi = 1e4;
+      let flo = excessDemand(lo).z1, fhi = excessDemand(hi).z1;
+      let pRaw = 1;
+      if (Number.isFinite(flo) && Number.isFinite(fhi) && flo*fhi <= 0) {
+        for (let k=0;k<90;k++) {
+          const mid = Math.sqrt(lo*hi);
+          const fm = excessDemand(mid).z1;
+          if (flo*fm > 0) { lo = mid; flo = fm; } else { hi = mid; fhi = fm; }
+        }
+        pRaw = Math.sqrt(lo*hi);
+      } else {
+        let best = { p: 1, e: Infinity };
+        for (let k=0;k<=600;k++) {
+          const t = -4 + 8*k/600;
+          const p = Math.pow(10,t);
+          const e = Math.abs(excessDemand(p).z1);
+          if (e < best.e) best = { p, e };
+        }
+        pRaw = best.p;
+      }
+      const da = demandA(pRaw);
+      return { p: pRaw, pRaw, xA: clamp(da.x, .08, state.Xbar-.08), yA: clamp(da.y, .08, state.Ybar-.08) };
+    }
+    function contractY(x) {
+      const eps = 1e-5;
+      let lo = eps, hi = state.Ybar - eps;
+      const f = y => Math.log(MRS(x,y,state.alpha,state.rhoA)) - Math.log(MRS(state.Xbar-x,state.Ybar-y,state.beta,state.rhoB));
+      let flo = f(lo), fhi = f(hi);
+      if (!Number.isFinite(flo) || !Number.isFinite(fhi) || flo*fhi > 0) return null;
+      for (let k=0;k<70;k++) {
+        const mid = .5*(lo+hi);
+        const fm = f(mid);
+        if (flo*fm <= 0) { hi = mid; fhi = fm; } else { lo = mid; flo = fm; }
+      }
+      return .5*(lo+hi);
+    }
+    function individuallyRational(x,y) {
+      const b = ownBFromA(x,y), wbv = wB();
+      return U(x,y,state.alpha,state.rhoA) >= U(state.w1,state.w2,state.alpha,state.rhoA)-1e-8 && U(b.x,b.y,state.beta,state.rhoB) >= U(wbv.x,wbv.y,state.beta,state.rhoB)-1e-8;
+    }
+
+
+    function renderKatex(id, tex, displayMode = true) {
+      const el = $(id);
+      if (!el) return;
+      el.textContent = '';
+      if (window.katex) {
+        try {
+          katex.render(tex, el, { displayMode, throwOnError: false, strict: false, trust: true });
+        } catch (err) {
+          el.textContent = 'Equation unavailable';
+        }
+      } else {
+        el.textContent = '';
+      }
+    }
+
+    function renderStaticMath() {
+      renderKatex('eqUtilA', String.raw`u^A(x_1^A,x_2^A)=\left[\alpha^A(x_1^A)^{\rho^A}+(1-\alpha^A)(x_2^A)^{\rho^A}\right]^{1/\rho^A}`);
+      renderKatex('eqUtilB', String.raw`u^B(x_1^B,x_2^B)=\left[\alpha^B(x_1^B)^{\rho^B}+(1-\alpha^B)(x_2^B)^{\rho^B}\right]^{1/\rho^B}`);
+      renderKatex('eqCesLimit', String.raw`\rho^I=0\;\Rightarrow\;u^I(x_1,x_2)=x_1^{\alpha^I}x_2^{1-\alpha^I},\qquad \sigma^I=\frac{1}{1-\rho^I}`);
+      renderKatex('eqDemandA', String.raw`\frac{x_1^{A*}}{x_2^{A*}}=\left[\frac{p_1(1-\alpha^A)}{\alpha^A}\right]^{1/(\rho^A-1)},\qquad p_1x_1^{A*}+x_2^{A*}=m^A`);
+      renderKatex('eqDemandB', String.raw`\frac{x_1^{B*}}{x_2^{B*}}=\left[\frac{p_1(1-\alpha^B)}{\alpha^B}\right]^{1/(\rho^B-1)},\qquad p_1x_1^{B*}+x_2^{B*}=m^B`);
+      renderKatex('eqWalrasFormula', String.raw`p^W:\; z_1(p^W)=x_1^{A*}(p^W)+x_1^{B*}(p^W)-\bar X=0`);
+    }
+
+    function renderText() {
+      $('vXbar').textContent = fmt(state.Xbar,0); $('vYbar').textContent = fmt(state.Ybar,0);
+      $('vw1').textContent = fmt(state.w1); $('vw2').textContent = fmt(state.w2);
+      $('va').textContent = fmt(state.alpha); $('vb').textContent = fmt(state.beta); $('vrhoA').textContent = fmt(state.rhoA); $('vrhoB').textContent = fmt(state.rhoB);
+      $('vx1').textContent = fmt(state.x1); $('vx2').textContent = fmt(state.x2);
+      $('vp').textContent = fmt(state.price);
+
+      const m = modules[state.module];
+      $('moduleKicker').textContent = m.kicker;
+      $('moduleTitle').textContent = m.title;
+      $('moduleSubtitle').textContent = m.subtitle;
+      $('interpretation').textContent = m.interpretation;
+      $('notice').innerHTML = m.notice.map(x => `<li>${x}</li>`).join('');
+      renderKatex('summaryEq', m.eq);
+      renderStaticMath();
+      $('summaryText').textContent = m.summary;
+
+      const b = ownBFromA(state.x1,state.x2);
+      const ua = U(state.x1,state.x2,state.alpha,state.rhoA), ub = U(b.x,b.y,state.beta,state.rhoB);
+      const mrsa = MRS(state.x1,state.x2,state.alpha,state.rhoA), mrsb = MRS(b.x,b.y,state.beta,state.rhoB);
+      const w = walras(); const z = excessDemand();
+      const mrsGap = Math.abs(Math.log(mrsa/mrsb));
+      const isEff = mrsGap < .055;
+      const ir = individuallyRational(state.x1,state.x2);
+      const marketClose = Math.hypot(z.z1,z.z2) < .08;
+
+      $('rXA').textContent = `(${fmt(state.x1)}, ${fmt(state.x2)})`;
+      $('rXB').textContent = `(${fmt(b.x)}, ${fmt(b.y)})`;
+      $('rUA').textContent = fmt(ua,3);
+      $('rUB').textContent = fmt(ub,3);
+      $('rMRSA').textContent = fmt(mrsa,3);
+      $('rMRSB').textContent = fmt(mrsb,3);
+      $('rSigma').textContent = `${fmt(1/(1-state.rhoA),2)}, ${fmt(1/(1-state.rhoB),2)}`;
+      $('rPW').textContent = fmt(w.pRaw,3);
+      $('rZ').textContent = `(${fmt(z.z1,2)}, ${fmt(z.z2,2)})`;
+      const st = $('rStatus');
+      if (marketClose) { st.textContent = 'markets clear'; st.className = 'status-good'; }
+      else if (isEff && ir) { st.textContent = 'in the core'; st.className = 'status-good'; }
+      else if (isEff) { st.textContent = 'efficient'; st.className = 'status-warn'; }
+      else { st.textContent = 'trade possible'; st.className = 'status-bad'; }
+    }
+
+    function css(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+    function make(tag) { return document.createElementNS('http://www.w3.org/2000/svg', tag); }
+    function set(el, attrs) { for (const [k,v] of Object.entries(attrs)) el.setAttribute(k, v); return el; }
+    function append(svg, el) { svg.appendChild(el); return el; }
+    function line(svg,x1,y1,x2,y2,cls,extra={}) { return append(svg,set(make('line'),{x1,y1,x2,y2,class:cls,...extra})); }
+    function circle(svg,cx,cy,r,fill,cls='') { return append(svg,set(make('circle'),{cx,cy,r,fill,class:cls})); }
+    function text(svg,x,y,t,cls='svg-label',anchor='start',rot=0) {
+      const el = set(make('text'),{x,y,class:cls,'text-anchor':anchor});
+      if(rot) el.setAttribute('transform',`rotate(${rot} ${x} ${y})`);
+      el.textContent = t; return append(svg,el);
+    }
+    function path(svg, pts, cls, extra={}) {
+      if (pts.length < 2) return null;
+      const d = pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' ');
+      return append(svg,set(make('path'),{d,class:cls,...extra}));
+    }
+
+    function renderSvg() {
+      const svg = $('svg'); svg.innerHTML = '';
+      const W = 880, H = 640;
+      const M = { l: 92, r: 92, t: 70, b: 82 };
+      const BW = W-M.l-M.r, BH = H-M.t-M.b;
+      const sx = x => M.l + (x/state.Xbar)*BW;
+      const sy = y => M.t + BH - (y/state.Ybar)*BH;
+      const ix = px => clamp((px-M.l)/BW*state.Xbar, .08, state.Xbar-.08);
+      const iy = py => clamp((M.t+BH-py)/BH*state.Ybar, .08, state.Ybar-.08);
+
+      const textColor = css('--text'), muted = css('--muted'), card = css('--card');
+      const accent = css('--accent'), gold = css('--gold'), red = css('--red'), blue = css('--blue');
+
+      const defs = make('defs');
+      defs.innerHTML = `<filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
+      append(svg, defs);
+
+      // grid frame
+      append(svg,set(make('rect'),{x:M.l,y:M.t,width:BW,height:BH,rx:4,class:'box-border'}));
+      for(let i=1;i<state.Xbar;i++) line(svg,sx(i),M.t,sx(i),M.t+BH,'thin');
+      for(let j=1;j<state.Ybar;j++) line(svg,M.l,sy(j),M.l+BW,sy(j),'thin');
+
+      text(svg,M.l-10,M.t+BH+29,'Oᴬ','svg-title','end');
+      text(svg,M.l+BW+12,M.t-14,'Oᴮ','svg-title','start');
+      text(svg,M.l+BW/2,M.t+BH+50,'good 1 for A  →','svg-label','middle');
+      text(svg,M.l-48,M.t+BH/2,'good 2 for A','svg-label','middle',-90);
+      text(svg,M.l+BW/2,M.t-34,'←  good 1 for B','svg-label','middle');
+      text(svg,M.l+BW+48,M.t+BH/2,'good 2 for B','svg-label','middle',90);
+
+      const bCur = ownBFromA(state.x1,state.x2);
+      const ua = U(state.x1,state.x2,state.alpha,state.rhoA), ub = U(bCur.x,bCur.y,state.beta,state.rhoB);
+      const wbv = wB();
+      const uAw = U(state.w1,state.w2,state.alpha,state.rhoA), uBw = U(wbv.x,wbv.y,state.beta,state.rhoB);
+
+      if(state.showLens) drawLens(svg,sx,sy,uAw,uBw);
+      if(state.showContract) drawContract(svg,sx,sy);
+      if(state.showCore) drawCore(svg,sx,sy,uAw,uBw);
+      if(state.showBudget) drawBudget(svg,sx,sy);
+
+      // current and endowment indifference curves
+      drawIndiffA(svg,sx,sy,ua,state.alpha,state.rhoA,'curveA');
+      drawIndiffB(svg,sx,sy,ub,state.beta,state.rhoB,'curveB');
+      if(state.module === 'gains' || state.showLens) {
+        drawIndiffA(svg,sx,sy,uAw,state.alpha,state.rhoA,'curveA curveEndowment');
+        drawIndiffB(svg,sx,sy,uBw,state.beta,state.rhoB,'curveB curveEndowment');
+      }
+
+      if(state.showDemands) drawDemands(svg,sx,sy);
+      drawWalras(svg,sx,sy);
+
+      if(state.showTangents) {
+        drawTangent(svg,sx,sy,state.x1,state.x2,MRS(state.x1,state.x2,state.alpha,state.rhoA),'tangentA',false);
+        drawTangent(svg,sx,sy,state.x1,state.x2,MRS(bCur.x,bCur.y,state.beta,state.rhoB),'tangentB',true);
+      }
+
+      circle(svg,sx(state.w1),sy(state.w2),8.5,red,'point').style.stroke = card;
+      text(svg,sx(state.w1)+12,sy(state.w2)+24,'ω','svg-title');
+
+      const current = circle(svg,sx(state.x1),sy(state.x2),9,textColor,'point');
+      current.style.stroke = card;
+      current.style.filter = 'url(#glow)';
+      text(svg,sx(state.x1)+12,sy(state.x2)-13,'x','svg-title');
+
+      current.addEventListener('pointerdown', e => {
+        svg.setPointerCapture(e.pointerId);
+        const move = ev => {
+          const pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY;
+          const q = pt.matrixTransform(svg.getScreenCTM().inverse());
+          state.x1 = ix(q.x); state.x2 = iy(q.y);
+          sync(); render();
+        };
+        const up = ev => {
+          svg.releasePointerCapture(e.pointerId);
+          svg.removeEventListener('pointermove',move);
+          svg.removeEventListener('pointerup',up);
+        };
+        svg.addEventListener('pointermove',move);
+        svg.addEventListener('pointerup',up);
+      });
+
+      function indiffY(u, x, a, rho) {
+        x = Math.max(x, 1e-10);
+        if (Math.abs(rho) < 1e-5) {
+          return Math.pow(u/Math.pow(x,a), 1/(1-a));
+        }
+        const inside = (Math.pow(u, rho) - a*Math.pow(x, rho))/(1-a);
+        if (!Number.isFinite(inside) || inside <= 0) return null;
+        return Math.pow(inside, 1/rho);
+      }
+      function drawIndiffA(svg,sx,sy,u,a,rho,cls) {
+        const pts=[];
+        for(let i=1;i<720;i++) {
+          const x = state.Xbar*i/720;
+          const y = indiffY(u,x,a,rho);
+          if(y!==null && y>=0 && y<=state.Ybar) pts.push([sx(x),sy(y)]);
+        }
+        path(svg,pts,cls);
+      }
+      function drawIndiffB(svg,sx,sy,u,a,rho,cls) {
+        const pts=[];
+        for(let i=1;i<720;i++) {
+          const xB = state.Xbar*i/720;
+          const yB = indiffY(u,xB,a,rho);
+          if (yB === null) continue;
+          const x = state.Xbar-xB, y = state.Ybar-yB;
+          if(y>=0 && y<=state.Ybar && x>=0 && x<=state.Xbar) pts.push([sx(x),sy(y)]);
+        }
+        path(svg,pts,cls);
+      }
+      function drawLens(svg,sx,sy,uAw,uBw) {
+        const nx=72, ny=72, dx=state.Xbar/nx, dy=state.Ybar/ny;
+        const g = make('g');
+        for(let i=0;i<nx;i++) for(let j=0;j<ny;j++) {
+          const x=(i+.5)*dx, y=(j+.5)*dy, b=ownBFromA(x,y);
+          if(U(x,y,state.alpha,state.rhoA)>=uAw && U(b.x,b.y,state.beta,state.rhoB)>=uBw) {
+            append(g,set(make('rect'),{x:sx(i*dx),y:sy((j+1)*dy),width:Math.max(1,sx((i+1)*dx)-sx(i*dx)+.2),height:Math.max(1,sy(j*dy)-sy((j+1)*dy)+.2),class:'lens-cell'}));
+          }
+        }
+        append(svg,g);
+      }
+      function drawContract(svg,sx,sy) {
+        const pts=[];
+        for(let i=1;i<600;i++) {
+          const x=state.Xbar*i/600, y=contractY(x);
+          if(y!==null && y>0 && y<state.Ybar) pts.push([sx(x),sy(y)]);
+        }
+        path(svg,pts,'contract');
+        const p = pts[Math.floor(pts.length*.70)]; if(p) text(svg,p[0]+12,p[1]-12,'contract curve','svg-small');
+      }
+      function drawCore(svg,sx,sy,uAw,uBw) {
+        const pts=[];
+        for(let i=1;i<700;i++) {
+          const x=state.Xbar*i/700, y=contractY(x), b=ownBFromA(x,y);
+          if(y!==null && y>0 && y<state.Ybar && U(x,y,state.alpha,state.rhoA)>=uAw && U(b.x,b.y,state.beta,state.rhoB)>=uBw) pts.push([sx(x),sy(y)]);
+        }
+        const pth = path(svg,pts,'core');
+        if(pth) { const mid=pts[Math.floor(pts.length*.5)]; if(mid) text(svg,mid[0]+10,mid[1]+27,'core','svg-title'); }
+      }
+      function drawBudget(svg,sx,sy) {
+        const p=state.price, wealth=p*state.w1+state.w2;
+        const candidates=[];
+        const y0=wealth, yX=wealth-p*state.Xbar, x0=wealth/p, xY=(wealth-state.Ybar)/p;
+        if(y0>=0 && y0<=state.Ybar) candidates.push([0,y0]);
+        if(yX>=0 && yX<=state.Ybar) candidates.push([state.Xbar,yX]);
+        if(x0>=0 && x0<=state.Xbar) candidates.push([x0,0]);
+        if(xY>=0 && xY<=state.Xbar) candidates.push([xY,state.Ybar]);
+        const unique=[];
+        candidates.forEach(q=>{ if(!unique.some(r=>Math.hypot(q[0]-r[0],q[1]-r[1])<1e-6)) unique.push(q); });
+        if(unique.length>=2) {
+          line(svg,sx(unique[0][0]),sy(unique[0][1]),sx(unique[1][0]),sy(unique[1][1]),'budget');
+          text(svg,(sx(unique[0][0])+sx(unique[1][0]))/2+10,(sy(unique[0][1])+sy(unique[1][1]))/2-10,'budget through ω','svg-small');
+        }
+      }
+      function drawDemands(svg,sx,sy) {
+        const da=demandA(), db=demandB();
+        const bx=state.Xbar-db.x, by=state.Ybar-db.y;
+        line(svg,sx(da.x),sy(da.y),sx(bx),sy(by),'demand-line');
+        circle(svg,sx(da.x),sy(da.y),7,blue,'point').style.stroke = card;
+        circle(svg,sx(bx),sy(by),7,gold,'point').style.stroke = card;
+        text(svg,sx(da.x)+10,sy(da.y)-10,'xᴬ*(p)','svg-small');
+        text(svg,sx(bx)+10,sy(by)+22,'e − xᴮ*(p)','svg-small');
+      }
+      function drawWalras(svg,sx,sy) {
+        const w=walras();
+        circle(svg,sx(w.xA),sy(w.yA),6.5,accent,'point').style.stroke = card;
+        text(svg,sx(w.xA)+10,sy(w.yA)-12,'xᵂ','svg-title');
+      }
+      function drawTangent(svg,sx,sy,x,y,slope,cls,reverse) {
+        const len=.92;
+        const dx=len, dy=slope*len;
+        const x1=clamp(x-dx,0,state.Xbar), x2=clamp(x+dx,0,state.Xbar);
+        const y1=reverse ? clamp(y-dy,0,state.Ybar) : clamp(y+dy,0,state.Ybar);
+        const y2=reverse ? clamp(y+dy,0,state.Ybar) : clamp(y-dy,0,state.Ybar);
+        line(svg,sx(x1),sy(y1),sx(x2),sy(y2),cls);
+      }
+    }
+
+    function render() { renderText(); renderSvg(); }
+    applyTheme();
+    sync(); render();
+  </script>
+</body>
+</html>

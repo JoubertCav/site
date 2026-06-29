@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive microeconomics diagram for signaling and the Spence model: education as a signal, differential costs, separating equilibria, pooling equilibria, and belief refinements.">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <title>Signaling and the Spence Model | Information and Mechanisms Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+  <style>
+    :root{
+      --bg:#f6f3eb; --bg2:#ece6d8; --paper:#fffdf8; --paper2:#faf6ec;
+      --ink:#17201f; --muted:#66706d; --line:#d9d0bf; --line2:#c8bda8;
+      --accent:#167a74; --accent2:#2aa79e; --accent3:#d99041; --danger:#c9544b;
+      --good:#22865e; --blue:#346fa3; --violet:#8067b7;
+      --shadow:0 18px 60px rgba(35,28,18,.10); --radius:24px; --sidebar:365px;
+      --code:#f3eadc; --grid:#e8dece;
+    }
+    [data-theme="dark"]{
+      --bg:#0b1214; --bg2:#101b1f; --paper:#111b1f; --paper2:#162429;
+      --ink:#edf7f5; --muted:#a8b7b4; --line:#274247; --line2:#36565d;
+      --accent:#44d1c4; --accent2:#6ee7dc; --accent3:#f0a85f; --danger:#ff8178;
+      --good:#5fe1a2; --blue:#74b9ff; --violet:#b4a5ff;
+      --shadow:0 18px 60px rgba(0,0,0,.33); --code:#17262b; --grid:#22363b;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; min-height:100vh;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 18% 2%, rgba(42,167,158,.14), transparent 33%),
+        radial-gradient(circle at 92% 5%, rgba(217,144,65,.13), transparent 30%),
+        linear-gradient(135deg,var(--bg),var(--bg2));
+      color:var(--ink);
+    }
+    a{color:inherit}
+    h1,h2,h3,p{margin:0}
+    .app{display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr);min-height:100vh}
+    .sidebar{
+      position:sticky; top:0; height:100vh; overflow:auto; padding:24px 20px 28px;
+      border-right:1px solid var(--line);
+      background:color-mix(in oklab,var(--paper) 90%,transparent);
+      backdrop-filter:blur(20px); z-index:10;
+    }
+    .brand{
+      padding:18px; border:1px solid var(--line);
+      background:linear-gradient(180deg,var(--paper),var(--paper2));
+      border-radius:24px; box-shadow:var(--shadow); margin-bottom:16px;
+    }
+    .eyebrow{display:flex;align-items:center;gap:8px;color:var(--accent);font-size:12px;font-weight:950;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+    .dot{width:8px;height:8px;border-radius:99px;background:var(--accent);box-shadow:0 0 0 4px color-mix(in oklab,var(--accent) 16%,transparent)}
+    h1{font-size:24px;line-height:1.05;letter-spacing:-.055em}
+    .brand p{font-size:13px;line-height:1.45;color:var(--muted);margin-top:10px}
+    .mode{
+      position:fixed;top:18px;right:18px;z-index:50;display:flex;align-items:center;gap:10px;
+      border:1px solid var(--line);background:color-mix(in oklab,var(--paper) 88%,transparent);
+      backdrop-filter:blur(16px);border-radius:999px;padding:9px 12px;box-shadow:var(--shadow);
+      cursor:pointer;color:var(--ink);font-weight:950;font-size:13px;
+    }
+    .switch{width:42px;height:24px;border-radius:99px;background:var(--line2);position:relative;transition:.2s}
+    .switch:after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;left:3px;top:3px;background:var(--paper);box-shadow:0 2px 8px rgba(0,0,0,.25);transition:.2s}
+    [data-theme="dark"] .switch{background:var(--accent)}
+    [data-theme="dark"] .switch:after{transform:translateX(18px)}
+    .nav{display:grid;gap:8px;margin:14px 0 16px}
+    .nav a{text-decoration:none;padding:11px 13px;border:1px solid var(--line);border-radius:15px;color:var(--muted);font-weight:950;font-size:13px;background:color-mix(in oklab,var(--paper2) 80%,transparent)}
+    .nav a:hover{color:var(--ink);border-color:var(--accent);background:color-mix(in oklab,var(--accent) 10%,var(--paper))}
+    .controls{display:grid;gap:12px}
+    .control-card{border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,var(--paper),var(--paper2));box-shadow:var(--shadow);padding:16px}
+    .control-card h3{font-size:13px;text-transform:uppercase;letter-spacing:.11em;color:var(--muted);margin-bottom:12px}
+    .ctrl{display:grid;gap:7px;margin:12px 0}.ctrl:first-of-type{margin-top:0}
+    label{display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--ink);font-weight:950;font-size:13px}
+    .label-main{display:flex;align-items:center;gap:7px;min-width:0}
+    .sym{font-size:12px;color:var(--muted);font-weight:950;border:1px solid var(--line);background:var(--paper2);border-radius:999px;padding:3px 7px;white-space:nowrap}
+    .val{font-variant-numeric:tabular-nums;color:var(--accent);white-space:nowrap}
+    input[type="range"]{width:100%;accent-color:var(--accent)}
+    .hint{font-size:12px;line-height:1.35;color:var(--muted)}
+    .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+    button{border:1px solid var(--line);background:var(--paper2);color:var(--ink);border-radius:14px;padding:10px 11px;font-weight:950;cursor:pointer}
+    button:hover{border-color:var(--accent);background:color-mix(in oklab,var(--accent) 12%,var(--paper2))}
+    .main{min-width:0;padding:34px 38px 70px}
+    .hero{
+      border:1px solid var(--line);border-radius:32px;
+      background:linear-gradient(135deg,color-mix(in oklab,var(--paper) 96%,transparent),color-mix(in oklab,var(--paper2) 88%,transparent));
+      box-shadow:var(--shadow);padding:32px;margin-bottom:22px;position:relative;overflow:hidden;
+    }
+    .hero:before{content:"";position:absolute;inset:-100px -80px auto auto;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,color-mix(in oklab,var(--accent) 17%,transparent),transparent 70%);pointer-events:none}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(420px,.92fr);gap:26px;align-items:center;position:relative}
+    .hero h2{font-size:48px;letter-spacing:-.065em;line-height:.96;max-width:820px}
+    .hero .lead{margin-top:16px;color:var(--muted);font-size:17px;line-height:1.55;max-width:790px}
+    .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+    .pill{border:1px solid var(--line);background:var(--paper2);border-radius:999px;padding:8px 11px;font-size:12px;font-weight:950;color:var(--muted)}
+    .pill.strong{color:var(--accent);border-color:color-mix(in oklab,var(--accent) 36%,var(--line))}
+    .metric-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:22px 0}
+    .metric{border:1px solid var(--line);background:var(--paper);border-radius:20px;padding:15px;box-shadow:0 10px 30px rgba(0,0,0,.04)}
+    .metric .k{font-size:12px;color:var(--muted);font-weight:950;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px}
+    .metric .v{font-size:24px;line-height:1;font-weight:950;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+    .metric.good .v{color:var(--good)} .metric.bad .v{color:var(--danger)} .metric.accent .v{color:var(--accent)} .metric.blue .v{color:var(--blue)} .metric.violet .v{color:var(--violet)}
+    section{margin:22px 0}
+    .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 0 12px}
+    .section-head h2{font-size:28px;letter-spacing:-.045em}
+    .section-head p{color:var(--muted);font-size:14px;max-width:760px;line-height:1.45}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,var(--paper),var(--paper2));box-shadow:var(--shadow);padding:22px;min-width:0}
+    .card h3{font-size:18px;letter-spacing:-.025em;margin-bottom:8px}
+    .card p,.card li{color:var(--muted);font-size:14px;line-height:1.52}
+    .formula{border:1px solid var(--line);background:var(--code);border-radius:18px;padding:16px;margin:12px 0;overflow:auto;color:var(--ink)}
+    .formula.center{text-align:center}
+    .diagram{width:100%;min-height:300px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,color-mix(in oklab,var(--paper) 76%,transparent),color-mix(in oklab,var(--paper2) 90%,transparent));overflow:hidden;position:relative}
+    .diagram svg{display:block;width:100%;height:100%;min-height:300px}.diagram.big svg{min-height:440px}.diagram.medium svg{min-height:360px}
+    .legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+    .legend-item{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px;font-weight:900}
+    .swatch{width:12px;height:12px;border-radius:4px;background:var(--accent)}
+    .swatch.orange{background:var(--accent3)} .swatch.red{background:var(--danger)} .swatch.blue{background:var(--blue)} .swatch.green{background:var(--good)} .swatch.violet{background:var(--violet)} .swatch.gray{background:var(--line2)}
+    .status{display:grid;gap:10px;margin-top:12px}
+    .status-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:16px;background:var(--paper);padding:12px 13px;font-size:13px}
+    .badge{border-radius:999px;padding:6px 9px;font-weight:950;font-size:12px;background:var(--paper2);border:1px solid var(--line);white-space:nowrap}
+    .badge.ok{color:var(--good);border-color:color-mix(in oklab,var(--good) 40%,var(--line));background:color-mix(in oklab,var(--good) 12%,var(--paper))}
+    .badge.no{color:var(--danger);border-color:color-mix(in oklab,var(--danger) 44%,var(--line));background:color-mix(in oklab,var(--danger) 10%,var(--paper))}
+    .badge.warn{color:var(--accent3);border-color:color-mix(in oklab,var(--accent3) 44%,var(--line));background:color-mix(in oklab,var(--accent3) 10%,var(--paper))}
+    .callout{border-left:5px solid var(--accent);background:color-mix(in oklab,var(--accent) 8%,var(--paper));padding:15px 16px;border-radius:18px;margin-top:12px;color:var(--muted);line-height:1.5;font-size:14px}
+    .table{width:100%;border-collapse:separate;border-spacing:0 8px;font-size:13px}
+    .table th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.1em;text-align:left;padding:0 10px}
+    .table td{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px;font-variant-numeric:tabular-nums}
+    .table td:first-child{border-left:1px solid var(--line);border-radius:14px 0 0 14px;font-weight:950;font-variant-numeric:normal}
+    .table td:last-child{border-right:1px solid var(--line);border-radius:0 14px 14px 0}
+    .footer-note{margin-top:24px;color:var(--muted);font-size:13px;line-height:1.5;text-align:center}
+    .math{min-height:1em}
+    @media(max-width:1180px){
+      :root{--sidebar:320px}.hero-grid,.grid-2,.grid-3{grid-template-columns:1fr}.metric-row{grid-template-columns:1fr 1fr}.hero h2{font-size:40px}
+    }
+    @media(max-width:860px){
+      .app{grid-template-columns:1fr}.sidebar{position:relative;height:auto;max-height:none;border-right:0;border-bottom:1px solid var(--line)}
+      .main{padding:22px 14px 60px}.mode{top:12px;right:12px}.metric-row{grid-template-columns:1fr}.hero{padding:22px}.hero h2{font-size:34px}
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <button class="mode" id="themeBtn" aria-label="Toggle dark mode"><span>Dark mode</span><span class="switch"></span></button>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="eyebrow"><span class="dot"></span>Spence signaling</div>
+        <h1>Education as a signal</h1>
+        <p>Education is not productive here. It is a costly observable action that can reveal hidden productivity when high types have lower education costs.</p>
+      </div>
+
+      <nav class="nav" aria-label="Navigation">
+        <a href="#map">Model map</a>
+        <a href="#timing">Timing and beliefs</a>
+        <a href="#costs">Costs and single crossing</a>
+        <a href="#separating">Separating equilibrium</a>
+        <a href="#pooling">Pooling and refinements</a>
+        <a href="#diagnosis">Equilibrium diagnosis</a>
+      </nav>
+
+      <div class="controls">
+        <div class="control-card">
+          <h3>Types and productivity</h3>
+          <div class="ctrl"><label><span class="label-main">Low type productivity <span class="sym math" data-tex="y_L"></span></span><span class="val" id="v_yL"></span></label><input id="yL" type="range" min="10" max="90" step="1" value="40"></div>
+          <div class="ctrl"><label><span class="label-main">High type productivity <span class="sym math" data-tex="y_H"></span></span><span class="val" id="v_yH"></span></label><input id="yH" type="range" min="50" max="180" step="1" value="100"></div>
+          <div class="ctrl"><label><span class="label-main">Share of high types <span class="sym math" data-tex="\pi_H"></span></span><span class="val" id="v_piH"></span></label><input id="piH" type="range" min="0.05" max="0.95" step="0.01" value="0.40"></div>
+          <p class="hint"><b>Symbols:</b> <span class="math" data-tex="\Delta y=y_H-y_L"></span>; <span class="math" data-tex="\bar y=\pi_Hy_H+(1-\pi_H)y_L"></span>.</p>
+        </div>
+
+        <div class="control-card">
+          <h3>Education costs</h3>
+          <div class="ctrl"><label><span class="label-main">Low type cost slope <span class="sym math" data-tex="k_L"></span></span><span class="val" id="v_kL"></span></label><input id="kL" type="range" min="0.2" max="12" step="0.1" value="5.0"></div>
+          <div class="ctrl"><label><span class="label-main">High type cost slope <span class="sym math" data-tex="k_H"></span></span><span class="val" id="v_kH"></span></label><input id="kH" type="range" min="0.1" max="8" step="0.1" value="1.4"></div>
+          <p class="hint">Single crossing: <span class="math" data-tex="k_L>k_H"></span>. Cost: <span class="math" data-tex="c_\theta(e)=\frac12 k_\theta e^2"></span>.</p>
+        </div>
+
+        <div class="control-card">
+          <h3>Candidate strategies</h3>
+          <div class="ctrl"><label><span class="label-main">Separating signal <span class="sym math" data-tex="e_S"></span></span><span class="val" id="v_eS"></span></label><input id="eS" type="range" min="0" max="12" step="0.05" value="5.0"></div>
+          <div class="ctrl"><label><span class="label-main">Pooling signal <span class="sym math" data-tex="e_P"></span></span><span class="val" id="v_eP"></span></label><input id="eP" type="range" min="0" max="12" step="0.05" value="0.0"></div>
+          <div class="btn-row"><button id="btnMinSep">min separating</button><button id="btnMidSep">mid separating</button></div>
+          <div class="btn-row"><button id="btnPool0">pool at 0</button><button id="btnClassic">reset</button></div>
+        </div>
+
+        <div class="control-card">
+          <h3>Off-path beliefs</h3>
+          <div class="ctrl"><label><span class="label-main">Belief high after deviation <span class="sym math" data-tex="\mu_o"></span></span><span class="val" id="v_muO"></span></label><input id="muO" type="range" min="0" max="1" step="0.01" value="0.05"></div>
+          <div class="ctrl"><label><span class="label-main">Deviation signal <span class="sym math" data-tex="e_D"></span></span><span class="val" id="v_eD"></span></label><input id="eD" type="range" min="0" max="12" step="0.05" value="4.0"></div>
+          <p class="hint">Pooling often relies on pessimistic off-path beliefs. Refinements test whether those beliefs are plausible.</p>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="hero" id="map">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow"><span class="dot"></span>core idea</div>
+            <h2>Education separates types only because it is differentially costly.</h2>
+            <p class="lead">Workers know their type; firms only observe education. Competitive firms pay expected productivity conditional on education. A separating equilibrium exists when the signal is high enough to deter low types but not so high that high types refuse to signal.</p>
+            <div class="pill-row">
+              <span class="pill strong">hidden type</span>
+              <span class="pill">observable signal</span>
+              <span class="pill">competitive wage</span>
+              <span class="pill">single crossing</span>
+              <span class="pill">separating equilibrium</span>
+              <span class="pill">pooling equilibrium</span>
+            </div>
+          </div>
+          <div class="diagram medium"><svg id="svgMap" viewBox="0 0 640 360" role="img" aria-label="Spence signaling map"></svg></div>
+        </div>
+      </section>
+
+      <div class="metric-row">
+        <div class="metric accent"><div class="k">productivity premium</div><div class="v" id="m_deltaY"></div></div>
+        <div class="metric blue"><div class="k">pooling wage</div><div class="v" id="m_ybar"></div></div>
+        <div class="metric good"><div class="k">separating interval</div><div class="v" id="m_interval"></div></div>
+        <div class="metric" id="m_status_card"><div class="k">candidate signal</div><div class="v" id="m_sepStatus"></div></div>
+      </div>
+
+      <section id="timing">
+        <div class="section-head">
+          <div><h2>Timing and beliefs</h2></div>
+          <p>Strategies choose education by type. Beliefs map education into a probability that the worker is high type. Wages equal expected productivity.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Timing of the signaling game</h3>
+            <div class="diagram medium"><svg id="svgTimeline" viewBox="0 0 860 360" role="img" aria-label="Timing sequence"></svg></div>
+            <div class="callout">The asymmetry is about type. Firms observe <span class="math" data-tex="e"></span>, but not <span class="math" data-tex="\theta\in\{L,H\}"></span>.</div>
+          </div>
+          <div class="card">
+            <h3>Beliefs generate wages</h3>
+            <div class="formula center"><span class="math" data-tex="w(e)=\mu(e)y_H+\bigl[1-\mu(e)\bigr]y_L"></span></div>
+            <div class="diagram medium"><svg id="svgBeliefs" viewBox="0 0 860 360" role="img" aria-label="Belief-based wage schedule"></svg></div>
+            <div class="legend">
+              <span class="legend-item"><span class="swatch blue"></span> separating wages</span>
+              <span class="legend-item"><span class="swatch gray"></span> pooling wage</span>
+              <span class="legend-item"><span class="swatch violet"></span> off-path belief</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="costs">
+        <div class="section-head">
+          <div><h2>Differential costs and single crossing</h2></div>
+          <p>The cost curves encode the central mechanism. The low type needs to find mimicry too expensive; the high type needs to find signaling worthwhile.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Cost curves and the separating interval</h3>
+            <div class="formula center"><span class="math" data-tex="e_{\min}=\sqrt{\frac{2\Delta y}{k_L}},\qquad e_{\max}=\sqrt{\frac{2\Delta y}{k_H}}"></span></div>
+            <div class="diagram big"><svg id="svgCosts" viewBox="0 0 760 520" role="img" aria-label="Education cost curves and separating interval"></svg></div>
+            <div class="legend">
+              <span class="legend-item"><span class="swatch red"></span> low type cost</span>
+              <span class="legend-item"><span class="swatch green"></span> high type cost</span>
+              <span class="legend-item"><span class="swatch orange"></span> candidate signal</span>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Incentive constraints</h3>
+            <div class="formula center"><span class="math" data-tex="\text{Low IC:}\quad c_L(e_S)\geq \Delta y"></span></div>
+            <div class="formula center"><span class="math" data-tex="\text{High IC:}\quad c_H(e_S)\leq \Delta y"></span></div>
+            <div class="diagram medium"><svg id="svgIC" viewBox="0 0 760 380" role="img" aria-label="Incentive constraint bars"></svg></div>
+            <div class="status">
+              <div class="status-row"><span>Low type does not mimic</span><span class="badge" id="badgeLowIC"></span></div>
+              <div class="status-row"><span>High type wants to signal</span><span class="badge" id="badgeHighIC"></span></div>
+              <div class="status-row"><span>Separating candidate</span><span class="badge" id="badgeSep"></span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="separating">
+        <div class="section-head">
+          <div><h2>Separating equilibrium</h2></div>
+          <p>The canonical separating strategies are: low type chooses no education; high type chooses a positive signal.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Separating logic</h3>
+            <div class="formula center"><span class="math" data-tex="e_L=0,\qquad e_H=e_S,\qquad w(0)=y_L,\qquad w(e_S)=y_H"></span></div>
+            <div class="diagram medium"><svg id="svgSepInterval" viewBox="0 0 760 360" role="img" aria-label="Separating interval"></svg></div>
+            <div class="callout" id="sepText"></div>
+          </div>
+          <div class="card">
+            <h3>Separating game tree</h3>
+            <div class="diagram medium"><svg id="svgTree" viewBox="0 0 860 360" role="img" aria-label="Separating signaling tree"></svg></div>
+            <p>The wage difference is not caused by education raising productivity. It comes from firms' posterior beliefs after observing the signal.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="pooling">
+        <div class="section-head">
+          <div><h2>Pooling equilibria and belief refinements</h2></div>
+          <p>Pooling can be sustained by off-path beliefs. Refinements ask whether those beliefs are consistent with which type would actually want to deviate.</p>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <h3>Pooling payoff</h3>
+            <div class="formula center"><span class="math" data-tex="w(e_P)=\bar y"></span></div>
+            <div class="diagram medium"><svg id="svgPooling" viewBox="0 0 620 360" role="img" aria-label="Pooling payoffs"></svg></div>
+          </div>
+          <div class="card">
+            <h3>Deviation test</h3>
+            <div class="formula center"><span class="math" data-tex="w(e_D)=\mu_o y_H+(1-\mu_o)y_L"></span></div>
+            <div class="diagram medium"><svg id="svgDeviation" viewBox="0 0 620 360" role="img" aria-label="Deviation test"></svg></div>
+          </div>
+          <div class="card">
+            <h3>Refinement logic</h3>
+            <div class="formula center"><span class="math" data-tex="\text{If only }H\text{ gains from }e_D,\text{ then }\mu_o\approx 0\text{ is not credible.}"></span></div>
+            <div class="diagram medium"><svg id="svgRefinement" viewBox="0 0 620 360" role="img" aria-label="Belief refinement logic"></svg></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="diagnosis">
+        <div class="section-head">
+          <div><h2>Equilibrium diagnosis</h2></div>
+          <p>Compare the candidate separating signal, pooling payoffs, and deviation payoffs under the current parameters.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Payoff table</h3>
+            <table class="table">
+              <thead><tr><th>Scenario</th><th>Low type payoff</th><th>High type payoff</th><th>Wage rule</th></tr></thead>
+              <tbody id="payoffTable"></tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3>Economic reading</h3>
+            <div class="formula center"><span class="math" data-tex="\text{signaling}=\text{hidden type}+\text{costly signal}+\text{belief-based wage}"></span></div>
+            <p id="readingText"></p>
+            <div class="callout">The most important intuition: <b>the signal must be wasteful enough to deter the low type, but not so wasteful that it destroys the high type's surplus.</b></div>
+          </div>
+        </div>
+        <p class="footer-note">Mini-app built to study Spence signaling: education as a signal, separating equilibrium, pooling equilibrium, and belief refinements.</p>
+      </section>
+    </main>
+  </div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const ids = ['yL','yH','piH','kL','kH','eS','eP','muO','eD'];
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const fmt = (x,d=2)=>Number.isFinite(x)?x.toFixed(d):'—';
+  const pct = x=>Number.isFinite(x)?(100*x).toFixed(0)+'%':'—';
+  const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+
+  function C(){
+    const s=getComputedStyle(document.body);
+    return {
+      ink:s.getPropertyValue('--ink').trim(), muted:s.getPropertyValue('--muted').trim(), line:s.getPropertyValue('--line').trim(), line2:s.getPropertyValue('--line2').trim(),
+      accent:s.getPropertyValue('--accent').trim(), accent2:s.getPropertyValue('--accent2').trim(), accent3:s.getPropertyValue('--accent3').trim(), danger:s.getPropertyValue('--danger').trim(),
+      good:s.getPropertyValue('--good').trim(), blue:s.getPropertyValue('--blue').trim(), violet:s.getPropertyValue('--violet').trim(), paper:s.getPropertyValue('--paper').trim(),
+      paper2:s.getPropertyValue('--paper2').trim(), grid:s.getPropertyValue('--grid').trim()
+    };
+  }
+  function el(n,a={},children=[]){const e=document.createElementNS(svgNS,n);for(const[k,v]of Object.entries(a)){if(k==='text')e.textContent=v;else e.setAttribute(k,String(v));}children.forEach(ch=>e.appendChild(ch));return e;}
+  function clear(svg){while(svg.firstChild)svg.removeChild(svg.firstChild);}
+  function text(x,y,str,a={}){return el('text',{x,y,fill:a.fill||C().ink,'font-size':a.size||14,'font-weight':a.weight||850,'text-anchor':a.anchor||'start','dominant-baseline':a.base||'middle',...a,text:str});}
+  function line(x1,y1,x2,y2,a={}){return el('line',{x1,y1,x2,y2,stroke:a.stroke||C().line2,'stroke-width':a.width||2,'stroke-linecap':'round',...a});}
+  function rect(x,y,w,h,a={}){return el('rect',{x,y,width:w,height:h,rx:a.rx||16,ry:a.ry||16,fill:a.fill||C().paper,stroke:a.stroke||C().line,'stroke-width':a.sw||1.4,...a});}
+  function circle(x,y,r,a={}){return el('circle',{cx:x,cy:y,r,fill:a.fill||C().paper,stroke:a.stroke||C().line,'stroke-width':a.sw||1.5,...a});}
+  function path(d,a={}){return el('path',{d,fill:a.fill||'none',stroke:a.stroke||C().line2,'stroke-width':a.width||2,'stroke-linecap':'round','stroke-linejoin':'round',...a});}
+  function defs(svg){const c=C(),d=el('defs');d.appendChild(el('marker',{id:'arrow',viewBox:'0 0 10 10',refX:'9',refY:'5',markerWidth:'7',markerHeight:'7',orient:'auto-start-reverse'},[el('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:c.line2,stroke:'none'})]));d.appendChild(el('linearGradient',{id:'okGrad',x1:'0',x2:'1',y1:'0',y2:'0'},[el('stop',{offset:'0%','stop-color':c.good,'stop-opacity':'.22'}),el('stop',{offset:'100%','stop-color':c.accent,'stop-opacity':'.09'})]));svg.appendChild(d);}
+
+  function getP(){
+    const p={}; ids.forEach(id=>p[id]=parseFloat($(id).value));
+    if(p.yH<=p.yL+5){p.yH=p.yL+5;$('yH').value=p.yH;}
+    if(p.kL<=p.kH+0.1){p.kL=p.kH+0.1;$('kL').value=p.kL;}
+    return p;
+  }
+  const cost=(e,k)=>0.5*k*e*e;
+  const wage=(mu,p)=>mu*p.yH+(1-mu)*p.yL;
+
+  function solve(p){
+    const dy=p.yH-p.yL;
+    const ybar=p.piH*p.yH+(1-p.piH)*p.yL;
+    const eMin=Math.sqrt(Math.max(0,2*dy/p.kL));
+    const eMax=Math.sqrt(Math.max(0,2*dy/p.kH));
+    const cL=cost(p.eS,p.kL), cH=cost(p.eS,p.kH);
+    const lowIC=cL>=dy-1e-8;
+    const highIC=cH<=dy+1e-8;
+    const sepOK=lowIC&&highIC&&p.eS>0;
+    const sepLow=p.yL;
+    const sepHigh=p.yH-cH;
+    const lowMimic=p.yH-cL;
+    const highNoSignal=p.yL;
+    const poolLow=ybar-cost(p.eP,p.kL);
+    const poolHigh=ybar-cost(p.eP,p.kH);
+    const devW=wage(p.muO,p);
+    const devLow=devW-cost(p.eD,p.kL);
+    const devHigh=devW-cost(p.eD,p.kH);
+    const lowGain=devLow-poolLow, highGain=devHigh-poolHigh;
+    return {dy,ybar,eMin,eMax,cL,cH,lowIC,highIC,sepOK,sepLow,sepHigh,lowMimic,highNoSignal,poolLow,poolHigh,devW,devLow,devHigh,lowGain,highGain};
+  }
+
+  function labels(p){
+    $('v_yL').textContent=fmt(p.yL,0); $('v_yH').textContent=fmt(p.yH,0); $('v_piH').textContent=pct(p.piH);
+    $('v_kL').textContent=fmt(p.kL,1); $('v_kH').textContent=fmt(p.kH,1);
+    $('v_eS').textContent=fmt(p.eS,2); $('v_eP').textContent=fmt(p.eP,2); $('v_muO').textContent=pct(p.muO); $('v_eD').textContent=fmt(p.eD,2);
+  }
+
+  function drawMap(s,p){
+    const svg=$('svgMap'),c=C(); clear(svg); defs(svg);
+    svg.appendChild(rect(36,54,168,78,{stroke:c.violet,sw:2,rx:22}));
+    svg.appendChild(text(120,82,'WORKER TYPE',{anchor:'middle',size:16,fill:c.violet,weight:950}));
+    svg.appendChild(text(120,108,'hidden information',{anchor:'middle',size:12,fill:c.muted,weight:850}));
+    svg.appendChild(rect(238,54,164,78,{stroke:c.accent3,sw:2,rx:22}));
+    svg.appendChild(text(320,82,'EDUCATION',{anchor:'middle',size:16,fill:c.accent3,weight:950}));
+    svg.appendChild(text(320,108,'observable signal',{anchor:'middle',size:12,fill:c.muted,weight:850}));
+    svg.appendChild(rect(436,54,168,78,{stroke:c.blue,sw:2,rx:22}));
+    svg.appendChild(text(520,82,'BELIEFS',{anchor:'middle',size:16,fill:c.blue,weight:950}));
+    svg.appendChild(text(520,108,'posterior probability',{anchor:'middle',size:12,fill:c.muted,weight:850}));
+    svg.appendChild(line(204,93,236,93,{width:2.5,'marker-end':'url(#arrow)'}));
+    svg.appendChild(line(402,93,434,93,{width:2.5,'marker-end':'url(#arrow)'}));
+    svg.appendChild(rect(226,218,188,80,{stroke:c.accent,sw:2,rx:22,fill:c.paper2}));
+    svg.appendChild(text(320,248,'WAGE',{anchor:'middle',size:18,fill:c.accent,weight:950}));
+    svg.appendChild(text(320,274,'expected productivity',{anchor:'middle',size:12,fill:c.muted,weight:850}));
+    svg.appendChild(path('M 520 132 C 520 194, 430 236, 414 254',{stroke:c.blue,width:2.5,'marker-end':'url(#arrow)'}));
+    svg.appendChild(path('M 226 256 C 148 245, 112 186, 120 134',{stroke:c.accent,width:2.5,'marker-end':'url(#arrow)'}));
+    svg.appendChild(text(143,216,'payoff: wage minus cost',{anchor:'middle',size:12,fill:c.muted,weight:900}));
+    svg.appendChild(text(470,202,'competitive firms',{anchor:'middle',size:12,fill:c.muted,weight:900}));
+    svg.appendChild(rect(145,314,350,32,{fill:'transparent',stroke:c.line,rx:14}));
+    svg.appendChild(text(320,330,'signal works because low types face higher costs',{anchor:'middle',size:13,fill:c.ink,weight:950}));
+  }
+
+  function drawTimeline(s,p){
+    const svg=$('svgTimeline'),c=C(); clear(svg); defs(svg);
+    const xs=[90,270,450,630,790], titles=['Nature draws type','Worker chooses signal','Firm observes signal','Firm forms belief','Wage and payoff'], subs=['low or high','education level','not productivity','probability high','wage minus cost'];
+    svg.appendChild(line(xs[0],180,xs[4],180,{stroke:c.line2,width:3,'marker-end':'url(#arrow)'}));
+    xs.forEach((x,i)=>{
+      const col=[c.violet,c.accent3,c.accent,c.blue,c.good][i];
+      svg.appendChild(circle(x,180,24,{fill:i===1||i===3?col:c.paper,stroke:col,sw:2}));
+      svg.appendChild(text(x,180,String(i+1),{anchor:'middle',fill:i===1||i===3?'#fff':col,size:15,weight:950}));
+      svg.appendChild(rect(x-82,62,164,76,{fill:c.paper,stroke:c.line,rx:18}));
+      svg.appendChild(text(x,90,titles[i],{anchor:'middle',size:14,weight:950,fill:c.ink}));
+      svg.appendChild(text(x,116,subs[i],{anchor:'middle',size:12,weight:850,fill:c.muted}));
+    });
+    svg.appendChild(rect(18,228,150,42,{fill:c.paper2,stroke:c.violet,rx:16}));
+    svg.appendChild(text(93,249,'private type',{anchor:'middle',size:12,weight:950,fill:c.violet}));
+    svg.appendChild(rect(374,228,150,42,{fill:c.paper2,stroke:c.accent,rx:16}));
+    svg.appendChild(text(449,249,'public signal',{anchor:'middle',size:12,weight:950,fill:c.accent}));
+    svg.appendChild(text(430,318,'The signal changes wages only through beliefs.',{anchor:'middle',size:15,fill:c.muted,weight:900}));
+  }
+
+  function drawBeliefs(s,p){
+    const svg=$('svgBeliefs'),c=C(); clear(svg); defs(svg);
+    const L=78,B=285,T=50,W=690,H=220,eMax=Math.max(12,p.eS,p.eD,p.eP,1);
+    const X=e=>L+e/eMax*W, Y=w=>B-(w-p.yL)/(p.yH-p.yL)*H;
+    svg.appendChild(line(L,T,L,B,{stroke:c.ink,width:1.4})); svg.appendChild(line(L,B,L+W,B,{stroke:c.ink,width:1.4}));
+    svg.appendChild(text(L+W/2,B+38,'education signal',{anchor:'middle',size:13,fill:c.muted,weight:900}));
+    svg.appendChild(text(30,T+H/2,'wage',{anchor:'middle',size:13,fill:c.muted,weight:900,transform:`rotate(-90 30 ${T+H/2})`}));
+    svg.appendChild(line(L,Y(p.yL),L+W,Y(p.yL),{stroke:c.line,width:1.2,'stroke-dasharray':'5 6'}));
+    svg.appendChild(line(L,Y(p.yH),L+W,Y(p.yH),{stroke:c.line,width:1.2,'stroke-dasharray':'5 6'}));
+    svg.appendChild(line(L,Y(s.ybar),L+W,Y(s.ybar),{stroke:c.line2,width:3,'stroke-dasharray':'8 7'}));
+    svg.appendChild(text(L+W+8,Y(p.yL),'low productivity',{size:11,fill:c.muted,weight:900}));
+    svg.appendChild(text(L+W+8,Y(p.yH),'high productivity',{size:11,fill:c.muted,weight:900}));
+    svg.appendChild(text(L+W+8,Y(s.ybar),'pooling wage',{size:11,fill:c.line2,weight:950}));
+    const xS=X(p.eS);
+    svg.appendChild(path(`M ${L} ${Y(p.yL)} L ${Math.max(L,xS-8)} ${Y(p.yL)}`,{stroke:c.blue,width:4}));
+    svg.appendChild(path(`M ${xS} ${Y(p.yH)} L ${L+W} ${Y(p.yH)}`,{stroke:c.blue,width:4}));
+    svg.appendChild(circle(xS,Y(p.yH),8,{fill:c.accent3,stroke:c.paper,sw:3}));
+    svg.appendChild(text(xS,Y(p.yH)-26,'separating signal',{anchor:'middle',size:12,fill:c.accent3,weight:950}));
+    const wO=wage(p.muO,p);
+    svg.appendChild(circle(X(p.eD),Y(wO),8,{fill:c.violet,stroke:c.paper,sw:3}));
+    svg.appendChild(text(X(p.eD),Y(wO)-24,'off-path wage',{anchor:'middle',size:12,fill:c.violet,weight:950}));
+    svg.appendChild(text(420,32,'Beliefs → expected productivity → wage',{anchor:'middle',size:14,fill:c.muted,weight:900}));
+  }
+
+  function drawCosts(s,p){
+    const svg=$('svgCosts'),c=C(); clear(svg); defs(svg);
+    const L=84,B=455,T=45,W=610,H=360,eMax=Math.max(12,s.eMax*1.12,p.eS,p.eD,1);
+    const cMax=Math.max(cost(eMax,p.kL),s.dy*1.8,1);
+    const X=e=>L+e/eMax*W, Y=v=>B-v/cMax*H;
+    svg.appendChild(line(L,T,L,B,{stroke:c.ink,width:1.5})); svg.appendChild(line(L,B,L+W,B,{stroke:c.ink,width:1.5}));
+    for(let i=1;i<=5;i++){const y=B-i*H/5;svg.appendChild(line(L,y,L+W,y,{stroke:c.grid,width:1}));}
+    function curve(k,col,label,dy){
+      let d=''; for(let i=0;i<=140;i++){const e=eMax*i/140,x=X(e),y=Y(cost(e,k));d+=(i?' L ':'M ')+x+' '+y;}
+      svg.appendChild(path(d,{stroke:col,width:4}));
+      svg.appendChild(text(X(eMax*.63),Y(cost(eMax*.63,k))+dy,label,{size:13,fill:col,weight:950}));
+    }
+    curve(p.kL,c.danger,'low type cost',-18); curve(p.kH,c.good,'high type cost',20);
+    svg.appendChild(line(L,Y(s.dy),L+W,Y(s.dy),{stroke:c.blue,width:2,'stroke-dasharray':'6 6'}));
+    svg.appendChild(text(L+W-12,Y(s.dy)-16,'productivity premium',{anchor:'end',size:12,fill:c.blue,weight:950}));
+    svg.appendChild(rect(X(s.eMin),Y(s.dy)-24,Math.max(1,X(s.eMax)-X(s.eMin)),48,{fill:'url(#okGrad)',stroke:c.good,sw:1.3,rx:16}));
+    [[s.eMin,'minimum',c.good],[s.eMax,'maximum',c.blue],[p.eS,'candidate',s.sepOK?c.accent3:c.danger]].forEach(d=>{
+      svg.appendChild(line(X(d[0]),B,X(d[0]),T,{stroke:d[2],width:2,'stroke-dasharray':d[1]==='candidate'?'':'5 6'}));
+      svg.appendChild(text(X(d[0]),B+25,d[1],{anchor:'middle',size:12,fill:d[2],weight:950}));
+    });
+    svg.appendChild(text(L+W/2,B+54,'education signal',{anchor:'middle',size:13,fill:c.muted,weight:900}));
+    svg.appendChild(text(30,T+H/2,'education cost',{anchor:'middle',size:13,fill:c.muted,weight:900,transform:`rotate(-90 30 ${T+H/2})`}));
+  }
+
+  function drawIC(s,p){
+    const svg=$('svgIC'),c=C(); clear(svg); defs(svg);
+    const L=82,W=500,H=36,max=Math.max(s.dy,s.cL,s.cH,1)*1.18;
+    function bar(y,label,val,ineq,col,ok,direction){
+      svg.appendChild(text(L,y-20,label,{size:13,fill:c.muted,weight:950}));
+      svg.appendChild(rect(L,y,W,H,{fill:c.paper2,stroke:c.line,rx:16}));
+      const w=Math.min(W,val/max*W);
+      svg.appendChild(rect(L,y,w,H,{fill:col,stroke:'none',rx:16,opacity:.88}));
+      const tx=L+Math.min(W, s.dy/max*W);
+      svg.appendChild(line(tx,y-7,tx,y+H+7,{stroke:c.blue,width:2,'stroke-dasharray':'5 5'}));
+      svg.appendChild(text(tx,y+H+24,'premium',{anchor:'middle',size:11,fill:c.blue,weight:900}));
+      svg.appendChild(circle(L+w,y+H/2,8,{fill:ok?c.good:c.danger,stroke:c.paper,sw:2}));
+      svg.appendChild(text(L+W+18,y+H/2,fmt(val,2),{size:14,fill:ok?c.good:c.danger,weight:950}));
+      svg.appendChild(text(L+W+92,y+H/2,ineq,{size:12,fill:c.muted,weight:850}));
+    }
+    bar(88,'Low IC: low type must find mimicry too expensive',s.cL,'≥ premium',c.danger,s.lowIC);
+    bar(220,'High IC: high type must find signaling cheap enough',s.cH,'≤ premium',c.good,s.highIC);
+    svg.appendChild(text(380,338,'Same premium, different costs: this is the whole Spence mechanism.',{anchor:'middle',size:13,fill:c.muted,weight:900}));
+  }
+
+  function drawSepInterval(s,p){
+    const svg=$('svgSepInterval'),c=C(); clear(svg); defs(svg);
+    const L=82,B=190,W=600,eMax=Math.max(12,s.eMax*1.15,p.eS,1),X=e=>L+e/eMax*W;
+    svg.appendChild(line(L,B,L+W,B,{stroke:c.ink,width:1.8}));
+    for(let i=0;i<=6;i++){const x=L+i*W/6; svg.appendChild(line(x,B-7,x,B+7,{stroke:c.line2,width:1.4})); svg.appendChild(text(x,B+26,fmt(eMax*i/6,1),{anchor:'middle',size:11,fill:c.muted,weight:800}));}
+    svg.appendChild(rect(X(s.eMin),B-32,Math.max(1,X(s.eMax)-X(s.eMin)),64,{fill:'url(#okGrad)',stroke:c.good,sw:1.6,rx:18}));
+    svg.appendChild(text((X(s.eMin)+X(s.eMax))/2,B-54,'valid separating signals',{anchor:'middle',size:13,fill:c.good,weight:950}));
+    svg.appendChild(line(X(s.eMin),B-78,X(s.eMin),B+78,{stroke:c.good,width:2,'stroke-dasharray':'5 6'}));
+    svg.appendChild(line(X(s.eMax),B-78,X(s.eMax),B+78,{stroke:c.blue,width:2,'stroke-dasharray':'5 6'}));
+    svg.appendChild(text(X(s.eMin),B+102,'deters low type',{anchor:'middle',size:12,fill:c.good,weight:950}));
+    svg.appendChild(text(X(s.eMax),B+124,'high type still willing',{anchor:'middle',size:12,fill:c.blue,weight:950}));
+    svg.appendChild(circle(X(p.eS),B,10,{fill:s.sepOK?c.accent3:c.danger,stroke:c.paper,sw:3}));
+    svg.appendChild(text(X(p.eS),B-98,'your candidate',{anchor:'middle',size:12,fill:s.sepOK?c.accent3:c.danger,weight:950}));
+    svg.appendChild(text(380,330,'A separating signal must lie inside the interval.',{anchor:'middle',size:13,fill:c.muted,weight:900}));
+  }
+
+  function drawTree(s,p){
+    const svg=$('svgTree'),c=C(); clear(svg); defs(svg);
+    const root={x:80,y:180},Lnode={x:250,y:105},Hnode={x:250,y:255},sL={x:450,y:105},sH={x:450,y:255},wL={x:650,y:105},wH={x:650,y:255};
+    svg.appendChild(circle(root.x,root.y,28,{stroke:c.violet,sw:2.4})); svg.appendChild(text(root.x,root.y,'Nature',{anchor:'middle',size:12,fill:c.violet,weight:950}));
+    svg.appendChild(line(root.x+28,root.y-8,Lnode.x-28,Lnode.y,{stroke:c.violet,width:2.4,'marker-end':'url(#arrow)'}));
+    svg.appendChild(line(root.x+28,root.y+8,Hnode.x-28,Hnode.y,{stroke:c.violet,width:2.4,'marker-end':'url(#arrow)'}));
+    [[Lnode,'Low type',c.danger,'prob. 1 − π'],[Hnode,'High type',c.good,'prob. π']].forEach(d=>{
+      svg.appendChild(circle(d[0].x,d[0].y,26,{stroke:d[2],sw:2.2}));
+      svg.appendChild(text(d[0].x,d[0].y,d[1],{anchor:'middle',size:12,fill:d[2],weight:950}));
+      svg.appendChild(text(d[0].x,d[0].y+40,d[3],{anchor:'middle',size:11,fill:c.muted,weight:900}));
+    });
+    svg.appendChild(line(Lnode.x+26,Lnode.y,sL.x-38,sL.y,{stroke:c.accent3,width:2.4,'marker-end':'url(#arrow)'}));
+    svg.appendChild(line(Hnode.x+26,Hnode.y,sH.x-38,sH.y,{stroke:c.accent3,width:2.4,'marker-end':'url(#arrow)'}));
+    svg.appendChild(rect(sL.x-42,sL.y-25,84,50,{stroke:c.accent3,sw:2,rx:16}));
+    svg.appendChild(rect(sH.x-42,sH.y-25,84,50,{stroke:c.accent3,sw:2,rx:16}));
+    svg.appendChild(text(sL.x,sL.y,'no signal',{anchor:'middle',size:12,fill:c.accent3,weight:950}));
+    svg.appendChild(text(sH.x,sH.y,'signal',{anchor:'middle',size:12,fill:c.accent3,weight:950}));
+    svg.appendChild(line(sL.x+42,sL.y,wL.x-58,wL.y,{stroke:c.blue,width:2.4,'marker-end':'url(#arrow)'}));
+    svg.appendChild(line(sH.x+42,sH.y,wH.x-58,wH.y,{stroke:c.blue,width:2.4,'marker-end':'url(#arrow)'}));
+    svg.appendChild(rect(wL.x-60,wL.y-32,120,64,{fill:c.paper2,stroke:c.blue,rx:18,sw:2}));
+    svg.appendChild(rect(wH.x-60,wH.y-32,120,64,{fill:c.paper2,stroke:c.blue,rx:18,sw:2}));
+    svg.appendChild(text(wL.x,wL.y-8,'low wage',{anchor:'middle',size:13,fill:c.blue,weight:950}));
+    svg.appendChild(text(wL.x,wL.y+14,fmt(p.yL,0),{anchor:'middle',size:12,fill:c.muted,weight:900}));
+    svg.appendChild(text(wH.x,wH.y-8,'high wage',{anchor:'middle',size:13,fill:c.blue,weight:950}));
+    svg.appendChild(text(wH.x,wH.y+14,fmt(p.yH,0),{anchor:'middle',size:12,fill:c.muted,weight:900}));
+    svg.appendChild(text(430,326,'Different signals → different beliefs → different wages.',{anchor:'middle',size:13,fill:c.muted,weight:900}));
+  }
+
+  function drawPooling(s,p){
+    const svg=$('svgPooling'),c=C(); clear(svg); defs(svg);
+    const vals=[{name:'low type',v:s.poolLow,col:c.danger},{name:'high type',v:s.poolHigh,col:c.good},{name:'wage',v:s.ybar,col:c.blue}];
+    const L=70,B=292,T=60,W=480,H=210,max=Math.max(...vals.map(d=>d.v),1)*1.15,min=Math.min(...vals.map(d=>d.v),0);
+    svg.appendChild(line(L,T,L,B,{stroke:c.ink,width:1.4})); svg.appendChild(line(L,B,L+W,B,{stroke:c.ink,width:1.4}));
+    vals.forEach((d,i)=>{const x=L+75+i*145,bw=70,h=(d.v-min)/(max-min)*H;svg.appendChild(rect(x,B-h,bw,h,{fill:d.col,stroke:'none',rx:13,opacity:.86}));svg.appendChild(text(x+bw/2,B-h-16,fmt(d.v,1),{anchor:'middle',size:13,fill:d.col,weight:950}));svg.appendChild(text(x+bw/2,B+24,d.name,{anchor:'middle',size:12,fill:c.muted,weight:900}));});
+    svg.appendChild(text(310,32,'Pooling: both types choose the same signal',{anchor:'middle',size:14,fill:c.muted,weight:900}));
+  }
+
+  function drawDeviation(s,p){
+    const svg=$('svgDeviation'),c=C(); clear(svg); defs(svg);
+    const rows=[{name:'low type deviation gain',v:s.lowGain,col:s.lowGain>0?c.danger:c.line2},{name:'high type deviation gain',v:s.highGain,col:s.highGain>0?c.good:c.line2}];
+    const maxAbs=Math.max(...rows.map(r=>Math.abs(r.v)),1),mid=300,W=245;
+    svg.appendChild(line(mid,65,mid,285,{stroke:c.ink,width:1.3}));
+    rows.forEach((r,i)=>{const y=105+i*105,len=Math.abs(r.v)/maxAbs*W;svg.appendChild(text(28,y,r.name,{size:12,fill:c.muted,weight:900}));svg.appendChild(rect(r.v>=0?mid:mid-len,y-16,len,32,{fill:r.col,stroke:'none',rx:14,opacity:.88}));svg.appendChild(text(r.v>=0?mid+len+10:mid-len-10,y,fmt(r.v,2),{anchor:r.v>=0?'start':'end',size:13,fill:r.col===c.line2?c.muted:r.col,weight:950}));});
+    svg.appendChild(text(310,32,'Deviation payoff minus pooling payoff',{anchor:'middle',size:14,fill:c.muted,weight:900}));
+    svg.appendChild(text(310,326,'Positive gain means pooling is vulnerable for that type.',{anchor:'middle',size:12,fill:c.muted,weight:900}));
+  }
+
+  function drawRefinement(s,p){
+    const svg=$('svgRefinement'),c=C(); clear(svg); defs(svg);
+    const low=s.lowGain>0, high=s.highGain>0;
+    svg.appendChild(rect(48,50,160,70,{stroke:c.blue,sw:2,rx:20}));
+    svg.appendChild(text(128,78,'pooling path',{anchor:'middle',size:15,fill:c.blue,weight:950}));
+    svg.appendChild(text(128,101,'same signal',{anchor:'middle',size:12,fill:c.muted,weight:850}));
+    svg.appendChild(rect(402,50,170,70,{stroke:c.violet,sw:2,rx:20}));
+    svg.appendChild(text(487,78,'deviation',{anchor:'middle',size:15,fill:c.violet,weight:950}));
+    svg.appendChild(text(487,101,'who gains?',{anchor:'middle',size:12,fill:c.muted,weight:850}));
+    svg.appendChild(line(208,85,400,85,{stroke:c.line2,width:2.4,'marker-end':'url(#arrow)'}));
+    svg.appendChild(rect(72,190,190,80,{fill:c.paper2,stroke:low?c.danger:c.line,sw:2,rx:20}));
+    svg.appendChild(text(167,220,'low type',{anchor:'middle',size:16,fill:low?c.danger:c.muted,weight:950}));
+    svg.appendChild(text(167,246,low?'would deviate':'would not deviate',{anchor:'middle',size:12,fill:low?c.danger:c.muted,weight:900}));
+    svg.appendChild(rect(358,190,190,80,{fill:c.paper2,stroke:high?c.good:c.line,sw:2,rx:20}));
+    svg.appendChild(text(453,220,'high type',{anchor:'middle',size:16,fill:high?c.good:c.muted,weight:950}));
+    svg.appendChild(text(453,246,high?'would deviate':'would not deviate',{anchor:'middle',size:12,fill:high?c.good:c.muted,weight:900}));
+    let concl='pooling may be sustained';
+    if(high&&!low) concl='refinement pressure: believe high type';
+    if(high&&low) concl='both types may deviate';
+    if(low&&!high) concl='deviation points toward low type';
+    if(!high&&!low) concl='no profitable deviation here';
+    svg.appendChild(text(310,326,concl,{anchor:'middle',size:14,fill:c.accent,weight:950}));
+  }
+
+  function table(s,p){
+    const rows=[
+      ['Separating candidate',s.sepLow,s.sepHigh,'low signal → low wage; high signal → high wage'],
+      ['Low type mimics high',s.lowMimic,'—','high signal is believed high'],
+      ['Pooling candidate',s.poolLow,s.poolHigh,'common signal → average wage'],
+      ['Deviation from pooling',s.devLow,s.devHigh,'off-path belief determines wage']
+    ];
+    $('payoffTable').innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${typeof r[1]==='number'?fmt(r[1],2):r[1]}</td><td>${typeof r[2]==='number'?fmt(r[2],2):r[2]}</td><td>${r[3]}</td></tr>`).join('');
+  }
+
+  function setBadge(id,ok,okText,noText){
+    const b=$(id); b.textContent=ok?okText:noText; b.className='badge '+(ok?'ok':'no');
+  }
+
+  function updateText(s,p){
+    $('m_deltaY').textContent=fmt(s.dy,1);
+    $('m_ybar').textContent=fmt(s.ybar,1);
+    $('m_interval').textContent='['+fmt(s.eMin,1)+', '+fmt(s.eMax,1)+']';
+    $('m_sepStatus').textContent=s.sepOK?'works':'fails';
+    $('m_status_card').className='metric '+(s.sepOK?'good':'bad');
+    setBadge('badgeLowIC',s.lowIC,'satisfied','mimics');
+    setBadge('badgeHighIC',s.highIC,'satisfied','too costly');
+    setBadge('badgeSep',s.sepOK,'separating','not separating');
+    if(s.sepOK){
+      $('sepText').innerHTML='Your candidate signal is inside the separating interval. Low types do not mimic, and high types still prefer to signal.';
+    }else if(!s.lowIC){
+      $('sepText').innerHTML='The candidate signal is too low. The low type wants to imitate the high type because the education cost is not large enough.';
+    }else{
+      $('sepText').innerHTML='The candidate signal is too high. It deters low types, but it also makes signaling unattractive for high types.';
+    }
+    let pooling = (s.lowGain>0||s.highGain>0) ? 'Pooling is vulnerable under the current off-path belief because at least one type gains from deviating.' : 'Pooling is sustainable under the current off-path belief because neither type gains from deviating.';
+    let refinement = (s.highGain>0&&s.lowGain<=0) ? ' The refinement logic is sharp here: only the high type wants to deviate, so a pessimistic belief that the deviator is low type is hard to justify.' : '';
+    $('readingText').innerHTML=pooling+refinement+' The separating interval is <b>['+fmt(s.eMin,2)+', '+fmt(s.eMax,2)+']</b>, and your candidate signal is <b>'+fmt(p.eS,2)+'</b>.';
+  }
+
+  function renderMath(){
+    if(!window.katex) return;
+    document.querySelectorAll('.math').forEach(node=>{
+      const tex=node.dataset.tex || '';
+      try{ katex.render(tex,node,{throwOnError:false,displayMode:node.dataset.display==='true'}); }catch(e){}
+    });
+  }
+
+  function redraw(){
+    const P=getP(), S=solve(P);
+    labels(P); updateText(S,P); table(S,P);
+    drawMap(S,P); drawTimeline(S,P); drawBeliefs(S,P); drawCosts(S,P); drawIC(S,P); drawSepInterval(S,P); drawTree(S,P); drawPooling(S,P); drawDeviation(S,P); drawRefinement(S,P);
+    renderMath();
+  }
+
+  ids.forEach(id=>$(id).addEventListener('input',redraw));
+  $('btnMinSep').addEventListener('click',()=>{const P=getP(),S=solve(P);$('eS').value=clamp(S.eMin,0,12);redraw();});
+  $('btnMidSep').addEventListener('click',()=>{const P=getP(),S=solve(P);$('eS').value=clamp((S.eMin+S.eMax)/2,0,12);redraw();});
+  $('btnPool0').addEventListener('click',()=>{$('eP').value=0;redraw();});
+  $('btnClassic').addEventListener('click',()=>{const d={yL:40,yH:100,piH:.40,kL:5,kH:1.4,eS:5,eP:0,muO:.05,eD:4};Object.entries(d).forEach(([k,v])=>$(k).value=v);redraw();});
+  $('themeBtn').addEventListener('click',()=>{document.body.dataset.theme=document.body.dataset.theme==='dark'?'light':'dark';localStorage.setItem('spence-theme',document.body.dataset.theme);redraw();});
+  const saved=localStorage.getItem('spence-theme'); if(saved) document.body.dataset.theme=saved;
+  window.addEventListener('load',()=>{redraw();renderMath();setTimeout(redraw,100);});
+  document.addEventListener('DOMContentLoaded',redraw);
+})();
+</script>
+</body>
+</html>
