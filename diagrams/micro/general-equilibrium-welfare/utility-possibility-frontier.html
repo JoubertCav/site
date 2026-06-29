@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+  <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+  <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+  <meta name="description" content="Interactive microeconomics diagram for the utility possibility frontier: feasible utility allocations, social welfare functions, utilitarian, Rawlsian, and Nash criteria.">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <title>Utility Possibility Frontier | GE and Welfare Diagrams</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NHXHEJP1G0');
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #f6f0e6;
+      --bg2: #efe6d8;
+      --panel: rgba(255, 252, 245, 0.95);
+      --panel-solid: #fffaf0;
+      --soft: #f1eadc;
+      --soft2: #ece3d3;
+      --ink: #1c231f;
+      --muted: #68746d;
+      --faint: #8f9b94;
+      --border: rgba(35, 42, 38, 0.13);
+      --grid: rgba(35, 42, 38, 0.072);
+      --accent: #2f8f82;
+      --accent-soft: rgba(47, 143, 130, 0.12);
+      --gold: #aa7b31;
+      --gold-soft: rgba(170, 123, 49, 0.12);
+      --red: #b85f53;
+      --red-soft: rgba(184, 95, 83, 0.11);
+      --blue: #4e7eb0;
+      --blue-soft: rgba(78, 126, 176, 0.12);
+      --shadow: 0 24px 64px rgba(76, 59, 33, 0.11);
+      --shadow2: 0 12px 32px rgba(76, 59, 33, 0.08);
+      --radius: 22px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --serif: Georgia, "Times New Roman", serif;
+    }
+
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #02050a;
+      --bg2: #060b12;
+      --panel: rgba(10, 15, 23, 0.965);
+      --panel-solid: #0a0f17;
+      --soft: #0f1722;
+      --soft2: #111b27;
+      --ink: #eef7f4;
+      --muted: #a4b1ac;
+      --faint: #74837d;
+      --border: rgba(224, 244, 239, 0.102);
+      --grid: rgba(224, 244, 239, 0.048);
+      --accent: #71e7d6;
+      --accent-soft: rgba(113, 231, 214, 0.11);
+      --gold: #e3bf74;
+      --gold-soft: rgba(227, 191, 116, 0.102);
+      --red: #ef8b82;
+      --red-soft: rgba(239, 139, 130, 0.098);
+      --blue: #95c1f6;
+      --blue-soft: rgba(149, 193, 246, 0.10);
+      --shadow: 0 32px 92px rgba(0, 0, 0, 0.60);
+      --shadow2: 0 16px 46px rgba(0, 0, 0, 0.42);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--font);
+      background:
+        radial-gradient(circle at 8% -10%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 34rem),
+        radial-gradient(circle at 108% -12%, color-mix(in srgb, var(--gold) 13%, transparent), transparent 32rem),
+        linear-gradient(145deg, var(--bg), var(--bg2));
+      line-height: 1.45;
+    }
+
+    [data-theme="dark"] body,
+    body:has(.app[data-theme="dark"]) {
+      background:
+        radial-gradient(circle at 9% -10%, rgba(113, 231, 214, 0.08), transparent 34rem),
+        radial-gradient(circle at 100% -10%, rgba(149, 193, 246, 0.055), transparent 34rem),
+        radial-gradient(circle at 100% 100%, rgba(227, 191, 116, 0.038), transparent 34rem),
+        linear-gradient(145deg, #02050a 0%, #050910 48%, #070d15 100%);
+    }
+
+    button, input, select { font: inherit; }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 284px minmax(0, 1fr);
+      gap: 16px;
+      padding: 16px;
+      color: var(--ink);
+    }
+
+    .sidebar, .topbar, .mapping, .diagram-card, .card, .eq {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .sidebar {
+      border-radius: var(--radius);
+      padding: 16px;
+      max-height: calc(100vh - 32px);
+      overflow: auto;
+      scrollbar-width: thin;
+    }
+
+    .main {
+      min-width: 0;
+      width: 100%;
+      max-width: 1280px;
+      justify-self: center;
+      display: grid;
+      gap: 16px;
+      grid-template-rows: auto auto minmax(0, 1fr) auto;
+    }
+
+    .topbar {
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 18px;
+    }
+
+    .mapping {
+      border-radius: 18px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: color-mix(in srgb, var(--panel) 86%, var(--soft));
+    }
+
+    .mapping .arrow {
+      color: var(--faint);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(1.7rem, 3vw, 2.56rem);
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+    }
+
+    h2 {
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 9px;
+    }
+
+    h3 {
+      margin: 18px 0 10px;
+      color: var(--faint);
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 800;
+    }
+
+    .subtitle, .note {
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .subtitle { max-width: 920px; margin-top: 8px; }
+
+    .theme {
+      border: 1px solid var(--border);
+      background: var(--soft);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 9px 13px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .control { margin: 12px 0; }
+    .control label {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      margin-bottom: 6px;
+    }
+    .control strong {
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    select {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--soft);
+      color: var(--ink);
+      padding: 10px 11px;
+      border-radius: 13px;
+      outline: none;
+    }
+
+    .toggles {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .toggle {
+      border: 1px solid var(--border);
+      background: var(--soft);
+      color: var(--muted);
+      border-radius: 14px;
+      padding: 10px 11px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .toggle.active {
+      color: var(--ink);
+      background: var(--accent-soft);
+      border-color: color-mix(in srgb, var(--accent) 42%, var(--border));
+    }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: var(--soft);
+      color: var(--ink);
+      border-radius: 14px;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      background: var(--accent-soft);
+      border-color: color-mix(in srgb, var(--accent) 42%, var(--border));
+    }
+
+    .eq {
+      border-radius: 17px;
+      padding: 12px 13px;
+      margin: 10px 0;
+      box-shadow: var(--shadow2);
+      background: color-mix(in srgb, var(--soft) 72%, var(--panel));
+      overflow-x: auto;
+      color: var(--ink);
+    }
+
+    .eq .katex-display { margin: 0.15rem 0; }
+    .katex { color: var(--ink) !important; font-size: 1.02em; }
+
+    .diagram-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.84fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .diagram-card {
+      border-radius: var(--radius);
+      padding: 13px 14px 14px;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 10px;
+      overflow: hidden;
+    }
+
+    .diagram-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 14px;
+      padding: 0 2px;
+    }
+
+    .diagram-head p {
+      color: var(--muted);
+      font-size: 0.85rem;
+      max-width: 38ch;
+    }
+
+    .svg-frame {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+        color-mix(in srgb, var(--soft) 56%, transparent);
+      background-size: 38px 38px;
+      overflow: hidden;
+      min-height: 492px;
+    }
+
+    .small .svg-frame { min-height: 492px; }
+
+    [data-theme="dark"] .svg-frame {
+      background:
+        linear-gradient(rgba(224, 244, 239, 0.040) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(224, 244, 239, 0.040) 1px, transparent 1px),
+        radial-gradient(circle at 35% 20%, rgba(113, 231, 214, 0.03), transparent 25rem),
+        linear-gradient(180deg, #071018 0%, #050a11 100%);
+      background-size: 38px 38px, 38px 38px, auto, auto;
+      border-color: rgba(224, 244, 239, 0.095);
+    }
+
+    svg { display: block; width: 100%; height: 100%; }
+
+    .legend {
+      position: absolute;
+      left: 13px;
+      bottom: 13px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      pointer-events: none;
+      opacity: 0.94;
+      max-width: calc(100% - 26px);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--panel-solid) 82%, transparent);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 5px 8px;
+      font-size: 0.73rem;
+      backdrop-filter: blur(12px);
+      white-space: nowrap;
+    }
+
+    .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--accent); }
+    .dot.gold { background: var(--gold); }
+    .dot.red { background: var(--red); }
+    .dot.blue { background: var(--blue); }
+    .dot.ink { background: var(--ink); }
+
+    .cards {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .card {
+      border-radius: var(--radius);
+      padding: 16px;
+      min-width: 0;
+    }
+
+    .metric {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      padding: 8px 0;
+      font-size: 0.9rem;
+    }
+    .metric:last-child { border-bottom: 0; }
+    .metric span:first-child { color: var(--muted); }
+    .metric span:last-child {
+      color: var(--ink);
+      font-weight: 750;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    ul { margin: 0; padding-left: 17px; color: var(--muted); }
+    li { margin: 6px 0; }
+
+    .svg-label { fill: var(--muted); font-size: 13px; }
+    .svg-small { fill: var(--muted); font-size: 12px; }
+    .svg-title { fill: var(--ink); font-size: 14px; font-weight: 800; }
+    .axis { stroke: var(--ink); stroke-width: 1.35; }
+    .grid-line { stroke: var(--border); stroke-width: 1; }
+    .frontier { fill: none; stroke: var(--accent); stroke-width: 3.1; }
+    .frontier-fill { fill: var(--accent-soft); opacity: 0.60; }
+    .iso { fill: none; stroke: var(--gold); stroke-width: 2.15; stroke-dasharray: 7 6; }
+    .rawls { fill: none; stroke: var(--blue); stroke-width: 2.15; stroke-dasharray: 5 6; }
+    .nash { fill: none; stroke: var(--red); stroke-width: 2.15; stroke-dasharray: 3 6; }
+    .contract { fill: none; stroke: var(--red); stroke-width: 2.85; }
+    .indiffA { fill: none; stroke: var(--accent); stroke-width: 2.05; }
+    .indiffB { fill: none; stroke: var(--gold); stroke-width: 2.05; }
+    .trade { stroke: var(--blue); stroke-width: 1.9; stroke-dasharray: 5 6; opacity: 0.95; }
+    .gain { stroke: var(--blue); stroke-width: 1.8; stroke-dasharray: 5 6; opacity: 0.95; }
+    .guide { stroke: var(--border); stroke-width: 1.1; stroke-dasharray: 2 5; opacity: 0.9; }
+    .tangent { stroke: var(--ink); stroke-width: 1.4; stroke-dasharray: 3 5; opacity: 0.82; }
+    .point { vector-effect: non-scaling-stroke; }
+
+    @media (max-width: 1180px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { max-height: none; }
+      .main { max-width: none; }
+    }
+
+    @media (max-width: 980px) {
+      .diagram-grid, .cards { grid-template-columns: 1fr; }
+      .svg-frame, .small .svg-frame { min-height: 420px; }
+      .mapping { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 640px) {
+      .app { padding: 10px; }
+      .topbar { flex-direction: column; }
+      .btn-row { grid-template-columns: 1fr; }
+      .svg-frame, .small .svg-frame { min-height: 370px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app" id="app" data-theme="dark">
+  <aside class="sidebar">
+    <div class="eyebrow">Microeconomics</div>
+    <h2>Controls</h2>
+    <p class="note">The frontier is the image of the efficient set. The social criterion then selects one efficient utility allocation.</p>
+
+    <h3>Resources</h3>
+    <div class="control">
+      <label>Good 1 total <span><strong id="XVal">10.0</strong> = \(\bar x_1\)</span></label>
+      <input id="X" type="range" min="5" max="20" step="0.5" value="10">
+    </div>
+    <div class="control">
+      <label>Good 2 total <span><strong id="YVal">10.0</strong> = \(\bar x_2\)</span></label>
+      <input id="Y" type="range" min="5" max="20" step="0.5" value="10">
+    </div>
+
+    <h3>Disagreement / endowment</h3>
+    <div class="control">
+      <label>A good 1 <span><strong id="wXVal">4.00</strong> = \(\omega_1^A\)</span></label>
+      <input id="wX" type="range" min="0.2" max="9.8" step="0.1" value="4">
+    </div>
+    <div class="control">
+      <label>A good 2 <span><strong id="wYVal">6.00</strong> = \(\omega_2^A\)</span></label>
+      <input id="wY" type="range" min="0.2" max="9.8" step="0.1" value="6">
+    </div>
+
+    <h3>CES preferences</h3>
+    <div class="eq" data-tex="u^i(x_1,x_2)=\left[\alpha_i x_1^{\rho_i}+(1-\alpha_i)x_2^{\rho_i}\right]^{1/\rho_i}"></div>
+    <div class="control">
+      <label>A share <span><strong id="aAVal">0.50</strong> = \(\alpha_A\)</span></label>
+      <input id="aA" type="range" min="0.10" max="0.90" step="0.01" value="0.50">
+    </div>
+    <div class="control">
+      <label>A curvature <span><strong id="rAVal">0.00</strong> = \(\rho_A\)</span></label>
+      <input id="rA" type="range" min="-1.80" max="0.80" step="0.02" value="0.00">
+    </div>
+    <div class="control">
+      <label>B share <span><strong id="aBVal">0.50</strong> = \(\alpha_B\)</span></label>
+      <input id="aB" type="range" min="0.10" max="0.90" step="0.01" value="0.50">
+    </div>
+    <div class="control">
+      <label>B curvature <span><strong id="rBVal">0.00</strong> = \(\rho_B\)</span></label>
+      <input id="rB" type="range" min="-1.80" max="0.80" step="0.02" value="0.00">
+    </div>
+
+    <h3>Welfare criterion</h3>
+    <select id="criterion">
+      <option value="utilitarian">Utilitarian: maximize \(U_A+U_B\)</option>
+      <option value="weighted">Weighted utilitarian</option>
+      <option value="rawls">Rawlsian: maximize \(\min\{U_A,U_B\}\)</option>
+      <option value="nash">Nash: maximize surplus product</option>
+    </select>
+    <div class="control">
+      <label>Weight on A <span><strong id="lambdaVal">0.50</strong> = \(\lambda\)</span></label>
+      <input id="lambda" type="range" min="0.05" max="0.95" step="0.01" value="0.50">
+    </div>
+
+    <h3>Geometry</h3>
+    <div class="toggles">
+      <button class="toggle active" id="showFeasible"><span>Feasible utility set</span><span>on</span></button>
+      <button class="toggle active" id="showIso"><span>Welfare contour</span><span>on</span></button>
+      <button class="toggle active" id="showEdge"><span>Edgeworth source</span><span>on</span></button>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn primary" id="balanced">Balanced economy</button>
+      <button class="btn" id="skewed">Unequal endowment</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">Utility possibility frontier</div>
+        <h1>Feasible utilities and social welfare</h1>
+        <p class="subtitle">The right-hand diagram chooses an efficient allocation \(x^*\) in goods space. The left-hand diagram shows its image \((u^A(x^*),u^B(x^*))\) in utility space, where alternative social criteria select different efficient points.</p>
+      </div>
+      <button class="theme" id="theme">Light mode</button>
+    </header>
+
+    <section class="mapping">
+      <div><strong>Map:</strong> contract curve in the Edgeworth box</div>
+      <div class="arrow">\(x \in \mathcal P\)  &nbsp;→&nbsp;  \((u^A(x),u^B(x)) \in \mathrm{UPF}\)</div>
+      <div class="note">Blue point in goods space and blue point in utility space represent the same efficient allocation.</div>
+    </section>
+
+    <section class="diagram-grid">
+      <div class="diagram-card">
+        <div class="diagram-head">
+          <div>
+            <h2>Utility possibility frontier</h2>
+            <p>Feasible utility pairs, the efficient frontier, and the welfare contour that supports the chosen social optimum.</p>
+          </div>
+          <p id="criterionLabel">Utilitarian optimum</p>
+        </div>
+        <div class="svg-frame">
+          <svg id="upfSvg" viewBox="0 0 840 600" preserveAspectRatio="xMidYMid meet"></svg>
+          <div class="legend">
+            <span class="pill"><span class="dot"></span>UPF</span>
+            <span class="pill"><span class="dot gold"></span>welfare contour</span>
+            <span class="pill"><span class="dot red"></span>disagreement utility</span>
+            <span class="pill"><span class="dot blue"></span>chosen utility pair</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="diagram-card small" id="edgeCard">
+        <div class="diagram-head">
+          <div>
+            <h2>Edgeworth source</h2>
+            <p>The selected utility pair comes from an efficient allocation on the contract curve. Tangency shows \(MRS_A=MRS_B\).</p>
+          </div>
+          <p>same blue allocation</p>
+        </div>
+        <div class="svg-frame">
+          <svg id="boxSvg" viewBox="0 0 540 600" preserveAspectRatio="xMidYMid meet"></svg>
+          <div class="legend">
+            <span class="pill"><span class="dot red"></span>contract curve</span>
+            <span class="pill"><span class="dot blue"></span>chosen allocation \(x^*\)</span>
+            <span class="pill"><span class="dot gold"></span>endowment \(\omega\)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cards">
+      <div class="card">
+        <h2>Symbolic object</h2>
+        <div class="eq" data-tex="\mathcal U=\{(u^A(x^A),u^B(x^B)):x^A+x^B=\bar x,\;x^A,x^B\ge 0\}"></div>
+        <div class="eq" data-tex="\mathrm{UPF}=\{(u^A(x),u^B(x)):x\in\mathcal P\}"></div>
+        <p class="note">The utility possibility frontier is the image of the Pareto set \(\mathcal P\) under the utility map.</p>
+      </div>
+      <div class="card">
+        <h2>Readout</h2>
+        <div class="metric"><span>Disagreement utility</span><span id="disUtil">—</span></div>
+        <div class="metric"><span>Chosen utility</span><span id="optUtil">—</span></div>
+        <div class="metric"><span>Chosen allocation \(x^A\)</span><span id="optAlloc">—</span></div>
+        <div class="metric"><span>Criterion value</span><span id="critVal">—</span></div>
+        <div class="metric"><span>At \(x^*\): \(MRS_A\)</span><span id="mrsA">—</span></div>
+        <div class="metric"><span>At \(x^*\): \(MRS_B\)</span><span id="mrsB">—</span></div>
+      </div>
+      <div class="card">
+        <h2>What to notice</h2>
+        <ul id="notice">
+          <li>The contract curve is drawn in goods space; the UPF is its image in utility space.</li>
+          <li>Changing endowments shifts the disagreement point, so the Nash criterion can move even when the feasible frontier is unchanged.</li>
+          <li>Utilitarian, Rawlsian, and Nash criteria all choose points on the frontier, but they use different supporting geometry.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  const $ = id => document.getElementById(id);
+
+  const state = {
+    X: 10, Y: 10, wX: 4, wY: 6,
+    aA: 0.5, rA: 0, aB: 0.5, rB: 0,
+    criterion: "utilitarian",
+    lambda: 0.5,
+    showFeasible: true,
+    showIso: true,
+    showEdge: true,
+    dark: true
+  };
+
+  const controls = ["X","Y","wX","wY","aA","rA","aB","rB","lambda"];
+  controls.forEach(id => $(id).addEventListener("input", e => {
+    state[id] = parseFloat(e.target.value);
+    sanitize();
+    render();
+  }));
+
+  $("criterion").addEventListener("change", e => {
+    state.criterion = e.target.value;
+    render();
+  });
+
+  ["showFeasible","showIso","showEdge"].forEach(id => {
+    $(id).addEventListener("click", () => {
+      state[id] = !state[id];
+      $(id).classList.toggle("active", state[id]);
+      $(id).querySelector("span:last-child").textContent = state[id] ? "on" : "off";
+      render();
+    });
+  });
+
+  $("theme").addEventListener("click", () => {
+    state.dark = !state.dark;
+    $("app").setAttribute("data-theme", state.dark ? "dark" : "light");
+    $("theme").textContent = state.dark ? "Light mode" : "Dark mode";
+    renderKatex();
+  });
+
+  $("balanced").addEventListener("click", () => {
+    Object.assign(state, { X:10, Y:10, wX:5, wY:5, aA:0.5, aB:0.5, rA:0, rB:0, lambda:0.5, criterion:"utilitarian" });
+    sync();
+    render();
+  });
+
+  $("skewed").addEventListener("click", () => {
+    Object.assign(state, { X:10, Y:10, wX:2.2, wY:7.4, aA:0.62, aB:0.42, rA:-0.55, rB:0.12, lambda:0.5, criterion:"nash" });
+    sync();
+    render();
+  });
+
+  function css(v) { return getComputedStyle($("app")).getPropertyValue(v).trim(); }
+  function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
+  function fmt(x,d=2){ return Number.isFinite(x) ? x.toFixed(d) : "—"; }
+
+  function sanitize() {
+    const eps = 0.06;
+    state.wX = clamp(state.wX, eps, state.X - eps);
+    state.wY = clamp(state.wY, eps, state.Y - eps);
+    $("wX").max = (state.X - 0.2).toFixed(1);
+    $("wY").max = (state.Y - 0.2).toFixed(1);
+  }
+
+  function sync() {
+    sanitize();
+    controls.forEach(id => $(id).value = state[id]);
+    $("criterion").value = state.criterion;
+  }
+
+  function utility(x, y, a, rho) {
+    x = Math.max(x, 1e-10); y = Math.max(y, 1e-10);
+    if (Math.abs(rho) < 1e-6) return Math.pow(x, a) * Math.pow(y, 1-a);
+    return Math.pow(a * Math.pow(x, rho) + (1-a) * Math.pow(y, rho), 1/rho);
+  }
+
+  function mrs(x, y, a, rho) {
+    x = Math.max(x, 1e-10); y = Math.max(y, 1e-10);
+    if (Math.abs(rho) < 1e-6) return (a/(1-a))*(y/x);
+    return (a/(1-a)) * Math.pow(x/y, rho - 1);
+  }
+
+  function yOnContract(x) {
+    const eps = 1e-5;
+    x = clamp(x, eps, state.X - eps);
+    let lo = eps, hi = state.Y - eps;
+    const diff = y => mrs(x, y, state.aA, state.rA) - mrs(state.X - x, state.Y - y, state.aB, state.rB);
+    let flo = diff(lo), fhi = diff(hi);
+    if (flo > 0) return lo;
+    if (fhi < 0) return hi;
+    for (let k = 0; k < 80; k++) {
+      const mid = (lo + hi) / 2;
+      if (diff(mid) < 0) lo = mid; else hi = mid;
+    }
+    return (lo + hi) / 2;
+  }
+
+  function sampleContract(n=320) {
+    const arr = [];
+    for (let i=1; i<=n; i++) {
+      const x = (i/(n+1))*state.X;
+      const y = yOnContract(x);
+      arr.push({
+        x, y,
+        uA: utility(x, y, state.aA, state.rA),
+        uB: utility(state.X - x, state.Y - y, state.aB, state.rB)
+      });
+    }
+    return arr;
+  }
+
+  function feasibleCloud(nx=54, ny=54) {
+    const pts = [];
+    for (let i=0; i<=nx; i++) for (let j=0; j<=ny; j++) {
+      const x = (i/nx)*state.X;
+      const y = (j/ny)*state.Y;
+      pts.push({
+        x, y,
+        uA: utility(x, y, state.aA, state.rA),
+        uB: utility(state.X - x, state.Y - y, state.aB, state.rB)
+      });
+    }
+    return pts;
+  }
+
+  function disagreement() {
+    return {
+      x: state.wX, y: state.wY,
+      uA: utility(state.wX, state.wY, state.aA, state.rA),
+      uB: utility(state.X - state.wX, state.Y - state.wY, state.aB, state.rB)
+    };
+  }
+
+  function criterionValue(q) {
+    const d = disagreement();
+    const lam = state.criterion === "utilitarian" ? 0.5 : state.lambda;
+    if (state.criterion === "utilitarian") return q.uA + q.uB;
+    if (state.criterion === "weighted") return lam*q.uA + (1-lam)*q.uB;
+    if (state.criterion === "rawls") return Math.min(q.uA, q.uB);
+    const sA = q.uA - d.uA, sB = q.uB - d.uB;
+    if (sA <= 0 || sB <= 0) return -Infinity;
+    return Math.log(sA) + Math.log(sB);
+  }
+
+  function optimum(frontier) {
+    let best = frontier[0], val = -Infinity;
+    for (const q of frontier) {
+      const v = criterionValue(q);
+      if (v > val) { val = v; best = q; }
+    }
+    return { ...best, value: val };
+  }
+
+  function add(svg, tag, attrs={}) {
+    const el = document.createElementNS(NS, tag);
+    for (const [k,v] of Object.entries(attrs)) el.setAttribute(k, v);
+    svg.appendChild(el);
+    return el;
+  }
+
+  function text(svg, x, y, content, cls="svg-label", anchor="start", rot=0) {
+    const el = add(svg, "text", { x, y, class: cls, "text-anchor": anchor });
+    if (rot) el.setAttribute("transform", `rotate(${rot} ${x} ${y})`);
+    el.textContent = content;
+    return el;
+  }
+
+  function pathFrom(pts) {
+    return pts.map((p,i) => `${i ? "L" : "M"}${p[0]},${p[1]}`).join("");
+  }
+
+  function drawPoint(svg, x, y, r, fill, label, dx=10, dy=-10) {
+    add(svg, "circle", { cx: x, cy: y, r, fill, stroke: css("--panel-solid"), "stroke-width": 3, class: "point" });
+    if (label) text(svg, x + dx, y + dy, label, "svg-title");
+  }
+
+  function drawUPF(data) {
+    const svg = $("upfSvg"); svg.innerHTML = "";
+    const W=840, H=600, m={l:72,t:46,r:36,b:68};
+    const gw=W-m.l-m.r, gh=H-m.t-m.b;
+    const frontier = data.frontier, cloud = data.cloud, d = data.d, opt = data.opt;
+    const maxUA = Math.max(...frontier.map(q=>q.uA), ...cloud.map(q=>q.uA), opt.uA, d.uA) * 1.08;
+    const maxUB = Math.max(...frontier.map(q=>q.uB), ...cloud.map(q=>q.uB), opt.uB, d.uB) * 1.08;
+    const sx = u => m.l + (u/maxUA)*gw;
+    const sy = v => m.t + gh - (v/maxUB)*gh;
+
+    for (let i=1; i<=5; i++) {
+      add(svg, "line", { x1: m.l+(i/5)*gw, y1: m.t, x2: m.l+(i/5)*gw, y2: m.t+gh, class: "grid-line" });
+      add(svg, "line", { x1: m.l, y1: m.t+(i/5)*gh, x2: m.l+gw, y2: m.t+(i/5)*gh, class: "grid-line" });
+    }
+    add(svg, "line", { x1: m.l, y1: m.t+gh, x2: m.l+gw, y2: m.t+gh, class: "axis" });
+    add(svg, "line", { x1: m.l, y1: m.t+gh, x2: m.l, y2: m.t, class: "axis" });
+    text(svg, m.l+gw/2, m.t+gh+45, "utility of A", "svg-label", "middle");
+    text(svg, m.l-42, m.t+gh/2, "utility of B", "svg-label", "middle", -90);
+
+    if (state.showFeasible) {
+      cloud.forEach((q,idx) => {
+        if (idx % 2 === 0) add(svg, "circle", { cx: sx(q.uA), cy: sy(q.uB), r: 1.3, fill: css("--accent"), opacity: 0.14 });
+      });
+    }
+
+    const frontierPts = frontier.map(q => [sx(q.uA), sy(q.uB)]);
+    const poly = [[sx(0), sy(0)], ...frontierPts, [sx(frontier[frontier.length-1].uA), sy(0)]];
+    add(svg, "path", { d: pathFrom(poly) + " Z", class: "frontier-fill" });
+    add(svg, "path", { d: pathFrom(frontierPts), class: "frontier" });
+    text(svg, sx(frontier[Math.floor(frontier.length*0.48)].uA)+12, sy(frontier[Math.floor(frontier.length*0.48)].uB)-12, "UPF", "svg-title");
+
+    if (state.showIso) drawIso(svg, sx, sy, maxUA, maxUB, opt, d);
+
+    add(svg, "line", { x1: sx(d.uA), y1: sy(d.uB), x2: sx(opt.uA), y2: sy(opt.uB), class: "gain" });
+    text(svg, (sx(d.uA)+sx(opt.uA))/2 + 10, (sy(d.uB)+sy(opt.uB))/2 - 8, "utility gain", "svg-small");
+
+    add(svg, "line", { x1: sx(opt.uA), y1: sy(opt.uB), x2: sx(opt.uA), y2: sy(0), class: "guide" });
+    add(svg, "line", { x1: sx(0), y1: sy(opt.uB), x2: sx(opt.uA), y2: sy(opt.uB), class: "guide" });
+
+    drawPoint(svg, sx(d.uA), sy(d.uB), 7, css("--red"), "d");
+    drawPoint(svg, sx(opt.uA), sy(opt.uB), 8, css("--blue"), "U(x*)");
+
+    text(svg, sx(maxUA*0.98), sy(0)+24, fmt(maxUA,1), "svg-small", "end");
+    text(svg, m.l-10, sy(maxUB*0.96), fmt(maxUB,1), "svg-small", "end");
+  }
+
+  function drawIso(svg, sx, sy, maxUA, maxUB, opt, d) {
+    const lam = state.criterion === "utilitarian" ? 0.5 : state.lambda;
+    if (state.criterion === "utilitarian" || state.criterion === "weighted") {
+      const c = lam*opt.uA + (1-lam)*opt.uB;
+      const pts = [];
+      const u1 = c/lam, u2 = c/(1-lam);
+      [[0,u2],[u1,0]].forEach(p => {
+        if (p[0] >= 0 && p[0] <= maxUA && p[1] >= 0 && p[1] <= maxUB) pts.push([sx(p[0]), sy(p[1])]);
+      });
+      if (pts.length === 2) add(svg, "line", { x1: pts[0][0], y1: pts[0][1], x2: pts[1][0], y2: pts[1][1], class: "iso" });
+      text(svg, sx(opt.uA)+12, sy(opt.uB)+22, "highest welfare line", "svg-small");
+    } else if (state.criterion === "rawls") {
+      const z = Math.min(opt.uA, opt.uB);
+      add(svg, "path", { d: `M${sx(0)},${sy(z)} L${sx(z)},${sy(z)} L${sx(z)},${sy(0)}`, class: "rawls" });
+      text(svg, sx(z)+10, sy(z)-10, "max-min contour", "svg-small");
+    } else {
+      const K = (opt.uA - d.uA) * (opt.uB - d.uB);
+      const pts = [];
+      for (let i=1; i<260; i++) {
+        const u = d.uA + (i/260) * (maxUA - d.uA);
+        const v = d.uB + K / (u - d.uA);
+        if (v >= 0 && v <= maxUB) pts.push([sx(u), sy(v)]);
+      }
+      if (pts.length > 2) add(svg, "path", { d: pathFrom(pts), class: "nash" });
+      text(svg, sx(opt.uA)+12, sy(opt.uB)+22, "constant Nash product", "svg-small");
+    }
+  }
+
+  function drawBox(data) {
+    const card = $("edgeCard");
+    card.style.display = state.showEdge ? "grid" : "none";
+    const svg = $("boxSvg"); svg.innerHTML = "";
+    if (!state.showEdge) return;
+
+    const W=540, H=600, outer={l:58,t:58,r:48,b:62};
+    const maxW=W-outer.l-outer.r, maxH=H-outer.t-outer.b;
+    const scale = Math.min(maxW/state.X, maxH/state.Y);
+    const bw = state.X*scale, bh = state.Y*scale;
+    const m = { l: outer.l + (maxW-bw)/2, t: outer.t + (maxH-bh)/2 };
+    const sx = x => m.l + (x/state.X)*bw;
+    const sy = y => m.t + bh - (y/state.Y)*bh;
+    const opt = data.opt, frontier = data.frontier, d = data.d;
+
+    add(svg, "rect", { x: m.l, y: m.t, width: bw, height: bh, fill: "none", stroke: css("--ink"), "stroke-width": 1.4 });
+    for (let i=1; i<Math.floor(state.X); i++) add(svg, "line", { x1: sx(i), y1: m.t, x2: sx(i), y2: m.t+bh, class: "grid-line" });
+    for (let j=1; j<Math.floor(state.Y); j++) add(svg, "line", { x1: m.l, y1: sy(j), x2: m.l+bw, y2: sy(j), class: "grid-line" });
+
+    text(svg, m.l-8, m.t+bh+25, "Oᴬ", "svg-title", "end");
+    text(svg, m.l+bw+8, m.t-12, "Oᴮ", "svg-title");
+    text(svg, m.l+bw/2, m.t+bh+45, "good 1 for A", "svg-label", "middle");
+    text(svg, m.l-38, m.t+bh/2, "good 2 for A", "svg-label", "middle", -90);
+
+    const cpts = frontier.map(q => [sx(q.x), sy(q.y)]);
+    add(svg, "path", { d: pathFrom(cpts), class: "contract" });
+    text(svg, sx(frontier[Math.floor(frontier.length*0.64)].x)+10, sy(frontier[Math.floor(frontier.length*0.64)].y)-8, "contract curve", "svg-small");
+
+    add(svg, "line", { x1: sx(d.x), y1: sy(d.y), x2: sx(opt.x), y2: sy(opt.y), class: "trade" });
+    text(svg, (sx(d.x)+sx(opt.x))/2 + 8, (sy(d.y)+sy(opt.y))/2 - 10, "trade", "svg-small");
+
+    add(svg, "line", { x1: sx(opt.x), y1: sy(opt.y), x2: sx(opt.x), y2: sy(0), class: "guide" });
+    add(svg, "line", { x1: sx(0), y1: sy(opt.y), x2: sx(opt.x), y2: sy(opt.y), class: "guide" });
+
+    drawIndiff(svg, sx, sy, opt.x, opt.y, "A", false);
+    drawIndiff(svg, sx, sy, opt.x, opt.y, "B", false);
+
+    const slope = -mrs(opt.x, opt.y, state.aA, state.rA);
+    const dx = 0.9;
+    const x1 = clamp(opt.x - dx, 0.03, state.X - 0.03);
+    const x2 = clamp(opt.x + dx, 0.03, state.X - 0.03);
+    const y1 = opt.y + slope * (x1 - opt.x);
+    const y2 = opt.y + slope * (x2 - opt.x);
+    add(svg, "line", { x1: sx(x1), y1: sy(y1), x2: sx(x2), y2: sy(y2), class: "tangent" });
+    text(svg, sx(opt.x)+12, sy(opt.y)+22, "common tangent", "svg-small");
+
+    drawPoint(svg, sx(d.x), sy(d.y), 6.8, css("--gold"), "ω");
+    drawPoint(svg, sx(opt.x), sy(opt.y), 7.8, css("--blue"), "x*");
+  }
+
+  function drawIndiff(svg, sx, sy, ax, ay, who, dashed) {
+    const u = who === "A" ? utility(ax, ay, state.aA, state.rA) : utility(state.X-ax, state.Y-ay, state.aB, state.rB);
+    const a = who === "A" ? state.aA : state.aB;
+    const rho = who === "A" ? state.rA : state.rB;
+    const pts = [];
+    for (let i=1; i<360; i++) {
+      const xr = (i/360)*state.X;
+      let x, y;
+      if (who === "A") {
+        x = xr; y = yOnIndiff(u, x, a, rho);
+      } else {
+        const xb = xr, yb = yOnIndiff(u, xb, a, rho);
+        x = state.X - xb; y = state.Y - yb;
+      }
+      if (Number.isFinite(y) && x>=0 && x<=state.X && y>=0 && y<=state.Y) pts.push([sx(x), sy(y)]);
+    }
+    if (pts.length > 2) {
+      const el = add(svg, "path", { d: pathFrom(pts), class: who === "A" ? "indiffA" : "indiffB" });
+      if (dashed) el.setAttribute("stroke-dasharray", "4 6");
+    }
+  }
+
+  function yOnIndiff(u, x, a, rho) {
+    x = Math.max(x, 1e-10);
+    if (Math.abs(rho) < 1e-6) return Math.pow(u/Math.pow(x,a), 1/(1-a));
+    const inside = (Math.pow(u,rho) - a*Math.pow(x,rho)) / (1-a);
+    if (inside <= 0) return NaN;
+    return Math.pow(inside, 1/rho);
+  }
+
+  function updateReadouts(data) {
+    $("XVal").textContent = fmt(state.X,1);
+    $("YVal").textContent = fmt(state.Y,1);
+    $("wXVal").textContent = fmt(state.wX,2);
+    $("wYVal").textContent = fmt(state.wY,2);
+    $("aAVal").textContent = fmt(state.aA,2);
+    $("rAVal").textContent = Math.abs(state.rA)<0.005 ? "0.00" : fmt(state.rA,2);
+    $("aBVal").textContent = fmt(state.aB,2);
+    $("rBVal").textContent = Math.abs(state.rB)<0.005 ? "0.00" : fmt(state.rB,2);
+    $("lambdaVal").textContent = fmt(state.lambda,2);
+
+    const d = data.d, opt = data.opt;
+    $("disUtil").textContent = `(${fmt(d.uA,2)}, ${fmt(d.uB,2)})`;
+    $("optUtil").textContent = `(${fmt(opt.uA,2)}, ${fmt(opt.uB,2)})`;
+    $("optAlloc").textContent = `(${fmt(opt.x,2)}, ${fmt(opt.y,2)})`;
+    $("critVal").textContent = state.criterion === "nash" ? fmt(Math.exp(opt.value),3) : fmt(opt.value,3);
+    $("mrsA").textContent = fmt(mrs(opt.x, opt.y, state.aA, state.rA), 3);
+    $("mrsB").textContent = fmt(mrs(state.X-opt.x, state.Y-opt.y, state.aB, state.rB), 3);
+
+    $("criterionLabel").textContent = {
+      utilitarian: "Utilitarian optimum",
+      weighted: `Weighted utilitarian, λ=${fmt(state.lambda,2)}`,
+      rawls: "Rawlsian max-min point",
+      nash: "Nash bargaining point"
+    }[state.criterion];
+  }
+
+  function renderKatex() {
+    document.querySelectorAll('.eq[data-tex]').forEach(el => {
+      const tex = el.getAttribute('data-tex');
+      if (window.katex) {
+        try { katex.render(tex, el, {displayMode:true, throwOnError:false}); }
+        catch { el.textContent = tex; }
+      }
+    });
+    if (window.renderMathInElement) {
+      renderMathInElement($("app"), {
+        delimiters: [
+          {left: "\\(", right: "\\)", display: false},
+          {left: "\\[", right: "\\]", display: true}
+        ],
+        ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+        throwOnError: false
+      });
+    }
+  }
+
+  function render() {
+    sanitize();
+    const frontier = sampleContract();
+    const cloud = feasibleCloud();
+    const d = disagreement();
+    const opt = optimum(frontier);
+    const data = { frontier, cloud, d, opt };
+    updateReadouts(data);
+    drawUPF(data);
+    drawBox(data);
+    renderKatex();
+  }
+
+  window.addEventListener("load", render);
+  sync();
+  render();
+</script>
+</body>
+</html>
