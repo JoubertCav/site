@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
   <meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
   <meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
-  <meta name="description" content="Interactive microeconomics diagram for the Edgeworth box in pure exchange: endowments, feasible allocations, mutual gains from trade, and the geometry of exchange.">
+  <meta name="description" content="Interactive microeconomics diagram for the Edgeworth box in pure exchange: custom preferences, editable parameters, contract curve, core, gains from trade, and Walrasian equilibrium.">
   <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
   <title>Edgeworth Box for Pure Exchange | GE and Welfare Diagrams</title>
   <!-- Google tag (gtag.js) -->
@@ -18,55 +18,56 @@
 
     gtag('config', 'G-NHXHEJP1G0');
   </script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
   <style>
     :root {
       --bg: #f5efe4;
       --bg-soft: #eee4d2;
-      --card: #fffdf7;
-      --card-2: #f8f1e6;
+      --card: rgba(255,253,247,.90);
+      --card-2: #fffaf0;
+      --panel: rgba(255,253,247,.78);
       --text: #1b201d;
-      --muted: #65716b;
+      --muted: #66726d;
       --line: rgba(27,32,29,.13);
-      --grid: rgba(27,32,29,.060);
-      --accent: #287e73;
-      --accent-soft: rgba(40,126,115,.105);
-      --accent-line: rgba(40,126,115,.46);
-      --gold: #a7772f;
-      --gold-soft: rgba(167,119,47,.12);
+      --grid: rgba(27,32,29,.055);
+      --accent: #277f75;
+      --accent-2: #4aa99a;
+      --accent-soft: rgba(39,127,117,.105);
+      --gold: #a97831;
+      --gold-soft: rgba(169,120,49,.115);
       --red: #ad5a4f;
       --red-soft: rgba(173,90,79,.13);
       --blue: #526da8;
       --blue-soft: rgba(82,109,168,.12);
+      --violet: #7f669d;
       --shadow: 0 18px 52px rgba(47,39,27,.095);
-      --shadow-soft: 0 8px 24px rgba(47,39,27,.050);
+      --shadow-soft: 0 8px 24px rgba(47,39,27,.055);
       --radius: 24px;
       --radius-sm: 16px;
-      --panel-blur: rgba(255,253,247,.88);
     }
 
     [data-theme="dark"] {
       --bg: #0b1014;
       --bg-soft: #10171c;
-      --card: #151e24;
-      --card-2: #10171d;
+      --card: rgba(21,30,36,.84);
+      --card-2: #121a20;
+      --panel: rgba(21,30,36,.78);
       --text: #edf5f1;
-      --muted: #9dafaa;
+      --muted: #a0b2ad;
       --line: rgba(237,245,241,.105);
       --grid: rgba(237,245,241,.042);
       --accent: #78d4c5;
+      --accent-2: #9ae8dc;
       --accent-soft: rgba(120,212,197,.105);
-      --accent-line: rgba(120,212,197,.42);
       --gold: #d3ad67;
       --gold-soft: rgba(211,173,103,.11);
       --red: #df8b82;
       --red-soft: rgba(223,139,130,.11);
       --blue: #9db3f0;
       --blue-soft: rgba(157,179,240,.11);
+      --violet: #cab5ee;
       --shadow: 0 24px 70px rgba(0,0,0,.34);
       --shadow-soft: 0 12px 28px rgba(0,0,0,.20);
-      --panel-blur: rgba(21,30,36,.82);
     }
 
     * { box-sizing: border-box; }
@@ -74,28 +75,29 @@
     body {
       margin: 0;
       min-height: 100vh;
+      color: var(--text);
       background:
         radial-gradient(circle at 4% 0%, var(--accent-soft), transparent 32rem),
         radial-gradient(circle at 100% 8%, var(--gold-soft), transparent 28rem),
         linear-gradient(180deg, var(--bg), var(--bg-soft));
-      color: var(--text);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.45;
     }
 
-    button, input, select { font: inherit; }
-    button { color: inherit; }
+    button, input, textarea, select { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    h1, h2, h3, p { margin: 0; }
 
     .app {
       min-height: 100vh;
       display: grid;
-      grid-template-columns: 300px minmax(0, 1fr);
+      grid-template-columns: 376px minmax(0,1fr);
       gap: 16px;
       padding: 16px;
     }
 
     .sidebar, .topbar, .diagram-card, .panel, .card {
-      background: var(--panel-blur);
+      background: var(--panel);
       border: 1px solid var(--line);
       box-shadow: var(--shadow);
       border-radius: var(--radius);
@@ -111,10 +113,10 @@
     }
 
     .main {
-      display: grid;
-      grid-template-rows: auto minmax(620px, 1fr) auto;
-      gap: 16px;
       min-width: 0;
+      display: grid;
+      grid-template-rows: auto minmax(660px,1fr) auto;
+      gap: 16px;
     }
 
     .topbar {
@@ -126,39 +128,78 @@
     }
 
     .kicker {
-      font-size: .73rem;
-      font-weight: 800;
+      font-size: .72rem;
+      font-weight: 850;
       color: var(--accent);
       letter-spacing: .14em;
       text-transform: uppercase;
       margin-bottom: 7px;
     }
 
-    h1, h2, h3, p { margin: 0; }
     h1 {
       font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(1.72rem, 3vw, 2.65rem);
+      font-size: clamp(1.70rem,3vw,2.70rem);
       line-height: 1.02;
       letter-spacing: -.045em;
-      font-weight: 640;
+      font-weight: 650;
     }
-    h2 { font-size: 1.02rem; letter-spacing: -.02em; margin-bottom: 10px; }
+
+    h2 {
+      font-size: 1rem;
+      letter-spacing: -.02em;
+      margin-bottom: 9px;
+    }
+
     h3 {
-      margin: 16px 0 8px;
+      margin: 17px 0 8px;
       color: var(--muted);
-      font-size: .76rem;
+      font-size: .75rem;
       text-transform: uppercase;
-      letter-spacing: .11em;
+      letter-spacing: .12em;
     }
-    .subtitle { color: var(--muted); max-width: 950px; font-size: .96rem; margin-top: 7px; }
+
+    .subtitle { color: var(--muted); max-width: 990px; font-size: .96rem; margin-top: 7px; }
     .muted { color: var(--muted); }
+
+    .theme {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      background: var(--card-2);
+      border-radius: 999px;
+      padding: 9px 12px;
+      white-space: nowrap;
+      box-shadow: var(--shadow-soft);
+    }
+    .theme .moon { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(4,minmax(0,1fr));
+      gap: 7px;
+      margin-top: 14px;
+    }
+    .tab {
+      border: 1px solid var(--line);
+      background: var(--card-2);
+      border-radius: 15px;
+      padding: 9px 9px;
+      text-align: left;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .tab:hover { transform: translateY(-1px); }
+    .tab.active { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
+    .tab b { display: block; font-size: .78rem; }
+    .tab span { display: block; color: var(--muted); font-size: .68rem; margin-top: 1px; }
+
     .focus-strip {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin-top: 13px;
     }
-    .focus-chip {
+    .chip, .focus-chip {
       display: inline-flex;
       align-items: center;
       gap: 7px;
@@ -171,39 +212,131 @@
       box-shadow: var(--shadow-soft);
     }
 
-    .theme {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+    .editor-grid { display: grid; gap: 10px; }
+    .field label, .control label {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: .82rem;
+      margin-bottom: 5px;
+    }
+    .field textarea, .field input[type="text"], .field select {
+      width: 100%;
       border: 1px solid var(--line);
       background: var(--card-2);
-      border-radius: 999px;
-      padding: 9px 12px;
-      cursor: pointer;
-      white-space: nowrap;
+      color: var(--text);
+      border-radius: 15px;
+      padding: 10px 11px;
       box-shadow: var(--shadow-soft);
+      outline: none;
     }
-    .theme .moon { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
+    .field textarea { min-height: 74px; resize: vertical; line-height: 1.35; font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: .88rem; }
+    .field textarea.params { min-height: 96px; }
+    .field input:focus, .field textarea:focus, .field select:focus { border-color: color-mix(in srgb, var(--accent) 55%, transparent); }
 
-    .tabs { display: grid; gap: 7px; margin: 14px 0 6px; }
-    .tab {
+    .template-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+    .agent-grid { display: grid; gap: 10px; }
+    .agent-card {
       border: 1px solid var(--line);
-      background: transparent;
+      background: var(--card-2);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      gap: 10px;
+    }
+    .agent-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .agent-title {
+      font-weight: 800;
+      letter-spacing: -.01em;
+      color: var(--text);
+      font-size: .95rem;
+    }
+    .agent-subtitle {
+      color: var(--muted);
+      font-size: .77rem;
+      margin-top: 2px;
+      max-width: 220px;
+    }
+    .template-select {
+      min-width: 148px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 14px;
+      padding: 9px 10px;
+      box-shadow: var(--shadow-soft);
+      outline: none;
+    }
+    .param-box {
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--accent-soft) 40%, var(--card-2));
       border-radius: 16px;
       padding: 10px 11px;
-      text-align: left;
-      cursor: pointer;
-      transition: transform .15s ease, background .15s ease, border-color .15s ease;
     }
-    .tab:hover { transform: translateY(-1px); background: var(--card-2); }
-    .tab.active { background: var(--accent-soft); border-color: var(--accent-line); }
-    .tab b { display: block; font-size: .88rem; }
-    .tab span { display: block; color: var(--muted); font-size: .74rem; margin-top: 1px; }
+    .param-box.tight { padding: 9px 10px; }
+    .param-inline {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) 82px;
+      gap: 10px;
+      align-items: center;
+    }
+    .param-inline input[type="number"], .param-box input[type="number"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 8px 9px;
+      box-shadow: var(--shadow-soft);
+      outline: none;
+    }
+    .advanced-editor {
+      border-top: 1px dashed var(--line);
+      padding-top: 8px;
+    }
+    .advanced-editor summary {
+      list-style: none;
+      cursor: pointer;
+      font-size: .82rem;
+      color: var(--muted);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .advanced-editor summary::-webkit-details-marker { display: none; }
+    .advanced-editor summary::before {
+      content: '▸';
+      font-size: .75rem;
+      transition: transform .16s ease;
+    }
+    .advanced-editor[open] summary::before { transform: rotate(90deg); }
+    .field.compact label { margin-top: 8px; }
+    .btn {
+      border: 1px solid var(--line);
+      background: var(--card-2);
+      border-radius: 14px;
+      padding: 10px 10px;
+      box-shadow: var(--shadow-soft);
+      transition: transform .15s ease, background .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn.primary { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
+    .btn.small { padding: 8px 9px; font-size: .82rem; }
+    .btn.full { width: 100%; }
 
     .control { margin: 10px 0; }
-    .control label { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); font-size: .82rem; margin-bottom: 5px; }
     .control strong { color: var(--text); font-variant-numeric: tabular-nums; }
     input[type="range"] { width: 100%; accent-color: var(--accent); }
+
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .three { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
 
     .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .check {
@@ -216,33 +349,22 @@
       background: var(--card-2);
       color: var(--muted);
       font-size: .82rem;
-      cursor: pointer;
       user-select: none;
+      cursor: pointer;
     }
     .check input { accent-color: var(--accent); }
-
-    .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
-    .btn {
-      border: 1px solid var(--line);
-      background: var(--card-2);
-      border-radius: 14px;
-      padding: 10px 11px;
-      cursor: pointer;
-      box-shadow: var(--shadow-soft);
-    }
-    .btn.primary { background: var(--accent-soft); border-color: var(--accent-line); }
 
     .diagram-card {
       padding: 14px;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 278px;
+      grid-template-columns: minmax(0,1fr) 318px;
       gap: 14px;
-      min-height: 620px;
+      min-height: 660px;
     }
 
     .canvas {
       position: relative;
-      min-height: 592px;
+      min-height: 632px;
       border-radius: 20px;
       border: 1px solid var(--line);
       overflow: hidden;
@@ -252,6 +374,15 @@
         var(--card-2);
       background-size: 32px 32px;
     }
+    [data-theme="dark"] .canvas {
+      background:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+        radial-gradient(circle at 34% 20%, rgba(120,212,197,.050), transparent 34rem),
+        radial-gradient(circle at 80% 74%, rgba(211,173,103,.035), transparent 26rem),
+        #0f161b;
+    }
+
     svg { width: 100%; height: 100%; display: block; }
 
     .legend {
@@ -269,10 +400,10 @@
       align-items: center;
       gap: 7px;
       border: 1px solid var(--line);
-      background: var(--panel-blur);
+      background: var(--panel);
       border-radius: 999px;
       padding: 6px 9px;
-      font-size: .78rem;
+      font-size: .76rem;
       color: var(--muted);
       backdrop-filter: blur(12px);
     }
@@ -284,63 +415,31 @@
 
     .readout { display: grid; gap: 10px; align-content: start; }
     .card { box-shadow: var(--shadow-soft); padding: 12px; border-radius: 18px; }
-    .equation {
+    .formula {
       border: 1px solid var(--line);
       background: var(--card-2);
       border-radius: var(--radius-sm);
       padding: 10px;
       font-family: Georgia, "Times New Roman", serif;
-      font-size: 1rem;
+      font-size: .94rem;
       overflow-x: auto;
       color: var(--text);
     }
-    .equation + .equation { margin-top: 8px; }
-    .eq-small { font-size: .92rem; }
+    .formula code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: .86em; }
 
-    .equation.math {
-      min-height: 40px;
+    .metric {
       display: flex;
-      align-items: center;
-      justify-content: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      padding: 6px 0;
+      font-size: .84rem;
     }
-    .equation.math.center { justify-content: center; }
-    .equation .katex { color: var(--text); font-size: 1.05em; }
-    .equation.eq-small .katex { font-size: .98em; }
-    .katex-display { margin: .15em 0; overflow-x: auto; overflow-y: hidden; }
-    [data-theme="dark"] .equation {
-      background: linear-gradient(180deg, rgba(255,255,255,.032), rgba(255,255,255,.012)), var(--card-2);
-      border-color: rgba(238,246,242,.10);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
-    }
-    [data-theme="dark"] .sidebar,
-    [data-theme="dark"] .topbar,
-    [data-theme="dark"] .diagram-card,
-    [data-theme="dark"] .panel,
-    [data-theme="dark"] .card {
-      background: linear-gradient(180deg, rgba(255,255,255,.030), rgba(255,255,255,.010)), var(--panel-blur);
-    }
-    [data-theme="dark"] .canvas {
-      background:
-        linear-gradient(var(--grid) 1px, transparent 1px),
-        linear-gradient(90deg, var(--grid) 1px, transparent 1px),
-        radial-gradient(circle at 34% 20%, rgba(120,212,197,.050), transparent 34rem),
-        radial-gradient(circle at 80% 74%, rgba(211,173,103,.035), transparent 26rem),
-        #0f161b;
-    }
-    [data-theme="dark"] .tab.active,
-    [data-theme="dark"] .btn.primary {
-      box-shadow: 0 0 0 1px rgba(120,211,196,.08), 0 10px 26px rgba(0,0,0,.17);
-    }
-    .frac { display: inline-block; vertical-align: middle; text-align: center; line-height: 1.05; }
-    .frac > span { display: block; padding: 0 .12em; }
-    .frac .bottom { border-top: 1px solid currentColor; margin-top: 2px; }
-
-    .metric { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--line); padding: 6px 0; font-size: .84rem; }
     .metric:last-child { border-bottom: 0; }
     .metric span:first-child { color: var(--muted); }
     .metric span:last-child { font-weight: 750; text-align: right; font-variant-numeric: tabular-nums; }
 
-    .bottom { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 16px; }
+    .bottom { display: grid; grid-template-columns: 1.2fr .9fr .9fr; gap: 16px; }
     .panel { padding: 15px; }
     ul { margin: 0; padding-left: 18px; color: var(--muted); }
     li { margin: 7px 0; }
@@ -348,89 +447,244 @@
     .status-warn { color: var(--gold) !important; }
     .status-bad { color: var(--red) !important; }
 
+    .notice-box {
+      border: 1px solid var(--line);
+      background: var(--card-2);
+      border-radius: 16px;
+      padding: 10px;
+      color: var(--muted);
+      font-size: .83rem;
+    }
+    .notice-box strong { color: var(--text); }
+    .warning-list { display: grid; gap: 7px; }
+    .warn-item { border-left: 3px solid var(--gold); padding-left: 9px; }
+    .err-item { border-left: 3px solid var(--red); padding-left: 9px; }
+    .ok-item { border-left: 3px solid var(--accent); padding-left: 9px; }
+
     .svg-label { fill: var(--muted); font-size: 13px; user-select: none; }
     .svg-title { fill: var(--text); font-size: 15px; font-weight: 750; user-select: none; }
     .svg-small { fill: var(--muted); font-size: 12px; user-select: none; }
     .box-border { stroke: var(--text); stroke-width: 2; fill: none; }
     .thin { stroke: var(--line); stroke-width: 1; }
-    .curveA { stroke: var(--accent); stroke-width: 2.4; fill: none; }
-    .curveB { stroke: var(--gold); stroke-width: 2.4; fill: none; }
+    .curveA { stroke: var(--accent); stroke-width: 2.3; fill: none; }
+    .curveB { stroke: var(--gold); stroke-width: 2.3; fill: none; }
     .curveEndowment { stroke-dasharray: 5 7; opacity: .78; }
-    .contract { stroke: var(--red); stroke-width: 3; fill: none; }
-    .core { stroke: var(--text); stroke-width: 6; fill: none; stroke-linecap: round; opacity: .68; }
+    .contract { stroke: var(--red); stroke-width: 2.3; fill: none; stroke-linecap: round; opacity: .88; }
+    .coreline { stroke: var(--text); stroke-width: 5.8; fill: none; stroke-linecap: round; opacity: .68; }
     .budget { stroke: var(--text); stroke-width: 2.2; stroke-dasharray: 8 7; }
     .tangentA { stroke: var(--accent); stroke-width: 1.8; stroke-dasharray: 4 5; }
     .tangentB { stroke: var(--gold); stroke-width: 1.8; stroke-dasharray: 4 5; }
     .demand-line { stroke: var(--blue); stroke-width: 1.35; stroke-dasharray: 3 5; opacity: .72; }
-    .lens-cell { fill: var(--accent); opacity: .095; }
-    .point { stroke: var(--card); stroke-width: 3; cursor: grab; }
+    .lens-cell { fill: var(--accent); opacity: .088; }
+    .invalid-cell { fill: var(--red); opacity: .065; }
+    .point { stroke: var(--card-2); stroke-width: 3; cursor: grab; }
     .point:active { cursor: grabbing; }
 
-    @media (max-width: 1180px) {
+    .kbd {
+      display: inline-block;
+      padding: 2px 5px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--card-2);
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: .82em;
+      color: var(--text);
+    }
+
+    @media (max-width: 1260px) {
       .app { grid-template-columns: 1fr; }
       .sidebar { position: static; max-height: none; }
-      .tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sidebar .editor-grid { grid-template-columns: 1fr 1fr; }
       .diagram-card { grid-template-columns: 1fr; }
-      .readout { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .readout { grid-template-columns: repeat(2,minmax(0,1fr)); }
       .bottom { grid-template-columns: 1fr; }
+      .surface-grid { grid-template-columns: 1fr; }
     }
-    @media (max-width: 720px) {
+    @media (max-width: 820px) {
       .app { padding: 10px; }
       .topbar { flex-direction: column; }
-      .tabs, .readout, .check-grid, .btn-row { grid-template-columns: 1fr; }
-      .canvas { min-height: 430px; }
+      .tabs, .sidebar .editor-grid, .readout, .check-grid, .template-grid, .two, .three { grid-template-columns: 1fr; }
+      .canvas { min-height: 470px; }
     }
   </style>
 </head>
 <body>
   <div class="app" id="app" data-theme="light">
     <aside class="sidebar">
-      <div class="kicker">Pure exchange</div>
-      <h2>Edgeworth Box</h2>
-      <p class="muted">One diagram: two agents, two goods, CES preferences, endowment trade, efficiency, core, and Walrasian prices.</p>
+      <div class="kicker">Laboratório de troca pura</div>
+      <h2>Preferências livres</h2>
+      <p class="muted">Escreva as utilidades, ajuste os parâmetros e arraste a dotação ou a alocação. A caixa recalcula indiferenças, lente, contrato, núcleo e preços.</p>
+      <h3>Preferências por agente</h3>
+      <div class="agent-grid">
+        <div class="agent-card" id="agentCardA">
+          <div class="agent-head">
+            <div>
+              <div class="agent-title">Agente A</div>
+              <div class="agent-subtitle">Escolha um template sem precisar escrever a utilidade.</div>
+            </div>
+            <select id="templateA" class="template-select">
+              <option value="cd">Cobb-Douglas</option>
+              <option value="log">Log</option>
+              <option value="ces">CES</option>
+              <option value="leontief">Leontief</option>
+              <option value="linear">Substitutos</option>
+              <option value="quasi">Quase-linear</option>
+              <option value="custom">Personalizada</option>
+            </select>
+          </div>
 
-      <div class="tabs">
-        <button class="tab active" data-module="feasible"><b>1. Box</b><span>feasible allocations</span></button>
-        <button class="tab" data-module="gains"><b>2. Lens</b><span>mutual gains from ω</span></button>
-        <button class="tab" data-module="efficiency"><b>3. Core</b><span>efficiency and tangency</span></button>
-        <button class="tab" data-module="prices"><b>4. Prices</b><span>budget and clearing</span></button>
+          <div class="param-box">
+            <label>Parâmetro α de A <span><strong id="vAlphaA">0.50</strong></span></label>
+            <div class="param-inline">
+              <input id="alphaSlider" type="range" min="0.02" max="0.98" step="0.01" value="0.50">
+              <input id="alphaInput" type="number" min="0.02" max="0.98" step="0.01" value="0.50">
+            </div>
+          </div>
+
+          <div class="param-box" id="rhoWrapA" hidden>
+            <label>Curvatura ρ de A <span><strong id="vRhoABox">-0.40</strong></span></label>
+            <div class="param-inline">
+              <input id="rhoASlider" type="range" min="-1.50" max="0.85" step="0.01" value="-0.40">
+              <input id="rhoAInput" type="number" min="-1.50" max="0.85" step="0.01" value="-0.40">
+            </div>
+          </div>
+
+          <div class="two" id="leontiefWrapA" hidden>
+            <div class="param-box tight">
+              <label>aA <span><strong id="vaA">1.00</strong></span></label>
+              <input id="aAInput" type="number" min="0.10" max="5.00" step="0.10" value="1.00">
+            </div>
+            <div class="param-box tight">
+              <label>bA <span><strong id="vbA">1.50</strong></span></label>
+              <input id="bAInput" type="number" min="0.10" max="5.00" step="0.10" value="1.50">
+            </div>
+          </div>
+
+          <details class="advanced-editor">
+            <summary>Editor avançado de A</summary>
+            <div class="field compact">
+              <label>Agente A usa <span><span class="kbd">x1</span>, <span class="kbd">x2</span></span></label>
+              <textarea id="exprA" spellcheck="false">x1^alpha * x2^(1-alpha)</textarea>
+            </div>
+          </details>
+        </div>
+
+        <div class="agent-card" id="agentCardB">
+          <div class="agent-head">
+            <div>
+              <div class="agent-title">Agente B</div>
+              <div class="agent-subtitle">Escolha o template de B de forma independente.</div>
+            </div>
+            <select id="templateB" class="template-select">
+              <option value="cd">Cobb-Douglas</option>
+              <option value="log">Log</option>
+              <option value="ces">CES</option>
+              <option value="leontief">Leontief</option>
+              <option value="linear">Substitutos</option>
+              <option value="quasi">Quase-linear</option>
+              <option value="custom">Personalizada</option>
+            </select>
+          </div>
+
+          <div class="param-box">
+            <label>Parâmetro β de B <span><strong id="vBetaB">0.50</strong></span></label>
+            <div class="param-inline">
+              <input id="betaSlider" type="range" min="0.02" max="0.98" step="0.01" value="0.50">
+              <input id="betaInput" type="number" min="0.02" max="0.98" step="0.01" value="0.50">
+            </div>
+          </div>
+
+          <div class="param-box" id="rhoWrapB" hidden>
+            <label>Curvatura ρ de B <span><strong id="vRhoBBox">-0.20</strong></span></label>
+            <div class="param-inline">
+              <input id="rhoBSlider" type="range" min="-1.50" max="0.85" step="0.01" value="-0.20">
+              <input id="rhoBInput" type="number" min="-1.50" max="0.85" step="0.01" value="-0.20">
+            </div>
+          </div>
+
+          <div class="two" id="leontiefWrapB" hidden>
+            <div class="param-box tight">
+              <label>aB <span><strong id="vaB">1.40</strong></span></label>
+              <input id="aBInput" type="number" min="0.10" max="5.00" step="0.10" value="1.40">
+            </div>
+            <div class="param-box tight">
+              <label>bB <span><strong id="vbB">1.00</strong></span></label>
+              <input id="bBInput" type="number" min="0.10" max="5.00" step="0.10" value="1.00">
+            </div>
+          </div>
+
+          <details class="advanced-editor">
+            <summary>Editor avançado de B</summary>
+            <div class="field compact">
+              <label>Agente B usa <span><span class="kbd">y1</span>, <span class="kbd">y2</span></span></label>
+              <textarea id="exprB" spellcheck="false">y1^beta * y2^(1-beta)</textarea>
+            </div>
+          </details>
+        </div>
       </div>
 
-      <h3>Aggregate endowment e = (X̄,Ȳ)</h3>
-      <div class="control"><label>Total good 1 <span><strong id="vXbar">10</strong> = X̄</span></label><input id="Xbar" type="range" min="4" max="20" step="1" value="10"></div>
-      <div class="control"><label>Total good 2 <span><strong id="vYbar">10</strong> = Ȳ</span></label><input id="Ybar" type="range" min="4" max="20" step="1" value="10"></div>
+      <div class="editor-grid" style="margin-top:10px;">
+        <div class="field">
+          <label>Parâmetros avançados opcionais <span>um por linha</span></label>
+          <textarea id="params" class="params" spellcheck="false">alpha = 0.50
+beta = 0.50
+rhoA = -0.40
+rhoB = -0.20
+aA = 1.00
+bA = 1.50
+aB = 1.40
+bB = 1.00</textarea>
+        </div>
+        <div class="field">
+          <label>Escala numérica <span>resolução</span></label>
+          <select id="quality">
+            <option value="fast">rápida</option>
+            <option value="balanced" selected>equilibrada</option>
+            <option value="high">alta</option>
+          </select>
+          <div style="height:8px"></div>
+          <button class="btn primary full" id="apply">Aplicar preferências</button>
+          <div style="height:8px"></div>
+          <div class="notice-box">
+            Você pode usar os seletores de template acima sem escrever nada. O editor avançado continua disponível para funções personalizadas. Use <span class="kbd">sqrt</span>, <span class="kbd">log</span>, <span class="kbd">exp</span>, <span class="kbd">min</span>, <span class="kbd">max</span>, <span class="kbd">pow</span> e <span class="kbd">^</span>.
+          </div>
+        </div>
+      </div>
 
-      <h3>Initial endowment ωᴬ</h3>
-      <div class="control"><label>A's good 1 <span><strong id="vw1">4.00</strong> = ω₁ᴬ</span></label><input id="w1" type="range" min="0.2" max="9.8" step="0.1" value="4"></div>
-      <div class="control"><label>A's good 2 <span><strong id="vw2">6.00</strong> = ω₂ᴬ</span></label><input id="w2" type="range" min="0.2" max="9.8" step="0.1" value="6"></div>
+      <h3>Dotação agregada e inicial</h3>
+      <div class="two">
+        <div class="control"><label>Total bem 1 <span><strong id="vXbar">10</strong></span></label><input id="Xbar" type="range" min="4" max="20" step="1" value="10"></div>
+        <div class="control"><label>Total bem 2 <span><strong id="vYbar">10</strong></span></label><input id="Ybar" type="range" min="4" max="20" step="1" value="10"></div>
+      </div>
+      <div class="two">
+        <div class="control"><label>ω₁ᴬ <span><strong id="vw1">4.00</strong></span></label><input id="w1" type="range" min="0.1" max="9.9" step="0.1" value="4"></div>
+        <div class="control"><label>ω₂ᴬ <span><strong id="vw2">6.00</strong></span></label><input id="w2" type="range" min="0.1" max="9.9" step="0.1" value="6"></div>
+      </div>
 
-      <h3>CES preferences</h3>
-      <div class="control"><label>A share parameter <span><strong id="va">0.50</strong> = αᴬ</span></label><input id="alpha" type="range" min="0.10" max="0.90" step="0.01" value="0.50"></div>
-      <div class="control"><label>A substitution curvature <span><strong id="vrhoA">0.00</strong> = ρᴬ</span></label><input id="rhoA" type="range" min="-1.50" max="0.85" step="0.01" value="0.00"></div>
-      <div class="control"><label>B share parameter <span><strong id="vb">0.50</strong> = αᴮ</span></label><input id="beta" type="range" min="0.10" max="0.90" step="0.01" value="0.50"></div>
-      <div class="control"><label>B substitution curvature <span><strong id="vrhoB">0.00</strong> = ρᴮ</span></label><input id="rhoB" type="range" min="-1.50" max="0.85" step="0.01" value="0.00"></div>
+      <h3>Alocação exibida e preço</h3>
+      <div class="two">
+        <div class="control"><label>x₁ᴬ <span><strong id="vx1">5.00</strong></span></label><input id="x1" type="range" min="0.1" max="9.9" step="0.1" value="5"></div>
+        <div class="control"><label>x₂ᴬ <span><strong id="vx2">5.00</strong></span></label><input id="x2" type="range" min="0.1" max="9.9" step="0.1" value="5"></div>
+      </div>
+      <div class="control"><label>Preço relativo p₁/p₂ <span><strong id="vp">1.00</strong></span></label><input id="price" type="range" min="0.05" max="25" step="0.01" value="1"></div>
 
-      <h3>Displayed allocation xᴬ</h3>
-      <div class="control"><label>A's good 1 <span><strong id="vx1">5.00</strong> = x₁ᴬ</span></label><input id="x1" type="range" min="0.2" max="9.8" step="0.1" value="5"></div>
-      <div class="control"><label>A's good 2 <span><strong id="vx2">5.00</strong> = x₂ᴬ</span></label><input id="x2" type="range" min="0.2" max="9.8" step="0.1" value="5"></div>
-
-      <h3>Price line p₂ = 1</h3>
-      <div class="control"><label>Relative price <span><strong id="vp">1.00</strong> = p₁/p₂</span></label><input id="price" type="range" min="0.05" max="25.00" step="0.01" value="1.00"></div>
-
-      <h3>Geometry</h3>
+      <h3>Camadas geométricas</h3>
       <div class="check-grid">
-        <label class="check"><input id="showLens" type="checkbox" checked> gains lens</label>
-        <label class="check"><input id="showContract" type="checkbox" checked> contract</label>
-        <label class="check"><input id="showCore" type="checkbox" checked> core</label>
-        <label class="check"><input id="showBudget" type="checkbox" checked> budget</label>
-        <label class="check"><input id="showDemands" type="checkbox" checked> optima</label>
-        <label class="check"><input id="showTangents" type="checkbox" checked> tangents</label>
+        <label class="check"><input id="showLens" type="checkbox" checked> lente</label>
+        <label class="check"><input id="showContract" type="checkbox" checked> contrato</label>
+        <label class="check"><input id="showCore" type="checkbox" checked> núcleo</label>
+        <label class="check"><input id="showBudget" type="checkbox" checked> orçamento</label>
+        <label class="check"><input id="showDemands" type="checkbox" checked> demandas</label>
+        <label class="check"><input id="showTangents" type="checkbox" checked> tangentes</label>
+        <label class="check"><input id="showEndowmentCurves" type="checkbox" checked> curvas em ω</label>
+        <label class="check"><input id="showInvalid" type="checkbox"> domínio inválido</label>
       </div>
 
-      <div class="btn-row">
-        <button class="btn primary" id="moveWalras">Move x to xᵂ</button>
-        <button class="btn" id="setPriceWalras">Set p = pᵂ</button>
-        <button class="btn" id="moveEndowment">Move x to ω</button>
+      <h3>Ações</h3>
+      <div class="two">
+        <button class="btn primary" id="moveWalras">Mover x para xᵂ</button>
+        <button class="btn" id="setPriceWalras">Usar pᵂ</button>
+        <button class="btn" id="moveEndowment">Mover x para ω</button>
         <button class="btn" id="reset">Reset</button>
       </div>
     </aside>
@@ -438,15 +692,21 @@
     <main class="main">
       <header class="topbar">
         <div>
-          <div class="kicker" id="moduleKicker">Pure exchange geometry</div>
-          <h1 id="moduleTitle">Feasible allocations</h1>
-          <p class="subtitle" id="moduleSubtitle"></p>
-          <div class="focus-strip" aria-label="Edgeworth concepts">
-            <span class="focus-chip">feasible set</span>
-            <span class="focus-chip">endowment ω</span>
-            <span class="focus-chip">gains lens</span>
-            <span class="focus-chip">contract curve</span>
-            <span class="focus-chip">Walras point</span>
+          <div class="kicker" id="moduleKicker">Caixa de Edgeworth generativa</div>
+          <h1 id="moduleTitle">A caixa se forma a partir das utilidades</h1>
+          <p class="subtitle" id="moduleSubtitle">O app lê as funções de utilidade, calcula curvas de nível numericamente e aproxima objetos econômicos sem depender de uma forma funcional fixa.</p>
+          <div class="tabs">
+            <button class="tab active" data-module="prefs"><b>1. Preferências</b><span>funções livres</span></button>
+            <button class="tab" data-module="trade"><b>2. Trocas</b><span>lente de ganhos</span></button>
+            <button class="tab" data-module="eff"><b>3. Eficiência</b><span>MRS e contrato</span></button>
+            <button class="tab" data-module="prices"><b>4. Preços</b><span>Walras</span></button>
+          </div>
+          <div class="focus-strip">
+            <span class="focus-chip">uᴬ(x₁,x₂)</span>
+            <span class="focus-chip">uᴮ(y₁,y₂)</span>
+            <span class="focus-chip">MRS por derivada numérica</span>
+            <span class="focus-chip">contrato por MRSᴬ = MRSᴮ</span>
+            <span class="focus-chip">demanda por maximização numérica</span>
           </div>
         </div>
         <button class="theme" id="theme"><span class="moon"></span><span id="themeText">Dark mode</span></button>
@@ -454,64 +714,85 @@
 
       <section class="diagram-card">
         <div class="canvas">
-          <svg id="svg" viewBox="0 0 880 640" preserveAspectRatio="xMidYMid meet" aria-label="Interactive Edgeworth box"></svg>
+          <svg id="svg" viewBox="0 0 900 660" preserveAspectRatio="xMidYMid meet" aria-label="Caixa de Edgeworth interativa com preferências livres"></svg>
           <div class="legend">
-            <span class="pill"><span class="dot"></span>A indifference</span>
-            <span class="pill"><span class="dot gold"></span>B indifference</span>
-            <span class="pill"><span class="dot red"></span>ω and contract curve</span>
-            <span class="pill"><span class="dot blue"></span>individual optima</span>
-            <span class="pill"><span class="dot black"></span>current x</span>
+            <span class="pill"><span class="dot"></span>indiferença A</span>
+            <span class="pill"><span class="dot gold"></span>indiferença B</span>
+            <span class="pill"><span class="dot red"></span>ω e contrato</span>
+            <span class="pill"><span class="dot blue"></span>demandas</span>
+            <span class="pill"><span class="dot black"></span>x atual</span>
           </div>
         </div>
 
         <div class="readout">
           <div class="card">
-            <h2>Utilities</h2>
-            <div class="equation math" id="eqUtilA"></div>
-            <div class="equation math" id="eqUtilB"></div>
-            <div class="equation math eq-small" id="eqCesLimit"></div>
+            <h2>Funções ativas</h2>
+            <div class="formula"><strong>A:</strong> <code id="activeA"></code></div>
+            <div style="height:8px"></div>
+            <div class="formula"><strong>B:</strong> <code id="activeB"></code></div>
           </div>
 
           <div class="card">
-            <h2>Optimal demand at p</h2>
-            <div class="equation math eq-small" id="eqDemandA"></div>
-            <div class="equation math eq-small" id="eqDemandB"></div>
-            <div class="equation math eq-small" id="eqWalrasFormula"></div>
-          </div>
-
-          <div class="card">
-            <h2>Current allocation</h2>
+            <h2>Alocação atual</h2>
             <div class="metric"><span>xᴬ</span><span id="rXA"></span></div>
             <div class="metric"><span>xᴮ = e − xᴬ</span><span id="rXB"></span></div>
             <div class="metric"><span>uᴬ(xᴬ)</span><span id="rUA"></span></div>
             <div class="metric"><span>uᴮ(xᴮ)</span><span id="rUB"></span></div>
+            <div class="metric"><span>IR em relação a ω</span><span id="rIR"></span></div>
           </div>
 
           <div class="card">
-            <h2>Efficiency and prices</h2>
+            <h2>Eficiência local</h2>
             <div class="metric"><span>MRSᴬ</span><span id="rMRSA"></span></div>
             <div class="metric"><span>MRSᴮ</span><span id="rMRSB"></span></div>
-            <div class="metric"><span>σᴬ, σᴮ</span><span id="rSigma"></span></div>
-            <div class="metric"><span>pᵂ</span><span id="rPW"></span></div>
-            <div class="metric"><span>z₁(p), z₂(p)</span><span id="rZ"></span></div>
+            <div class="metric"><span>|log MRSᴬ/MRSᴮ|</span><span id="rGap"></span></div>
             <div class="metric"><span>Status</span><span id="rStatus"></span></div>
+          </div>
+
+          <div class="card">
+            <h2>Preços</h2>
+            <div class="metric"><span>p atual</span><span id="rP"></span></div>
+            <div class="metric"><span>xᴬ*(p)</span><span id="rDA"></span></div>
+            <div class="metric"><span>e − xᴮ*(p)</span><span id="rDB"></span></div>
+            <div class="metric"><span>z₁(p), z₂(p)</span><span id="rZ"></span></div>
+            <div class="metric"><span>pᵂ aproximado</span><span id="rPW"></span></div>
+          </div>
+
+          <div class="card">
+            <h2>Diagnóstico</h2>
+            <div class="warning-list" id="diagnostics"></div>
           </div>
         </div>
       </section>
 
       <section class="bottom">
         <div class="panel">
-          <h2>Interpretation</h2>
+          <h2>Interpretação</h2>
           <p class="muted" id="interpretation"></p>
         </div>
         <div class="panel">
-          <h2>What to notice</h2>
+          <h2>Como ler</h2>
           <ul id="notice"></ul>
         </div>
         <div class="panel">
-          <h2>Exam-style summary</h2>
-          <div class="equation" id="summaryEq"></div>
+          <h2>Resumo formal</h2>
+          <div class="formula" id="summaryEq"></div>
           <p class="muted" id="summaryText" style="margin-top:10px;"></p>
+        </div>
+      </section>
+
+      <section class="surface-section">
+        <div class="panel surface-intro">
+          <div class="kicker">Representação tridimensional</div>
+          <h2>Superfícies de utilidade e curvas de nível</h2>
+          <p class="muted">Abaixo da caixa de Edgeworth, o app mostra as duas superfícies de utilidade no mesmo gráfico 3D. A superfície de B é espelhada nas coordenadas da caixa, de modo que ela cresce na direção da origem de B, em sentido oposto à superfície de A. As curvas de nível são projetadas na base para conectar a geometria bidimensional à representação tridimensional.</p>
+        </div>
+        <div class="surface-grid">
+          <div class="panel surface-card">
+            <h2>Superfícies conjuntas de A e B no mesmo gráfico</h2>
+            <div id="plot3dCombined" class="plot3d" aria-label="Superfícies 3D conjuntas das utilidades dos agentes A e B"></div>
+            <p class="surface-note">A superfície de A usa as coordenadas usuais da caixa. A superfície de B é desenhada nas mesmas coordenadas da caixa, mas com espelhamento: z = u<sup>B</sup>(X̄ − x<sub>1</sub><sup>A</sup>, Ȳ − x<sub>2</sub><sup>A</sup>). Assim, cada superfície cresce em direção à origem do respectivo agente.</p>
+          </div>
         </div>
       </section>
     </main>
@@ -519,283 +800,398 @@
 
   <script>
     const $ = id => document.getElementById(id);
+    const EPS = 1e-7;
+    const FN_NAMES = ['sqrt','log','ln','exp','abs','min','max','pow','sin','cos','tan','asin','acos','atan','floor','ceil','round'];
+    const CONST_NAMES = ['pi','e'];
+    const RESERVED = new Set([...FN_NAMES, ...CONST_NAMES, 'x1','x2','y1','y2']);
+    const FN_VALUES = {
+      sqrt: Math.sqrt, log: Math.log, ln: Math.log, exp: Math.exp, abs: Math.abs,
+      min: Math.min, max: Math.max, pow: Math.pow, sin: Math.sin, cos: Math.cos, tan: Math.tan,
+      asin: Math.asin, acos: Math.acos, atan: Math.atan, floor: Math.floor, ceil: Math.ceil, round: Math.round,
+      pi: Math.PI, e: Math.E
+    };
+
     const state = {
-      module: 'feasible',
-      Xbar: 10, Ybar: 10,
-      w1: 4, w2: 6,
-      alpha: .5, beta: .5,
-      rhoA: 0, rhoB: 0,
-      x1: 5, x2: 5,
-      price: 1,
-      showLens: true,
-      showContract: true,
-      showCore: true,
-      showBudget: true,
-      showDemands: true,
-      showTangents: true,
-      dark: false
+      module: 'prefs', dark: false,
+      Xbar: 10, Ybar: 10, w1: 4, w2: 6, x1: 5, x2: 5, price: 1,
+      templateA: 'cd', templateB: 'cd',
+      exprA: 'x1^alpha * x2^(1-alpha)',
+      exprB: 'y1^beta * y2^(1-beta)',
+      paramsText: `alpha = 0.50
+beta = 0.50
+rhoA = -0.40
+rhoB = -0.20
+aA = 1.00
+bA = 1.50
+aB = 1.40
+bB = 1.00`,
+      params: { alpha: .5, beta: .5, rhoA: -.4, rhoB: -.2, aA: 1, bA: 1.5, aB: 1.4, bB: 1 },
+      compiledA: null, compiledB: null, compileErrors: [], diagnostics: [],
+      quality: 'balanced',
+      showLens: true, showContract: true, showCore: true, showBudget: true, showDemands: true,
+      showTangents: true, showEndowmentCurves: true, showInvalid: false
     };
 
     const modules = {
-      feasible: {
-        kicker: 'Pure exchange geometry',
-        title: 'Feasible allocations',
-        subtitle: 'The Edgeworth box is the feasible set of all divisions of two goods. A reads from the lower-left origin; B reads from the upper-right origin.',
-        interpretation: 'A movement east gives A more good 1 and B less good 1. A movement north gives A more good 2 and B less good 2. The same point is therefore two bundles at once.',
-        notice: ['The rectangle is not a graph of utility; it is the resource constraint.', 'Feasibility means xᴬ + xᴮ = e.', 'A point inside the box exhausts the aggregate endowment.'],
-        eq: String.raw`F=\{x^A\in\mathbb{R}^2_+ : 0\le x_1^A\le \bar X,\;0\le x_2^A\le \bar Y\},\qquad x^B=e-x^A`,
-        summary: 'In pure exchange, the only technological restriction is that aggregate consumption cannot exceed aggregate endowments.'
+      prefs: {
+        kicker: 'Caixa de Edgeworth generativa',
+        title: 'A caixa se forma a partir das utilidades',
+        subtitle: 'O usuário escreve uᴬ e uᴮ. O app amostra a caixa, calcula utilidades e desenha curvas de nível sem supor Cobb-Douglas ou CES.',
+        interpretation: 'A caixa não é um gráfico de uma função: é o conjunto factível. As curvas aparecem porque, em cada ponto da caixa, calculamos o par de cestas recebido por A e B.',
+        notice: ['A lê a partir da origem inferior esquerda.', 'B lê a partir da origem superior direita.', 'A expressão de B é avaliada nos próprios bens de B: y₁ = X̄ − x₁ᴬ e y₂ = Ȳ − x₂ᴬ.'],
+        eq: 'Factibilidade: xᴬ + xᴮ = e.  Escreva uᴬ(x₁,x₂) e uᴮ(y₁,y₂); o app desenha os conjuntos de nível.',
+        summary: 'A geometria da troca pura nasce da factibilidade e das preferências, não de uma forma funcional específica.'
       },
-      gains: {
-        kicker: 'Mutual gains from trade',
-        title: 'The lens from endowment ω',
-        subtitle: 'The gains-from-trade lens is the intersection of A’s and B’s weakly preferred sets relative to the initial endowment.',
-        interpretation: 'The shaded lens contains allocations that both agents weakly prefer to the initial endowment. When the lens is large, there are many mutually beneficial trades. When it collapses onto the contract curve, the endowment is already efficient.',
-        notice: ['The endowment ω is the no-trade reference point.', 'Voluntary exchange must stay above both agents’ initial utility levels.', 'The lens is generally bounded by two indifference curves through ω.'],
-        eq: String.raw`G(\omega)=\{x\in F: u^A(x^A)\ge u^A(\omega^A),\;u^B(x^B)\ge u^B(\omega^B)\}`,
-        summary: 'A Pareto improvement from ω makes at least one consumer better off and no consumer worse off.'
+      trade: {
+        kicker: 'Trocas voluntárias',
+        title: 'A lente de ganhos a partir da dotação ω',
+        subtitle: 'A região sombreada contém alocações que ambos preferem fracamente à dotação inicial.',
+        interpretation: 'A lente é a interseção dos conjuntos fracamente preferidos de A e B em relação à dotação. Se ela é grande, há muitos ganhos de troca; se colapsa, a dotação já está próxima da eficiência.',
+        notice: ['ω é o ponto de não troca.', 'Troca voluntária exige uᴬ(xᴬ) ≥ uᴬ(ωᴬ) e uᴮ(xᴮ) ≥ uᴮ(ωᴮ).', 'A lente pode ter formato estranho se as preferências não forem convexas ou monotônicas.'],
+        eq: 'G(ω) = {x ∈ F : uᴬ(xᴬ) ≥ uᴬ(ωᴬ) e uᴮ(e−xᴬ) ≥ uᴮ(e−ωᴬ)}.',
+        summary: 'A lente é uma região de melhorias paretianas fracas a partir da dotação inicial.'
       },
-      efficiency: {
-        kicker: 'Efficiency, contract curve, core',
-        title: 'Tangency and the contract curve',
-        subtitle: 'An interior allocation is Pareto efficient when the two indifference curves are tangent: the agents have equal marginal rates of substitution.',
-        interpretation: 'If MRSᴬ ≠ MRSᴮ, the indifference curves cross. Around the crossing there is a small lens of trades that raises both utilities. Efficiency removes this local lens.',
-        notice: ['The red curve is the contract curve.', 'The thick dark segment is the core: efficient allocations that both agents weakly prefer to ω.', 'For CES preferences with positive goods and ρ < 1, interior tangency is well-defined and the contract curve is computed from MRS equality.'],
-        eq: String.raw`MRS^A(x^A)=MRS^B(x^B),\qquad MRS^I=\frac{\alpha^I}{1-\alpha^I}\left(\frac{x_1^I}{x_2^I}\right)^{\rho^I-1}`,
-        summary: 'At an interior Pareto optimum, no feasible marginal reallocation can improve one agent without hurting the other. For CES preferences, the elasticity of substitution is σ = 1/(1−ρ).'
+      eff: {
+        kicker: 'Eficiência de Pareto',
+        title: 'Contrato por igualdade de MRS',
+        subtitle: 'Nos pontos interiores regulares, a curva de contrato é aproximada por MRSᴬ(xᴬ) = MRSᴮ(xᴮ).',
+        interpretation: 'Quando as MRS diferem, as curvas de indiferença cruzam e existe uma pequena troca mutuamente benéfica. A igualdade de MRS elimina essa oportunidade marginal.',
+        notice: ['As derivadas são numéricas.', 'O núcleo é a parte da curva de contrato que também satisfaz racionalidade individual.', 'Em preferências não suaves, como Leontief, a tangência deve ser interpretada com cuidado.'],
+        eq: 'MRSᴵ = (∂uᴵ/∂bem 1)/(∂uᴵ/∂bem 2).  No interior: MRSᴬ(xᴬ) = MRSᴮ(e−xᴬ).',
+        summary: 'A condição de tangência é local e regular; o desenho também ajuda a perceber cantos, quebras e não convexidades.'
       },
       prices: {
-        kicker: 'Walrasian equilibrium',
-        title: 'Prices, individual optima, and clearing',
-        subtitle: 'At prices p = (p₁,1), each CES consumer maximizes utility on a budget line through their endowment. Equilibrium requires their individual optima to be mutually feasible.',
-        interpretation: 'The blue points are the two individual optimal choices translated into the box. When they coincide, aggregate excess demand is zero. That common point is the Walrasian allocation.',
-        notice: ['The budget line through ω has slope −p₁/p₂.', 'At pᵂ, both consumers optimize and markets clear.', 'Interior equilibrium satisfies MRSᴬ = MRSᴮ = p₁/p₂.'],
-        eq: String.raw`x^{I*}(p)\in\arg\max_{x^I\ge0}u^I(x^I)\quad\text{s.t.}\quad p\cdot x^I\le p\cdot\omega^I,\qquad x^{A*}(p)+x^{B*}(p)=e`,
-        summary: 'Competitive equilibrium decentralizes a Pareto efficient allocation by converting endowments into purchasing power.'
+        kicker: 'Equilíbrio walrasiano',
+        title: 'Orçamento, demanda individual e clearing',
+        subtitle: 'Para p = (p₁,1), cada agente maximiza utilidade em sua reta orçamentária. O equilíbrio aproxima z₁(p)=0.',
+        interpretation: 'O ponto azul de A é sua escolha ótima ao preço atual. O ponto dourado é a escolha ótima de B traduzida para as coordenadas da caixa. Quando coincidem, os mercados limpam.',
+        notice: ['A reta orçamentária passa por ω.', 'O preço walrasiano é aproximado por busca numérica.', 'Se as preferências não forem convexas, podem existir múltiplas demandas ótimas.'],
+        eq: 'xᴵ*(p) ∈ argmax uᴵ(xᴵ) s.a. p·xᴵ ≤ p·ωᴵ.  Equilíbrio: xᴬ*(p) + xᴮ*(p) = e.',
+        summary: 'Preços descentralizam uma alocação quando escolhas individuais compatíveis com orçamento são conjuntamente factíveis.'
       }
     };
 
-    const sliders = ['Xbar','Ybar','w1','w2','alpha','rhoA','beta','rhoB','x1','x2','price'];
-    const checks = ['showLens','showContract','showCore','showBudget','showDemands','showTangents'];
+    const sliders = ['Xbar','Ybar','w1','w2','x1','x2','price'];
+    const checks = ['showLens','showContract','showCore','showBudget','showDemands','showTangents','showEndowmentCurves','showInvalid'];
 
-    sliders.forEach(id => $(id).addEventListener('input', e => { state[id] = +e.target.value; sanitize(); sync(); render(); }));
-    checks.forEach(id => $(id).addEventListener('change', e => { state[id] = e.target.checked; render(); }));
-
-    document.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click', () => {
-      state.module = btn.dataset.module;
-      document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      if (state.module === 'prices') { state.showBudget = true; state.showDemands = true; }
-      if (state.module === 'efficiency') { state.showContract = true; state.showCore = true; }
-      if (state.module === 'gains') { state.showLens = true; }
-      sync(); render();
-    }));
-
-    function applyTheme() {
-      const mode = state.dark ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', mode);
-      document.body.setAttribute('data-theme', mode);
-      $('app').setAttribute('data-theme', mode);
-      $('themeText').textContent = state.dark ? 'Light mode' : 'Dark mode';
-    }
-
-    $('theme').addEventListener('click', () => {
-      state.dark = !state.dark;
-      applyTheme();
-      render();
-    });
-
-    $('moveWalras').addEventListener('click', () => { const w = walras(); state.x1 = w.xA; state.x2 = w.yA; sync(); render(); });
-    $('setPriceWalras').addEventListener('click', () => { state.price = walras().p; sync(); render(); });
-    $('moveEndowment').addEventListener('click', () => { state.x1 = state.w1; state.x2 = state.w2; sync(); render(); });
-    $('reset').addEventListener('click', () => {
-      Object.assign(state, { Xbar:10,Ybar:10,w1:4,w2:6,alpha:.5,beta:.5,rhoA:0,rhoB:0,x1:5,x2:5,price:1,showLens:true,showContract:true,showCore:true,showBudget:true,showDemands:true,showTangents:true });
-      sync(); render();
-    });
-
-    function sanitize() {
-      const eps = .08;
-      state.Xbar = Math.max(4, state.Xbar);
-      state.Ybar = Math.max(4, state.Ybar);
-      for (const id of ['w1','x1']) state[id] = clamp(state[id], eps, state.Xbar - eps);
-      for (const id of ['w2','x2']) state[id] = clamp(state[id], eps, state.Ybar - eps);
-      state.alpha = clamp(state.alpha, .1, .9);
-      state.beta = clamp(state.beta, .1, .9);
-      state.rhoA = clamp(state.rhoA, -1.5, .85);
-      state.rhoB = clamp(state.rhoB, -1.5, .85);
-      state.price = clamp(state.price, .05, 25);
-      $('w1').max = (state.Xbar - .2).toFixed(1);
-      $('x1').max = (state.Xbar - .2).toFixed(1);
-      $('w2').max = (state.Ybar - .2).toFixed(1);
-      $('x2').max = (state.Ybar - .2).toFixed(1);
-    }
-
-    function sync() {
-      sanitize();
-      sliders.forEach(id => $(id).value = state[id]);
-      checks.forEach(id => $(id).checked = state[id]);
-    }
-
-    function fmt(x, d=2) { return Number.isFinite(x) ? Number(x).toFixed(d) : '—'; }
-    function clamp(x, lo, hi) { return Math.max(lo, Math.min(hi, x)); }
-    function ownBFromA(xA,yA) { return { x: state.Xbar - xA, y: state.Ybar - yA }; }
+    function fmt(x,d=2) { return Number.isFinite(x) ? Number(x).toFixed(d) : '—'; }
+    function clamp(x,lo,hi) { return Math.max(lo, Math.min(hi, x)); }
+    function ownBFromA(x,y) { return { x: state.Xbar - x, y: state.Ybar - y }; }
     function wB() { return { x: state.Xbar - state.w1, y: state.Ybar - state.w2 }; }
 
-    function Uces(x, y, a, rho) {
-      x = Math.max(x, 1e-10); y = Math.max(y, 1e-10);
-      if (Math.abs(rho) < 1e-5) return Math.pow(x, a) * Math.pow(y, 1-a);
-      const s = a*Math.pow(x, rho) + (1-a)*Math.pow(y, rho);
-      return Math.pow(Math.max(s, 1e-14), 1/rho);
-    }
-    function MRSces(x, y, a, rho) {
-      x = Math.max(x, 1e-10); y = Math.max(y, 1e-10);
-      return (a/(1-a)) * Math.pow(x/y, rho-1);
-    }
-    function U(x,y,a,rho=0) { return Uces(x,y,a,rho); }
-    function MRS(x,y,a,rho=0) { return MRSces(x,y,a,rho); }
-    function ratioCES(p, a, rho) {
-      const base = Math.max(p*(1-a)/a, 1e-12);
-      return Math.pow(base, 1/(rho-1));
-    }
-    function demandCES(p, income, a, rho) {
-      p = Math.max(p, 1e-8);
-      const r = ratioCES(p, a, rho);       // r = x_1/x_2 from MRS=p_1/p_2
-      const y = income / (p*r + 1);
-      const x = r*y;
-      return { x, y, m: income, ratio: r };
-    }
-    function demandA(p=state.price) {
-      const m = p*state.w1 + state.w2;
-      return demandCES(p, m, state.alpha, state.rhoA);
-    }
-    function demandB(p=state.price) {
-      const wb = wB();
-      const m = p*wb.x + wb.y;
-      return demandCES(p, m, state.beta, state.rhoB);
-    }
-    function excessDemand(p=state.price) {
-      const a = demandA(p), b = demandB(p);
-      return { z1: a.x + b.x - state.Xbar, z2: a.y + b.y - state.Ybar };
-    }
-    function walras() {
-      let lo = 1e-4, hi = 1e4;
-      let flo = excessDemand(lo).z1, fhi = excessDemand(hi).z1;
-      let pRaw = 1;
-      if (Number.isFinite(flo) && Number.isFinite(fhi) && flo*fhi <= 0) {
-        for (let k=0;k<90;k++) {
-          const mid = Math.sqrt(lo*hi);
-          const fm = excessDemand(mid).z1;
-          if (flo*fm > 0) { lo = mid; flo = fm; } else { hi = mid; fhi = fm; }
-        }
-        pRaw = Math.sqrt(lo*hi);
-      } else {
-        let best = { p: 1, e: Infinity };
-        for (let k=0;k<=600;k++) {
-          const t = -4 + 8*k/600;
-          const p = Math.pow(10,t);
-          const e = Math.abs(excessDemand(p).z1);
-          if (e < best.e) best = { p, e };
-        }
-        pRaw = best.p;
+    function parseParams(text) {
+      const params = {};
+      const errors = [];
+      const chunks = text.split(/[\n;]/).map(s => s.trim()).filter(Boolean);
+      for (const raw of chunks) {
+        const line = raw.replace(/#.*/,'').replace(/\/\/.*/,'').trim();
+        if (!line) continue;
+        const parts = line.split('=');
+        if (parts.length !== 2) { errors.push(`Parâmetro inválido: ${raw}`); continue; }
+        const name = parts[0].trim();
+        const valText = parts[1].trim();
+        if (!/^[A-Za-z_]\w*$/.test(name)) { errors.push(`Nome de parâmetro inválido: ${name}`); continue; }
+        if (RESERVED.has(name)) { errors.push(`Nome reservado não pode ser parâmetro: ${name}`); continue; }
+        const val = Number(valText);
+        if (!Number.isFinite(val)) { errors.push(`Valor numérico inválido para ${name}`); continue; }
+        params[name] = val;
       }
-      const da = demandA(pRaw);
-      return { p: pRaw, pRaw, xA: clamp(da.x, .08, state.Xbar-.08), yA: clamp(da.y, .08, state.Ybar-.08) };
+      return { params, errors };
     }
-    function contractY(x) {
-      const eps = 1e-5;
-      let lo = eps, hi = state.Ybar - eps;
-      const f = y => Math.log(MRS(x,y,state.alpha,state.rhoA)) - Math.log(MRS(state.Xbar-x,state.Ybar-y,state.beta,state.rhoB));
-      let flo = f(lo), fhi = f(hi);
-      if (!Number.isFinite(flo) || !Number.isFinite(fhi) || flo*fhi > 0) return null;
-      for (let k=0;k<70;k++) {
-        const mid = .5*(lo+hi);
-        const fm = f(mid);
-        if (flo*fm <= 0) { hi = mid; fhi = fm; } else { lo = mid; flo = fm; }
-      }
-      return .5*(lo+hi);
+
+    function normalizeExpression(expr) {
+      return expr
+        .replace(/[“”]/g, '"')
+        .replace(/[‘’]/g, "'")
+        .replace(/\bln\s*\(/g, 'ln(')
+        .replace(/\^/g, '**');
+    }
+
+    function compileExpression(expr, params, label) {
+      const original = expr.trim();
+      const js = normalizeExpression(original);
+      const identifiers = js.match(/[A-Za-z_]\w*/g) || [];
+      const paramNames = Object.keys(params);
+      const allowed = new Set(['x1','x2','y1','y2', ...FN_NAMES, ...CONST_NAMES, ...paramNames]);
+      const unknown = [...new Set(identifiers.filter(id => !allowed.has(id)))];
+      if (unknown.length) throw new Error(`${label}: nomes desconhecidos: ${unknown.join(', ')}`);
+      if (/[^A-Za-z0-9_+\-*\/().,\s]/.test(js)) throw new Error(`${label}: a expressão contém símbolos não permitidos.`);
+      const argNames = ['x1','x2','y1','y2', ...paramNames, ...FN_NAMES, ...CONST_NAMES];
+      const fn = new Function(...argNames, `"use strict"; return (${js});`);
+      const argValues = (x1,x2,y1,y2) => [x1,x2,y1,y2, ...paramNames.map(k => params[k]), ...FN_NAMES.map(k => FN_VALUES[k]), ...CONST_NAMES.map(k => FN_VALUES[k])];
+      const evalFn = (x1,x2,y1=x1,y2=x2) => {
+        let val;
+        try { val = fn(...argValues(x1,x2,y1,y2)); } catch { return NaN; }
+        if (typeof val !== 'number' || !Number.isFinite(val)) return NaN;
+        return val;
+      };
+      return { original, js, eval: evalFn };
+    }
+
+    function compileAll() {
+      state.compileErrors = [];
+      const parsed = parseParams($('params').value);
+      const defaults = { alpha:.5, beta:.5, rhoA:-.4, rhoB:-.2, aA:1, bA:1.5, aB:1.4, bB:1 };
+      state.params = { ...defaults, ...parsed.params };
+      state.compileErrors.push(...parsed.errors);
+      state.exprA = $('exprA').value.trim();
+      state.exprB = $('exprB').value.trim();
+      state.templateA = inferTemplate('A', state.exprA);
+      state.templateB = inferTemplate('B', state.exprB);
+      $('templateA').value = state.templateA;
+      $('templateB').value = state.templateB;
+      setControlsFromStateParams();
+      syncParamsTextarea(true);
+      state.paramsText = $('params').value;
+      updateTemplateVisibility();
+      try { state.compiledA = compileExpression(state.exprA, state.params, 'A'); } catch (e) { state.compiledA = null; state.compileErrors.push(e.message); }
+      try { state.compiledB = compileExpression(state.exprB, state.params, 'B'); } catch (e) { state.compiledB = null; state.compileErrors.push(e.message); }
+      render();
+    }
+
+    function UA(x,y) {
+      if (!state.compiledA) return NaN;
+      return state.compiledA.eval(Math.max(x,EPS), Math.max(y,EPS), Math.max(x,EPS), Math.max(y,EPS));
+    }
+    function UB(b1,b2) {
+      if (!state.compiledB) return NaN;
+      b1 = Math.max(b1, EPS); b2 = Math.max(b2, EPS);
+      return state.compiledB.eval(b1, b2, b1, b2);
+    }
+
+    function partials(fn, x, y) {
+      const hx = Math.max(1e-5, 1e-5 * state.Xbar);
+      const hy = Math.max(1e-5, 1e-5 * state.Ybar);
+      const xp = x + hx, xm = Math.max(EPS, x - hx), yp = y + hy, ym = Math.max(EPS, y - hy);
+      const fxp = fn(xp,y), fxm = fn(xm,y), fyp = fn(x,yp), fym = fn(x,ym);
+      const dx = (fxp - fxm) / (xp - xm);
+      const dy = (fyp - fym) / (yp - ym);
+      if (!Number.isFinite(dx) || !Number.isFinite(dy)) return { dx: NaN, dy: NaN };
+      return { dx, dy };
+    }
+    function MRSA(x,y) {
+      const p = partials(UA, Math.max(x,EPS), Math.max(y,EPS));
+      if (!Number.isFinite(p.dx) || !Number.isFinite(p.dy) || Math.abs(p.dy) < 1e-12) return NaN;
+      return p.dx / p.dy;
+    }
+    function MRSB(b1,b2) {
+      const p = partials(UB, Math.max(b1,EPS), Math.max(b2,EPS));
+      if (!Number.isFinite(p.dx) || !Number.isFinite(p.dy) || Math.abs(p.dy) < 1e-12) return NaN;
+      return p.dx / p.dy;
+    }
+    function contractValueAtA(x,y) {
+      const b = ownBFromA(x,y);
+      if (x <= EPS || y <= EPS || b.x <= EPS || b.y <= EPS) return NaN;
+      const a = MRSA(x,y), m = MRSB(b.x,b.y);
+      if (!Number.isFinite(a) || !Number.isFinite(m) || a <= 0 || m <= 0) return NaN;
+      return Math.log(a) - Math.log(m);
     }
     function individuallyRational(x,y) {
       const b = ownBFromA(x,y), wbv = wB();
-      return U(x,y,state.alpha,state.rhoA) >= U(state.w1,state.w2,state.alpha,state.rhoA)-1e-8 && U(b.x,b.y,state.beta,state.rhoB) >= U(wbv.x,wbv.y,state.beta,state.rhoB)-1e-8;
+      const ua = UA(x,y), ub = UB(b.x,b.y), uaw = UA(state.w1,state.w2), ubw = UB(wbv.x,wbv.y);
+      return Number.isFinite(ua) && Number.isFinite(ub) && ua >= uaw - 1e-7 && ub >= ubw - 1e-7;
     }
 
+    function qualityN() {
+      if (state.quality === 'fast') return { contour: 74, lens: 58, demand: 210, diag: 14 };
+      if (state.quality === 'high') return { contour: 126, lens: 92, demand: 420, diag: 22 };
+      return { contour: 98, lens: 74, demand: 310, diag: 18 };
+    }
 
-    function renderKatex(id, tex, displayMode = true) {
-      const el = $(id);
-      if (!el) return;
-      el.textContent = '';
-      if (window.katex) {
-        try {
-          katex.render(tex, el, { displayMode, throwOnError: false, strict: false, trust: true });
-        } catch (err) {
-          el.textContent = 'Equation unavailable';
+    function demandFor(fn, p, income, n = qualityN().demand) {
+      p = Math.max(p, 1e-8);
+      const xmax = Math.max(EPS, income / p);
+      let best = { x: EPS, y: Math.max(EPS,income), u: -Infinity, index: 0 };
+      let second = -Infinity;
+      for (let i=0; i<=n; i++) {
+        const x = xmax * i / n;
+        const y = income - p*x;
+        const xx = Math.max(x, EPS), yy = Math.max(y, EPS);
+        const u = fn(xx, yy);
+        if (Number.isFinite(u)) {
+          if (u > best.u) { second = best.u; best = { x: xx, y: yy, u, index: i }; }
+          else if (u > second) second = u;
         }
-      } else {
-        el.textContent = '';
       }
+      const lo = Math.max(0, xmax * Math.max(0, best.index-2) / n);
+      const hi = Math.min(xmax, xmax * Math.min(n, best.index+2) / n);
+      let a = lo, b = hi;
+      for (let k=0; k<36; k++) {
+        const c = b - (b-a)/1.61803398875;
+        const d = a + (b-a)/1.61803398875;
+        const uc = fn(Math.max(c,EPS), Math.max(income-p*c,EPS));
+        const ud = fn(Math.max(d,EPS), Math.max(income-p*d,EPS));
+        if ((Number.isFinite(uc) ? uc : -Infinity) < (Number.isFinite(ud) ? ud : -Infinity)) a = c; else b = d;
+      }
+      const x = .5*(a+b), y = Math.max(EPS, income-p*x), u = fn(Math.max(x,EPS), y);
+      if (Number.isFinite(u) && u >= best.u) best = { x: Math.max(x,EPS), y, u, index: best.index };
+      best.flat = Number.isFinite(second) && Math.abs(best.u - second) < 1e-5 * (1 + Math.abs(best.u));
+      return best;
     }
 
-    function renderStaticMath() {
-      renderKatex('eqUtilA', String.raw`u^A(x_1^A,x_2^A)=\left[\alpha^A(x_1^A)^{\rho^A}+(1-\alpha^A)(x_2^A)^{\rho^A}\right]^{1/\rho^A}`);
-      renderKatex('eqUtilB', String.raw`u^B(x_1^B,x_2^B)=\left[\alpha^B(x_1^B)^{\rho^B}+(1-\alpha^B)(x_2^B)^{\rho^B}\right]^{1/\rho^B}`);
-      renderKatex('eqCesLimit', String.raw`\rho^I=0\;\Rightarrow\;u^I(x_1,x_2)=x_1^{\alpha^I}x_2^{1-\alpha^I},\qquad \sigma^I=\frac{1}{1-\rho^I}`);
-      renderKatex('eqDemandA', String.raw`\frac{x_1^{A*}}{x_2^{A*}}=\left[\frac{p_1(1-\alpha^A)}{\alpha^A}\right]^{1/(\rho^A-1)},\qquad p_1x_1^{A*}+x_2^{A*}=m^A`);
-      renderKatex('eqDemandB', String.raw`\frac{x_1^{B*}}{x_2^{B*}}=\left[\frac{p_1(1-\alpha^B)}{\alpha^B}\right]^{1/(\rho^B-1)},\qquad p_1x_1^{B*}+x_2^{B*}=m^B`);
-      renderKatex('eqWalrasFormula', String.raw`p^W:\; z_1(p^W)=x_1^{A*}(p^W)+x_1^{B*}(p^W)-\bar X=0`);
+    function demandA(p=state.price) {
+      const m = p*state.w1 + state.w2;
+      return demandFor(UA, p, m);
+    }
+    function demandB(p=state.price) {
+      const wbv = wB();
+      const m = p*wbv.x + wbv.y;
+      return demandFor(UB, p, m);
+    }
+    function excessDemand(p=state.price) {
+      const da = demandA(p), db = demandB(p);
+      return { z1: da.x + db.x - state.Xbar, z2: da.y + db.y - state.Ybar, da, db };
+    }
+    function walras() {
+      if (!state.compiledA || !state.compiledB) return { p: NaN, xA: NaN, yA: NaN, err: Infinity };
+      const samples = [];
+      let best = { p: NaN, err: Infinity, z: null };
+      for (let i=0;i<=120;i++) {
+        const t = -3 + 6*i/120;
+        const p = Math.pow(10,t);
+        const z = excessDemand(p);
+        const err = Math.abs(z.z1);
+        samples.push({ p, z1: z.z1, err });
+        if (Number.isFinite(err) && err < best.err) best = { p, err, z };
+      }
+      for (let i=0;i<samples.length-1;i++) {
+        const a = samples[i], b = samples[i+1];
+        if (!Number.isFinite(a.z1) || !Number.isFinite(b.z1)) continue;
+        if (a.z1 === 0) { best.p = a.p; best.err = 0; break; }
+        if (a.z1 * b.z1 <= 0) {
+          let lo = a.p, hi = b.p, flo = a.z1;
+          for (let k=0;k<48;k++) {
+            const mid = Math.sqrt(lo*hi);
+            const fm = excessDemand(mid).z1;
+            if (!Number.isFinite(fm)) break;
+            if (flo*fm <= 0) { hi = mid; } else { lo = mid; flo = fm; }
+          }
+          const p = Math.sqrt(lo*hi), z = excessDemand(p), err = Math.abs(z.z1);
+          if (err < best.err) best = { p, err, z };
+        }
+      }
+      const da = demandA(best.p);
+      return { p: best.p, xA: da.x, yA: da.y, err: best.err };
+    }
+
+    function updateDiagnostics() {
+      const notes = [];
+      if (state.compileErrors.length) {
+        state.diagnostics = state.compileErrors.map(x => ({ type: 'err', text: x }));
+        return;
+      }
+      const q = qualityN();
+      let invalid = 0, negA = 0, negB = 0, total = 0, badMRS = 0;
+      for (let i=1;i<q.diag;i++) for (let j=1;j<q.diag;j++) {
+        const x = state.Xbar*i/q.diag, y = state.Ybar*j/q.diag, b = ownBFromA(x,y);
+        const ua = UA(x,y), ub = UB(b.x,b.y);
+        total++;
+        if (!Number.isFinite(ua) || !Number.isFinite(ub)) { invalid++; continue; }
+        const pa = partials(UA,x,y), pb = partials(UB,b.x,b.y);
+        if (Number.isFinite(pa.dx) && pa.dx < -1e-5) negA++;
+        if (Number.isFinite(pa.dy) && pa.dy < -1e-5) negA++;
+        if (Number.isFinite(pb.dx) && pb.dx < -1e-5) negB++;
+        if (Number.isFinite(pb.dy) && pb.dy < -1e-5) negB++;
+        const m1 = MRSA(x,y), m2 = MRSB(b.x,b.y);
+        if (!Number.isFinite(m1) || !Number.isFinite(m2) || m1 <= 0 || m2 <= 0) badMRS++;
+      }
+      if (invalid/Math.max(1,total) > .08) notes.push({ type: 'warn', text: 'Parte relevante da caixa está fora do domínio da utilidade.' });
+      if (negA > 0) notes.push({ type: 'warn', text: 'A utilidade de A não parece monotônica em toda a caixa.' });
+      if (negB > 0) notes.push({ type: 'warn', text: 'A utilidade de B não parece monotônica em toda a caixa.' });
+      if (badMRS/Math.max(1,total) > .18) notes.push({ type: 'warn', text: 'A MRS não está bem definida em muitos pontos; contrato/tangência podem falhar.' });
+      const ed = excessDemand();
+      if (ed.da.flat || ed.db.flat) notes.push({ type: 'warn', text: 'Pode haver múltiplos ótimos individuais ao preço atual.' });
+      if (!notes.length) notes.push({ type: 'ok', text: 'Preferências compiladas; domínio e MRS parecem numericamente estáveis.' });
+      state.diagnostics = notes;
+    }
+
+    function sanitize() {
+      const eps = .08;
+      state.Xbar = clamp(state.Xbar, 4, 20);
+      state.Ybar = clamp(state.Ybar, 4, 20);
+      for (const id of ['w1','x1']) state[id] = clamp(state[id], eps, state.Xbar - eps);
+      for (const id of ['w2','x2']) state[id] = clamp(state[id], eps, state.Ybar - eps);
+      state.price = clamp(state.price, .05, 25);
+      $('w1').max = (state.Xbar - .1).toFixed(1);
+      $('x1').max = (state.Xbar - .1).toFixed(1);
+      $('w2').max = (state.Ybar - .1).toFixed(1);
+      $('x2').max = (state.Ybar - .1).toFixed(1);
+    }
+
+    function syncInputs() {
+      sanitize();
+      for (const id of sliders) $(id).value = state[id];
+      for (const id of checks) $(id).checked = state[id];
+      $('quality').value = state.quality;
+      $('vXbar').textContent = fmt(state.Xbar,0);
+      $('vYbar').textContent = fmt(state.Ybar,0);
+      $('vw1').textContent = fmt(state.w1);
+      $('vw2').textContent = fmt(state.w2);
+      $('vx1').textContent = fmt(state.x1);
+      $('vx2').textContent = fmt(state.x2);
+      $('vp').textContent = fmt(state.price);
     }
 
     function renderText() {
-      $('vXbar').textContent = fmt(state.Xbar,0); $('vYbar').textContent = fmt(state.Ybar,0);
-      $('vw1').textContent = fmt(state.w1); $('vw2').textContent = fmt(state.w2);
-      $('va').textContent = fmt(state.alpha); $('vb').textContent = fmt(state.beta); $('vrhoA').textContent = fmt(state.rhoA); $('vrhoB').textContent = fmt(state.rhoB);
-      $('vx1').textContent = fmt(state.x1); $('vx2').textContent = fmt(state.x2);
-      $('vp').textContent = fmt(state.price);
-
       const m = modules[state.module];
       $('moduleKicker').textContent = m.kicker;
       $('moduleTitle').textContent = m.title;
       $('moduleSubtitle').textContent = m.subtitle;
       $('interpretation').textContent = m.interpretation;
       $('notice').innerHTML = m.notice.map(x => `<li>${x}</li>`).join('');
-      renderKatex('summaryEq', m.eq);
-      renderStaticMath();
+      $('summaryEq').textContent = m.eq;
       $('summaryText').textContent = m.summary;
+      $('activeA').textContent = state.exprA || '—';
+      $('activeB').textContent = state.exprB || '—';
 
-      const b = ownBFromA(state.x1,state.x2);
-      const ua = U(state.x1,state.x2,state.alpha,state.rhoA), ub = U(b.x,b.y,state.beta,state.rhoB);
-      const mrsa = MRS(state.x1,state.x2,state.alpha,state.rhoA), mrsb = MRS(b.x,b.y,state.beta,state.rhoB);
-      const w = walras(); const z = excessDemand();
-      const mrsGap = Math.abs(Math.log(mrsa/mrsb));
-      const isEff = mrsGap < .055;
-      const ir = individuallyRational(state.x1,state.x2);
-      const marketClose = Math.hypot(z.z1,z.z2) < .08;
+      const b = ownBFromA(state.x1,state.x2), wbv = wB();
+      const ua = UA(state.x1,state.x2), ub = UB(b.x,b.y);
+      const uaw = UA(state.w1,state.w2), ubw = UB(wbv.x,wbv.y);
+      const mrsa = MRSA(state.x1,state.x2), mrsb = MRSB(b.x,b.y);
+      const gap = (mrsa>0 && mrsb>0) ? Math.abs(Math.log(mrsa/mrsb)) : NaN;
+      const ir = Number.isFinite(ua) && Number.isFinite(ub) && ua >= uaw - 1e-7 && ub >= ubw - 1e-7;
+      const ed = excessDemand();
+      const w = walras();
+      const market = Number.isFinite(ed.z1) && Number.isFinite(ed.z2) && Math.hypot(ed.z1,ed.z2) < .08;
+      const eff = Number.isFinite(gap) && gap < .055;
 
       $('rXA').textContent = `(${fmt(state.x1)}, ${fmt(state.x2)})`;
       $('rXB').textContent = `(${fmt(b.x)}, ${fmt(b.y)})`;
-      $('rUA').textContent = fmt(ua,3);
-      $('rUB').textContent = fmt(ub,3);
-      $('rMRSA').textContent = fmt(mrsa,3);
-      $('rMRSB').textContent = fmt(mrsb,3);
-      $('rSigma').textContent = `${fmt(1/(1-state.rhoA),2)}, ${fmt(1/(1-state.rhoB),2)}`;
-      $('rPW').textContent = fmt(w.pRaw,3);
-      $('rZ').textContent = `(${fmt(z.z1,2)}, ${fmt(z.z2,2)})`;
+      $('rUA').textContent = fmt(ua,4);
+      $('rUB').textContent = fmt(ub,4);
+      $('rIR').textContent = ir ? 'sim' : 'não';
+      $('rIR').className = ir ? 'status-good' : 'status-warn';
+      $('rMRSA').textContent = fmt(mrsa,4);
+      $('rMRSB').textContent = fmt(mrsb,4);
+      $('rGap').textContent = fmt(gap,4);
+      $('rP').textContent = fmt(state.price,3);
+      $('rDA').textContent = `(${fmt(ed.da.x)}, ${fmt(ed.da.y)})`;
+      const bPoint = { x: state.Xbar - ed.db.x, y: state.Ybar - ed.db.y };
+      $('rDB').textContent = `(${fmt(bPoint.x)}, ${fmt(bPoint.y)})`;
+      $('rZ').textContent = `(${fmt(ed.z1,2)}, ${fmt(ed.z2,2)})`;
+      $('rPW').textContent = Number.isFinite(w.p) ? fmt(w.p,4) : '—';
       const st = $('rStatus');
-      if (marketClose) { st.textContent = 'markets clear'; st.className = 'status-good'; }
-      else if (isEff && ir) { st.textContent = 'in the core'; st.className = 'status-good'; }
-      else if (isEff) { st.textContent = 'efficient'; st.className = 'status-warn'; }
-      else { st.textContent = 'trade possible'; st.className = 'status-bad'; }
+      if (market) { st.textContent = 'mercados limpam'; st.className = 'status-good'; }
+      else if (eff && ir) { st.textContent = 'no núcleo'; st.className = 'status-good'; }
+      else if (eff) { st.textContent = 'eficiente'; st.className = 'status-warn'; }
+      else if (!Number.isFinite(gap)) { st.textContent = 'MRS indefinida'; st.className = 'status-bad'; }
+      else { st.textContent = 'troca marginal possível'; st.className = 'status-bad'; }
+
+      updateDiagnostics();
+      $('diagnostics').innerHTML = state.diagnostics.map(n => `<div class="${n.type === 'err' ? 'err-item' : n.type === 'warn' ? 'warn-item' : 'ok-item'}">${n.text}</div>`).join('');
     }
 
     function css(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
     function make(tag) { return document.createElementNS('http://www.w3.org/2000/svg', tag); }
-    function set(el, attrs) { for (const [k,v] of Object.entries(attrs)) el.setAttribute(k, v); return el; }
+    function set(el, attrs) { for (const [k,v] of Object.entries(attrs)) if (v !== undefined && v !== null) el.setAttribute(k,v); return el; }
     function append(svg, el) { svg.appendChild(el); return el; }
     function line(svg,x1,y1,x2,y2,cls,extra={}) { return append(svg,set(make('line'),{x1,y1,x2,y2,class:cls,...extra})); }
     function circle(svg,cx,cy,r,fill,cls='') { return append(svg,set(make('circle'),{cx,cy,r,fill,class:cls})); }
     function text(svg,x,y,t,cls='svg-label',anchor='start',rot=0) {
       const el = set(make('text'),{x,y,class:cls,'text-anchor':anchor});
-      if(rot) el.setAttribute('transform',`rotate(${rot} ${x} ${y})`);
-      el.textContent = t; return append(svg,el);
+      if (rot) el.setAttribute('transform',`rotate(${rot} ${x} ${y})`);
+      el.textContent = t;
+      return append(svg,el);
     }
     function path(svg, pts, cls, extra={}) {
       if (pts.length < 2) return null;
@@ -803,143 +1199,146 @@
       return append(svg,set(make('path'),{d,class:cls,...extra}));
     }
 
+    function buildGrid(fn, n) {
+      const vals = new Array((n+1)*(n+1));
+      for (let i=0;i<=n;i++) for (let j=0;j<=n;j++) {
+        const x = EPS + (state.Xbar-2*EPS)*i/n;
+        const y = EPS + (state.Ybar-2*EPS)*j/n;
+        vals[i*(n+1)+j] = fn(x,y);
+      }
+      return { n, vals };
+    }
+    function gridVal(grid,i,j) { return grid.vals[i*(grid.n+1)+j]; }
+
+    function drawContourSegments(svg, grid, level, sx, sy, cls, filterCenter = null) {
+      const n = grid.n;
+      const interp = (a,b,va,vb) => {
+        const t = Math.abs(vb-va) < 1e-12 ? .5 : clamp((level-va)/(vb-va),0,1);
+        return [a[0] + t*(b[0]-a[0]), a[1] + t*(b[1]-a[1])];
+      };
+      const group = make('g');
+      for (let i=0;i<n;i++) for (let j=0;j<n;j++) {
+        const x0 = EPS + (state.Xbar-2*EPS)*i/n, x1 = EPS + (state.Xbar-2*EPS)*(i+1)/n;
+        const y0 = EPS + (state.Ybar-2*EPS)*j/n, y1 = EPS + (state.Ybar-2*EPS)*(j+1)/n;
+        if (filterCenter && !filterCenter((x0+x1)/2,(y0+y1)/2)) continue;
+        const p = [[x0,y0],[x1,y0],[x1,y1],[x0,y1]];
+        const v = [gridVal(grid,i,j), gridVal(grid,i+1,j), gridVal(grid,i+1,j+1), gridVal(grid,i,j+1)];
+        if (v.some(z => !Number.isFinite(z))) continue;
+        const edges = [[0,1],[1,2],[2,3],[3,0]];
+        const pts = [];
+        for (const [a,b] of edges) {
+          const va = v[a] - level, vb = v[b] - level;
+          if (va === 0 && vb === 0) continue;
+          if (va === 0 || vb === 0 || va*vb < 0) pts.push(interp(p[a],p[b],v[a],v[b]));
+        }
+        if (pts.length >= 2) {
+          for (let k=0;k+1<pts.length;k+=2) {
+            append(group,set(make('line'),{x1:sx(pts[k][0]),y1:sy(pts[k][1]),x2:sx(pts[k+1][0]),y2:sy(pts[k+1][1]),class:cls}));
+          }
+        }
+      }
+      append(svg,group);
+    }
+
     function renderSvg() {
       const svg = $('svg'); svg.innerHTML = '';
-      const W = 880, H = 640;
-      const M = { l: 92, r: 92, t: 70, b: 82 };
+      const W = 900, H = 660;
+      const M = { l: 96, r: 96, t: 72, b: 86 };
       const BW = W-M.l-M.r, BH = H-M.t-M.b;
       const sx = x => M.l + (x/state.Xbar)*BW;
       const sy = y => M.t + BH - (y/state.Ybar)*BH;
       const ix = px => clamp((px-M.l)/BW*state.Xbar, .08, state.Xbar-.08);
       const iy = py => clamp((M.t+BH-py)/BH*state.Ybar, .08, state.Ybar-.08);
-
-      const textColor = css('--text'), muted = css('--muted'), card = css('--card');
-      const accent = css('--accent'), gold = css('--gold'), red = css('--red'), blue = css('--blue');
+      const textColor = css('--text'), card = css('--card-2'), red = css('--red'), blue = css('--blue'), gold = css('--gold'), accent = css('--accent');
 
       const defs = make('defs');
-      defs.innerHTML = `<filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
+      defs.innerHTML = `<filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
       append(svg, defs);
 
-      // grid frame
-      append(svg,set(make('rect'),{x:M.l,y:M.t,width:BW,height:BH,rx:4,class:'box-border'}));
+      append(svg,set(make('rect'),{x:M.l,y:M.t,width:BW,height:BH,rx:5,class:'box-border'}));
       for(let i=1;i<state.Xbar;i++) line(svg,sx(i),M.t,sx(i),M.t+BH,'thin');
       for(let j=1;j<state.Ybar;j++) line(svg,M.l,sy(j),M.l+BW,sy(j),'thin');
 
-      text(svg,M.l-10,M.t+BH+29,'Oᴬ','svg-title','end');
+      text(svg,M.l-10,M.t+BH+30,'Oᴬ','svg-title','end');
       text(svg,M.l+BW+12,M.t-14,'Oᴮ','svg-title','start');
-      text(svg,M.l+BW/2,M.t+BH+50,'good 1 for A  →','svg-label','middle');
-      text(svg,M.l-48,M.t+BH/2,'good 2 for A','svg-label','middle',-90);
-      text(svg,M.l+BW/2,M.t-34,'←  good 1 for B','svg-label','middle');
-      text(svg,M.l+BW+48,M.t+BH/2,'good 2 for B','svg-label','middle',90);
+      text(svg,M.l+BW/2,M.t+BH+52,'bem 1 para A  →','svg-label','middle');
+      text(svg,M.l-50,M.t+BH/2,'bem 2 para A','svg-label','middle',-90);
+      text(svg,M.l+BW/2,M.t-34,'←  bem 1 para B','svg-label','middle');
+      text(svg,M.l+BW+52,M.t+BH/2,'bem 2 para B','svg-label','middle',90);
 
-      const bCur = ownBFromA(state.x1,state.x2);
-      const ua = U(state.x1,state.x2,state.alpha,state.rhoA), ub = U(bCur.x,bCur.y,state.beta,state.rhoB);
-      const wbv = wB();
-      const uAw = U(state.w1,state.w2,state.alpha,state.rhoA), uBw = U(wbv.x,wbv.y,state.beta,state.rhoB);
-
-      if(state.showLens) drawLens(svg,sx,sy,uAw,uBw);
-      if(state.showContract) drawContract(svg,sx,sy);
-      if(state.showCore) drawCore(svg,sx,sy,uAw,uBw);
-      if(state.showBudget) drawBudget(svg,sx,sy);
-
-      // current and endowment indifference curves
-      drawIndiffA(svg,sx,sy,ua,state.alpha,state.rhoA,'curveA');
-      drawIndiffB(svg,sx,sy,ub,state.beta,state.rhoB,'curveB');
-      if(state.module === 'gains' || state.showLens) {
-        drawIndiffA(svg,sx,sy,uAw,state.alpha,state.rhoA,'curveA curveEndowment');
-        drawIndiffB(svg,sx,sy,uBw,state.beta,state.rhoB,'curveB curveEndowment');
+      if (!state.compiledA || !state.compiledB) {
+        text(svg, W/2, H/2, 'Corrija as funções de utilidade para formar a caixa.', 'svg-title', 'middle');
+        return;
       }
 
-      if(state.showDemands) drawDemands(svg,sx,sy);
+      const q = qualityN();
+      const uAw = UA(state.w1,state.w2), uBw = UB(wB().x,wB().y);
+      const uAx = UA(state.x1,state.x2), uBx = UB(ownBFromA(state.x1,state.x2).x, ownBFromA(state.x1,state.x2).y);
+
+      if (state.showInvalid) drawInvalid(svg,sx,sy,q.lens);
+      if (state.showLens) drawLens(svg,sx,sy,uAw,uBw,q.lens);
+      if (state.showBudget) drawBudget(svg,sx,sy);
+
+      const gridA = buildGrid((x,y)=>UA(x,y), q.contour);
+      const gridB = buildGrid((x,y)=>{ const b = ownBFromA(x,y); return UB(b.x,b.y); }, q.contour);
+      if (Number.isFinite(uAx)) drawContourSegments(svg, gridA, uAx, sx, sy, 'curveA');
+      if (Number.isFinite(uBx)) drawContourSegments(svg, gridB, uBx, sx, sy, 'curveB');
+      if (state.showEndowmentCurves) {
+        if (Number.isFinite(uAw)) drawContourSegments(svg, gridA, uAw, sx, sy, 'curveA curveEndowment');
+        if (Number.isFinite(uBw)) drawContourSegments(svg, gridB, uBw, sx, sy, 'curveB curveEndowment');
+      }
+
+      if (state.showContract || state.showCore) {
+        const gridC = buildGrid((x,y)=>contractValueAtA(x,y), Math.max(58, Math.floor(q.contour*.78)));
+        if (state.showCore) drawContourSegments(svg, gridC, 0, sx, sy, 'coreline', individuallyRational);
+        if (state.showContract) drawContourSegments(svg, gridC, 0, sx, sy, 'contract');
+      }
+
+      if (state.showDemands) drawDemands(svg,sx,sy);
       drawWalras(svg,sx,sy);
+      if (state.showTangents) drawTangents(svg,sx,sy);
 
-      if(state.showTangents) {
-        drawTangent(svg,sx,sy,state.x1,state.x2,MRS(state.x1,state.x2,state.alpha,state.rhoA),'tangentA',false);
-        drawTangent(svg,sx,sy,state.x1,state.x2,MRS(bCur.x,bCur.y,state.beta,state.rhoB),'tangentB',true);
-      }
-
-      circle(svg,sx(state.w1),sy(state.w2),8.5,red,'point').style.stroke = card;
+      const omega = circle(svg,sx(state.w1),sy(state.w2),8.5,red,'point'); omega.style.stroke = card;
       text(svg,sx(state.w1)+12,sy(state.w2)+24,'ω','svg-title');
+      omega.addEventListener('pointerdown', e => attachDrag(svg,e,(q)=>{ state.w1=ix(q.x); state.w2=iy(q.y); syncInputs(); render(); }));
 
-      const current = circle(svg,sx(state.x1),sy(state.x2),9,textColor,'point');
-      current.style.stroke = card;
-      current.style.filter = 'url(#glow)';
+      const current = circle(svg,sx(state.x1),sy(state.x2),9,textColor,'point'); current.style.stroke = card; current.style.filter = 'url(#glow)';
       text(svg,sx(state.x1)+12,sy(state.x2)-13,'x','svg-title');
+      current.addEventListener('pointerdown', e => attachDrag(svg,e,(q)=>{ state.x1=ix(q.x); state.x2=iy(q.y); syncInputs(); render(); }));
 
-      current.addEventListener('pointerdown', e => {
+      function attachDrag(svg,e,onMove) {
         svg.setPointerCapture(e.pointerId);
         const move = ev => {
           const pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY;
           const q = pt.matrixTransform(svg.getScreenCTM().inverse());
-          state.x1 = ix(q.x); state.x2 = iy(q.y);
-          sync(); render();
+          onMove(q);
         };
-        const up = ev => {
-          svg.releasePointerCapture(e.pointerId);
-          svg.removeEventListener('pointermove',move);
-          svg.removeEventListener('pointerup',up);
-        };
+        const up = ev => { svg.releasePointerCapture(e.pointerId); svg.removeEventListener('pointermove',move); svg.removeEventListener('pointerup',up); };
         svg.addEventListener('pointermove',move);
         svg.addEventListener('pointerup',up);
-      });
-
-      function indiffY(u, x, a, rho) {
-        x = Math.max(x, 1e-10);
-        if (Math.abs(rho) < 1e-5) {
-          return Math.pow(u/Math.pow(x,a), 1/(1-a));
-        }
-        const inside = (Math.pow(u, rho) - a*Math.pow(x, rho))/(1-a);
-        if (!Number.isFinite(inside) || inside <= 0) return null;
-        return Math.pow(inside, 1/rho);
       }
-      function drawIndiffA(svg,sx,sy,u,a,rho,cls) {
-        const pts=[];
-        for(let i=1;i<720;i++) {
-          const x = state.Xbar*i/720;
-          const y = indiffY(u,x,a,rho);
-          if(y!==null && y>=0 && y<=state.Ybar) pts.push([sx(x),sy(y)]);
-        }
-        path(svg,pts,cls);
-      }
-      function drawIndiffB(svg,sx,sy,u,a,rho,cls) {
-        const pts=[];
-        for(let i=1;i<720;i++) {
-          const xB = state.Xbar*i/720;
-          const yB = indiffY(u,xB,a,rho);
-          if (yB === null) continue;
-          const x = state.Xbar-xB, y = state.Ybar-yB;
-          if(y>=0 && y<=state.Ybar && x>=0 && x<=state.Xbar) pts.push([sx(x),sy(y)]);
-        }
-        path(svg,pts,cls);
-      }
-      function drawLens(svg,sx,sy,uAw,uBw) {
-        const nx=72, ny=72, dx=state.Xbar/nx, dy=state.Ybar/ny;
+      function drawInvalid(svg,sx,sy,n) {
+        const dx=state.Xbar/n, dy=state.Ybar/n;
         const g = make('g');
-        for(let i=0;i<nx;i++) for(let j=0;j<ny;j++) {
+        for(let i=0;i<n;i++) for(let j=0;j<n;j++) {
           const x=(i+.5)*dx, y=(j+.5)*dy, b=ownBFromA(x,y);
-          if(U(x,y,state.alpha,state.rhoA)>=uAw && U(b.x,b.y,state.beta,state.rhoB)>=uBw) {
+          const bad = !Number.isFinite(UA(x,y)) || !Number.isFinite(UB(b.x,b.y));
+          if (bad) append(g,set(make('rect'),{x:sx(i*dx),y:sy((j+1)*dy),width:Math.max(1,sx((i+1)*dx)-sx(i*dx)+.2),height:Math.max(1,sy(j*dy)-sy((j+1)*dy)+.2),class:'invalid-cell'}));
+        }
+        append(svg,g);
+      }
+      function drawLens(svg,sx,sy,uAw,uBw,n) {
+        if (!Number.isFinite(uAw) || !Number.isFinite(uBw)) return;
+        const dx=state.Xbar/n, dy=state.Ybar/n;
+        const g = make('g');
+        for(let i=0;i<n;i++) for(let j=0;j<n;j++) {
+          const x=(i+.5)*dx, y=(j+.5)*dy, b=ownBFromA(x,y);
+          const ua = UA(x,y), ub = UB(b.x,b.y);
+          if(Number.isFinite(ua) && Number.isFinite(ub) && ua>=uAw && ub>=uBw) {
             append(g,set(make('rect'),{x:sx(i*dx),y:sy((j+1)*dy),width:Math.max(1,sx((i+1)*dx)-sx(i*dx)+.2),height:Math.max(1,sy(j*dy)-sy((j+1)*dy)+.2),class:'lens-cell'}));
           }
         }
         append(svg,g);
-      }
-      function drawContract(svg,sx,sy) {
-        const pts=[];
-        for(let i=1;i<600;i++) {
-          const x=state.Xbar*i/600, y=contractY(x);
-          if(y!==null && y>0 && y<state.Ybar) pts.push([sx(x),sy(y)]);
-        }
-        path(svg,pts,'contract');
-        const p = pts[Math.floor(pts.length*.70)]; if(p) text(svg,p[0]+12,p[1]-12,'contract curve','svg-small');
-      }
-      function drawCore(svg,sx,sy,uAw,uBw) {
-        const pts=[];
-        for(let i=1;i<700;i++) {
-          const x=state.Xbar*i/700, y=contractY(x), b=ownBFromA(x,y);
-          if(y!==null && y>0 && y<state.Ybar && U(x,y,state.alpha,state.rhoA)>=uAw && U(b.x,b.y,state.beta,state.rhoB)>=uBw) pts.push([sx(x),sy(y)]);
-        }
-        const pth = path(svg,pts,'core');
-        if(pth) { const mid=pts[Math.floor(pts.length*.5)]; if(mid) text(svg,mid[0]+10,mid[1]+27,'core','svg-title'); }
       }
       function drawBudget(svg,sx,sy) {
         const p=state.price, wealth=p*state.w1+state.w2;
@@ -953,36 +1352,425 @@
         candidates.forEach(q=>{ if(!unique.some(r=>Math.hypot(q[0]-r[0],q[1]-r[1])<1e-6)) unique.push(q); });
         if(unique.length>=2) {
           line(svg,sx(unique[0][0]),sy(unique[0][1]),sx(unique[1][0]),sy(unique[1][1]),'budget');
-          text(svg,(sx(unique[0][0])+sx(unique[1][0]))/2+10,(sy(unique[0][1])+sy(unique[1][1]))/2-10,'budget through ω','svg-small');
+          text(svg,(sx(unique[0][0])+sx(unique[1][0]))/2+10,(sy(unique[0][1])+sy(unique[1][1]))/2-10,'orçamento por ω','svg-small');
         }
       }
       function drawDemands(svg,sx,sy) {
-        const da=demandA(), db=demandB();
+        const ed=excessDemand(), da=ed.da, db=ed.db;
         const bx=state.Xbar-db.x, by=state.Ybar-db.y;
-        line(svg,sx(da.x),sy(da.y),sx(bx),sy(by),'demand-line');
-        circle(svg,sx(da.x),sy(da.y),7,blue,'point').style.stroke = card;
-        circle(svg,sx(bx),sy(by),7,gold,'point').style.stroke = card;
-        text(svg,sx(da.x)+10,sy(da.y)-10,'xᴬ*(p)','svg-small');
-        text(svg,sx(bx)+10,sy(by)+22,'e − xᴮ*(p)','svg-small');
+        const daInside = { x: clamp(da.x,0,state.Xbar), y: clamp(da.y,0,state.Ybar) };
+        const bInside = { x: clamp(bx,0,state.Xbar), y: clamp(by,0,state.Ybar) };
+        line(svg,sx(daInside.x),sy(daInside.y),sx(bInside.x),sy(bInside.y),'demand-line');
+        const pa = circle(svg,sx(daInside.x),sy(daInside.y),7,blue,'point'); pa.style.stroke = card;
+        const pb = circle(svg,sx(bInside.x),sy(bInside.y),7,gold,'point'); pb.style.stroke = card;
+        text(svg,sx(daInside.x)+10,sy(daInside.y)-10,'xᴬ*(p)','svg-small');
+        text(svg,sx(bInside.x)+10,sy(bInside.y)+22,'e − xᴮ*(p)','svg-small');
       }
       function drawWalras(svg,sx,sy) {
         const w=walras();
-        circle(svg,sx(w.xA),sy(w.yA),6.5,accent,'point').style.stroke = card;
-        text(svg,sx(w.xA)+10,sy(w.yA)-12,'xᵂ','svg-title');
+        if (!Number.isFinite(w.xA) || !Number.isFinite(w.yA)) return;
+        const x = clamp(w.xA,0,state.Xbar), y = clamp(w.yA,0,state.Ybar);
+        const pw = circle(svg,sx(x),sy(y),6.3,accent,'point'); pw.style.stroke = card;
+        text(svg,sx(x)+10,sy(y)-12,'xᵂ','svg-title');
       }
-      function drawTangent(svg,sx,sy,x,y,slope,cls,reverse) {
-        const len=.92;
-        const dx=len, dy=slope*len;
-        const x1=clamp(x-dx,0,state.Xbar), x2=clamp(x+dx,0,state.Xbar);
-        const y1=reverse ? clamp(y-dy,0,state.Ybar) : clamp(y+dy,0,state.Ybar);
-        const y2=reverse ? clamp(y+dy,0,state.Ybar) : clamp(y-dy,0,state.Ybar);
-        line(svg,sx(x1),sy(y1),sx(x2),sy(y2),cls);
+      function drawTangents(svg,sx,sy) {
+        const b=ownBFromA(state.x1,state.x2), ma=MRSA(state.x1,state.x2), mb=MRSB(b.x,b.y);
+        if (Number.isFinite(ma) && ma>0) tangent(state.x1,state.x2,ma,'tangentA',false);
+        if (Number.isFinite(mb) && mb>0) tangent(state.x1,state.x2,mb,'tangentB',true);
+        function tangent(x,y,slope,cls,reverse) {
+          const len=.85;
+          const dx=len, dy=slope*len;
+          const x1=clamp(x-dx,0,state.Xbar), x2=clamp(x+dx,0,state.Xbar);
+          const y1=reverse ? clamp(y-dy,0,state.Ybar) : clamp(y+dy,0,state.Ybar);
+          const y2=reverse ? clamp(y+dy,0,state.Ybar) : clamp(y-dy,0,state.Ybar);
+          line(svg,sx(x1),sy(y1),sx(x2),sy(y2),cls);
+        }
       }
     }
 
-    function render() { renderText(); renderSvg(); }
+    function plotGridN() {
+      return state.quality === 'fast' ? 18 : state.quality === 'high' ? 34 : 26;
+    }
+
+    function makeLinearGrid(maxVal, n) {
+      const arr = [];
+      for (let i = 0; i < n; i++) arr.push(EPS + (maxVal - EPS) * i / (n - 1));
+      return arr;
+    }
+
+    function buildSurfaceData(agent) {
+      const n = plotGridN();
+      const xs = makeLinearGrid(state.Xbar, n);
+      const ys = makeLinearGrid(state.Ybar, n);
+      const z = [];
+      let zMin = Infinity, zMax = -Infinity;
+      for (let j = 0; j < ys.length; j++) {
+        const row = [];
+        for (let i = 0; i < xs.length; i++) {
+          const val = agent === 'A' ? UA(xs[i], ys[j]) : UB(xs[i], ys[j]);
+          row.push(Number.isFinite(val) ? val : null);
+          if (Number.isFinite(val)) {
+            if (val < zMin) zMin = val;
+            if (val > zMax) zMax = val;
+          }
+        }
+        z.push(row);
+      }
+      if (!Number.isFinite(zMin) || !Number.isFinite(zMax)) { zMin = 0; zMax = 1; }
+      if (Math.abs(zMax - zMin) < 1e-9) zMax = zMin + 1;
+      return { xs, ys, z, zMin, zMax };
+    }
+
+    function plotTheme() {
+      return {
+        text: css('--text'),
+        muted: css('--muted'),
+        grid: css('--grid'),
+        line: css('--line'),
+        card: css('--card-2'),
+        panel: css('--panel'),
+        accent: css('--accent'),
+        gold: css('--gold'),
+        red: css('--red'),
+        blue: css('--blue')
+      };
+    }
+
+    function markerTrace3D(x, y, z, name, color) {
+      return {
+        type: 'scatter3d',
+        mode: 'markers+text',
+        x: [x], y: [y], z: [z],
+        text: [name],
+        textposition: 'top center',
+        textfont: { size: 11, color: plotTheme().text },
+        marker: { size: 5, color, line: { width: 1, color: plotTheme().card } },
+        hovertemplate: `${name}<br>bem 1: %{x:.2f}<br>bem 2: %{y:.2f}<br>u: %{z:.3f}<extra></extra>`,
+        showlegend: false
+      };
+    }
+
+    function verticalGuideTrace(x, y, z, color) {
+      return {
+        type: 'scatter3d',
+        mode: 'lines',
+        x: [x, x], y: [y, y], z: [0, z],
+        line: { width: 3, color },
+        hoverinfo: 'skip',
+        showlegend: false
+      };
+    }
+
+    function renderCombinedSurfacePlot() {
+      const el = $('plot3dCombined');
+      if (!el) return;
+      if (typeof Plotly === 'undefined') {
+        el.innerHTML = '<div style="padding:14px;color:var(--muted);">Não foi possível carregar a visualização 3D.</div>';
+        return;
+      }
+      const th = plotTheme();
+      const surfaceA = buildSurfaceData('A');
+
+      const xs = surfaceA.xs.slice();
+      const ys = surfaceA.ys.slice();
+      const zBMirrored = [];
+      let zBMin = Infinity, zBMax = -Infinity;
+      for (let j = 0; j < ys.length; j++) {
+        const row = [];
+        for (let i = 0; i < xs.length; i++) {
+          const val = UB(Math.max(EPS, state.Xbar - xs[i]), Math.max(EPS, state.Ybar - ys[j]));
+          row.push(Number.isFinite(val) ? val : null);
+          if (Number.isFinite(val)) {
+            if (val < zBMin) zBMin = val;
+            if (val > zBMax) zBMax = val;
+          }
+        }
+        zBMirrored.push(row);
+      }
+      if (!Number.isFinite(zBMin) || !Number.isFinite(zBMax)) { zBMin = 0; zBMax = 1; }
+      if (Math.abs(zBMax - zBMin) < 1e-9) zBMax = zBMin + 1;
+
+      const wbv = wB();
+      const xB = ownBFromA(state.x1, state.x2);
+
+      const pointAEnd = { x: state.w1, y: state.w2, z: UA(state.w1, state.w2), label: 'ωᴬ', color: th.red };
+      const pointACur = { x: state.x1, y: state.x2, z: UA(state.x1, state.x2), label: 'xᴬ', color: th.blue };
+      const pointBEnd = { x: state.w1, y: state.w2, z: UB(wbv.x, wbv.y), label: 'ωᴮ', color: th.gold };
+      const pointBCur = { x: state.x1, y: state.x2, z: UB(xB.x, xB.y), label: 'xᴮ', color: th.accent };
+
+      const traces = [
+        {
+          type: 'surface',
+          name: 'Superfície A',
+          x: surfaceA.xs,
+          y: surfaceA.ys,
+          z: surfaceA.z,
+          colorscale: [[0, 'rgba(82,109,168,0.92)'], [1, th.accent]],
+          opacity: 0.80,
+          showscale: false,
+          hovertemplate: 'A<br>x₁ᴬ: %{x:.2f}<br>x₂ᴬ: %{y:.2f}<br>uᴬ: %{z:.3f}<extra></extra>',
+          contours: { z: { show: true, usecolormap: true, highlightwidth: 1, project: { z: true } } },
+          lighting: { ambient: 0.62, diffuse: 0.72, fresnel: 0.08, specular: 0.10, roughness: 0.92 }
+        },
+        {
+          type: 'surface',
+          name: 'Superfície B (espelhada)',
+          x: xs,
+          y: ys,
+          z: zBMirrored,
+          colorscale: [[0, 'rgba(173,90,79,0.90)'], [1, th.gold]],
+          opacity: 0.68,
+          showscale: false,
+          hovertemplate: 'B<br>coord. da caixa: (%{x:.2f}, %{y:.2f})<br>cesta de B: (' + '%{customdata[0]:.2f}, %{customdata[1]:.2f})' + '<br>uᴮ: %{z:.3f}<extra></extra>',
+          customdata: ys.map(y => xs.map(x => [state.Xbar - x, state.Ybar - y])),
+          contours: { z: { show: true, usecolormap: true, highlightwidth: 1, project: { z: true } } },
+          lighting: { ambient: 0.60, diffuse: 0.70, fresnel: 0.08, specular: 0.10, roughness: 0.94 }
+        }
+      ];
+
+      [pointAEnd, pointACur, pointBEnd, pointBCur].forEach(pt => {
+        if (Number.isFinite(pt.z)) {
+          traces.push(verticalGuideTrace(pt.x, pt.y, pt.z, pt.color));
+          traces.push(markerTrace3D(pt.x, pt.y, pt.z, pt.label, pt.color));
+        }
+      });
+
+      const zVals = [surfaceA.zMin, surfaceA.zMax, zBMin, zBMax, pointAEnd.z, pointACur.z, pointBEnd.z, pointBCur.z].filter(Number.isFinite);
+      const zBottom = Math.min(...zVals, 0);
+      const zTop = Math.max(...zVals, 1);
+
+      const layout = {
+        margin: { l: 0, r: 0, t: 8, b: 0 },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        showlegend: true,
+        legend: {
+          orientation: 'h',
+          yanchor: 'bottom', y: 1.01,
+          xanchor: 'left', x: 0,
+          bgcolor: 'rgba(0,0,0,0)',
+          font: { color: th.text, size: 12 }
+        },
+        scene: {
+          bgcolor: th.card,
+          xaxis: {
+            title: 'x₁ᴬ (coordenadas da caixa)',
+            color: th.text,
+            gridcolor: th.line,
+            zerolinecolor: th.line,
+            showbackground: true,
+            backgroundcolor: th.card,
+            range: [0, state.Xbar]
+          },
+          yaxis: {
+            title: 'x₂ᴬ (coordenadas da caixa)',
+            color: th.text,
+            gridcolor: th.line,
+            zerolinecolor: th.line,
+            showbackground: true,
+            backgroundcolor: th.card,
+            range: [0, state.Ybar]
+          },
+          zaxis: {
+            title: 'nível de utilidade',
+            color: th.text,
+            gridcolor: th.line,
+            zerolinecolor: th.line,
+            showbackground: true,
+            backgroundcolor: th.card,
+            range: [zBottom, zTop]
+          },
+          camera: { eye: { x: 1.6, y: 1.55, z: 1.0 } },
+          aspectmode: 'cube'
+        }
+      };
+      Plotly.react(el, traces, layout, { responsive: true, displayModeBar: false, staticPlot: false });
+    }
+
+    let plot3DTimer = null;
+    function schedule3DRender() {
+      clearTimeout(plot3DTimer);
+      plot3DTimer = setTimeout(() => {
+        renderCombinedSurfacePlot();
+      }, 35);
+    }
+
+    function render() {
+      syncInputs();
+      renderText();
+      renderSvg();
+      schedule3DRender();
+    }
+
+    function applyTheme() {
+      const mode = state.dark ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', mode);
+      document.body.setAttribute('data-theme', mode);
+      $('app').setAttribute('data-theme', mode);
+      $('themeText').textContent = state.dark ? 'Light mode' : 'Dark mode';
+    }
+
+    const TEMPLATE_PRESETS = {
+      A: {
+        cd: 'x1^alpha * x2^(1-alpha)',
+        log: 'alpha*log(x1) + (1-alpha)*log(x2)',
+        ces: '(alpha*x1^rhoA + (1-alpha)*x2^rhoA)^(1/rhoA)',
+        leontief: 'min(x1/aA, x2/bA)',
+        linear: 'alpha*x1 + (1-alpha)*x2',
+        quasi: 'log(x1) + alpha*x2'
+      },
+      B: {
+        cd: 'y1^beta * y2^(1-beta)',
+        log: 'beta*log(y1) + (1-beta)*log(y2)',
+        ces: '(beta*y1^rhoB + (1-beta)*y2^rhoB)^(1/rhoB)',
+        leontief: 'min(y1/aB, y2/bB)',
+        linear: 'beta*y1 + (1-beta)*y2',
+        quasi: 'log(y1) + beta*y2'
+      }
+    };
+    const KNOWN_PARAM_KEYS = ['alpha','beta','rhoA','rhoB','aA','bA','aB','bB'];
+
+    function formatParamValue(v) {
+      return Number.isFinite(v) ? Number(v).toFixed(2) : '0.00';
+    }
+    function syncParameterReadouts() {
+      $('vAlphaA').textContent = formatParamValue(+$('alphaInput').value);
+      $('vBetaB').textContent = formatParamValue(+$('betaInput').value);
+      $('vRhoABox').textContent = formatParamValue(+$('rhoAInput').value);
+      $('vRhoBBox').textContent = formatParamValue(+$('rhoBInput').value);
+      $('vaA').textContent = formatParamValue(+$('aAInput').value);
+      $('vbA').textContent = formatParamValue(+$('bAInput').value);
+      $('vaB').textContent = formatParamValue(+$('aBInput').value);
+      $('vbB').textContent = formatParamValue(+$('bBInput').value);
+    }
+    function linkPair(a,b,onChange) {
+      const A = $(a), B = $(b);
+      const sync = (src, dst) => {
+        dst.value = src.value;
+        syncParameterReadouts();
+        if (onChange) onChange();
+      };
+      A.addEventListener('input', () => sync(A,B));
+      B.addEventListener('input', () => sync(B,A));
+    }
+    function setControlsFromStateParams() {
+      const P = { alpha:.5, beta:.5, rhoA:-.4, rhoB:-.2, aA:1, bA:1.5, aB:1.4, bB:1, ...state.params };
+      $('alphaSlider').value = $('alphaInput').value = clamp(P.alpha, 0.02, 0.98);
+      $('betaSlider').value = $('betaInput').value = clamp(P.beta, 0.02, 0.98);
+      $('rhoASlider').value = $('rhoAInput').value = clamp(P.rhoA, -1.5, 0.85);
+      $('rhoBSlider').value = $('rhoBInput').value = clamp(P.rhoB, -1.5, 0.85);
+      $('aAInput').value = clamp(P.aA, 0.1, 5).toFixed(2);
+      $('bAInput').value = clamp(P.bA, 0.1, 5).toFixed(2);
+      $('aBInput').value = clamp(P.aB, 0.1, 5).toFixed(2);
+      $('bBInput').value = clamp(P.bB, 0.1, 5).toFixed(2);
+      syncParameterReadouts();
+    }
+    function getKnownParamsFromControls() {
+      return {
+        alpha: +$('alphaInput').value,
+        beta: +$('betaInput').value,
+        rhoA: +$('rhoAInput').value,
+        rhoB: +$('rhoBInput').value,
+        aA: +$('aAInput').value,
+        bA: +$('bAInput').value,
+        aB: +$('aBInput').value,
+        bB: +$('bBInput').value
+      };
+    }
+    function syncParamsTextarea(preserveExtras = true) {
+      const parsed = preserveExtras ? parseParams($('params').value).params : {};
+      const extras = {};
+      for (const [k,v] of Object.entries(parsed)) if (!KNOWN_PARAM_KEYS.includes(k)) extras[k] = v;
+      const merged = { ...getKnownParamsFromControls(), ...extras };
+      const order = [...KNOWN_PARAM_KEYS, ...Object.keys(extras).sort()];
+      $('params').value = order.filter(k => merged[k] !== undefined).map(k => `${k} = ${formatParamValue(merged[k])}`).join('\n');
+    }
+    function updateTemplateVisibility() {
+      const tA = $('templateA').value, tB = $('templateB').value;
+      $('rhoWrapA').hidden = tA !== 'ces';
+      $('rhoWrapB').hidden = tB !== 'ces';
+      $('leontiefWrapA').hidden = tA !== 'leontief';
+      $('leontiefWrapB').hidden = tB !== 'leontief';
+    }
+    function setAgentTemplate(agent, name, doCompile = true) {
+      const select = $('template' + agent);
+      if (name !== 'custom') select.value = name;
+      if (name !== 'custom') {
+        const expr = TEMPLATE_PRESETS[agent][name];
+        if (agent === 'A') { $('exprA').value = expr; state.templateA = name; }
+        else { $('exprB').value = expr; state.templateB = name; }
+      } else {
+        if (agent === 'A') state.templateA = 'custom'; else state.templateB = 'custom';
+      }
+      updateTemplateVisibility();
+      syncParamsTextarea(true);
+      if (doCompile) compileAll();
+    }
+    function inferTemplate(agent, expr) {
+      const entries = Object.entries(TEMPLATE_PRESETS[agent]);
+      for (const [name, templateExpr] of entries) if (expr.trim() === templateExpr.trim()) return name;
+      return 'custom';
+    }
+
+    sliders.forEach(id => $(id).addEventListener('input', e => { state[id] = +e.target.value; render(); }));
+    checks.forEach(id => $(id).addEventListener('change', e => { state[id] = e.target.checked; render(); }));
+    $('quality').addEventListener('change', e => { state.quality = e.target.value; render(); });
+    $('apply').addEventListener('click', compileAll);
+    $('theme').addEventListener('click', () => { state.dark = !state.dark; applyTheme(); render(); });
+    $('templateA').addEventListener('change', e => setAgentTemplate('A', e.target.value));
+    $('templateB').addEventListener('change', e => setAgentTemplate('B', e.target.value));
+    linkPair('alphaSlider','alphaInput', () => { syncParamsTextarea(true); compileAll(); });
+    linkPair('betaSlider','betaInput', () => { syncParamsTextarea(true); compileAll(); });
+    linkPair('rhoASlider','rhoAInput', () => { syncParamsTextarea(true); compileAll(); });
+    linkPair('rhoBSlider','rhoBInput', () => { syncParamsTextarea(true); compileAll(); });
+    ['aAInput','bAInput','aBInput','bBInput'].forEach(id => $(id).addEventListener('input', () => { syncParameterReadouts(); syncParamsTextarea(true); compileAll(); }));
+    document.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click', () => {
+      state.module = btn.dataset.module;
+      document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (state.module === 'trade') state.showLens = true;
+      if (state.module === 'eff') { state.showContract = true; state.showCore = true; }
+      if (state.module === 'prices') { state.showBudget = true; state.showDemands = true; }
+      render();
+    }));
+
+    $('moveWalras').addEventListener('click', () => { const w = walras(); if (Number.isFinite(w.xA)) { state.x1 = clamp(w.xA,.08,state.Xbar-.08); state.x2 = clamp(w.yA,.08,state.Ybar-.08); render(); } });
+    $('setPriceWalras').addEventListener('click', () => { const w = walras(); if (Number.isFinite(w.p)) { state.price = clamp(w.p,.05,25); render(); } });
+    $('moveEndowment').addEventListener('click', () => { state.x1 = state.w1; state.x2 = state.w2; render(); });
+    $('reset').addEventListener('click', () => {
+      Object.assign(state, { Xbar:10,Ybar:10,w1:4,w2:6,x1:5,x2:5,price:1,quality:'balanced',showLens:true,showContract:true,showCore:true,showBudget:true,showDemands:true,showTangents:true,showEndowmentCurves:true,showInvalid:false, templateA:'cd', templateB:'cd' });
+      $('exprA').value = TEMPLATE_PRESETS.A.cd;
+      $('exprB').value = TEMPLATE_PRESETS.B.cd;
+      $('templateA').value = 'cd';
+      $('templateB').value = 'cd';
+      $('params').value = `alpha = 0.50
+beta = 0.50
+rhoA = -0.40
+rhoB = -0.20
+aA = 1.00
+bA = 1.50
+aB = 1.40
+bB = 1.00`;
+      setControlsFromStateParams();
+      updateTemplateVisibility();
+      compileAll();
+    });
+
+    let debounce;
+    ['exprA','exprB','params'].forEach(id => $(id).addEventListener('input', () => {
+      if (id === 'exprA') $('templateA').value = 'custom';
+      if (id === 'exprB') $('templateB').value = 'custom';
+      clearTimeout(debounce);
+      debounce = setTimeout(compileAll, 520);
+    }));
+
     applyTheme();
-    sync(); render();
+    setControlsFromStateParams();
+    $('templateA').value = 'cd';
+    $('templateB').value = 'cd';
+    updateTemplateVisibility();
+    syncParamsTextarea(true);
+    compileAll();
   </script>
 </body>
 </html>
