@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive microeconomics diagram for preference axioms and counterexamples: completeness, transitivity, continuity, monotonicity, local nonsatiation, convexity, and classic violations.">
+<link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+<title>Preference Axioms and Counterexamples | Consumer Demand Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<style>
+:root{
+  --bg:#f5efe4;
+  --bg2:#fbf7ef;
+  --paper:#fffdf8;
+  --paper2:#fbf8f1;
+  --ink:#171716;
+  --muted:#716b5e;
+  --faint:#9b9486;
+  --line:#ded4c2;
+  --grid:#e9dfcf;
+  --accent:#0f766e;
+  --accent2:#14b8a6;
+  --blue:#315b91;
+  --gold:#b7791f;
+  --bad:#a14b16;
+  --green:#177d68;
+  --shadeA:rgba(20,184,166,.13);
+  --shadeB:rgba(161,75,22,.09);
+  --shadow:0 22px 60px rgba(58,43,22,.11);
+  --softShadow:0 12px 34px rgba(58,43,22,.08);
+  --radius:22px;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  --serif:Georgia,"Times New Roman",serif;
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+[data-theme="dark"]{
+  --bg:#0b1118;
+  --bg2:#101822;
+  --paper:#131d28;
+  --paper2:#0f1721;
+  --ink:#edf7f4;
+  --muted:#a7b6b0;
+  --faint:#74837f;
+  --line:#263442;
+  --grid:#202b38;
+  --accent:#2dd4bf;
+  --accent2:#99f6e4;
+  --blue:#93c5fd;
+  --gold:#f6c96d;
+  --bad:#fb923c;
+  --green:#5eead4;
+  --shadeA:rgba(45,212,191,.14);
+  --shadeB:rgba(251,146,60,.10);
+  --shadow:0 24px 70px rgba(0,0,0,.32);
+  --softShadow:0 12px 34px rgba(0,0,0,.22);
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  margin:0;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 18% -8%, rgba(20,184,166,.16), transparent 30%),
+    radial-gradient(circle at 88% 5%, rgba(183,121,31,.10), transparent 26%),
+    linear-gradient(180deg,var(--bg),var(--bg2));
+  font-family:var(--sans);
+  line-height:1.36;
+}
+button,input,select{font:inherit}
+.app{display:grid;grid-template-columns:312px minmax(0,1fr);gap:18px;padding:18px;min-height:100vh}
+.sidebar,.panel,.card,.mini,.eqBox{background:color-mix(in srgb,var(--paper) 96%,transparent);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius)}
+.sidebar{position:sticky;top:18px;align-self:start;max-height:calc(100vh - 36px);overflow:auto;padding:18px}
+.brand{display:flex;gap:14px;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:750;margin-bottom:8px}
+h1{font-size:20px;line-height:1.06;margin:0;letter-spacing:-.045em}
+.sub{color:var(--muted);font-size:13px;margin:10px 0 0;max-width:270px}
+.theme{height:38px;min-width:42px;border-radius:999px;border:1px solid var(--line);background:var(--paper2);color:var(--ink);cursor:pointer;box-shadow:var(--softShadow)}
+.theme:hover{border-color:var(--accent)}
+.nav{display:grid;gap:8px;margin:18px 0}
+.nav button{width:100%;text-align:left;border:1px solid var(--line);background:var(--paper2);color:var(--ink);padding:11px 12px;border-radius:15px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;transition:transform .15s ease,border-color .15s ease,background .15s ease}
+.nav button span:last-child{color:var(--faint);font-size:12px;font-family:var(--serif)}
+.nav button:hover{transform:translateY(-1px);border-color:var(--accent)}
+.nav button.active{border-color:var(--accent);background:linear-gradient(135deg,var(--shadeA),transparent 70%);box-shadow:inset 3px 0 0 var(--accent)}
+.controls{display:grid;gap:13px;padding-top:16px;border-top:1px solid var(--line)}
+.control label{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px;margin-bottom:7px}
+.control label b{color:var(--ink);font-variant-numeric:tabular-nums}
+input[type="range"]{width:100%;accent-color:var(--accent);cursor:pointer}
+.segment{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--paper2);border:1px solid var(--line);border-radius:16px;padding:6px}
+.segment button{border:0;border-radius:12px;background:transparent;color:var(--muted);padding:8px 6px;cursor:pointer;font-size:12px;font-weight:700}
+.segment button.active{background:var(--paper);color:var(--accent);box-shadow:var(--softShadow)}
+.toggle{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:16px;background:var(--paper2);font-size:13px;color:var(--muted)}
+.main{display:grid;gap:18px;min-width:0}
+.hero{padding:22px 24px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:18px}
+.hero h2{font-size:32px;line-height:1.01;letter-spacing:-.06em;margin:0}
+.hero p{color:var(--muted);font-size:15px;margin:9px 0 0;max-width:820px}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:9px 12px;border:1px solid var(--line);background:var(--paper2);border-radius:999px;color:var(--muted);font-size:12px;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:999px;background:var(--accent);display:inline-block}
+.theoryStrip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.stripItem{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:13px 14px;box-shadow:var(--softShadow);min-height:82px}
+.stripItem b{font-size:11px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px}
+.math{font-family:var(--serif);font-size:18px;color:var(--ink);line-height:1.38}.math.small{font-size:15px}.math .muted{color:var(--muted)}
+.layout{display:grid;grid-template-columns:minmax(0,1.48fr) minmax(330px,.78fr);gap:18px;align-items:start}
+.panel{padding:16px;min-width:0}.panel.tight{padding:14px}.panelHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:0 0 13px}.panelHead h3{margin:0;font-size:15px;letter-spacing:-.02em}.panelHead p{margin:3px 0 0;font-size:12px;color:var(--muted)}
+.eqGrid{display:grid;grid-template-columns:1.04fr .96fr;gap:12px;margin-bottom:14px}.eqBox{box-shadow:none;border-radius:17px;padding:13px 14px;background:var(--paper2);min-height:96px}.eqBox .label{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:750;margin-bottom:8px}
+svg{width:100%;height:auto;display:block;background:linear-gradient(180deg,var(--paper2),color-mix(in srgb,var(--paper2) 90%,var(--bg)));border:1px solid var(--line);border-radius:20px;overflow:hidden}.svgWrap{position:relative}.caption{position:absolute;left:14px;bottom:12px;right:14px;display:flex;justify-content:space-between;gap:10px;pointer-events:none}.badge{background:color-mix(in srgb,var(--paper) 88%,transparent);border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:11px;color:var(--muted);box-shadow:var(--softShadow)}
+.sideStack{display:grid;gap:18px}.card{padding:16px}.card h3{font-size:16px;letter-spacing:-.025em;margin:0 0 9px}.card p{margin:0;color:var(--muted);font-size:14px}.notice{display:grid;gap:9px;margin-top:10px}.notice div{display:grid;grid-template-columns:22px 1fr;gap:9px;align-items:start;color:var(--muted);font-size:14px}.notice i{width:20px;height:20px;border-radius:999px;background:var(--shadeA);color:var(--accent);display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:800}.rows{display:grid}.row{display:grid;grid-template-columns:88px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.row b{font-size:11px;color:var(--muted);letter-spacing:.09em;text-transform:uppercase}.row span{font-size:14px;color:var(--ink)}
+.atlas{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}.mini{box-shadow:var(--softShadow);padding:13px;border-radius:18px;min-height:128px;cursor:pointer;transition:transform .15s ease,border-color .15s ease}.mini:hover{transform:translateY(-2px);border-color:var(--accent)}.mini.active{border-color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent), var(--softShadow)}.mini b{font-size:13px;letter-spacing:-.015em}.mini p{font-size:12px;color:var(--muted);margin:7px 0 0}.mini .sym{font-family:var(--serif);font-size:20px;color:var(--accent);margin-top:11px}
+.footer{font-size:12px;color:var(--muted);padding:0 5px 8px}.kbd{font-family:var(--mono);font-size:11px;color:var(--faint)}
+@media(max-width:1120px){.app{grid-template-columns:1fr}.sidebar{position:relative;top:0;max-height:none}.layout{grid-template-columns:1fr}.atlas{grid-template-columns:repeat(3,minmax(0,1fr))}.theoryStrip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.app{padding:10px}.hero{grid-template-columns:1fr;padding:18px}.hero h2{font-size:25px}.eqGrid,.theoryStrip,.atlas{grid-template-columns:1fr}.caption{display:none}.panel{padding:12px}.sidebar{padding:14px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div>
+        <div class="kicker">Microeconomic theory</div>
+        <h1>Preference axioms<br>geometric atlas</h1>
+        <p class="sub">A clean visual notebook for seeing what each axiom imposes on a preference relation.</p>
+      </div>
+      <button class="theme" id="themeBtn" aria-label="Toggle dark mode">☾</button>
+    </div>
+    <div class="nav" id="nav"></div>
+    <div class="controls">
+      <div class="control">
+        <label><span>Reference bundle x₁</span><b id="x1val">4.0</b></label>
+        <input id="x1" type="range" min="1.4" max="8.6" step="0.1" value="4.0" />
+      </div>
+      <div class="control">
+        <label><span>Reference bundle x₂</span><b id="x2val">4.0</b></label>
+        <input id="x2" type="range" min="1.4" max="8.6" step="0.1" value="4.0" />
+      </div>
+      <div class="control">
+        <label><span>Visual emphasis</span><b id="modeVal">Contours</b></label>
+        <div class="segment" aria-label="visual emphasis">
+          <button id="contourBtn" class="active" type="button">Contours</button>
+          <button id="logicBtn" type="button">Logic</button>
+        </div>
+      </div>
+      <label class="toggle"><span>Show economic annotations</span><input id="notesToggle" type="checkbox" checked /></label>
+    </div>
+  </aside>
+
+  <main class="main">
+    <section class="panel hero">
+      <div>
+        <div class="kicker">Preference relations · contour sets · violations</div>
+        <h2 id="title">Completeness</h2>
+        <p id="subtitle">Every two bundles in the consumption set are comparable.</p>
+      </div>
+      <div class="pill"><span class="dot"></span><span>X ⊂ ℝ²₊ · x ⪰ y · U(x) · L(x)</span></div>
+    </section>
+
+    <section class="theoryStrip">
+      <div class="stripItem"><b>Weak preference</b><div class="math">x ⪰ y</div><div class="math small muted">x is at least as good as y</div></div>
+      <div class="stripItem"><b>Strict preference</b><div class="math">x ≻ y ⇔ x ⪰ y and not y ⪰ x</div></div>
+      <div class="stripItem"><b>Indifference</b><div class="math">x ∼ y ⇔ x ⪰ y and y ⪰ x</div></div>
+      <div class="stripItem"><b>Contour sets</b><div class="math">U(x)={y∈X:y⪰x}<br>L(x)={y∈X:x⪰y}</div></div>
+    </section>
+
+    <section class="layout">
+      <div class="panel">
+        <div class="eqGrid">
+          <div class="eqBox">
+            <div class="label">Formal statement</div>
+            <div class="math" id="axiomEq"></div>
+          </div>
+          <div class="eqBox">
+            <div class="label">Geometric reading</div>
+            <div class="math" id="geoEq"></div>
+          </div>
+        </div>
+        <div class="panelHead">
+          <div><h3>Geometric representation</h3><p>Left panel: axiom satisfied. Right panel: classic violation.</p></div>
+          <div class="pill"><span class="dot"></span><span id="legendText">reference bundle</span></div>
+        </div>
+        <div class="svgWrap">
+          <svg id="mainSvg" viewBox="0 0 1040 522" role="img" aria-label="Geometric representation of selected preference axiom"></svg>
+          <div class="caption"><span class="badge">good geometry: ordered contour sets</span><span class="badge">bad geometry: violation visible</span></div>
+        </div>
+      </div>
+
+      <div class="sideStack">
+        <div class="card">
+          <h3>What to notice</h3>
+          <div class="notice" id="notice"></div>
+        </div>
+        <div class="card">
+          <h3>Exam-style summary</h3>
+          <div class="rows">
+            <div class="row"><b>Object</b><span id="obj"></span></div>
+            <div class="row"><b>Test</b><span id="test"></span></div>
+            <div class="row"><b>Failure</b><span id="fail"></span></div>
+            <div class="row"><b>Typical u</b><span id="utility"></span></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Logical hierarchy</h3>
+          <p id="hierarchy"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel tight">
+      <div class="panelHead"><div><h3>Compact atlas</h3><p>Each tile is one geometric constraint on the relation ⪰.</p></div><span class="pill">click a tile</span></div>
+      <div class="atlas" id="atlas"></div>
+    </section>
+    <div class="footer">Original schematic figures for study. The point is not to memorize drawings, but to read each axiom as a restriction on upper and lower contour sets. <span class="kbd">v2 · pleasant + theory-consistent</span></div>
+  </main>
+</div>
+<script>
+'use strict';
+const AXIOMS={
+  completeness:{
+    name:'Completeness', short:'Complete', sym:'∀x,y',
+    subtitle:'Every two bundles in the consumption set are comparable.',
+    axiom:'∀x,y∈X: x ⪰ y or y ⪰ x.',
+    geo:'No pair is left outside the ranking. The relation covers the whole consumption set X.',
+    obj:'A binary relation ⪰ that ranks all pairs in X.',
+    test:'Take arbitrary x,y∈X. At least one comparison must be true.',
+    fail:'Incomplete preferences: two feasible bundles are incomparable.',
+    utility:'Any real-valued utility u:X→ℝ represents a complete relation.',
+    hierarchy:'Utility representation implies completeness because real numbers are completely ordered. Completeness alone says nothing about smoothness, monotonicity, or convexity.',
+    notice:['Completeness is comparability, not rationality by itself.','A partial order such as componentwise dominance violates completeness.','Graphically, incompleteness appears as pairs with no arrow in either direction.']
+  },
+  transitivity:{
+    name:'Transitivity', short:'Transitive', sym:'x⪰y⪰z',
+    subtitle:'Preference chains must not generate cycles.',
+    axiom:'x ⪰ y and y ⪰ z ⇒ x ⪰ z.',
+    geo:'Contour levels can be stacked consistently only when preference cycles are absent.',
+    obj:'Consistency of all three-bundle comparisons.',
+    test:'Check every triple x,y,z∈X.',
+    fail:'A cycle: x ≻ y, y ≻ z, z ≻ x.',
+    utility:'No real-valued utility can represent a strict cycle.',
+    hierarchy:'Completeness plus transitivity gives a preference ordering. Most consumer theory starts here before adding topological or shape restrictions.',
+    notice:['Transitivity is the no-cycle condition.','It makes maximization meaningful: a chosen best object cannot be beaten through a chain.','Without it, indifference curves cannot be interpreted as ordered utility levels.']
+  },
+  continuity:{
+    name:'Continuity', short:'Continuous', sym:'closed U,L',
+    subtitle:'Small changes in bundles cannot cause discontinuous jumps in ranking.',
+    axiom:'For every x∈X, U(x)={y:y⪰x} and L(x)={y:x⪰y} are closed in X.',
+    geo:'Upper and lower contour sets contain their boundary limit points.',
+    obj:'Closed upper and lower contour sets.',
+    test:'If yⁿ⪰x and yⁿ→y, then y⪰x. Similarly for lower sets.',
+    fail:'Lexicographic preferences: a preferred sequence can converge to a non-preferred bundle.',
+    utility:'Continuous u represents continuous preferences by U(x)={y:u(y)≥u(x)}.',
+    hierarchy:'Continuity is a topological axiom. It is independent of monotonicity and convexity, but crucial for existence and separation arguments.',
+    notice:['Closed contour sets are the visual signature of continuity.','Lexicographic preferences are complete and transitive but not continuous.','Continuity rules out infinitely sharp priority of one good over another.']
+  },
+  monotonicity:{
+    name:'Monotonicity', short:'Monotone', sym:'NE ↑',
+    subtitle:'More commodities are better.',
+    axiom:'Strong form: y ≥ x and y≠x ⇒ y ≻ x.',
+    geo:'The northeast direction is the direction of strict improvement.',
+    obj:'Preference respects the commodity order on ℝ²₊.',
+    test:'Move weakly northeast and strictly in at least one coordinate. Welfare must rise.',
+    fail:'Satiation or bads: more of a commodity can lower welfare.',
+    utility:'u(x)=x₁x₂ is strongly monotone on ℝ²₊₊.',
+    hierarchy:'Strong monotonicity implies local nonsatiation. Local nonsatiation does not imply global monotonicity.',
+    notice:['Monotonicity is directional: northeast movements improve the bundle.','It rules out interior bliss points.','It is stronger than merely saying “there is always something nearby better.”']
+  },
+  lns:{
+    name:'Local nonsatiation', short:'LNS', sym:'∀ε',
+    subtitle:'At every bundle, an arbitrarily close strictly better bundle exists.',
+    axiom:'∀x∈X, ∀ε>0, ∃y∈X: ‖y−x‖<ε and y ≻ x.',
+    geo:'No bundle has a small neighborhood with no improvement.',
+    obj:'Absence of local bliss points or local plateaus with no escape.',
+    test:'Draw any ε-ball around x. It must contain some y≻x.',
+    fail:'A bliss point: near it, every nearby bundle is weakly worse.',
+    utility:'u(x)=x₁+x₂ satisfies LNS. A bliss-point utility violates it at the bliss point.',
+    hierarchy:'LNS is enough for budget exhaustion in standard problems. It is weaker than monotonicity because the improving nearby direction need not be northeast.',
+    notice:['LNS is local, not global.','It does not say every good is desirable.','Its main economic force: consumers do not leave money unspent when a nearby affordable improvement exists.']
+  },
+  convexity:{
+    name:'Convexity', short:'Convex', sym:'λy+(1−λ)z',
+    subtitle:'Averages of preferred bundles remain preferred.',
+    axiom:'If y⪰x and z⪰x, then λy+(1−λ)z ⪰ x for every λ∈[0,1].',
+    geo:'Every upper contour set U(x) is convex.',
+    obj:'Shape restriction on upper contour sets.',
+    test:'Pick two points in U(x). The entire segment between them must stay inside U(x).',
+    fail:'Taste for extremes: two preferred extremes but their average is not preferred.',
+    utility:'Quasi-concave utilities represent convex preferences. u(x)=max{x₁,x₂} violates convexity.',
+    hierarchy:'Convexity is separate from monotonicity. Perfect substitutes are convex but not strictly convex; extreme-loving preferences are nonconvex.',
+    notice:['Convexity is “preference for mixtures” in weak form.','It is exactly the convexity of upper contour sets.','Strict convexity would make the average strictly better than two distinct indifferent bundles.']
+  }
+};
+const ORDER=['completeness','transitivity','continuity','monotonicity','lns','convexity'];
+let state={key:'completeness',x1:4,x2:4,mode:'contours',notes:true};
+const $=(id)=>document.getElementById(id);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function html(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function buildUI(){
+  const nav=$('nav'), atlas=$('atlas'); nav.innerHTML=''; atlas.innerHTML='';
+  ORDER.forEach(k=>{
+    const a=AXIOMS[k];
+    const b=document.createElement('button');
+    b.type='button'; b.innerHTML=`<span>${a.name}</span><span>${a.sym}</span>`; b.onclick=()=>setAxiom(k); nav.appendChild(b);
+    const m=document.createElement('div');
+    m.className='mini'; m.onclick=()=>setAxiom(k);
+    m.innerHTML=`<b>${a.name}</b><p>${html(a.subtitle)}</p><div class="sym">${html(a.sym)}</div>`; atlas.appendChild(m);
+  });
+}
+function setAxiom(k){state.key=k; render();}
+function setMode(m){state.mode=m; $('contourBtn').classList.toggle('active',m==='contours'); $('logicBtn').classList.toggle('active',m==='logic'); $('modeVal').textContent=m==='contours'?'Contours':'Logic'; render();}
+function render(){
+  const a=AXIOMS[state.key];
+  $('title').textContent=a.name; $('subtitle').textContent=a.subtitle;
+  $('axiomEq').textContent=a.axiom; $('geoEq').textContent=a.geo;
+  $('obj').textContent=a.obj; $('test').textContent=a.test; $('fail').textContent=a.fail; $('utility').textContent=a.utility; $('hierarchy').textContent=a.hierarchy;
+  $('notice').innerHTML=a.notice.map((t,i)=>`<div><i>${i+1}</i><span>${html(t)}</span></div>`).join('');
+  document.querySelectorAll('.nav button').forEach((b,i)=>b.classList.toggle('active',ORDER[i]===state.key));
+  document.querySelectorAll('.mini').forEach((b,i)=>b.classList.toggle('active',ORDER[i]===state.key));
+  draw();
+}
+function P(side){return side==='L'?{x0:60,y0:66,w:414,h:366}:{x0:566,y0:66,w:414,h:366};}
+function sx(p,x){return p.x0+(x/10)*p.w;} function sy(p,y){return p.y0+p.h-(y/10)*p.h;}
+function fmt(v){return Number(v).toFixed(1);}
+function markerDefs(){return `<defs>
+  <marker id="arrowA" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="var(--accent)"/></marker>
+  <marker id="arrowB" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="var(--bad)"/></marker>
+  <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="var(--blue)"/></marker>
+  <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>`;}
+function axes(p,title,sub){
+  let s=`<g>`;
+  s+=`<rect x="${p.x0}" y="${p.y0}" width="${p.w}" height="${p.h}" rx="16" fill="transparent" stroke="var(--line)"/>`;
+  for(let i=1;i<10;i++){s+=`<line x1="${sx(p,i)}" y1="${p.y0}" x2="${sx(p,i)}" y2="${p.y0+p.h}" stroke="var(--grid)" stroke-width="1"/>`;s+=`<line x1="${p.x0}" y1="${sy(p,i)}" x2="${p.x0+p.w}" y2="${sy(p,i)}" stroke="var(--grid)" stroke-width="1"/>`;}
+  s+=`<path d="M ${p.x0} ${p.y0+p.h} H ${p.x0+p.w+14}" stroke="var(--muted)" stroke-width="1.5"/><path d="M ${p.x0} ${p.y0+p.h} V ${p.y0-14}" stroke="var(--muted)" stroke-width="1.5"/>`;
+  s+=`<text x="${p.x0}" y="${p.y0-35}" fill="var(--ink)" font-size="17" font-weight="760">${title}</text>`;
+  if(sub) s+=`<text x="${p.x0}" y="${p.y0-15}" fill="var(--muted)" font-size="12">${sub}</text>`;
+  s+=`<text x="${p.x0+p.w-10}" y="${p.y0+p.h+31}" fill="var(--muted)" font-size="13">good 1</text>`;
+  s+=`<text x="${p.x0-44}" y="${p.y0+16}" fill="var(--muted)" font-size="13">good 2</text>`;
+  s+=`</g>`; return s;
+}
+function point(p,x,y,label,color='var(--accent)',r=6,above=true){
+  const dx=9, dy=above?-9:18;
+  return `<g><circle cx="${sx(p,x)}" cy="${sy(p,y)}" r="${r+4}" fill="${color}" opacity=".12"/><circle cx="${sx(p,x)}" cy="${sy(p,y)}" r="${r}" fill="${color}" filter="url(#softGlow)"/><text x="${sx(p,x)+dx}" y="${sy(p,y)+dy}" fill="var(--ink)" font-size="13" font-weight="720">${label}</text></g>`;
+}
+function text(p,x,y,t,color='var(--muted)',size=13,weight=650){return `<text x="${sx(p,x)}" y="${sy(p,y)}" fill="${color}" font-size="${size}" font-weight="${weight}">${t}</text>`;}
+function line(p,x1,y1,x2,y2,color='var(--accent)',dash='',w=2.4){return `<line x1="${sx(p,x1)}" y1="${sy(p,y1)}" x2="${sx(p,x2)}" y2="${sy(p,y2)}" stroke="${color}" stroke-width="${w}" ${dash}/>`;}
+function arrow(p,x1,y1,x2,y2,color='var(--accent)',label='',mark='arrowA'){
+  let s=`<line x1="${sx(p,x1)}" y1="${sy(p,y1)}" x2="${sx(p,x2)}" y2="${sy(p,y2)}" stroke="${color}" stroke-width="2.4" marker-end="url(#${mark})"/>`;
+  if(label) s+=`<text x="${(sx(p,x1)+sx(p,x2))/2+7}" y="${(sy(p,y1)+sy(p,y2))/2-7}" fill="${color}" font-size="13" font-weight="760">${label}</text>`;
+  return s;
+}
+function cdCurve(p,u,color='var(--accent)',dash='',w=2.7){
+  let d=''; const minx=clamp(u/10,.22,10);
+  for(let x=minx;x<=10;x+=.045){const y=u/x;if(y>10)continue;d+=(d?' L':'M')+sx(p,x).toFixed(1)+' '+sy(p,y).toFixed(1);}
+  return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" ${dash}/>`;
+}
+function upperCD(p,u,opacity=.13){
+  let d=`M ${sx(p,clamp(u/10,0,10))} ${sy(p,10)} L ${sx(p,10)} ${sy(p,10)} L ${sx(p,10)} ${sy(p,clamp(u/10,0,10))}`;
+  for(let x=10;x>=clamp(u/10,.22,10);x-=.055){d+=` L ${sx(p,x).toFixed(1)} ${sy(p,Math.min(10,u/x)).toFixed(1)}`;} d+=' Z';
+  return `<path d="${d}" fill="var(--accent)" opacity="${opacity}"/>`;
+}
+function lowerCD(p,u,opacity=.08){
+  let d=`M ${sx(p,0)} ${sy(p,0)} L ${sx(p,10)} ${sy(p,0)} L ${sx(p,10)} ${sy(p,clamp(u/10,0,10))}`;
+  for(let x=10;x>=clamp(u/10,.22,10);x-=.055){d+=` L ${sx(p,x).toFixed(1)} ${sy(p,Math.min(10,u/x)).toFixed(1)}`;} d+=` L ${sx(p,0)} ${sy(p,10)} Z`;
+  return `<path d="${d}" fill="var(--bad)" opacity="${opacity}"/>`;
+}
+function ball(p,x,y,r,color='var(--blue)',fill='none',dash='stroke-dasharray="6 6"'){return `<circle cx="${sx(p,x)}" cy="${sy(p,y)}" r="${r}" fill="${fill}" stroke="${color}" stroke-width="2" ${dash}/>`;}
+function logicPanel(p,items){
+  let s=`<g>`; const x=p.x0+18; let y=p.y0+42;
+  items.forEach((it,i)=>{s+=`<rect x="${x}" y="${y-22}" width="${p.w-36}" height="42" rx="13" fill="${i===items.length-1?'var(--shadeA)':'var(--paper2)'}" opacity=".96" stroke="var(--line)"/>`;
+  s+=`<text x="${x+14}" y="${y+5}" fill="${it.color||'var(--ink)'}" font-size="15" font-family="Georgia,serif" font-weight="${it.bold?760:500}">${html(it.t)}</text>`; y+=56;});
+  s+=`</g>`; return s;
+}
+function draw(){
+  const L=P('L'), R=P('R'), x=state.x1, y=state.x2; let s=markerDefs()+`<rect width="1040" height="522" fill="transparent"/>`;
+  if(state.key==='completeness')s+=drawCompleteness(L,R,x,y);
+  if(state.key==='transitivity')s+=drawTransitivity(L,R,x,y);
+  if(state.key==='continuity')s+=drawContinuity(L,R,x,y);
+  if(state.key==='monotonicity')s+=drawMonotonicity(L,R,x,y);
+  if(state.key==='lns')s+=drawLNS(L,R,x,y);
+  if(state.key==='convexity')s+=drawConvexity(L,R,x,y);
+  $('mainSvg').innerHTML=s;
+}
+function maybeLogic(L,R,good,bad){
+  if(state.mode!=='logic')return '';
+  return logicPanel(L,good)+logicPanel(R,bad);
+}
+function drawCompleteness(L,R,x,y){
+  let s=axes(L,'Axiom satisfied','all pairs are ranked')+axes(R,'Classic violation','partial order leaves gaps');
+  const u=x*y, a=[Math.max(1.3,x-1.5),Math.min(8.8,y+2.1)], b=[Math.min(8.8,x+2.3),Math.max(1.2,y-1.1)];
+  s+=upperCD(L,u)+cdCurve(L,u)+point(L,x,y,'x⁰');
+  s+=cdCurve(L,a[0]*a[1],'var(--blue)','stroke-dasharray="6 5"',2.1)+cdCurve(L,b[0]*b[1],'var(--bad)','stroke-dasharray="6 5"',2.1);
+  s+=point(L,a[0],a[1],'a','var(--blue)',5)+point(L,b[0],b[1],'b','var(--bad)',5);
+  s+=text(L,1.0,9.45,'u(a) and u(b) can always be compared','var(--muted)');
+  const p=[3.05,7.05], q=[7.05,3.05];
+  s+=`<rect x="${sx(R,p[0])}" y="${sy(R,10)}" width="${sx(R,10)-sx(R,p[0])}" height="${sy(R,0)-sy(R,10)}" fill="var(--accent)" opacity=".10"/>`;
+  s+=`<rect x="${sx(R,0)}" y="${sy(R,p[1])}" width="${sx(R,10)-sx(R,0)}" height="${sy(R,0)-sy(R,p[1])}" fill="var(--bad)" opacity=".06"/>`;
+  s+=point(R,p[0],p[1],'a','var(--accent)',6)+point(R,q[0],q[1],'b','var(--bad)',6);
+  s+=line(R,p[0],p[1],q[0],q[1],'var(--bad)','stroke-dasharray="7 6"',2.4);
+  s+=text(R,1.0,9.45,'componentwise dominance: a and b cross','var(--muted)');
+  s+=text(R,2.0,1.15,'neither a ⪰ b nor b ⪰ a','var(--bad)');
+  if(state.notes){s+=text(L,1,1.05,'Completeness = no missing comparison','var(--accent)');s+=text(R,1,8.7,'incomparable region','var(--bad)');}
+  return s+maybeLogic(L,R,[{t:'Take any a,b∈X.'},{t:'Real numbers u(a),u(b) are ordered.'},{t:'So a⪰b or b⪰a.',bold:true,color:'var(--accent)'}],[{t:'Define a⪰b iff a≥b componentwise.'},{t:'a=(3,7), b=(7,3).'},{t:'Neither dominates the other.',bold:true,color:'var(--bad)'}]);
+}
+function drawTransitivity(L,R,x,y){
+  let s=axes(L,'Axiom satisfied','ordered utility levels')+axes(R,'Classic violation','cycle of strict preference');
+  [10,22,40,62].forEach((u,i)=>s+=cdCurve(L,u,i===3?'var(--accent)':i===2?'var(--blue)':'var(--faint)',i<3?'stroke-dasharray="6 6"':'',i===3?2.8:2));
+  const z=[2.0,2.1], yy=[4.1,4.4], xx=[7.4,7.0];
+  s+=point(L,z[0],z[1],'z','var(--bad)',5,false)+point(L,yy[0],yy[1],'y','var(--blue)',5)+point(L,xx[0],xx[1],'x','var(--accent)',6);
+  s+=arrow(L,z[0]+.25,z[1]+.18,yy[0]-.25,yy[1]-.18,'var(--blue)','y ⪰ z','arrowBlue');
+  s+=arrow(L,yy[0]+.25,yy[1]+.18,xx[0]-.25,xx[1]-.18,'var(--accent)','x ⪰ y','arrowA');
+  s+=text(L,1.0,9.45,'higher level dominates all lower linked levels','var(--muted)');
+  const A=[5,8.0],B=[2.3,3.9],C=[7.7,3.9];
+  s+=point(R,A[0],A[1],'x','var(--accent)',6)+point(R,B[0],B[1],'y','var(--blue)',6)+point(R,C[0],C[1],'z','var(--bad)',6);
+  s+=arrow(R,A[0]-.2,A[1]-.42,B[0]+.32,B[1]+.35,'var(--accent)','x ≻ y','arrowA');
+  s+=arrow(R,B[0]+.45,B[1],C[0]-.45,C[1],'var(--blue)','y ≻ z','arrowBlue');
+  s+=arrow(R,C[0]-.05,C[1]+.45,A[0]+.05,A[1]-.45,'var(--bad)','z ≻ x','arrowB');
+  s+=text(R,1.1,1.15,'strict cycle destroys ordinal consistency','var(--bad)');
+  if(state.notes)s+=text(L,1,1.05,'utility levels cannot cycle','var(--accent)');
+  return s+maybeLogic(L,R,[{t:'x⪰y'},{t:'y⪰z'},{t:'therefore x⪰z',bold:true,color:'var(--accent)'}],[{t:'x≻y and y≻z'},{t:'but z≻x'},{t:'contradiction to transitivity',bold:true,color:'var(--bad)'}]);
+}
+function drawContinuity(L,R,x,y){
+  let s=axes(L,'Axiom satisfied','closed upper and lower sets')+axes(R,'Classic violation','lexicographic preference');
+  const u=x*y;
+  s+=upperCD(L,u,.14)+lowerCD(L,u,.07)+cdCurve(L,u)+point(L,x,y,'x⁰','var(--accent)',6);
+  s+=text(L,1.0,9.45,'U(x⁰) and L(x⁰) include their boundaries','var(--muted)');
+  s+=text(L,Math.min(7.3,x+.4),Math.min(9.2,y+1.2),'U(x⁰)','var(--accent)')+text(L,1.0,1.1,'L(x⁰)','var(--bad)');
+  const x0=x, y0=y, ylim=clamp(y-1.65,1,8.5);
+  s+=`<rect x="${sx(R,x0)}" y="${sy(R,10)}" width="${sx(R,10)-sx(R,x0)}" height="${sy(R,0)-sy(R,10)}" fill="var(--accent)" opacity=".12"/>`;
+  s+=`<line x1="${sx(R,x0)}" y1="${sy(R,y0)}" x2="${sx(R,x0)}" y2="${sy(R,10)}" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>`;
+  s+=`<line x1="${sx(R,x0)}" y1="${sy(R,0)}" x2="${sx(R,x0)}" y2="${sy(R,y0)}" stroke="var(--bad)" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 6"/>`;
+  s+=point(R,x0,y0,'x⁰','var(--accent)',6);
+  for(let i=1;i<=5;i++){s+=point(R,x0+1.0/i,ylim,'','var(--blue)',3.5,false);} s+=point(R,x0,ylim,'limit','var(--bad)',5,false);
+  s+=text(R,1.0,9.45,'lexicographic: good 1 has absolute priority','var(--muted)');
+  s+=text(R,1.05,1.15,'yⁿ⪰x⁰, yⁿ→y, but y⋡x⁰','var(--bad)');
+  return s+maybeLogic(L,R,[{t:'yⁿ∈U(x)'},{t:'yⁿ→y'},{t:'closedness gives y∈U(x)',bold:true,color:'var(--accent)'}],[{t:'yⁿ=(x₁+1/n, x₂−1)'},{t:'yⁿ≻x by lexicographic priority'},{t:'limit is not preferred to x',bold:true,color:'var(--bad)'}]);
+}
+function drawMonotonicity(L,R,x,y){
+  let s=axes(L,'Axiom satisfied','northeast improvement')+axes(R,'Classic violation','satiation / bliss point');
+  const u=x*y; s+=upperCD(L,u,.14)+cdCurve(L,u)+point(L,x,y,'x','var(--accent)',6);
+  const ne=[clamp(x+2.25,0,9.25),clamp(y+1.75,0,9.25)], sw=[clamp(x-1.75,.7,10),clamp(y-1.35,.7,10)];
+  s+=arrow(L,x,y,ne[0],ne[1],'var(--accent)','strictly better','arrowA')+arrow(L,x,y,sw[0],sw[1],'var(--bad)','worse','arrowB');
+  s+=text(L,1,9.45,'y≥x, y≠x ⇒ y≻x','var(--muted)');
+  const b=[5.15,5.1];
+  [1.0,2.0,3.0].forEach((r,i)=>{s+=`<circle cx="${sx(R,b[0])}" cy="${sy(R,b[1])}" r="${r*38}" fill="none" stroke="${i===0?'var(--accent)':i===1?'var(--blue)':'var(--bad)'}" stroke-width="2" opacity=".85"/>`;});
+  s+=point(R,b[0],b[1],'bliss','var(--accent)',6);
+  const a=[4.2,4.2], more=[7.8,7.3]; s+=point(R,a[0],a[1],'x','var(--blue)',5)+point(R,more[0],more[1],'y','var(--bad)',5);
+  s+=arrow(R,a[0],a[1],more[0],more[1],'var(--bad)','more but worse','arrowB');
+  s+=text(R,1,9.45,'u(x)=−‖x−b‖: distance from bliss matters','var(--muted)');
+  s+=text(R,1,1.15,'more can move away from bliss','var(--bad)');
+  return s+maybeLogic(L,R,[{t:'y≥x and y≠x'},{t:'all goods are goods'},{t:'therefore y≻x',bold:true,color:'var(--accent)'}],[{t:'there is a bliss bundle b'},{t:'y≥x but y farther from b'},{t:'so y≺x',bold:true,color:'var(--bad)'}]);
+}
+function drawLNS(L,R,x,y){
+  let s=axes(L,'Axiom satisfied','nearby improvement always exists')+axes(R,'Classic violation','local satiation');
+  const u=x*y; s+=upperCD(L,u,.12)+cdCurve(L,u)+point(L,x,y,'x','var(--accent)',6);
+  s+=ball(L,x,y,62,'var(--blue)');
+  const yp=[clamp(x+.72,0,9),clamp(y+.55,0,9)]; s+=point(L,yp[0],yp[1],'y','var(--blue)',5)+arrow(L,x,y,yp[0],yp[1],'var(--blue)','y≻x','arrowBlue');
+  s+=text(L,1,9.45,'every ε-ball around x contains improvement','var(--muted)');
+  const b=[5.1,5.05];
+  [1.0,2.0,3.0].forEach((r,i)=>{s+=`<circle cx="${sx(R,b[0])}" cy="${sy(R,b[1])}" r="${r*37}" fill="none" stroke="${i===0?'var(--accent)':i===1?'var(--blue)':'var(--bad)'}" stroke-width="2" opacity=".86"/>`;});
+  s+=`<circle cx="${sx(R,b[0])}" cy="${sy(R,b[1])}" r="70" fill="var(--bad)" opacity=".08" stroke="var(--bad)" stroke-width="2" stroke-dasharray="6 6"/>`;
+  s+=point(R,b[0],b[1],'x*','var(--accent)',6);
+  s+=text(R,1,9.45,'at x*, no nearby point is strictly better','var(--muted)');
+  s+=text(R,1.0,1.15,'∃ε>0 such that no y in Bε(x*) satisfies y≻x*','var(--bad)');
+  return s+maybeLogic(L,R,[{t:'choose any ε>0'},{t:'find y within ε of x'},{t:'with y≻x',bold:true,color:'var(--accent)'}],[{t:'x* is a local bliss point'},{t:'inside a small ball all y⪯x*'},{t:'LNS fails at x*',bold:true,color:'var(--bad)'}]);
+}
+function drawConvexity(L,R,x,y){
+  let s=axes(L,'Axiom satisfied','convex upper contour set')+axes(R,'Classic violation','love of extremes');
+  const u=x*y; s+=upperCD(L,u,.14)+cdCurve(L,u)+point(L,x,y,'x⁰','var(--accent)',6);
+  const a=[clamp(x+3,1,9),clamp(y+.7,1,9)], b=[clamp(x+.7,1,9),clamp(y+3,1,9)], m=[(a[0]+b[0])/2,(a[1]+b[1])/2];
+  s+=line(L,a[0],a[1],b[0],b[1],'var(--blue)','stroke-dasharray="7 6"',2.2);
+  s+=point(L,a[0],a[1],'y','var(--blue)',5)+point(L,b[0],b[1],'z','var(--blue)',5)+point(L,m[0],m[1],'mix','var(--accent)',5,false);
+  s+=text(L,1,9.45,'if y,z∈U(x⁰), the segment stays in U(x⁰)','var(--muted)');
+  const t=6.1;
+  s+=`<rect x="${sx(R,t)}" y="${sy(R,10)}" width="${sx(R,10)-sx(R,t)}" height="${sy(R,0)-sy(R,10)}" fill="var(--accent)" opacity=".12"/>`;
+  s+=`<rect x="${sx(R,0)}" y="${sy(R,10)}" width="${sx(R,10)-sx(R,0)}" height="${sy(R,t)-sy(R,10)}" fill="var(--accent)" opacity=".12"/>`;
+  s+=`<path d="M ${sx(R,t)} ${sy(R,0)} L ${sx(R,t)} ${sy(R,t)} L ${sx(R,0)} ${sy(R,t)}" fill="none" stroke="var(--accent)" stroke-width="3"/>`;
+  const p=[t+.3,1.6], q=[1.6,t+.3], mid=[(p[0]+q[0])/2,(p[1]+q[1])/2];
+  s+=line(R,p[0],p[1],q[0],q[1],'var(--bad)','stroke-dasharray="7 6"',2.2);
+  s+=point(R,p[0],p[1],'y','var(--blue)',5)+point(R,q[0],q[1],'z','var(--blue)',5)+point(R,mid[0],mid[1],'mix','var(--bad)',5,false);
+  s+=text(R,1,9.45,'u(x)=max{x₁,x₂}: upper set is a union of arms','var(--muted)');
+  s+=text(R,1,1.15,'two preferred extremes, average not preferred','var(--bad)');
+  return s+maybeLogic(L,R,[{t:'y,z∈U(x)'},{t:'λy+(1−λ)z lies on segment'},{t:'segment ⊂ U(x)',bold:true,color:'var(--accent)'}],[{t:'y,z∈U(x)'},{t:'midpoint falls in the gap'},{t:'upper set is nonconvex',bold:true,color:'var(--bad)'}]);
+}
+$('x1').addEventListener('input',e=>{state.x1=+e.target.value;$('x1val').textContent=fmt(state.x1);render();});
+$('x2').addEventListener('input',e=>{state.x2=+e.target.value;$('x2val').textContent=fmt(state.x2);render();});
+$('contourBtn').addEventListener('click',()=>setMode('contours'));
+$('logicBtn').addEventListener('click',()=>setMode('logic'));
+$('notesToggle').addEventListener('change',e=>{state.notes=e.target.checked;render();});
+$('themeBtn').addEventListener('click',()=>{
+  const root=document.documentElement; const dark=root.getAttribute('data-theme')==='dark';
+  root.setAttribute('data-theme',dark?'light':'dark'); $('themeBtn').textContent=dark?'☾':'☀';
+  try{localStorage.setItem('prefAtlasTheme',dark?'light':'dark');}catch(e){}
+});
+try{const saved=localStorage.getItem('prefAtlasTheme'); if(saved==='dark'){document.documentElement.setAttribute('data-theme','dark'); $('themeBtn').textContent='☀';}}catch(e){}
+buildUI(); render();
+</script>
+</body>
+</html>

@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive microeconomics diagram for the consumer problem and budget sets: feasible sets, budget hyperplanes, existence, Lagrange conditions, KKT cases, and corner solutions.">
+<link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+<title>Consumer Problem and Budget Sets | Consumer Demand Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#f7f2e9;
+  --paper:#fffdf8;
+  --paper-2:#fbf7ef;
+  --ink:#171717;
+  --muted:#69645a;
+  --line:#ded5c4;
+  --grid:#e7dfd0;
+  --accent:#0f766e;
+  --accent-2:#14b8a6;
+  --accent-soft:#e5f3ef;
+  --warn:#b45309;
+  --bad:#9f1239;
+  --good:#047857;
+  --shadow:0 18px 48px rgba(38,29,14,.08);
+  --radius:20px;
+  --font:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+[data-theme="dark"]{
+  --bg:#0d1520;
+  --paper:#141f2b;
+  --paper-2:#101923;
+  --ink:#eef6f3;
+  --muted:#aab7b2;
+  --line:#263442;
+  --grid:#22313f;
+  --accent:#2dd4bf;
+  --accent-2:#5eead4;
+  --accent-soft:#102b2a;
+  --warn:#f59e0b;
+  --bad:#fb7185;
+  --good:#34d399;
+  --shadow:0 20px 50px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+html,body{margin:0; min-height:100%; background:radial-gradient(circle at 16% 0%, var(--accent-soft), transparent 30%), var(--bg); color:var(--ink); font-family:var(--font);}
+body{overflow-x:hidden}
+.app{display:grid; grid-template-columns:310px minmax(0,1fr); gap:18px; padding:18px; min-height:100vh;}
+.sidebar,.card,.hero{background:rgba(255,253,248,.86); background:color-mix(in srgb, var(--paper) 92%, transparent); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow);}
+.sidebar{position:sticky; top:18px; align-self:start; max-height:calc(100vh - 36px); overflow:auto; padding:18px;}
+.brand{display:flex; align-items:center; gap:12px; margin-bottom:18px;}
+.mark{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2)); box-shadow:0 8px 25px color-mix(in srgb, var(--accent) 22%, transparent); position:relative;}
+.mark:after{content:""; position:absolute; inset:9px 7px; border-left:2px solid #fff; border-bottom:2px solid #fff; transform:skew(-10deg) rotate(-4deg); opacity:.9;}
+h1{font-size:1.08rem; line-height:1.1; margin:0; letter-spacing:-.02em;}
+.sub{font-size:.78rem;color:var(--muted); margin-top:5px;}
+.section-title{font-size:.73rem; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); margin:18px 0 10px; font-weight:750;}
+.control{padding:10px 0 12px; border-bottom:1px solid color-mix(in srgb, var(--line) 65%, transparent);}
+.control:last-child{border-bottom:0}
+label{display:flex; justify-content:space-between; gap:12px; align-items:baseline; font-size:.85rem; font-weight:690; margin-bottom:7px;}
+.value{font-family:var(--mono); color:var(--accent); font-weight:750; font-size:.82rem; white-space:nowrap;}
+input[type="range"]{width:100%; accent-color:var(--accent);}
+select,button{width:100%; border:1px solid var(--line); background:var(--paper-2); color:var(--ink); border-radius:12px; padding:10px 12px; font:inherit; outline:none;}
+select:focus,button:focus-visible{border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent)}
+button{cursor:pointer; font-weight:760; display:flex; align-items:center; justify-content:center; gap:8px;}
+button:hover{background:color-mix(in srgb, var(--accent-soft) 72%, var(--paper));}
+.toggle-row{display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-top:10px;}
+.pill{border:1px solid var(--line); border-radius:999px; padding:7px 10px; font-size:.78rem; color:var(--muted); display:flex; align-items:center; justify-content:center; gap:7px; background:var(--paper-2);}
+.pill strong{color:var(--ink)}
+main{min-width:0; display:flex; flex-direction:column; gap:18px;}
+.hero{padding:20px 22px; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px; align-items:center;}
+.hero h2{margin:0 0 7px; font-size:1.65rem; letter-spacing:-.045em;}
+.hero p{margin:0; color:var(--muted); max-width:850px; font-size:.96rem;}
+.badge-stack{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;}
+.badge{font-size:.77rem; border:1px solid var(--line); color:var(--muted); background:var(--paper-2); padding:7px 10px; border-radius:999px; white-space:nowrap;}
+.grid{display:grid; grid-template-columns:minmax(0,1.46fr) minmax(330px,.74fr); gap:18px; align-items:start;}
+.card{padding:16px; min-width:0;}
+.card-head{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:12px;}
+.card h3{font-size:1rem; margin:0; letter-spacing:-.02em;}
+.card .hint{font-size:.78rem; color:var(--muted); margin-top:4px;}
+.svg-wrap{position:relative; width:100%; aspect-ratio:1.22/1; border:1px solid var(--line); border-radius:18px; background:linear-gradient(180deg,color-mix(in srgb,var(--paper) 94%,transparent),var(--paper-2)); overflow:hidden;}
+svg{display:block; width:100%; height:100%;}
+.axis text,.anno{font-size:12px; fill:var(--muted); font-weight:650;}
+.smalltext{font-size:11px; fill:var(--muted);}
+.gridline{stroke:var(--grid); stroke-width:1; opacity:.75;}
+.axisline{stroke:var(--muted); stroke-width:1.3; opacity:.8;}
+.budget-fill{fill:color-mix(in srgb, var(--accent) 13%, transparent);}
+.budget-line{stroke:var(--accent); stroke-width:2.7; fill:none;}
+.dash{stroke-dasharray:6 6;}
+.ic{stroke:color-mix(in srgb, var(--accent) 74%, var(--ink)); stroke-width:1.65; fill:none; opacity:.5;}
+.ic-main{stroke:var(--accent); stroke-width:2.8; opacity:.95;}
+.tangent{stroke:var(--warn); stroke-width:1.8; stroke-dasharray:5 5;}
+.point{fill:var(--accent); stroke:var(--paper); stroke-width:3;}
+.corner{fill:var(--warn); stroke:var(--paper); stroke-width:3;}
+.kink{fill:var(--bad); stroke:var(--paper); stroke-width:3;}
+.bracket{stroke:var(--muted); stroke-width:1.2; fill:none; opacity:.75;}
+.math-card{border:1px solid var(--line); background:var(--paper-2); border-radius:16px; padding:13px 14px; margin-bottom:10px; overflow:auto;}
+.math-card .caption{font-size:.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:.10em; margin-bottom:8px; font-weight:780;}
+.eq{font-size:1.02rem;}
+.katex{font-size:1.02em;}
+.status{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:12px 0;}
+.stat{border:1px solid var(--line); background:var(--paper-2); border-radius:15px; padding:11px; min-height:74px;}
+.stat .label{font-size:.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-weight:780;}
+.stat .num{font-family:var(--mono); color:var(--ink); font-size:1.05rem; font-weight:790; margin-top:6px;}
+.stat .note{font-size:.76rem; color:var(--muted); margin-top:5px;}
+.reading{border-left:3px solid var(--accent); padding:11px 12px; background:var(--accent-soft); border-radius:13px; color:var(--ink); font-size:.88rem;}
+.notice{display:grid; gap:10px; margin-top:12px;}
+.notice .item{display:grid; grid-template-columns:22px 1fr; gap:9px; align-items:start; font-size:.86rem; color:var(--muted); border:1px solid var(--line); border-radius:14px; padding:10px; background:var(--paper-2);}
+.dot{width:10px;height:10px;border-radius:999px;background:var(--accent); margin-top:4px; box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 12%,transparent)}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+.case-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
+.case{border:1px solid var(--line); border-radius:16px; padding:12px; background:var(--paper-2); min-height:104px; position:relative; overflow:hidden;}
+.case.active{border-color:color-mix(in srgb,var(--accent) 55%,var(--line)); box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 24%,transparent); background:color-mix(in srgb,var(--accent-soft) 55%,var(--paper));}
+.case h4{margin:0 0 8px; font-size:.88rem;}
+.case p{margin:0; color:var(--muted); font-size:.78rem;}
+.case .mini-eq{font-family:var(--mono); font-size:.76rem; color:var(--accent); margin-top:8px;}
+.existence{display:grid; gap:10px;}
+.existence-row{display:grid; grid-template-columns:132px 1fr auto; gap:10px; align-items:center; border:1px solid var(--line); border-radius:14px; background:var(--paper-2); padding:10px;}
+.existence-row .name{font-size:.82rem; font-weight:750;}
+.existence-row .explain{font-size:.78rem; color:var(--muted);}
+.check{font-family:var(--mono); font-size:.8rem; color:var(--good); font-weight:900;}
+.fail{font-family:var(--mono); font-size:.8rem; color:var(--bad); font-weight:900;}
+
+.range-pair{display:grid; grid-template-columns:minmax(0,1fr) 76px; gap:9px; align-items:center;}
+.num-input{width:100%; border:1px solid var(--line); background:var(--paper-2); color:var(--ink); border-radius:10px; padding:7px 8px; font:700 .78rem var(--mono); outline:none;}
+.num-input:focus{border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent)}
+.help-mini{font-size:.75rem; color:var(--muted); margin-top:8px;}
+.solution-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:12px 0;}
+.solution-card{border:1px solid var(--line); background:var(--paper-2); border-radius:15px; padding:12px; min-height:116px;}
+.solution-card .label{font-size:.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-weight:780;}
+.solution-card .num{font-family:var(--mono); color:var(--ink); font-size:1.08rem; font-weight:820; margin:7px 0 6px;}
+.solution-card .formula{font-size:.82rem; color:var(--muted); overflow:auto;}
+.candidate-box{border:1px solid var(--line); background:linear-gradient(180deg,var(--paper-2),color-mix(in srgb,var(--accent-soft) 45%,var(--paper-2))); border-radius:15px; padding:12px; margin-top:12px;}
+.candidate-box h4{margin:0 0 6px; font-size:.88rem; letter-spacing:-.01em;}
+.candidate-box p{margin:0; color:var(--muted); font-size:.78rem;}
+.test-point{fill:var(--paper); stroke:var(--warn); stroke-width:3.2; stroke-dasharray:3 3; cursor:grab;}
+.test-point.feasible{stroke:var(--good);}
+.test-label{font-size:12px; fill:var(--warn); font-weight:760;}
+.test-label.feasible{fill:var(--good);}
+.drag-hint{position:absolute; left:14px; bottom:12px; border:1px solid var(--line); background:color-mix(in srgb,var(--paper) 88%,transparent); color:var(--muted); border-radius:999px; padding:6px 10px; font-size:.74rem; box-shadow:0 8px 24px rgba(0,0,0,.06); pointer-events:none;}
+
+.footer-summary{display:grid; grid-template-columns:1.1fr .9fr; gap:18px;}
+ul.clean{margin:0; padding-left:18px; color:var(--muted); font-size:.87rem;}
+ul.clean li{margin:7px 0;}
+.tag{display:inline-block; border:1px solid var(--line); background:var(--paper); border-radius:999px; padding:3px 8px; color:var(--muted); font-size:.72rem; margin-left:6px;}
+@media(max-width:1050px){.app{grid-template-columns:1fr}.sidebar{position:relative; top:auto; max-height:none}.grid,.row2,.footer-summary{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.badge-stack{justify-content:flex-start}.case-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.app{padding:10px}.hero h2{font-size:1.34rem}.status,.solution-grid{grid-template-columns:1fr}.svg-wrap{aspect-ratio:.92/1}.existence-row{grid-template-columns:1fr}.hero,.card,.sidebar{border-radius:16px}}
+</style>
+</head>
+<body data-theme="light">
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="mark"></div>
+      <div>
+        <h1>Consumer Problem</h1>
+        <div class="sub">budget sets · KKT · corners</div>
+      </div>
+    </div>
+
+    <button id="themeBtn" type="button">Toggle dark mode</button>
+
+    <div class="section-title">Preference technology</div>
+    <div class="control">
+      <label for="utilityType">Utility family <span class="value" id="utilityLabel">Cobb–Douglas</span></label>
+      <select id="utilityType">
+        <option value="cobb">Cobb–Douglas: x₁ᵅx₂¹⁻ᵅ</option>
+        <option value="linear">Perfect substitutes: ax₁+bx₂</option>
+        <option value="leontief">Perfect complements: min{ax₁,bx₂}</option>
+        <option value="quasilinear">Quasi-linear: γ ln(x₁+ε)+x₂</option>
+      </select>
+    </div>
+    <div class="control" id="alphaControl">
+      <label>Preference parameter α <span class="value" id="alphaVal">0.50</span></label>
+      <div class="range-pair"><input type="range" id="alpha" min="0.10" max="0.90" step="0.01" value="0.50" /><input class="num-input" type="number" id="alphaNum" min="0.10" max="0.90" step="0.01" value="0.50" /></div>
+    </div>
+    <div class="control" id="aControl">
+      <label>Good 1 weight a <span class="value" id="aVal">1.00</span></label>
+      <div class="range-pair"><input type="range" id="a" min="0.25" max="3.00" step="0.05" value="1.00" /><input class="num-input" type="number" id="aNum" min="0.25" max="3.00" step="0.05" value="1.00" /></div>
+    </div>
+    <div class="control" id="bControl">
+      <label>Good 2 weight b <span class="value" id="bVal">1.00</span></label>
+      <div class="range-pair"><input type="range" id="b" min="0.25" max="3.00" step="0.05" value="1.00" /><input class="num-input" type="number" id="bNum" min="0.25" max="3.00" step="0.05" value="1.00" /></div>
+    </div>
+    <div class="control" id="gammaControl">
+      <label>Quasi-linear intensity γ <span class="value" id="gammaVal">4.00</span></label>
+      <div class="range-pair"><input type="range" id="gamma" min="0.50" max="10.00" step="0.10" value="4.00" /><input class="num-input" type="number" id="gammaNum" min="0.50" max="10.00" step="0.10" value="4.00" /></div>
+    </div>
+
+    <div class="section-title">Budget data</div>
+    <div class="control">
+      <label>Price p₁ <span class="value" id="p1Val">2.00</span></label>
+      <div class="range-pair"><input type="range" id="p1" min="0.50" max="6.00" step="0.05" value="2.00" /><input class="num-input" type="number" id="p1Num" min="0.50" max="6.00" step="0.05" value="2.00" /></div>
+    </div>
+    <div class="control">
+      <label>Price p₂ <span class="value" id="p2Val">2.00</span></label>
+      <div class="range-pair"><input type="range" id="p2" min="0.50" max="6.00" step="0.05" value="2.00" /><input class="num-input" type="number" id="p2Num" min="0.50" max="6.00" step="0.05" value="2.00" /></div>
+    </div>
+    <div class="control">
+      <label>Income m <span class="value" id="mVal">20.00</span></label>
+      <div class="range-pair"><input type="range" id="m" min="4.00" max="60.00" step="0.50" value="20.00" /><input class="num-input" type="number" id="mNum" min="4.00" max="60.00" step="0.50" value="20.00" /></div>
+    </div>
+
+    <div class="section-title">Geometry options</div>
+    <div class="control">
+      <label for="sceneMode">Secondary overlay <span class="value" id="modeLabel">Tangency/KKT</span></label>
+      <select id="sceneMode">
+        <option value="tangent">Tangency/KKT</option>
+        <option value="intercepts">Budget intercepts</option>
+        <option value="normal">Price vector normal</option>
+        <option value="income">Income expansion path</option>
+      </select>
+    </div>
+    <div class="toggle-row">
+      <div class="pill"><strong id="slopePill">−1.00</strong> slope</div>
+      <div class="pill"><strong id="casePill">interior</strong> case</div>
+    </div>
+
+    <div class="section-title">Interactive candidate bundle</div>
+    <div class="control">
+      <label>Candidate x₁ <span class="value" id="xTest1Val">2.00</span></label>
+      <div class="range-pair"><input type="range" id="xTest1" min="0" max="120" step="0.05" value="2.00" /><input class="num-input" type="number" id="xTest1Num" min="0" max="120" step="0.05" value="2.00" /></div>
+    </div>
+    <div class="control">
+      <label>Candidate x₂ <span class="value" id="xTest2Val">2.00</span></label>
+      <div class="range-pair"><input type="range" id="xTest2" min="0" max="120" step="0.05" value="2.00" /><input class="num-input" type="number" id="xTest2Num" min="0" max="120" step="0.05" value="2.00" /></div>
+      <div class="help-mini">Drag the hollow point in the graph to test feasibility and utility.</div>
+    </div>
+    <button id="snapBudgetBtn" type="button">Project candidate to budget line</button>
+  </aside>
+
+  <main>
+    <section class="hero">
+      <div>
+        <h2>Consumer problem and budget sets</h2>
+        <p>The consumer chooses the best feasible bundle. Geometry decides the case: a smooth tangency, a kink, a face of optima, or a corner where a nonnegativity constraint binds.</p>
+      </div>
+      <div class="badge-stack">
+        <div class="badge">feasible set</div>
+        <div class="badge">budget hyperplane</div>
+        <div class="badge">existence</div>
+        <div class="badge">KKT</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3>Main diagram</h3>
+            <div class="hint">Budget set, indifference map, optimum, and active constraints.</div>
+          </div>
+          <span class="tag" id="diagramTag">smooth case</span>
+        </div>
+        <div class="svg-wrap">
+          <svg id="mainSvg" viewBox="0 0 760 620" aria-label="Budget set and consumer optimum"></svg>
+          <div class="drag-hint">drag the hollow point to test any bundle</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="math-card">
+          <div class="caption">Consumer problem</div>
+          <div class="eq tex" id="problemEq"></div>
+        </div>
+        <div class="math-card">
+          <div class="caption">Budget set and hyperplane</div>
+          <div class="eq tex" id="budgetEq"></div>
+        </div>
+        <div class="status">
+          <div class="stat">
+            <div class="label">Optimal bundle</div>
+            <div class="num" id="bundleVal">—</div>
+            <div class="note" id="bundleNote">—</div>
+          </div>
+          <div class="stat">
+            <div class="label">Utility level</div>
+            <div class="num" id="utilityVal">—</div>
+            <div class="note" id="utilityNote">—</div>
+          </div>
+          <div class="stat">
+            <div class="label">MRS / price ratio</div>
+            <div class="num" id="mrsVal">—</div>
+            <div class="note" id="mrsNote">—</div>
+          </div>
+          <div class="stat">
+            <div class="label">Binding constraints</div>
+            <div class="num" id="bindingVal">—</div>
+            <div class="note" id="bindingNote">—</div>
+          </div>
+        </div>
+        <div class="solution-grid">
+          <div class="solution-card">
+            <div class="label">Good 1 solution</div>
+            <div class="num" id="solX1Val">—</div>
+            <div class="formula tex" id="solX1Formula">—</div>
+          </div>
+          <div class="solution-card">
+            <div class="label">Good 2 solution</div>
+            <div class="num" id="solX2Val">—</div>
+            <div class="formula tex" id="solX2Formula">—</div>
+          </div>
+        </div>
+        <div class="candidate-box">
+          <h4>Candidate bundle check</h4>
+          <p><strong id="candidateVal">—</strong> · <span id="candidateNote">—</span></p>
+        </div>
+        <div class="reading" id="interpretation">—</div>
+        <div class="notice">
+          <div class="item"><span class="dot"></span><span id="notice1">—</span></div>
+          <div class="item"><span class="dot"></span><span id="notice2">—</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="row2">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3>Lagrange and KKT cases</h3>
+            <div class="hint">The equality method is a special case of Kuhn–Tucker geometry.</div>
+          </div>
+        </div>
+        <div class="math-card">
+          <div class="caption">KKT system for monotone preferences</div>
+          <div class="eq tex" id="kktEq"></div>
+        </div>
+        <div class="case-grid">
+          <div class="case" id="caseInterior">
+            <h4>Interior</h4>
+            <p>No nonnegativity constraint binds. Smooth indifference curve is tangent to the budget line.</p>
+            <div class="mini-eq">MRS = p₁/p₂</div>
+          </div>
+          <div class="case" id="caseCorner">
+            <h4>Corner</h4>
+            <p>At least one good is zero. Tangency may fail because the feasible directions are one-sided.</p>
+            <div class="mini-eq">xᵢ=0 ⇒ νᵢ may be &gt;0</div>
+          </div>
+          <div class="case" id="caseKink">
+            <h4>Kink / face</h4>
+            <p>Non-differentiability or linear preferences replace one tangent condition by a subgradient condition.</p>
+            <div class="mini-eq">p lies in normal cone</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3>Existence logic</h3>
+            <div class="hint">Why a maximum exists here, and how it can fail in nearby problems.</div>
+          </div>
+        </div>
+        <div class="existence">
+          <div class="existence-row">
+            <div class="name">Nonempty</div>
+            <div class="explain">The origin is feasible whenever prices and income are nonnegative.</div>
+            <div class="check">OK</div>
+          </div>
+          <div class="existence-row">
+            <div class="name">Closed</div>
+            <div class="explain">The inequalities p·x≤m and x≥0 define a closed set.</div>
+            <div class="check">OK</div>
+          </div>
+          <div class="existence-row">
+            <div class="name">Bounded</div>
+            <div class="explain">With p₁,p₂&gt;0, each good satisfies xᵢ≤m/pᵢ.</div>
+            <div class="check">OK</div>
+          </div>
+          <div class="existence-row">
+            <div class="name">Continuous u</div>
+            <div class="explain" id="continuityText">The selected utility is continuous on the displayed domain.</div>
+            <div class="check">OK</div>
+          </div>
+        </div>
+        <div class="math-card" style="margin-top:12px;margin-bottom:0">
+          <div class="caption">Weierstrass reading</div>
+          <div class="eq tex" id="existenceEq"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="footer-summary">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3>What to notice</h3>
+            <div class="hint">The economic object is a constrained upper contour problem.</div>
+          </div>
+        </div>
+        <ul class="clean" id="whatList"></ul>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3>Compact exam-style summary</h3>
+            <div class="hint">The minimal toolkit for solving two-good consumer problems.</div>
+          </div>
+        </div>
+        <ul class="clean">
+          <li>Write the budget set: \(B(p,m)=\{x\in\mathbb R_+^2:p_1x_1+p_2x_2\le m\}\).</li>
+          <li>If preferences are locally nonsatiated, the budget binds: \(p\cdot x^*=m\).</li>
+          <li>If the optimum is smooth and interior, use \(MRS_{12}=p_1/p_2\).</li>
+          <li>If a good is zero, use KKT inequalities rather than forcing tangency.</li>
+          <li>If preferences have kinks or flat indifference curves, use subgradients, corners, or whole faces of optima.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  const $ = (id)=>document.getElementById(id);
+  const els = {
+    themeBtn:$('themeBtn'), utilityType:$('utilityType'), alpha:$('alpha'), alphaNum:$('alphaNum'), a:$('a'), aNum:$('aNum'), b:$('b'), bNum:$('bNum'), gamma:$('gamma'), gammaNum:$('gammaNum'), p1:$('p1'), p1Num:$('p1Num'), p2:$('p2'), p2Num:$('p2Num'), m:$('m'), mNum:$('mNum'), sceneMode:$('sceneMode'),
+    utilityLabel:$('utilityLabel'), alphaVal:$('alphaVal'), aVal:$('aVal'), bVal:$('bVal'), gammaVal:$('gammaVal'), p1Val:$('p1Val'), p2Val:$('p2Val'), mVal:$('mVal'), modeLabel:$('modeLabel'), slopePill:$('slopePill'), casePill:$('casePill'),
+    alphaControl:$('alphaControl'), aControl:$('aControl'), bControl:$('bControl'), gammaControl:$('gammaControl'), mainSvg:$('mainSvg'), diagramTag:$('diagramTag'),
+    problemEq:$('problemEq'), budgetEq:$('budgetEq'), kktEq:$('kktEq'), existenceEq:$('existenceEq'), continuityText:$('continuityText'),
+    bundleVal:$('bundleVal'), bundleNote:$('bundleNote'), utilityVal:$('utilityVal'), utilityNote:$('utilityNote'), mrsVal:$('mrsVal'), mrsNote:$('mrsNote'), bindingVal:$('bindingVal'), bindingNote:$('bindingNote'), solX1Val:$('solX1Val'), solX2Val:$('solX2Val'), solX1Formula:$('solX1Formula'), solX2Formula:$('solX2Formula'), candidateVal:$('candidateVal'), candidateNote:$('candidateNote'), xTest1:$('xTest1'), xTest1Num:$('xTest1Num'), xTest2:$('xTest2'), xTest2Num:$('xTest2Num'), xTest1Val:$('xTest1Val'), xTest2Val:$('xTest2Val'), snapBudgetBtn:$('snapBudgetBtn'),
+    interpretation:$('interpretation'), notice1:$('notice1'), notice2:$('notice2'), whatList:$('whatList'), caseInterior:$('caseInterior'), caseCorner:$('caseCorner'), caseKink:$('caseKink')
+  };
+
+  const fmt = (x,d=2)=>Number.isFinite(x)?x.toFixed(d):'—';
+  const clamp = (x,lo,hi)=>Math.max(lo,Math.min(hi,x));
+  const eps = 1e-7;
+  const svgNS = 'http://www.w3.org/2000/svg';
+  let candidate = {x1:2, x2:2};
+  let currentGeom = null;
+  let draggingCandidate = false;
+
+  function tex(el, str){
+    if(window.katex){
+      try{ window.katex.render(str, el, {throwOnError:false, displayMode:true, strict:false}); }
+      catch(e){ el.textContent = str; }
+    }else{
+      el.textContent = str;
+    }
+  }
+  function inlineTexRefresh(){
+    if(window.katex){
+      document.querySelectorAll('li').forEach(li=>{
+        if(li.dataset.rendered) return;
+        const raw = li.innerHTML;
+        li.innerHTML = raw.replace(/\\\((.*?)\\\)/g, (_,m)=>katex.renderToString(m,{throwOnError:false,strict:false}));
+        li.dataset.rendered = '1';
+      });
+    }
+  }
+
+  function state(){
+    return {
+      type:els.utilityType.value,
+      alpha:+els.alpha.value,
+      a:+els.a.value,
+      b:+els.b.value,
+      gamma:+els.gamma.value,
+      p1:+els.p1.value,
+      p2:+els.p2.value,
+      m:+els.m.value,
+      mode:els.sceneMode.value
+    };
+  }
+
+  function utilityLabel(type){
+    return ({cobb:'Cobb–Douglas',linear:'Perfect substitutes',leontief:'Perfect complements',quasilinear:'Quasi-linear'})[type] || type;
+  }
+  function modeLabel(mode){
+    return ({tangent:'Tangency/KKT',intercepts:'Intercepts',normal:'Price normal',income:'Expansion path'})[mode] || mode;
+  }
+
+  function u(s,x1,x2){
+    x1=Math.max(0,x1); x2=Math.max(0,x2);
+    if(s.type==='cobb') return Math.pow(x1, s.alpha)*Math.pow(x2,1-s.alpha);
+    if(s.type==='linear') return s.a*x1 + s.b*x2;
+    if(s.type==='leontief') return Math.min(s.a*x1, s.b*x2);
+    if(s.type==='quasilinear') return s.gamma*Math.log(x1+0.12) + x2;
+    return 0;
+  }
+  function mu(s,x1,x2){
+    x1=Math.max(x1,1e-6); x2=Math.max(x2,1e-6);
+    if(s.type==='cobb'){
+      const val = u(s,x1,x2);
+      return {mu1:s.alpha*val/x1, mu2:(1-s.alpha)*val/x2};
+    }
+    if(s.type==='linear') return {mu1:s.a, mu2:s.b};
+    if(s.type==='quasilinear') return {mu1:s.gamma/(x1+0.12), mu2:1};
+    return {mu1:NaN, mu2:NaN};
+  }
+  function mrs(s,x1,x2){
+    const g=mu(s,x1,x2);
+    return g.mu1/g.mu2;
+  }
+
+  function solve(s){
+    const {p1,p2,m}=s;
+    let x1=0,x2=0,caseType='interior',note='Smooth interior optimum',detail='',multi=false;
+    if(s.type==='cobb'){
+      x1=s.alpha*m/p1; x2=(1-s.alpha)*m/p2; caseType='interior';
+      note='Interior: both goods are strictly positive.';
+      detail='Cobb–Douglas with 0<α<1 spends fixed income shares on the two goods.';
+    }else if(s.type==='linear'){
+      const bang1=s.a/p1, bang2=s.b/p2;
+      if(Math.abs(bang1-bang2)<1e-5){ x1=m/(2*p1); x2=(m-p1*x1)/p2; caseType='face'; multi=true; note='Whole budget line is optimal.'; detail='Both goods give equal utility per dollar, so every point on the budget hyperplane is optimal.'; }
+      else if(bang1>bang2){ x1=m/p1; x2=0; caseType='corner'; note='Corner: consume only good 1.'; detail='Good 1 has higher utility per dollar.'; }
+      else { x1=0; x2=m/p2; caseType='corner'; note='Corner: consume only good 2.'; detail='Good 2 has higher utility per dollar.'; }
+    }else if(s.type==='leontief'){
+      x1=m*s.b/(s.b*p1+s.a*p2); x2=m*s.a/(s.b*p1+s.a*p2); caseType='kink';
+      note='Kink: optimum occurs where proportions match.';
+      detail='The budget line supports the L-shaped indifference curve at its kink.';
+    }else if(s.type==='quasilinear'){
+      const raw=s.gamma*p2/p1 - 0.12;
+      if(raw<=0){ x1=0; x2=m/p2; caseType='corner'; note='Corner: x₁=0 because desired x₁ is negative.'; detail='The marginal value of the first unit of good 1 is too low relative to its price.'; }
+      else if(p1*raw>=m){ x1=m/p1; x2=0; caseType='corner'; note='Corner: x₂=0 because desired x₁ exceeds income.'; detail='Income is too low to reach the quasi-linear satiation-like target for good 1.'; }
+      else { x1=raw; x2=(m-p1*x1)/p2; caseType='interior'; note='Interior: MRS equals the price ratio.'; detail='Quasi-linear demand for x₁ is income-independent whenever x₂ remains positive.'; }
+    }
+    const util=u(s,x1,x2);
+    return {x1,x2,caseType,note,detail,multi,util};
+  }
+
+  function curvePoints(s,level,xMax,yMax){
+    const pts=[];
+    const n=280;
+    if(s.type==='cobb'){
+      for(let i=1;i<=n;i++){
+        const x=xMax*i/n;
+        const y=Math.pow(level/Math.pow(Math.max(x,1e-8),s.alpha),1/(1-s.alpha));
+        if(Number.isFinite(y) && y>=0 && y<=yMax*1.18) pts.push([x,y]);
+      }
+    }else if(s.type==='linear'){
+      for(let i=0;i<=n;i++){
+        const x=xMax*i/n;
+        const y=(level-s.a*x)/s.b;
+        if(Number.isFinite(y) && y>=0 && y<=yMax*1.18) pts.push([x,y]);
+      }
+    }else if(s.type==='quasilinear'){
+      for(let i=0;i<=n;i++){
+        const x=xMax*i/n;
+        const y=level-s.gamma*Math.log(x+0.12);
+        if(Number.isFinite(y) && y>=0 && y<=yMax*1.18) pts.push([x,y]);
+      }
+    }
+    return pts;
+  }
+
+  function make(tag, attrs={}, parent=null){
+    const el=document.createElementNS(svgNS, tag);
+    Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));
+    if(parent) parent.appendChild(el);
+    return el;
+  }
+  function pathD(pts,X,Y){
+    if(!pts.length) return '';
+    return pts.map((p,i)=>(i?'L':'M')+X(p[0]).toFixed(2)+' '+Y(p[1]).toFixed(2)).join(' ');
+  }
+  function arrow(svg,x1,y1,x2,y2,cls='budget-line',id='arrow'){
+    make('line',{x1,y1,x2,y2,class:cls,'marker-end':'url(#arrowHead)'},svg);
+  }
+
+  function draw(s,sol){
+    const svg=els.mainSvg;
+    svg.innerHTML='';
+    const W=760,H=620, ml=62,mr=28,mt=30,mb=62;
+    const gx=W-ml-mr, gy=H-mt-mb;
+    const i1=s.m/s.p1, i2=s.m/s.p2;
+    const xMax=Math.max(i1*1.22, sol.x1*1.42, 3.5);
+    const yMax=Math.max(i2*1.22, sol.x2*1.42, 3.5);
+    const X=x=>ml+(x/xMax)*gx;
+    const Y=y=>mt+gy-(y/yMax)*gy;
+
+    const defs=make('defs',{},svg);
+    const marker=make('marker',{id:'arrowHead',viewBox:'0 0 10 10',refX:'8',refY:'5',markerWidth:'6',markerHeight:'6',orient:'auto-start-reverse'},defs);
+    make('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:'currentColor'},marker);
+
+    for(let t=0;t<=5;t++){
+      const x=xMax*t/5, y=yMax*t/5;
+      make('line',{x1:X(x),y1:Y(0),x2:X(x),y2:Y(yMax),class:'gridline'},svg);
+      make('line',{x1:X(0),y1:Y(y),x2:X(xMax),y2:Y(y),class:'gridline'},svg);
+      make('text',{x:X(x),y:Y(0)+24,'text-anchor':'middle',class:'smalltext'},svg).textContent=fmt(x,1);
+      make('text',{x:X(0)-12,y:Y(y)+4,'text-anchor':'end',class:'smalltext'},svg).textContent=fmt(y,1);
+    }
+    make('line',{x1:X(0),y1:Y(0),x2:X(xMax),y2:Y(0),class:'axisline'},svg);
+    make('line',{x1:X(0),y1:Y(0),x2:X(0),y2:Y(yMax),class:'axisline'},svg);
+    make('text',{x:X(xMax)-5,y:Y(0)+42,'text-anchor':'end',class:'anno'},svg).textContent='x₁';
+    make('text',{x:X(0)-30,y:Y(yMax)+8,'text-anchor':'middle',class:'anno'},svg).textContent='x₂';
+
+    const poly=`${X(0)},${Y(0)} ${X(i1)},${Y(0)} ${X(0)},${Y(i2)}`;
+    make('polygon',{points:poly,class:'budget-fill'},svg);
+    make('path',{d:`M ${X(0)} ${Y(i2)} L ${X(i1)} ${Y(0)}`,class:'budget-line'},svg);
+
+    // Indifference curves
+    if(s.type==='leontief'){
+      const levels=[sol.util*.55, sol.util*.82, sol.util, sol.util*1.18].filter(v=>v>0);
+      levels.forEach((lev,idx)=>{
+        const x=lev/s.a, y=lev/s.b;
+        if(x<=xMax*1.05 && y<=yMax*1.05){
+          make('path',{d:`M ${X(x)} ${Y(yMax)} L ${X(x)} ${Y(y)} L ${X(xMax)} ${Y(y)}`,class:idx===2?'ic ic-main':'ic'},svg);
+        }
+      });
+    }else{
+      const levels=[sol.util*.68, sol.util*.88, sol.util, sol.util*1.12];
+      if(s.type==='quasilinear') levels.splice(0,levels.length,sol.util-3.2,sol.util-1.5,sol.util,sol.util+1.5);
+      levels.forEach((lev,idx)=>{
+        const pts=curvePoints(s,lev,xMax,yMax);
+        const d=pathD(pts,X,Y);
+        if(d) make('path',{d,class:idx===2?'ic ic-main':'ic'},svg);
+      });
+    }
+
+    // Overlay: tangent / intercepts / normal / income path
+    if(s.mode==='tangent'){
+      if(sol.caseType==='interior' && s.type!=='linear'){
+        const slope= -s.p1/s.p2;
+        const len=xMax*.18;
+        const xA=clamp(sol.x1-len,0,xMax), xB=clamp(sol.x1+len,0,xMax);
+        const yA=sol.x2+slope*(xA-sol.x1), yB=sol.x2+slope*(xB-sol.x1);
+        make('line',{x1:X(xA),y1:Y(yA),x2:X(xB),y2:Y(yB),class:'tangent'},svg);
+        make('text',{x:X(sol.x1)+10,y:Y(sol.x2)-24,class:'anno'},svg).textContent='MRS = p₁/p₂';
+      }else if(sol.caseType==='corner'){
+        make('text',{x:X(sol.x1)+10,y:Y(sol.x2)-22,class:'anno'},svg).textContent='corner: one-sided feasible directions';
+      }else if(sol.caseType==='kink'){
+        make('text',{x:X(sol.x1)+10,y:Y(sol.x2)-22,class:'anno'},svg).textContent='kink: no unique MRS';
+      }else if(sol.caseType==='face'){
+        make('text',{x:X(i1*.56),y:Y(i2*.46),class:'anno'},svg).textContent='all points on this face are optimal';
+      }
+    }
+    if(s.mode==='intercepts'){
+      make('line',{x1:X(i1),y1:Y(0),x2:X(i1),y2:Y(0)+15,class:'bracket'},svg);
+      make('line',{x1:X(0)-15,y1:Y(i2),x2:X(0),y2:Y(i2),class:'bracket'},svg);
+      make('text',{x:X(i1),y:Y(0)-10,'text-anchor':'middle',class:'anno'},svg).textContent='m/p₁';
+      make('text',{x:X(0)+12,y:Y(i2)-10,class:'anno'},svg).textContent='m/p₂';
+      make('text',{x:X(i1*.5),y:Y(i2*.5)-12,'text-anchor':'middle',class:'anno'},svg).textContent='slope = −p₁/p₂';
+    }
+    if(s.mode==='normal'){
+      const bx=i1*.45, by=i2*(1-.45);
+      const normLen=Math.min(xMax,yMax)*.12;
+      const mag=Math.sqrt(s.p1*s.p1+s.p2*s.p2);
+      const nx=s.p1/mag*normLen, ny=s.p2/mag*normLen;
+      arrow(svg,X(bx),Y(by),X(bx+nx),Y(by+ny),'tangent');
+      make('text',{x:X(bx+nx)+8,y:Y(by+ny),class:'anno'},svg).textContent='normal vector p';
+      make('text',{x:X(bx)-16,y:Y(by)+18,'text-anchor':'end',class:'anno'},svg).textContent='p·x=m';
+    }
+    if(s.mode==='income'){
+      const pts=[];
+      for(let k=.2;k<=1.25;k+=.05){
+        const ss={...s,m:s.m*k};
+        const oo=solve(ss);
+        if(Number.isFinite(oo.x1)&&Number.isFinite(oo.x2)) pts.push([oo.x1,oo.x2]);
+      }
+      const d=pathD(pts,X,Y);
+      if(d) make('path',{d,class:'tangent'},svg);
+      make('text',{x:X(pts[Math.floor(pts.length*.68)]?.[0]||sol.x1)+8,y:Y(pts[Math.floor(pts.length*.68)]?.[1]||sol.x2)-8,class:'anno'},svg).textContent='income expansion path';
+    }
+
+    const pointClass=sol.caseType==='corner'?'corner':sol.caseType==='kink'?'kink':'point';
+    make('circle',{cx:X(sol.x1),cy:Y(sol.x2),r:7,class:pointClass},svg);
+    make('text',{x:X(sol.x1)+11,y:Y(sol.x2)+5,class:'anno'},svg).textContent='x*';
+
+    const cx=clamp(candidate.x1,0,xMax), cy=clamp(candidate.x2,0,yMax);
+    const feasibleCand=s.p1*candidate.x1+s.p2*candidate.x2<=s.m+1e-6;
+    make('circle',{cx:X(cx),cy:Y(cy),r:7,class:'test-point '+(feasibleCand?'feasible':'')},svg);
+    make('text',{x:X(cx)+10,y:Y(cy)-10,class:'test-label '+(feasibleCand?'feasible':'')},svg).textContent='candidate';
+
+    make('text',{x:X(i1)+2,y:Y(0)-7,class:'smalltext'},svg).textContent='m/p₁';
+    make('text',{x:X(0)+8,y:Y(i2)-8,class:'smalltext'},svg).textContent='m/p₂';
+    currentGeom={ml,mt,gx,gy,xMax,yMax,W,H};
+  }
+
+  function updateEquations(s,sol){
+    const typeEq={
+      cobb:`u(x_1,x_2)=x_1^{${fmt(s.alpha,2)}}x_2^{${fmt(1-s.alpha,2)}}`,
+      linear:`u(x_1,x_2)=${fmt(s.a,2)}x_1+${fmt(s.b,2)}x_2`,
+      leontief:`u(x_1,x_2)=\\min\\{${fmt(s.a,2)}x_1,${fmt(s.b,2)}x_2\\}`,
+      quasilinear:`u(x_1,x_2)=${fmt(s.gamma,2)}\\ln(x_1+\\varepsilon)+x_2`
+    }[s.type];
+    tex(els.problemEq,`\\max_{x\\in\\mathbb R_+^2}\\; ${typeEq} \\quad \\text{s.t.} \\quad p_1x_1+p_2x_2\\le m`);
+    tex(els.budgetEq,`B(p,m)=\\{x\\in\\mathbb R_+^2:p\\cdot x\\le m\\},\\qquad H(p,m)=\\{x:p\\cdot x=m\\}`);
+    tex(els.kktEq,`\\mathcal L(x,\\lambda,\\nu)=u(x)+\\lambda(m-p\\cdot x)+\\nu_1x_1+\\nu_2x_2,\\quad \\lambda,\\nu_i\\ge0\\\\
+    \\nabla u(x^*)-\\lambda p+\\nu=0,\\quad \\lambda(m-p\\cdot x^*)=0,\\quad \\nu_i x_i^*=0`);
+    tex(els.existenceEq,`B(p,m)\\text{ compact},\\; u\\text{ continuous}\\;\\Longrightarrow\\; \\exists x^*\\in B(p,m):u(x^*)=\\max_{x\\in B(p,m)}u(x)`);
+  }
+
+
+  function solutionFormulas(s,sol){
+    if(s.type==='cobb'){
+      return {
+        f1:`x_1^*=\\alpha\\frac{m}{p_1}=${fmt(s.alpha,2)}\\cdot\\frac{${fmt(s.m,2)}}{${fmt(s.p1,2)}}`,
+        f2:`x_2^*=(1-\\alpha)\\frac{m}{p_2}=${fmt(1-s.alpha,2)}\\cdot\\frac{${fmt(s.m,2)}}{${fmt(s.p2,2)}}`
+      };
+    }
+    if(s.type==='linear'){
+      const r1=s.a/s.p1, r2=s.b/s.p2;
+      if(Math.abs(r1-r2)<1e-5) return {f1:`x_1^*\\in[0,m/p_1]`,f2:`x_2^*=(m-p_1x_1^*)/p_2`};
+      if(r1>r2) return {f1:`x_1^*=m/p_1`,f2:`x_2^*=0`};
+      return {f1:`x_1^*=0`,f2:`x_2^*=m/p_2`};
+    }
+    if(s.type==='leontief'){
+      return {
+        f1:`x_1^*=\\dfrac{bm}{bp_1+ap_2}`,
+        f2:`x_2^*=\\dfrac{am}{bp_1+ap_2}`
+      };
+    }
+    const raw=s.gamma*s.p2/s.p1-0.12;
+    if(raw<=0) return {f1:`x_1^*=0`,f2:`x_2^*=m/p_2`};
+    if(s.p1*raw>=s.m) return {f1:`x_1^*=m/p_1`,f2:`x_2^*=0`};
+    return {f1:`x_1^*=\\gamma p_2/p_1-\\varepsilon`,f2:`x_2^*=(m-p_1x_1^*)/p_2`};
+  }
+
+  function updateCandidateControls(){
+    candidate.x1 = clamp(candidate.x1,0,+els.xTest1.max);
+    candidate.x2 = clamp(candidate.x2,0,+els.xTest2.max);
+    els.xTest1.value = fmt(candidate.x1,2);
+    els.xTest1Num.value = fmt(candidate.x1,2);
+    els.xTest2.value = fmt(candidate.x2,2);
+    els.xTest2Num.value = fmt(candidate.x2,2);
+    els.xTest1Val.textContent = fmt(candidate.x1,2);
+    els.xTest2Val.textContent = fmt(candidate.x2,2);
+  }
+
+  function updateText(s,sol){
+    const priceRatio=s.p1/s.p2;
+    let mrsText='—', mrsNote='—';
+    if(sol.caseType==='interior' && s.type!=='leontief'){
+      mrsText=fmt(mrs(s,sol.x1,sol.x2),3)+' / '+fmt(priceRatio,3);
+      mrsNote='At the optimum, MRS equals the price ratio.';
+    }else if(s.type==='leontief'){
+      mrsText='not unique'; mrsNote='At the kink, use proportions/subgradients, not a single derivative.';
+    }else if(sol.caseType==='face'){
+      mrsText=fmt(priceRatio,3); mrsNote='Linear indifference curves are parallel to the budget line.';
+    }else{
+      const g=mrs(s,Math.max(sol.x1,1e-5),Math.max(sol.x2,1e-5));
+      mrsText=(Number.isFinite(g)?fmt(g,3):'—')+' / '+fmt(priceRatio,3);
+      mrsNote='Tangency is not required at a corner.';
+    }
+
+    els.bundleVal.textContent=`(${fmt(sol.x1,2)}, ${fmt(sol.x2,2)})`;
+    els.bundleNote.textContent=sol.note;
+    els.utilityVal.textContent=fmt(sol.util,3);
+    els.utilityNote.textContent=utilityLabel(s.type);
+    els.mrsVal.textContent=mrsText;
+    els.mrsNote.textContent=mrsNote;
+
+    const binds=[];
+    if(Math.abs(s.p1*sol.x1+s.p2*sol.x2-s.m)<1e-5) binds.push('budget');
+    if(sol.x1<1e-5) binds.push('x₁=0');
+    if(sol.x2<1e-5) binds.push('x₂=0');
+    if(sol.caseType==='kink') binds.push('kink');
+    if(sol.caseType==='face') binds.push('face');
+    els.bindingVal.textContent=binds.join(', ') || 'none';
+    els.bindingNote.textContent='Active constraints determine the correct first-order logic.';
+
+    const forms=solutionFormulas(s,sol);
+    els.solX1Val.textContent = `x₁* = ${fmt(sol.x1,3)}`;
+    els.solX2Val.textContent = `x₂* = ${fmt(sol.x2,3)}`;
+    tex(els.solX1Formula, forms.f1);
+    tex(els.solX2Formula, forms.f2);
+
+    const candSpend=s.p1*candidate.x1+s.p2*candidate.x2;
+    const candU=u(s,candidate.x1,candidate.x2);
+    const surplus=s.m-candSpend;
+    const feas=candSpend<=s.m+1e-6;
+    els.candidateVal.textContent=`x = (${fmt(candidate.x1,2)}, ${fmt(candidate.x2,2)}), u(x) = ${fmt(candU,3)}`;
+    els.candidateNote.textContent=feas?`feasible, unspent income ${fmt(surplus,2)}`:`not feasible, exceeds budget by ${fmt(-surplus,2)}`;
+
+    const caseName=sol.caseType==='face'?'face':sol.caseType;
+    els.casePill.textContent=caseName;
+    els.slopePill.textContent='−'+fmt(s.p1/s.p2,2);
+    els.diagramTag.textContent = sol.caseType==='interior'?'smooth interior':sol.caseType==='corner'?'corner solution':sol.caseType==='kink'?'kink solution':'multiple optima';
+    els.interpretation.textContent=sol.detail;
+
+    if(sol.caseType==='interior'){
+      els.notice1.textContent='The budget hyperplane supports the upper contour set at a smooth point.';
+      els.notice2.textContent='The equality MRS = p₁/p₂ says that the indifference curve and budget line have the same slope.';
+    }else if(sol.caseType==='corner'){
+      els.notice1.textContent='A corner is not a failure of optimization; it is a different KKT case.';
+      els.notice2.textContent='Do not impose MRS = p₁/p₂ when the consumer cannot move in both directions locally.';
+    }else if(sol.caseType==='kink'){
+      els.notice1.textContent='At a kink, there is no single tangent; the price vector must lie in the normal cone.';
+      els.notice2.textContent='For Leontief preferences, unused surplus of one good is worthless, so the optimum balances proportions.';
+    }else{
+      els.notice1.textContent='With perfect substitutes and equal bang-per-buck, the optimum is not unique.';
+      els.notice2.textContent='The entire budget face touches the same upper contour set.';
+    }
+
+    els.whatList.innerHTML='';
+    const common=[
+      'The feasible set is the part of the nonnegative orthant below the budget hyperplane.',
+      'Increasing income shifts the budget line outward; changing a relative price rotates it.',
+      'Local nonsatiation makes the budget bind, but it does not guarantee an interior solution.'
+    ];
+    const specific={
+      cobb:['Cobb–Douglas with positive exponents never chooses zero consumption when income and prices are positive.','The optimum is characterized by income shares and a smooth tangency.'],
+      linear:['Perfect substitutes compare utility per dollar: a/p₁ versus b/p₂.','If the ratios are equal, the demand correspondence is a whole budget segment.'],
+      leontief:['Perfect complements create a kink: more of one good alone does not raise utility.','The optimal bundle lies on the ray ax₁=bx₂.'],
+      quasilinear:['Quasi-linear demand for x₁ is independent of income only when the interior solution has x₂>0.','Low income or extreme prices can still produce a corner.']
+    }[s.type];
+    [...common,...specific].forEach(txt=>{const li=document.createElement('li');li.textContent=txt;els.whatList.appendChild(li);});
+
+    [els.caseInterior,els.caseCorner,els.caseKink].forEach(c=>c.classList.remove('active'));
+    if(sol.caseType==='interior') els.caseInterior.classList.add('active');
+    else if(sol.caseType==='corner') els.caseCorner.classList.add('active');
+    else els.caseKink.classList.add('active');
+  }
+
+  function updateControls(s){
+    els.utilityLabel.textContent=utilityLabel(s.type);
+    els.alphaVal.textContent=fmt(s.alpha,2); els.aVal.textContent=fmt(s.a,2); els.bVal.textContent=fmt(s.b,2); els.gammaVal.textContent=fmt(s.gamma,2);
+    els.p1Val.textContent=fmt(s.p1,2); els.p2Val.textContent=fmt(s.p2,2); els.mVal.textContent=fmt(s.m,2); els.modeLabel.textContent=modeLabel(s.mode);
+    ['alpha','a','b','gamma','p1','p2','m'].forEach(k=>{ if(els[k+'Num'] && document.activeElement!==els[k+'Num']) els[k+'Num'].value = els[k].value; });
+    updateCandidateControls();
+    const showAlpha=s.type==='cobb';
+    const showAB=s.type==='linear'||s.type==='leontief';
+    const showGamma=s.type==='quasilinear';
+    els.alphaControl.style.display=showAlpha?'block':'none';
+    els.aControl.style.display=showAB?'block':'none';
+    els.bControl.style.display=showAB?'block':'none';
+    els.gammaControl.style.display=showGamma?'block':'none';
+    els.continuityText.textContent=s.type==='quasilinear'?'The logarithm is continuous because the app uses x₁+ε with ε>0.':'The selected utility is continuous on the displayed domain.';
+  }
+
+  function render(){
+    const s=state();
+    const sol=solve(s);
+    updateControls(s);
+    draw(s,sol);
+    updateEquations(s,sol);
+    updateText(s,sol);
+    inlineTexRefresh();
+  }
+
+  function bindRangeNumber(rangeId,numId,onChange){
+    const r=els[rangeId], n=els[numId];
+    if(!r||!n) return;
+    r.addEventListener('input',()=>{ n.value=r.value; onChange(+r.value); render(); });
+    n.addEventListener('input',()=>{
+      let v=+n.value;
+      if(!Number.isFinite(v)) return;
+      v=clamp(v,+r.min,+r.max);
+      r.value=v;
+      n.value=v;
+      onChange(v);
+      render();
+    });
+  }
+  ['alpha','a','b','gamma','p1','p2','m'].forEach(k=>bindRangeNumber(k,k+'Num',()=>{}));
+  bindRangeNumber('xTest1','xTest1Num',(v)=>{candidate.x1=v;});
+  bindRangeNumber('xTest2','xTest2Num',(v)=>{candidate.x2=v;});
+  [els.utilityType,els.sceneMode].forEach(el=>el.addEventListener('input',render));
+  els.snapBudgetBtn.addEventListener('click',()=>{
+    const s=state();
+    const spend=s.p1*candidate.x1+s.p2*candidate.x2;
+    if(spend<=1e-9){ candidate.x1=0; candidate.x2=0; }
+    else{
+      const scale=s.m/spend;
+      candidate.x1*=scale; candidate.x2*=scale;
+    }
+    render();
+  });
+  function eventToBundle(ev){
+    if(!currentGeom) return null;
+    const rect=els.mainSvg.getBoundingClientRect();
+    const vx=(ev.clientX-rect.left)/rect.width*760;
+    const vy=(ev.clientY-rect.top)/rect.height*620;
+    const x=(vx-currentGeom.ml)/currentGeom.gx*currentGeom.xMax;
+    const y=(currentGeom.mt+currentGeom.gy-vy)/currentGeom.gy*currentGeom.yMax;
+    return {x1:clamp(x,0,currentGeom.xMax), x2:clamp(y,0,currentGeom.yMax)};
+  }
+  function moveCandidate(ev){
+    const b=eventToBundle(ev);
+    if(!b) return;
+    candidate.x1=b.x1; candidate.x2=b.x2;
+    render();
+  }
+  els.mainSvg.addEventListener('pointerdown',(ev)=>{
+    draggingCandidate=true;
+    els.mainSvg.setPointerCapture?.(ev.pointerId);
+    moveCandidate(ev);
+  });
+  els.mainSvg.addEventListener('pointermove',(ev)=>{ if(draggingCandidate) moveCandidate(ev); });
+  els.mainSvg.addEventListener('pointerup',()=>{ draggingCandidate=false; });
+  els.mainSvg.addEventListener('pointerleave',()=>{ draggingCandidate=false; });
+  els.themeBtn.addEventListener('click',()=>{
+    const b=document.body;
+    b.dataset.theme=b.dataset.theme==='dark'?'light':'dark';
+    render();
+  });
+  window.addEventListener('load',()=>setTimeout(render,60));
+  render();
+})();
+</script>
+</body>
+</html>

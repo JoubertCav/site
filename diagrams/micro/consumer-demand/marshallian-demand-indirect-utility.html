@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="google2c37f7a4206c9d3a.html">
+<meta name="google-site-verification" content="fSWAEb_oSSHr_eJXL9gHYxIn879tRaBwJ42f_aD9o2s">
+<meta name="google-site-verification" content="ftZ4QVMrlub9jbolsIeo4Ix4UBw0-BJrFeorzqKLXng">
+<meta name="description" content="Interactive microeconomics diagram for Marshallian demand and indirect utility: ordinary demand, homogeneity, Walras' law, aggregation, Roy's identity, and indirect utility properties.">
+<link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+<title>Marshallian Demand and Indirect Utility | Consumer Demand Diagrams</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXHEJP1G0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NHXHEJP1G0');
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --bg:#f6f1e8;
+  --paper:#fffdf8;
+  --paper2:#faf7ef;
+  --ink:#171717;
+  --muted:#706b60;
+  --border:#ddd3c4;
+  --grid:#e7ded1;
+  --accent:#0f766e;
+  --accent2:#14b8a6;
+  --warn:#b45309;
+  --blue:#2563eb;
+  --rose:#be123c;
+  --shadow:0 18px 55px rgba(54,43,25,.09);
+  --radius:20px;
+}
+html[data-theme="dark"]{
+  --bg:#0e1721;
+  --paper:#141f2b;
+  --paper2:#101923;
+  --ink:#eff7f5;
+  --muted:#a5b2ad;
+  --border:#263545;
+  --grid:#263545;
+  --accent:#2dd4bf;
+  --accent2:#5eead4;
+  --warn:#fbbf24;
+  --blue:#93c5fd;
+  --rose:#fda4af;
+  --shadow:0 22px 60px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:radial-gradient(circle at 15% 0%, rgba(20,184,166,.16), transparent 30%), var(--bg);
+  color:var(--ink);
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  line-height:1.35;
+}
+.app{display:grid;grid-template-columns:320px 1fr;gap:18px;min-height:100vh;padding:18px;}
+.sidebar,.card,.hero{background:rgba(255,253,248,.78);background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);}
+.sidebar{padding:18px;position:sticky;top:18px;align-self:start;max-height:calc(100vh - 36px);overflow:auto;}
+.brand{display:flex;gap:12px;align-items:center;margin-bottom:16px;}
+.logo{width:38px;height:38px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 10px 26px rgba(20,184,166,.22);}
+h1{font-size:1.05rem;margin:0;letter-spacing:-.02em;}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:.82rem;}
+.section-title{font-size:.72rem;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);font-weight:760;margin:20px 0 10px;}
+.control{margin:13px 0;padding:12px;border:1px solid var(--border);border-radius:16px;background:var(--paper2);}
+.control label{display:flex;justify-content:space-between;gap:10px;font-size:.86rem;color:var(--ink);font-weight:700;margin-bottom:8px;}
+.value{font-variant-numeric:tabular-nums;color:var(--accent);font-weight:800;}
+input[type="range"]{width:100%;accent-color:var(--accent);}
+select,button{width:100%;border:1px solid var(--border);border-radius:14px;background:var(--paper);color:var(--ink);padding:10px 11px;font-weight:700;outline:none;}
+button{cursor:pointer;transition:.18s ease;border-color:rgba(15,118,110,.35)}
+button:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(20,184,166,.16)}
+.toggle{display:flex;gap:8px;align-items:center;margin-top:12px;}
+.toggle button{padding:9px 10px;font-size:.85rem;}
+.main{display:grid;gap:18px;}
+.hero{padding:22px 22px 18px;display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start;}
+.eyebrow{color:var(--accent);text-transform:uppercase;letter-spacing:.13em;font-size:.72rem;font-weight:850;margin-bottom:8px;}
+.hero h2{font-size:clamp(1.55rem,3vw,2.45rem);line-height:1.05;margin:0 0 10px;letter-spacing:-.045em;}
+.hero p{color:var(--muted);margin:0;max-width:68ch;}
+.eq-card{background:var(--paper2);border:1px solid var(--border);border-radius:18px;padding:14px 16px;overflow:auto;}
+.eq-card .katex-display{margin:.3rem 0;}
+.grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(360px,.8fr);gap:18px;}
+.card{padding:17px;overflow:hidden;}
+.card h3{margin:0 0 8px;font-size:1rem;letter-spacing:-.015em;}
+.sub{font-size:.85rem;color:var(--muted);margin:0 0 12px;}
+.svg-wrap{background:linear-gradient(180deg,rgba(20,184,166,.055),transparent),var(--paper2);border:1px solid var(--border);border-radius:18px;padding:10px;}
+svg{display:block;width:100%;height:auto;overflow:visible;}
+.axis{stroke:var(--ink);stroke-width:1.4;}
+.gridline{stroke:var(--grid);stroke-width:1;}
+.budget{stroke:var(--accent);stroke-width:2.6;fill:none;}
+.compBudget{stroke:var(--accent);stroke-width:1.3;stroke-dasharray:6 6;fill:none;opacity:.75;}
+.indiff{stroke:var(--blue);stroke-width:2.1;fill:none;}
+.indiff-soft{stroke:var(--blue);stroke-width:1.2;fill:none;opacity:.38;}
+.tangent{stroke:var(--warn);stroke-width:1.7;stroke-dasharray:5 5;fill:none;}
+.feasible{fill:rgba(20,184,166,.09);stroke:none;}
+.point{fill:var(--accent);stroke:var(--paper);stroke-width:2.5;}
+.point2{fill:var(--warn);stroke:var(--paper);stroke-width:2.5;}
+.label{font-size:12px;fill:var(--muted);font-weight:700;}
+.label-strong{font-size:12px;fill:var(--ink);font-weight:850;}
+.readout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px;}
+.metric{border:1px solid var(--border);border-radius:16px;background:var(--paper2);padding:12px;min-height:72px;}
+.metric small{display:block;color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;font-weight:800;margin-bottom:5px;}
+.metric b{font-size:1.15rem;color:var(--ink);font-variant-numeric:tabular-nums;}
+.metric span{display:block;color:var(--muted);font-size:.78rem;margin-top:4px;}
+.panel-list{display:grid;gap:10px;}
+.note{border:1px solid var(--border);background:var(--paper2);border-radius:16px;padding:13px 14px;}
+.note h4{margin:0 0 7px;font-size:.91rem;}
+.note p{margin:0;color:var(--muted);font-size:.86rem;}
+.status{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:6px 9px;font-size:.78rem;font-weight:850;background:rgba(20,184,166,.12);color:var(--accent);border:1px solid rgba(20,184,166,.24);}
+.status.warn{background:rgba(180,83,9,.12);color:var(--warn);border-color:rgba(180,83,9,.22);}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.table{width:100%;border-collapse:collapse;font-size:.86rem;overflow:hidden;border-radius:14px;}
+.table th,.table td{padding:9px 8px;border-bottom:1px solid var(--border);text-align:left;}
+.table th{color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;}
+.table td:last-child,.table th:last-child{text-align:right;font-variant-numeric:tabular-nums;}
+.footer-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+.pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.pill{border:1px solid var(--border);background:var(--paper2);color:var(--muted);border-radius:999px;padding:6px 9px;font-size:.77rem;font-weight:750;}
+.katex{font-size:1.02em;}
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  padding:12px 18px 0;
+  pointer-events:none;
+}
+.topbar-inner{
+  max-width:1400px;
+  margin:0 auto;
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+}
+.theme-top-btn{
+  width:auto;
+  min-width:132px;
+  padding:9px 13px;
+  border-radius:999px;
+  pointer-events:auto;
+  background:color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter:blur(10px);
+  box-shadow:0 10px 26px rgba(0,0,0,.08);
+}
+.app{padding-top:8px;}
+@media(max-width:620px){.topbar{padding:10px 10px 0}.theme-top-btn{min-width:118px;font-size:.83rem}}
+
+@media(max-width:1100px){.app{grid-template-columns:1fr}.sidebar{position:relative;top:0;max-height:none}.grid,.hero,.two,.footer-grid{grid-template-columns:1fr}}
+@media(max-width:620px){.app{padding:10px}.readout{grid-template-columns:1fr}.card,.hero,.sidebar{border-radius:16px;padding:14px}}
+</style>
+</head>
+<body>
+<div class="topbar" aria-label="Display controls">
+  <div class="topbar-inner">
+    <button id="themeBtn" class="theme-top-btn" type="button">Dark mode</button>
+  </div>
+</div>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo"></div>
+      <div>
+        <h1>Marshallian Demand</h1>
+        <p>ordinary demand · indirect utility</p>
+      </div>
+    </div>
+
+    <div class="section-title">Preference family</div>
+    <div class="control">
+      <label for="family">Utility type <span class="value" id="familyLabel">Cobb-Douglas</span></label>
+      <select id="family">
+        <option value="cd">Cobb-Douglas</option>
+        <option value="ces">CES</option>
+        <option value="leontief">Leontief</option>
+        <option value="linear">Linear</option>
+        <option value="quasi">Quasi-linear</option>
+      </select>
+    </div>
+    <div class="control">
+      <label for="alpha">Preference weight \(\alpha\) <span class="value" id="alphaVal">0.50</span></label>
+      <input id="alpha" type="range" min="0.05" max="0.95" step="0.01" value="0.50">
+    </div>
+    <div class="control" id="rhoBox">
+      <label for="rho">CES curvature \(\rho\) <span class="value" id="rhoVal">-0.50</span></label>
+      <input id="rho" type="range" min="-3" max="0.85" step="0.05" value="-0.50">
+    </div>
+
+    <div class="section-title">Budget</div>
+    <div class="control">
+      <label for="p1">Price \(p_1\) <span class="value" id="p1Val">2.00</span></label>
+      <input id="p1" type="range" min="0.25" max="8" step="0.05" value="2">
+    </div>
+    <div class="control">
+      <label for="p2">Price \(p_2\) <span class="value" id="p2Val">2.00</span></label>
+      <input id="p2" type="range" min="0.25" max="8" step="0.05" value="2">
+    </div>
+    <div class="control">
+      <label for="m">Income \(m\) <span class="value" id="mVal">20.00</span></label>
+      <input id="m" type="range" min="2" max="80" step="0.5" value="20">
+    </div>
+    <div class="control">
+      <label for="lambda">Homogeneity scale \(\lambda\) <span class="value" id="lambdaVal">2.00</span></label>
+      <input id="lambda" type="range" min="0.25" max="4" step="0.05" value="2">
+    </div>
+
+    <div class="section-title">Aggregation</div>
+    <div class="control">
+      <label for="nA">Consumers type A <span class="value" id="nAVal">10</span></label>
+      <input id="nA" type="range" min="1" max="100" step="1" value="10">
+    </div>
+    <div class="control">
+      <label for="nB">Consumers type B <span class="value" id="nBVal">10</span></label>
+      <input id="nB" type="range" min="0" max="100" step="1" value="10">
+    </div>
+    <div class="control">
+      <label for="mB">Income type B \(m_B\) <span class="value" id="mBVal">16.00</span></label>
+      <input id="mB" type="range" min="2" max="80" step="0.5" value="16">
+    </div>
+  </aside>
+
+  <main class="main">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Consumer problem</div>
+        <h2>Demand is the geometry of choosing the best affordable bundle.</h2>
+        <p>For fixed prices and wealth, ordinary demand selects the bundle in the budget set that reaches the highest indifference curve. The indirect utility function records the attained utility value.</p>
+        <div class="pill-row">
+          <span class="pill">homogeneous of degree zero</span>
+          <span class="pill">Walras' law</span>
+          <span class="pill">Roy's identity</span>
+          <span class="pill">aggregation</span>
+        </div>
+      </div>
+      <div class="eq-card" id="mainFormula">
+        \[
+          x(p,m) \in \arg\max_{x\in \mathbb{R}^2_+} u(x_1,x_2)
+          \quad \text{s.t.} \quad p_1x_1+p_2x_2\le m
+        \]
+        \[
+          v(p,m)=\max_{p\cdot x\le m}u(x),
+          \qquad
+          x_i(p,m)=-\frac{\partial v/\partial p_i}{\partial v/\partial m}
+        \]
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h3>Budget set, optimal bundle, and indifference curve</h3>
+        <p class="sub">Move prices and income. The budget line rotates with prices and shifts with income. The solution updates immediately.</p>
+        <div class="svg-wrap"><svg id="mainPlot" viewBox="0 0 720 520" aria-label="Consumer choice diagram"></svg></div>
+        <div class="readout">
+          <div class="metric"><small>Good 1 solution</small><b id="x1Read">—</b><span id="x1Rule">—</span></div>
+          <div class="metric"><small>Good 2 solution</small><b id="x2Read">—</b><span id="x2Rule">—</span></div>
+          <div class="metric"><small>Indirect utility</small><b id="vRead">—</b><span id="uRule">—</span></div>
+          <div class="metric"><small>Case</small><b id="caseRead">—</b><span id="caseRule">—</span></div>
+        </div>
+      </div>
+
+      <div class="panel-list">
+        <div class="card">
+          <h3>Symbolic demand</h3>
+          <p class="sub">Closed-form solution for the selected utility family.</p>
+          <div class="eq-card" id="solutionFormula"></div>
+        </div>
+        <div class="card">
+          <h3>Walras' law</h3>
+          <p class="sub">With locally nonsatiated preferences, the chosen bundle exhausts wealth.</p>
+          <div class="note">
+            <h4 id="walrasTitle">Budget exhaustion</h4>
+            <p id="walrasText">—</p>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Homogeneity check</h3>
+          <p class="sub">Scale all nominal variables: \((p,m)\mapsto(\lambda p,\lambda m)\\). Real demand should not move.</p>
+          <div class="note">
+            <h4 id="homTitle">Degree zero</h4>
+            <p id="homText">—</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="two">
+      <div class="card">
+        <h3>Ordinary demand curve for good 1</h3>
+        <p class="sub">Hold \(p_2\) and \(m\) fixed. Change \(p_1\): the current bundle is the marked point.</p>
+        <div class="svg-wrap"><svg id="demandPlot" viewBox="0 0 620 360" aria-label="Demand curve diagram"></svg></div>
+      </div>
+      <div class="card">
+        <h3>Roy's identity</h3>
+        <p class="sub">When \(v\) is differentiable and demand is single-valued, price derivatives of indirect utility recover ordinary demand.</p>
+        <div class="eq-card" id="royFormula">
+          \[
+          x_i(p,m)=-\frac{v_{p_i}(p,m)}{v_m(p,m)}
+          \]
+        </div>
+        <table class="table">
+          <thead><tr><th>Object</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>\(-v_{p_1}/v_m\)</td><td id="roy1">—</td></tr>
+            <tr><td>\(x_1(p,m)\)</td><td id="royx1">—</td></tr>
+            <tr><td>\(-v_{p_2}/v_m\)</td><td id="roy2">—</td></tr>
+            <tr><td>\(x_2(p,m)\)</td><td id="royx2">—</td></tr>
+          </tbody>
+        </table>
+        <div class="pill-row"><span class="status" id="royStatus">—</span></div>
+      </div>
+    </section>
+
+    <section class="footer-grid">
+      <div class="card">
+        <h3>Aggregation</h3>
+        <p class="sub">Individual demands add horizontally at common prices.</p>
+        <div class="eq-card">\[X_i(p,M)=\sum_{h=1}^{H}x_i^h(p,m_h)\]</div>
+        <table class="table">
+          <thead><tr><th>Aggregate</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>\(X_1=n_Ax_1^A+n_Bx_1^B\)</td><td id="agg1">—</td></tr>
+            <tr><td>\(X_2=n_Ax_2^A+n_Bx_2^B\)</td><td id="agg2">—</td></tr>
+            <tr><td>Total expenditure</td><td id="aggExp">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h3>Indirect utility properties</h3>
+        <p class="sub">Read these as properties of the value function generated by the consumer problem.</p>
+        <div class="note"><h4>Core properties</h4><p id="propertiesText">—</p></div>
+      </div>
+      <div class="card">
+        <h3>Exam summary</h3>
+        <p class="sub">The main identities in compact form.</p>
+        <div class="eq-card">
+          \[
+          x(p,m)\in\arg\max_{p\cdot x\le m}u(x),
+          \quad v(p,m)=u(x(p,m))
+          \]
+          \[
+          p\cdot x(p,m)=m,
+          \quad x(\lambda p,\lambda m)=x(p,m)
+          \]
+          \[
+          x_i(p,m)=-\frac{\partial v/\partial p_i}{\partial v/\partial m}
+          \]
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const ids = ['family','alpha','rho','p1','p2','m','lambda','nA','nB','mB'];
+const fmt = (x,d=3)=> Number.isFinite(x) ? Number(x).toFixed(d) : '—';
+const clamp = (x,a,b)=> Math.max(a,Math.min(b,x));
+
+function currentParams(){
+  return {
+    family:$('family').value,
+    alpha:parseFloat($('alpha').value),
+    rho:parseFloat($('rho').value),
+    p1:parseFloat($('p1').value),
+    p2:parseFloat($('p2').value),
+    m:parseFloat($('m').value),
+    lambda:parseFloat($('lambda').value),
+    nA:parseInt($('nA').value,10),
+    nB:parseInt($('nB').value,10),
+    mB:parseFloat($('mB').value)
+  };
+}
+
+function utility(x1,x2,par){
+  const a=par.alpha, b=1-a, rho=par.rho;
+  x1=Math.max(x1,1e-9); x2=Math.max(x2,1e-9);
+  if(par.family==='cd') return Math.pow(x1,a)*Math.pow(x2,b);
+  if(par.family==='ces'){
+    if(Math.abs(rho)<1e-5) return Math.pow(x1,a)*Math.pow(x2,b);
+    return Math.pow(a*Math.pow(x1,rho)+b*Math.pow(x2,rho),1/rho);
+  }
+  if(par.family==='leontief') return Math.min(x1/a,x2/b);
+  if(par.family==='linear') return a*x1+b*x2;
+  if(par.family==='quasi') return a*Math.log(x1)+x2;
+  return 0;
+}
+
+function demand(par){
+  const a=par.alpha, b=1-a, p1=par.p1, p2=par.p2, m=par.m, rho=par.rho;
+  let x1,x2,v,caseText,caseKind,rule1,rule2,uRule;
+  if(par.family==='cd'){
+    x1=a*m/p1; x2=b*m/p2; v=utility(x1,x2,par);
+    caseText='interior'; caseKind='Tangency: MRS = p1/p2';
+    rule1='x1 = αm/p1'; rule2='x2 = (1−α)m/p2'; uRule='Cobb-Douglas value';
+  } else if(par.family==='ces'){
+    if(Math.abs(rho)<1e-5){
+      x1=a*m/p1; x2=b*m/p2;
+    } else {
+      const sigma=1/(1-rho);
+      const D=Math.pow(a,sigma)*Math.pow(p1,1-sigma)+Math.pow(b,sigma)*Math.pow(p2,1-sigma);
+      x1=m*Math.pow(a,sigma)*Math.pow(p1,-sigma)/D;
+      x2=m*Math.pow(b,sigma)*Math.pow(p2,-sigma)/D;
+    }
+    v=utility(x1,x2,par);
+    caseText='interior'; caseKind='Smooth CES tangency';
+    rule1='CES ordinary demand'; rule2='CES ordinary demand'; uRule='CES value';
+  } else if(par.family==='leontief'){
+    const den=a*p1+b*p2;
+    const t=m/den; x1=a*t; x2=b*t; v=t;
+    caseText='kink'; caseKind='Optimum at fixed-proportion kink';
+    rule1='x1 = αm/(αp1+(1−α)p2)'; rule2='x2 = (1−α)m/(αp1+(1−α)p2)'; uRule='v = m/(αp1+(1−α)p2)';
+  } else if(par.family==='linear'){
+    const bang1=a/p1, bang2=b/p2;
+    if(Math.abs(bang1-bang2)<1e-8){ x1=m/(2*p1); x2=m/(2*p2); caseText='multiple optima'; caseKind='Whole budget line is optimal'; }
+    else if(bang1>bang2){ x1=m/p1; x2=0; caseText='corner on good 1'; caseKind='Higher utility per dollar for good 1'; }
+    else { x1=0; x2=m/p2; caseText='corner on good 2'; caseKind='Higher utility per dollar for good 2'; }
+    v=utility(x1,x2,par);
+    rule1='all spending goes to the higher bang-per-buck good'; rule2='all spending goes to the higher bang-per-buck good'; uRule='v = m max{α/p1,(1−α)/p2}';
+  } else if(par.family==='quasi'){
+    const target=a*p2/p1;
+    if(m>=p1*target){ x1=target; x2=(m-p1*x1)/p2; caseText='interior in good 2'; caseKind='x1 independent of income after threshold'; }
+    else { x1=m/p1; x2=0; caseText='corner: x2 = 0'; caseKind='Income too low for interior quasi-linear solution'; }
+    v=utility(x1,x2,par);
+    rule1='x1 = min{m/p1, αp2/p1}'; rule2='x2 = max{0, m/p2 − α}'; uRule='v = α ln x1 + x2';
+  }
+  return {x1,x2,v,caseText,caseKind,rule1,rule2,uRule,exp:p1*x1+p2*x2};
+}
+
+function indirect(par){ return demand(par).v; }
+
+function derivativesRoy(par){
+  const base=indirect(par);
+  const ep1=Math.max(1e-4,par.p1*1e-5), ep2=Math.max(1e-4,par.p2*1e-5), em=Math.max(1e-4,par.m*1e-5);
+  const p1p={...par,p1:par.p1+ep1}, p1m={...par,p1:Math.max(1e-5,par.p1-ep1)};
+  const p2p={...par,p2:par.p2+ep2}, p2m={...par,p2:Math.max(1e-5,par.p2-ep2)};
+  const mp={...par,m:par.m+em}, mm={...par,m:Math.max(1e-5,par.m-em)};
+  const vp1=(indirect(p1p)-indirect(p1m))/(p1p.p1-p1m.p1);
+  const vp2=(indirect(p2p)-indirect(p2m))/(p2p.p2-p2m.p2);
+  const vm=(indirect(mp)-indirect(mm))/(mp.m-mm.m);
+  return {r1:-vp1/vm,r2:-vp2/vm,vm,vp1,vp2,base};
+}
+
+function formulaFor(par){
+  const a='\
+\\alpha', b='1-\\alpha';
+  if(par.family==='cd') return String.raw`\[
+u(x)=x_1^{\alpha}x_2^{1-\alpha}
+\]
+\[
+x_1(p,m)=\frac{\alpha m}{p_1},\qquad
+x_2(p,m)=\frac{(1-\alpha)m}{p_2}
+\]
+\[
+v(p,m)=\left(\frac{\alpha m}{p_1}\right)^\alpha
+\left(\frac{(1-\alpha)m}{p_2}\right)^{1-\alpha}
+\]`;
+  if(par.family==='ces') return String.raw`\[
+u(x)=\left[\alpha x_1^\rho+(1-\alpha)x_2^\rho\right]^{1/\rho}
+\]
+\[
+\sigma=\frac{1}{1-\rho},\qquad
+D=\alpha^\sigma p_1^{1-\sigma}+(1-\alpha)^\sigma p_2^{1-\sigma}
+\]
+\[
+x_i(p,m)=\frac{m\alpha_i^\sigma p_i^{-\sigma}}{D}
+\]`;
+  if(par.family==='leontief') return String.raw`\[
+u(x)=\min\left\{\frac{x_1}{\alpha},\frac{x_2}{1-\alpha}\right\}
+\]
+\[
+x_1=\frac{\alpha m}{\alpha p_1+(1-\alpha)p_2},\qquad
+x_2=\frac{(1-\alpha)m}{\alpha p_1+(1-\alpha)p_2}
+\]
+\[
+v(p,m)=\frac{m}{\alpha p_1+(1-\alpha)p_2}
+\]`;
+  if(par.family==='linear') return String.raw`\[
+u(x)=\alpha x_1+(1-\alpha)x_2
+\]
+\[
+\frac{\alpha}{p_1}>\frac{1-\alpha}{p_2}\Rightarrow x=(m/p_1,0)
+\]
+\[
+\frac{\alpha}{p_1}<\frac{1-\alpha}{p_2}\Rightarrow x=(0,m/p_2)
+\]
+\[
+v(p,m)=m\max\left\{\frac{\alpha}{p_1},\frac{1-\alpha}{p_2}\right\}
+\]`;
+  if(par.family==='quasi') return String.raw`\[
+u(x)=\alpha\ln x_1+x_2
+\]
+\[
+x_1(p,m)=\min\left\{\frac{m}{p_1},\frac{\alpha p_2}{p_1}\right\}
+\]
+\[
+x_2(p,m)=\max\left\{0,\frac{m}{p_2}-\alpha\right\}
+\]
+\[
+\text{Interior: } MRS=\frac{\alpha/x_1}{1}=\frac{p_1}{p_2}.
+\]`;
+}
+
+function familyName(f){ return ({cd:'Cobb-Douglas',ces:'CES',leontief:'Leontief',linear:'Linear',quasi:'Quasi-linear'})[f]; }
+
+function makeScales(maxX,maxY,W,H,margin){
+  return {
+    X:x=>margin.l + x/maxX*(W-margin.l-margin.r),
+    Y:y=>H-margin.b - y/maxY*(H-margin.t-margin.b),
+    maxX,maxY,W,H,margin
+  };
+}
+function pathFrom(points,sc){
+  const clean=points.filter(p=>Number.isFinite(p[0])&&Number.isFinite(p[1])&&p[0]>=0&&p[1]>=0&&p[0]<=sc.maxX*1.02&&p[1]<=sc.maxY*1.02);
+  if(clean.length<2) return '';
+  return clean.map((p,i)=>(i?'L':'M')+sc.X(p[0]).toFixed(2)+','+sc.Y(p[1]).toFixed(2)).join(' ');
+}
+function curveForU(U,par,maxX,steps=240){
+  const pts=[]; const a=par.alpha,b=1-a,rho=par.rho;
+  if(par.family==='leontief'){
+    const k=U; return [[a*k,0],[a*k,b*k],[maxX,b*k]];
+  }
+  for(let i=1;i<=steps;i++){
+    const x1=maxX*i/steps;
+    let x2=NaN;
+    if(par.family==='cd') x2=Math.pow(U/Math.pow(x1,a),1/b);
+    else if(par.family==='ces'){
+      if(Math.abs(rho)<1e-5) x2=Math.pow(U/Math.pow(x1,a),1/b);
+      else {
+        const inside=(Math.pow(U,rho)-a*Math.pow(x1,rho))/b;
+        if(inside>0) x2=Math.pow(inside,1/rho);
+      }
+    } else if(par.family==='linear') x2=(U-a*x1)/b;
+    else if(par.family==='quasi') x2=U-a*Math.log(x1);
+    if(Number.isFinite(x2)) pts.push([x1,x2]);
+  }
+  return pts;
+}
+
+function drawMain(par,sol){
+  const svg=$('mainPlot'); const W=720,H=520, m={l:58,r:28,t:25,b:55};
+  const xInt=par.m/par.p1, yInt=par.m/par.p2;
+  const maxX=Math.max(xInt,sol.x1*1.35,6)*1.12;
+  const maxY=Math.max(yInt,sol.x2*1.35,6)*1.12;
+  const sc=makeScales(maxX,maxY,W,H,m);
+  let s='';
+  for(let i=0;i<=6;i++){
+    const x=maxX*i/6, y=maxY*i/6;
+    s+=`<line class="gridline" x1="${sc.X(x)}" y1="${sc.Y(0)}" x2="${sc.X(x)}" y2="${sc.Y(maxY)}"/>`;
+    s+=`<line class="gridline" x1="${sc.X(0)}" y1="${sc.Y(y)}" x2="${sc.X(maxX)}" y2="${sc.Y(y)}"/>`;
+    if(i>0){
+      s+=`<text class="label" x="${sc.X(x)}" y="${H-24}" text-anchor="middle">${fmt(x,1)}</text>`;
+      s+=`<text class="label" x="${m.l-12}" y="${sc.Y(y)+4}" text-anchor="end">${fmt(y,1)}</text>`;
+    }
+  }
+  s+=`<line class="axis" x1="${sc.X(0)}" y1="${sc.Y(0)}" x2="${sc.X(maxX)}" y2="${sc.Y(0)}"/>`;
+  s+=`<line class="axis" x1="${sc.X(0)}" y1="${sc.Y(0)}" x2="${sc.X(0)}" y2="${sc.Y(maxY)}"/>`;
+  s+=`<text class="label-strong" x="${W/2}" y="${H-8}" text-anchor="middle">good 1, x₁</text>`;
+  s+=`<text class="label-strong" transform="translate(16 ${H/2}) rotate(-90)" text-anchor="middle">good 2, x₂</text>`;
+  s+=`<polygon class="feasible" points="${sc.X(0)},${sc.Y(0)} ${sc.X(xInt)},${sc.Y(0)} ${sc.X(0)},${sc.Y(yInt)}"/>`;
+  s+=`<path class="budget" d="M${sc.X(0)},${sc.Y(yInt)} L${sc.X(xInt)},${sc.Y(0)}"/>`;
+  s+=`<text class="label-strong" x="${sc.X(xInt)*.85+sc.X(0)*.15}" y="${sc.Y(0)-8}" text-anchor="middle">m/p₁</text>`;
+  s+=`<text class="label-strong" x="${sc.X(0)+8}" y="${sc.Y(yInt)-8}">m/p₂</text>`;
+
+  const U=utility(sol.x1,sol.x2,par);
+  const levels=[U*.72,U,U*1.32].filter(v=>Number.isFinite(v)&&v>0);
+  levels.forEach((lev,idx)=>{
+    const pts=curveForU(lev,par,maxX,260);
+    const d=pathFrom(pts,sc);
+    if(d) s+=`<path class="${idx===1?'indiff':'indiff-soft'}" d="${d}"/>`;
+  });
+  // Tangent / supporting line through optimum with slope -p1/p2
+  const slope=-par.p1/par.p2;
+  const xt0=Math.max(0, sol.x1 - sol.x2/(-slope));
+  const yt0=sol.x2 + slope*(xt0-sol.x1);
+  const xt1=Math.min(maxX, sol.x1 + sol.x2/(-slope) + maxX*.25);
+  const yt1=sol.x2 + slope*(xt1-sol.x1);
+  if(Number.isFinite(yt0)&&Number.isFinite(yt1)) s+=`<path class="tangent" d="M${sc.X(xt0)},${sc.Y(yt0)} L${sc.X(xt1)},${sc.Y(yt1)}"/>`;
+
+  s+=`<circle class="point" cx="${sc.X(sol.x1)}" cy="${sc.Y(sol.x2)}" r="6.5"/>`;
+  s+=`<text class="label-strong" x="${sc.X(sol.x1)+10}" y="${sc.Y(sol.x2)-10}">x(p,m)</text>`;
+  s+=`<line class="compBudget" x1="${sc.X(sol.x1)}" y1="${sc.Y(sol.x2)}" x2="${sc.X(sol.x1)}" y2="${sc.Y(0)}"/>`;
+  s+=`<line class="compBudget" x1="${sc.X(sol.x1)}" y1="${sc.Y(sol.x2)}" x2="${sc.X(0)}" y2="${sc.Y(sol.x2)}"/>`;
+  s+=`<text class="label" x="${sc.X(sol.x1)}" y="${sc.Y(0)+18}" text-anchor="middle">${fmt(sol.x1,2)}</text>`;
+  s+=`<text class="label" x="${sc.X(0)-9}" y="${sc.Y(sol.x2)+4}" text-anchor="end">${fmt(sol.x2,2)}</text>`;
+  svg.innerHTML=s;
+}
+
+function drawDemand(par,sol){
+  const svg=$('demandPlot'); const W=620,H=360,m={l:58,r:24,t:22,b:48};
+  const pMax=8.2, pMin=.25;
+  let xs=[];
+  for(let i=0;i<140;i++){
+    const p=pMin+(pMax-pMin)*i/139;
+    const d=demand({...par,p1:p}); xs.push([d.x1,p]);
+  }
+  const maxX=Math.max(...xs.map(z=>z[0]).filter(Number.isFinite),sol.x1,1)*1.12;
+  const maxY=pMax;
+  const sc=makeScales(maxX,maxY,W,H,m);
+  let s='';
+  for(let i=0;i<=5;i++){
+    const x=maxX*i/5, y=maxY*i/5;
+    s+=`<line class="gridline" x1="${sc.X(x)}" y1="${sc.Y(0)}" x2="${sc.X(x)}" y2="${sc.Y(maxY)}"/>`;
+    s+=`<line class="gridline" x1="${sc.X(0)}" y1="${sc.Y(y)}" x2="${sc.X(maxX)}" y2="${sc.Y(y)}"/>`;
+    if(i>0){s+=`<text class="label" x="${sc.X(x)}" y="${H-20}" text-anchor="middle">${fmt(x,1)}</text>`;s+=`<text class="label" x="${m.l-10}" y="${sc.Y(y)+4}" text-anchor="end">${fmt(y,1)}</text>`;}
+  }
+  s+=`<line class="axis" x1="${sc.X(0)}" y1="${sc.Y(0)}" x2="${sc.X(maxX)}" y2="${sc.Y(0)}"/>`;
+  s+=`<line class="axis" x1="${sc.X(0)}" y1="${sc.Y(0)}" x2="${sc.X(0)}" y2="${sc.Y(maxY)}"/>`;
+  s+=`<text class="label-strong" x="${W/2}" y="${H-8}" text-anchor="middle">ordinary demand, x₁(p₁,p₂,m)</text>`;
+  s+=`<text class="label-strong" transform="translate(15 ${H/2}) rotate(-90)" text-anchor="middle">price p₁</text>`;
+  const d=pathFrom(xs,sc);
+  if(d) s+=`<path class="indiff" d="${d}"/>`;
+  s+=`<circle class="point2" cx="${sc.X(sol.x1)}" cy="${sc.Y(par.p1)}" r="6"/>`;
+  s+=`<text class="label-strong" x="${sc.X(sol.x1)+9}" y="${sc.Y(par.p1)-8}">current</text>`;
+  svg.innerHTML=s;
+}
+
+function renderMath(){
+  if(window.renderMathInElement){
+    renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false});
+  }
+}
+
+function update(){
+  const par=currentParams();
+  $('familyLabel').textContent=familyName(par.family);
+  $('alphaVal').textContent=fmt(par.alpha,2); $('rhoVal').textContent=fmt(par.rho,2);
+  $('p1Val').textContent=fmt(par.p1,2); $('p2Val').textContent=fmt(par.p2,2); $('mVal').textContent=fmt(par.m,2);
+  $('lambdaVal').textContent=fmt(par.lambda,2); $('nAVal').textContent=par.nA; $('nBVal').textContent=par.nB; $('mBVal').textContent=fmt(par.mB,2);
+  $('rhoBox').style.display = par.family==='ces' ? 'block' : 'none';
+
+  const sol=demand(par);
+  drawMain(par,sol); drawDemand(par,sol);
+  $('x1Read').textContent=fmt(sol.x1,3); $('x1Rule').textContent=sol.rule1;
+  $('x2Read').textContent=fmt(sol.x2,3); $('x2Rule').textContent=sol.rule2;
+  $('vRead').textContent=fmt(sol.v,4); $('uRule').textContent=sol.uRule;
+  $('caseRead').textContent=sol.caseText; $('caseRule').textContent=sol.caseKind;
+  $('solutionFormula').innerHTML=formulaFor(par);
+
+  const gap=sol.exp-par.m;
+  const walrasOK=Math.abs(gap)<1e-6;
+  $('walrasTitle').textContent=walrasOK?'Walras law holds':'Budget not exhausted';
+  $('walrasText').innerHTML=`Current spending: <b>${fmt(sol.exp,4)}</b>. Wealth: <b>${fmt(par.m,4)}</b>. Difference: <b>${fmt(gap,6)}</b>. With monotone preferences, the chosen bundle lies on the budget hyperplane.`;
+
+  const scaled=demand({...par,p1:par.lambda*par.p1,p2:par.lambda*par.p2,m:par.lambda*par.m});
+  const dist=Math.hypot(sol.x1-scaled.x1,sol.x2-scaled.x2);
+  $('homTitle').textContent=dist<1e-5?'Demand is unchanged':'Check nonsmooth/tie case';
+  $('homText').innerHTML=`Original: x=(${fmt(sol.x1,3)}, ${fmt(sol.x2,3)}). Scaled: x(λp,λm)=(${fmt(scaled.x1,3)}, ${fmt(scaled.x2,3)}). Distance: <b>${fmt(dist,6)}</b>.`;
+
+  const roy=derivativesRoy(par);
+  $('roy1').textContent=fmt(roy.r1,4); $('royx1').textContent=fmt(sol.x1,4);
+  $('roy2').textContent=fmt(roy.r2,4); $('royx2').textContent=fmt(sol.x2,4);
+  const royErr=Math.max(Math.abs(roy.r1-sol.x1),Math.abs(roy.r2-sol.x2));
+  const nonsmooth=(par.family==='linear' && sol.caseText==='multiple optima');
+  $('royStatus').className='status'+((royErr<1e-2&&!nonsmooth)?'':' warn');
+  $('royStatus').textContent=(royErr<1e-2&&!nonsmooth)?'Roy recovers demand':'Roy is delicate at kinks, corners, or ties';
+
+  const alphaB=clamp(1-par.alpha,0.05,0.95);
+  const solA=sol;
+  const solB=demand({...par,alpha:alphaB,m:par.mB});
+  const X1=par.nA*solA.x1+par.nB*solB.x1, X2=par.nA*solA.x2+par.nB*solB.x2;
+  $('agg1').textContent=fmt(X1,3); $('agg2').textContent=fmt(X2,3);
+  $('aggExp').textContent=fmt(par.p1*X1+par.p2*X2,3);
+
+  $('propertiesText').innerHTML=`For the selected family, <b>v(p,m)</b> is increasing in wealth and nonincreasing in prices. Ordinary demand is homogeneous of degree zero in <b>(p,m)</b>. If preferences are locally nonsatiated, <b>p·x(p,m)=m</b>. If the solution is unique and <b>v</b> is differentiable, Roy's identity gives each good's demand.`;
+  setTimeout(renderMath,0);
+}
+
+ids.forEach(id=>$(id).addEventListener('input',update));
+$('family').addEventListener('change',update);
+function syncThemeButton(){
+  const btn=$('themeBtn');
+  if(btn) btn.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'Light mode':'Dark mode';
+}
+$('themeBtn').addEventListener('click',()=>{
+  const root=document.documentElement;
+  root.setAttribute('data-theme',root.getAttribute('data-theme')==='dark'?'light':'dark');
+  syncThemeButton();
+  update();
+});
+syncThemeButton();
+window.addEventListener('load',()=>{ update(); setTimeout(renderMath,300); });
+</script>
+</body>
+</html>
