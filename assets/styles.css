@@ -561,6 +561,10 @@ p {
   box-shadow: 0 16px 34px rgba(27, 26, 23, 0.16);
 }
 
+#anpec .book-card img {
+  aspect-ratio: 1055 / 1491;
+}
+
 [data-theme="dark"] .book-card img,
 [data-theme="dark"] .book-cover img,
 [data-theme="dark"] .profile-portrait {
