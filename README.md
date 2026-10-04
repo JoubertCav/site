@@ -8,7 +8,6 @@ Static personal academic website for GitHub Pages.
 - `presentation.html`: redirect to the homepage for old links
 - `works.html`: papers, projects, and notes
 - `teaching.html`: undergraduate, graduate, and ANPEC materials
-- `diagrams.html`: diagram library index
 - `diagrams/`: micro, macro, and econometrics diagram pages
 - `contact.html`: contact and academic links
 - `donation.html`: support and donation options
