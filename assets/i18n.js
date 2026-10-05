@@ -22,7 +22,7 @@
     // Home
     "title.index": "Joubert Cavalcante | Economia Política",
     "idx.eyebrow": "Mestrando em Economia",
-    "idx.subtitle": "Sou mestrando em Economia na Universidade Federal de Pernambuco (UFPE). Economia política é o que mais me interessa: por que governos decidem o que decidem e quanto disso conseguimos explicar com modelos formais e, quando há bons dados, com inferência causal.",
+    "idx.subtitle": "Sou mestrando em Economia na Universidade Federal de Pernambuco (UFPE). Economia política é o que mais me interessa: por que agentes decidem o que decidem e quanto disso conseguimos explicar com modelos formais e, quando há bons dados, com inferência causal.",
     "idx.act.works": "Ver trabalhos",
     "idx.act.lecture": "Notas de aula",
     "idx.act.contact": "Contato",
