@@ -17,7 +17,6 @@
     "nav.lecture": "Notas de Aula",
     "nav.anpec": "ANPEC",
     "nav.contact": "Contato",
-    "nav.donation": "Doação",
 
     // Home
     "title.index": "Joubert Cavalcante | Economia Política",
@@ -26,7 +25,6 @@
     "idx.act.works": "Ver trabalhos",
     "idx.act.lecture": "Notas de aula",
     "idx.act.contact": "Contato",
-    "idx.act.donation": "Doação",
     "idx.label": "Apresentação",
     "idx.h2": "Interesses, métodos e anotações.",
     "idx.lead": "Este site é onde reúno o que leio, o que anoto e o material de estudo que monto enquanto aprendo.",
@@ -124,21 +122,6 @@
     "ct.h2": "Entre em contato",
     "ct.lead": "E-mail é o jeito mais certeiro de me encontrar, seja sobre algo que escrevi, uma dúvida no material daqui ou um erro que você encontrou nele. Os links abaixo também funcionam.",
     "ct.email": "E-mail\n              <span>joubert.cavalcante@ufpe.br</span>",
-
-    // Donation
-    "title.donation": "Doação | Joubert Cavalcante",
-    "dn.eyebrow": "Doação",
-    "dn.h1": "Apoie notas de aula e diagramas abertos.",
-    "dn.subtitle": "Tudo aqui é gratuito e vai continuar sendo. Se algum material te ajudou e você quiser retribuir, uso o que entra para escrever a próxima leva de anotações e desenhar diagramas melhores.",
-    "dn.label": "Apoio",
-    "dn.h2": "Formas de contribuir",
-    "dn.lead": "Qualquer valor ajuda, e ninguém me deve nada: o material continua aberto de qualquer forma.",
-    "dn.pix.copy": "Copiar chave Pix",
-    "dn.paypal": "PayPal ou Stripe",
-    "dn.paypal.link": "Abrir link de doação",
-    "dn.other": "Outras formas de apoio",
-    "dn.other.p": "Livros, bolsas, colaborações, apoio institucional: me escreva e a gente encontra o formato que fizer sentido.",
-    "dn.other.contact": "Contato",
 
     // 404
     "title.404": "Página não encontrada | Joubert Cavalcante",

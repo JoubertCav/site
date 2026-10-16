@@ -10,7 +10,6 @@ Static personal academic website for GitHub Pages.
 - `teaching.html`: undergraduate, graduate, and ANPEC materials
 - `diagrams/`: micro, macro, and econometrics diagram pages
 - `contact.html`: contact and academic links
-- `donation.html`: support and donation options
 - `404.html`: styled not-found page for GitHub Pages
 - `robots.txt` / `sitemap.xml`: crawler guidance for search engines
 - `assets/styles.css`: shared visual design
