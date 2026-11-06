@@ -82,6 +82,8 @@
     "tc.ra.p": "Como ler e como escrever uma demonstração e, depois, sequências e topologia, continuidade e diferenciação, compacidade e os teoremas de otimização pressupostos em todo o resto da economia.",
     "tc.prob": "Probabilidade e Inferência Estatística",
     "tc.prob.p": "Distribuições e estimação, testes de hipóteses e os argumentos assintóticos por trás dos resultados econométricos usuais, demonstrados em vez de apenas citados.",
+    "tc.ts": "Séries Temporais",
+    "tc.ts.p": "Dependência ao longo do tempo, estacionariedade e modelos dinâmicos, com estimação e previsão de séries temporais econômicas.",
     "tc.econometrics": "Econometria",
     "tc.econometrics.p": "Regressão e inferência com dados econômicos, com cada hipótese enunciada de forma explícita e suas consequências desenvolvidas.",
     "tc.causal": "Inferência Causal",
