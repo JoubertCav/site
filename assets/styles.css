@@ -158,6 +158,11 @@ p {
   text-decoration: none;
 }
 
+/* Keep the ANPEC page available while hiding its navigation tab. */
+.nav-links a[href$="anpec.html"] {
+  display: none;
+}
+
 .nav-links a::after {
   content: "";
   position: absolute;
@@ -527,7 +532,7 @@ p {
 
 .book-library {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: clamp(1rem, 2.4vw, 1.5rem);
   margin-top: 2.25rem;
 }
